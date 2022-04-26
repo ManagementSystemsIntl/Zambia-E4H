@@ -1,3 +1,6 @@
+
+# packages ---- 
+
 # packages <- c("arm", "BMA", "brms", "corrplot", "dummies","DescTools", "estimatr","extrafont", "extrafontdb", "janitor",
 #               "reshape2","tidyr","broom", "caret", "haven", "HH","Hmisc","lubridate","knitr", "margins", "magrittr", "plotrix",
 #               "scales","survey", "srvyr", "sysfonts", "foreign","car", "ICC", "openxlsx", "ggrepel", "readr",
@@ -19,6 +22,9 @@ lapply(zam_packages, library, character.only=T)
 # font_import()
 # loadfonts(device="win")
 # windwsFonts()
+
+
+# formatting ---- 
 
 font_add_google("Open Sans", "sans-serif")
 
@@ -70,5 +76,40 @@ light_grey <- "#CFCDC9"
 #scale_color_manual(values = colors, labels=get_labels(variable))
 
 # colors = c("#002F6C", "#BA0C2F", "#0067B9", "#6C6463", "#651D32", "#A7C6ED", "#8C8985")
+
+
+# labels ---- 
+
+
+qlabs <- c("2018-Q1",
+           "2018-Q2",
+           "2018-Q3",
+           "2018-Q4",
+           "2019-Q1",
+           "2019-Q2",
+           "2019-Q3",
+           "2019-Q4",
+           "2020-Q1",
+           "2020-Q2",
+           "2020-Q3",
+           "2020-Q4",
+           "2021-Q1",
+           "2021-Q2",
+           "2021-Q3",
+           "2021-Q4")
+
+#qlabs
+
+qkey <- data.frame(q_num=1:16,
+                   qlab=qlabs,
+                   year=rep(2018:2021, each=4))
+
+#qkey
+
+
+# functions ---- 
+
+
+
 
 

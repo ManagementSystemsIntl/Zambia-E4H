@@ -1,0 +1,66 @@
+---
+title: "Zambia E4H Indicators"
+subtitle: "Jan-Mar 2022"
+toc: true
+toc-depth: 3
+number-sections: true
+format:
+  html:
+    code-fold: true
+editor: visual
+---
+
+```{r global_options, include=F, warning=F, message=F, echo=F, error=F}
+
+# standard figure size and generate clean output
+knitr::opts_chunk$set(autodep=T, fig.height=4, fig.width=6, warning=FALSE, message=FALSE, cache=TRUE, error=T, echo=T)
+getwd()
+library(here)
+source(here("scripts/r prep.R"))
+library(crosstalk) #Allows objects to "talk" to each other
+library(reactable) #Creates a table that can be interactive
+
+ch <- read_xls(here("data/Downlaod Extract Childhealth Monthly At National.xls"))
+
+fam <- read_xls(here("data/Downlaod Extract Family Planning Monthly At National.xls"))
+
+fam_prov <- read_xls(here("data/Downlaod Extract Family Planning Yearly At Province.xls"))
+
+mat_prov <- read_xls(here("data/Downlaod Extract Maternal Yearly By Province.xls")) 
+mat <- read_xls(here("data/Downlaod Extract Maternal Monthly At National.xls"))
+
+```
+
+# Family planning
+
+## Women of reproductive age visited by Community Health Assistant
+
+```{r}
+include_graphics(here("viz/Women of reproductive age visited by CHA (Jan-Mar 2022).png"))
+```
+
+## Women of reproductive age using modern family planning
+
+```{r}
+include_graphics(here("viz/Women of reproductive age use modern family planning (Jan-Mar 2022).png"))
+```
+
+## Coverage of modern FP initiation for reproductive age women visited by CHA
+
+```{r}
+include_graphics(here("viz/Visited by CHA, use modern FP, ratio (Jan-Mar 2022).png"))
+```
+
+## Proportion of new FP acceptors
+
+## Clients accessing LARC
+
+## Percentage of clients discontinuing LARC 
+
+## Medroxyprogesterone injection DMPA-IM 
+
+## Medroxyprogesterone injection DMPA-SC
+
+## IUCD CopperT and IUCD Hormonal rates
+
+## Jadelle remains the more popular implant than Implanon
