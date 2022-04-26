@@ -52,3 +52,23 @@ faceted <- theme_bw() +
         strip.text=element_text(size=14, family="Gill Sans Mt"))
 
 
+# USAID colors
+
+usaid_blue <- "#002F6C"
+usaid_red <- "#BA0C2F"
+rich_black <- "#212721"
+medium_blue <- "#0067B9"
+light_blue <- "#A7C6ED"
+web_blue <- "#205493"
+dark_red <- "#651D32"
+dark_grey <- "#6C6463"
+medium_grey <- "#8C8985"
+light_grey <- "#CFCDC9"
+
+#Here's a USAID color scheme to apply to scale_color_manual()
+#of all the plotting functions. To use it replace the existing color scale with
+#scale_color_manual(values = colors, labels=get_labels(variable))
+
+# colors = c("#002F6C", "#BA0C2F", "#0067B9", "#6C6463", "#651D32", "#A7C6ED", "#8C8985")
+
+
