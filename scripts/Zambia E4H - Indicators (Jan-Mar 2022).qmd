@@ -7,10 +7,12 @@ number-sections: true
 format:
   html:
     code-fold: true
+execute: 
+  keep-md: true
 editor: visual
 ---
 
-```{r global_options, include=F, warning=F, message=F, echo=F, error=F}
+```{r global_options, include=F, warning=F, message=F, echo=F, error=F, results='asis'}
 
 # standard figure size and generate clean output
 knitr::opts_chunk$set(autodep=T, fig.height=4, fig.width=6, warning=FALSE, message=FALSE, cache=TRUE, error=T, echo=T)
