@@ -20,15 +20,13 @@ editor: visual
 
 ## Women of reproductive age visited by Community Health Assistant
 
-::: {.cell hash='Zambia-E4H---Indicators--Jan-Mar-2022-_cache/html/unnamed-chunk-1_f29edac3654f439b617aae6b2720ad12'}
 
 ```{.r .cell-code}
-include_graphics(here("viz/Women of reproductive age visited by CHA (Jan-Mar 2022).png"))
+include_graphics(here("C:/Users/dan.killian/Documents/Zambia E4 Health/viz/Women of reproductive age visited by CHA (Jan-Mar 2022).png"))
 ```
 
 ::: {.cell-output-display}
 ![](C:/Users/dan.killian/Documents/Zambia E4 Health/viz/Women of reproductive age visited by CHA (Jan-Mar 2022).png){width=1050}
-:::
 :::
 
 ## Women of reproductive age using modern family planning
