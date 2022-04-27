@@ -5,15 +5,10 @@
 source("r prep.R")
 
 ch <- read_xls("data/Downlaod Extract Childhealth Monthly At National.xls")
-
 fam <- read_xls("data/Downlaod Extract Family Planning Monthly At National.xls")
-
 fam_prov <- read_xls("data/Downlaod Extract Family Planning Yearly At Province.xls")
-
 mat_prov <- read_xls("data/Downlaod Extract Maternal Yearly By Province.xls") 
-
 mat_prov
-
 mat <- read_xls("data/Downlaod Extract Maternal Monthly At National.xls")
 
 # family ---- 
@@ -25,10 +20,12 @@ mat <- read_xls("data/Downlaod Extract Maternal Monthly At National.xls")
 
 # maternal ---- 
 
+
 names(fam)
 
 
 # maternal provincial ---- 
+
 
 names(fam_prov)
 
@@ -41,59 +38,81 @@ frq(fam_prov$inst_deliv)
 # child health ---- 
 
 names(ch)
-
-?str_sub
+#* total perinatal deaths ----
 
 ch <- ch %>%
-  rename(postnatal_care = 5) %>%
-  mutate(postnatal_care2 = postnatal_care / 100,
-         month_chr = str_sub(periodname,
-                         start=1,
-                         end=nchar(periodname)-5),
+  rename(neod = 6) %>%
+  mutate(month_chr = str_sub(periodname,
+                             start=1,
+                             end=nchar(periodname)-5),
          month = factor(month_chr,
                         levels=c("January","February","March","April","May","June","July","August","September","October","November","December")),
-         month_code = as.numeric(month),
+         month_code = as.numeric(month), 
          year = str_sub(periodname, 
                         start=nchar(periodname)-4,
                         end=nchar(periodname)),
          monyr = paste(month_code, year, sep="-"),
          mnthyr = my(monyr))
-  
 
-?as.Date
-?month
+frq(ch$month) 
+frq(ch$neod) 
 
-sum(ch$month_chr!=ch$month)
+sum(ch$month_chr!=ch$month) # expecting 0 if vars same
 
-mnth <- as.Date(ch$month_chr, format="%B")
-
-mnth <- data.frame(factor(ch$month_chr))
-
-frq(mnth)
-
-
-frq(ch$postnatal_care2)
-frq(ch$month_chr)
-frq(ch$month)
-frq(ch$year)
-frq(ch$mnthyr)
-
-ggplot(ch, aes(mnthyr, postnatal_care2)) + 
+ggplot(ch, aes(mnthyr, neod)) + 
   geom_point(color="dodgerblue", alpha=.6, size=.8) + 
   geom_line(color="dodgerblue", alpha=.4) +
   stat_smooth(method="lm", color="dodgerblue", se=F, size=1.2, alpha=.8) +
-  scale_y_continuous(limits=c(0,1),
-                     labels=percent_format(accuracy=1)) +
+  scale_y_continuous(limits=c(0,500)) +
   labs(x="",
        y="",
-       title="Maternal postnatal care within 48 hours")
+       title="Neonatal Deaths")
 
-ggsave("viz/maternal postnatal care overally month.png",
+ggsave("viz/neonatal deaths.png",
        device="png",
        type="cairo",
        height=4,
        width=7)
 
+
+
+#* neonatal deaths ----
+
+ch <- ch %>%
+  rename(neod = 6) %>%
+  mutate(month_chr = str_sub(periodname,
+                         start=1,
+                         end=nchar(periodname)-5),
+         month = factor(month_chr,
+                        levels=c("January","February","March","April","May","June","July","August","September","October","November","December")),
+         month_code = as.numeric(month), 
+         year = str_sub(periodname, 
+                        start=nchar(periodname)-4,
+                        end=nchar(periodname)),
+         monyr = paste(month_code, year, sep="-"),
+         mnthyr = my(monyr))
+
+frq(ch$month) 
+frq(ch$neod) 
+
+sum(ch$month_chr!=ch$month) # expecting 0 if vars same
+
+ggplot(ch, aes(mnthyr, neod)) + 
+  geom_point(color="dodgerblue", alpha=.6, size=.8) + 
+  geom_line(color="dodgerblue", alpha=.4) +
+  stat_smooth(method="lm", color="dodgerblue", se=F, size=1.2, alpha=.8) +
+  scale_y_continuous(limits=c(0,500)) +
+  labs(x="",
+       y="",
+       title="Neonatal Deaths")
+
+ggsave("viz/neonatal deaths.png",
+       device="png",
+       type="cairo",
+       height=4,
+       width=7)
+
+#* maternal postnatal care within 48 hrs
 
 postnatal_target <- read_xls("data/Processed data.xls",
                              sheet="Maternal",
@@ -105,8 +124,6 @@ postnatal_target <- read_xls("data/Processed data.xls",
          value=as.numeric(value),
          mnthyr=ymd(paste(year, "-12-01")))
 
-postnatal_target
-str(postnatal_target)
 
 ggplot(ch, aes(mnthyr, postnatal_care2)) + 
   geom_point(color="dodgerblue", alpha=.6) + 
