@@ -9,6 +9,8 @@ format:
     code-fold: true
 execute: 
   keep-md: true
+project: 
+  execute-dir: project
 editor: visual
 ---
 
