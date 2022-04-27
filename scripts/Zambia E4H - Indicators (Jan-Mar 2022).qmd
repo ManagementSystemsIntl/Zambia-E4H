@@ -55,9 +55,9 @@ include_graphics(here("viz/Visited by CHA, use modern FP, ratio (Jan-Mar 2022).p
 
 ## Clients accessing LARC
 
-## Percentage of clients discontinuing LARC 
+## Percentage of clients discontinuing LARC
 
-## Medroxyprogesterone injection DMPA-IM 
+## Medroxyprogesterone injection DMPA-IM
 
 ## Medroxyprogesterone injection DMPA-SC
 
