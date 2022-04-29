@@ -93,13 +93,13 @@ frq(mat$anc1)
 sum(mat$month_chr!=mat$month) # expecting 0 if vars same
 
 ggplot(mat, aes(x = mnthyr)) + 
-   geom_point(aes(y = anc1p), color="slateblue4", alpha=.6, size=.8) + 
-   geom_line(aes(y = anc1p), color="slateblue4", alpha=.4) +
+   geom_point(aes(y = anc1p), color="slateblue4", alpha=.6, size=1) + 
+   geom_line(aes(y = anc1p), color="slateblue4", alpha=.8, size =1) +
 #  stat_smooth(aes(y = anc1p), method="lm", color="slateblue4", se=F, size=.5, alpha=.8) +
-   geom_point(aes(y = anc1u20p), color= "orchid3", alpha=.6, size=.8) + 
+   geom_point(aes(y = anc1u20p), color= "orchid3", alpha=.6, size=1) + 
    geom_line(aes(y = anc1u20p), color= "orchid3", alpha=.4) +
 #  stat_smooth(aes(y = anc1u20p), method="lm", color="orchid3", se=F, size=.5, alpha=.8) +
-  geom_point(aes(y = anc1hrp), color= "red3", alpha=.6, size=.8) + 
+  geom_point(aes(y = anc1hrp), color= "red3", alpha=.6, size=1) + 
   geom_line(aes(y = anc1hrp), color= "red3", alpha=.4) +
 #  stat_smooth(aes(y = anc1hrp), method="lm", color="red3", se=F, size=.5, alpha=.8) +
   scale_y_continuous(limits=c(0,1.5),
@@ -113,7 +113,6 @@ ggsave("viz/ANC at TM1.png",
        type="cairo",
        height=4,
        width=7)
-
 
 # ANC care
 
@@ -134,14 +133,14 @@ mat <- mat %>%
          monyr = paste(month_code, year, sep="-"),
          mnthyr = my(monyr))
 
-# look for examples of syntax for loop and conditionals
+# Assign each value of folic = 100 if >100
 
 mat <- mat %>%
-  for (folic in mat) {
-    if (folic > 100) {
-      mutate(folic = 100) 
+  for (i in mat {
+    if(i > 100) {
+      mutate(i  = 100) 
     }
-  }
+  } 
 
 
 frq(mat$month) 
@@ -150,12 +149,12 @@ frq(mat$anc1)
 sum(mat$month_chr!=mat$month) # expecting 0 if vars same
 
 ggplot(mat, aes(x = mnthyr)) + 
-  geom_point(aes(y = folicp), color= "slateblue4", alpha=.6, size=.8) + 
-  geom_line(aes(y = folicp), color= "slateblue4", alpha=.4) +
+  geom_point(aes(y = folicp), color= "slateblue4", alpha=.6, size=1) + 
+  geom_line(aes(y = folicp), color= "slateblue4", alpha=.4, size = 1.5) +
   stat_smooth(aes(y = folicp), method="lm", color="slateblue4", se=F, size=.5, alpha=.8) +
-  geom_point(aes(y = fep), color= "seagreen3", alpha=.6, size=.8) + 
-  geom_line(aes(y = fep), color= "seagreen3", alpha=.4) +
-  stat_smooth(aes(y = fep), method="lm", color= "seagreen3", se=F, size=.5, alpha=.8) +
+  geom_point(aes(y = fep), color= "seagreen3", alpha=.6, size=1) + 
+  geom_line(aes(y = fep), color= "seagreen3", alpha=.4, size = 1.5) +
+  stat_smooth(aes(y = fep), method="lm", color= "seagreen3", se=F, size=.5, alpha=1) +
   scale_y_continuous(limits=c(0,1.5),
                      labels=percent) +
   labs(x="",
