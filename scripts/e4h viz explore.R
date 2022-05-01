@@ -2,7 +2,7 @@
 
 # prep ---- 
 
-source("r prep.R")
+source("scripts/r prep.R")
 
 ch <- read_xls("data/Downlaod Extract Childhealth Monthly At National.xls")
 fam <- read_xls("data/Downlaod Extract Family Planning Monthly At National.xls")
@@ -92,21 +92,26 @@ frq(mat$anc1)
 
 sum(mat$month_chr!=mat$month) # expecting 0 if vars same
 
-ggplot(mat, aes(x = mnthyr)) + 
-   geom_point(aes(y = anc1p), color="slateblue4", alpha=.6, size=1) + 
-   geom_line(aes(y = anc1p), color="slateblue4", alpha=.8, size =1) +
-#  stat_smooth(aes(y = anc1p), method="lm", color="slateblue4", se=F, size=.5, alpha=.8) +
-   geom_point(aes(y = anc1u20p), color= "orchid3", alpha=.6, size=1) + 
+anc1 <- ggplot(mat, aes(x = mnthyr)) + 
+   geom_point(aes(y = anc1p), color= medium_blue, alpha=.6, size=.8) + 
+   geom_line(aes(y = anc1p), color= medium_blue, alpha=.8, size =1) +
+#  stat_smooth(aes(y = anc1p), method="lm", color= medium_blue, se=F, size=.5, alpha=.8) +
+   geom_point(aes(y = anc1u20p), color= "orchid3", alpha=.6, size=.8) + 
    geom_line(aes(y = anc1u20p), color= "orchid3", alpha=.4) +
 #  stat_smooth(aes(y = anc1u20p), method="lm", color="orchid3", se=F, size=.5, alpha=.8) +
-  geom_point(aes(y = anc1hrp), color= "red3", alpha=.6, size=1) + 
+  geom_point(aes(y = anc1hrp), color= "red3", alpha=.6, size=.8) + 
   geom_line(aes(y = anc1hrp), color= "red3", alpha=.4) +
 #  stat_smooth(aes(y = anc1hrp), method="lm", color="red3", se=F, size=.5, alpha=.8) +
-  scale_y_continuous(limits=c(0,1.5),
+  scale_y_continuous(limits=c(0,1),
                      labels=percent) +
   labs(x="",
        y="",
-       title="Antenatal care coverage at 1st trimestre (blue), among women under 20 (pink),\n and among high risk pregnancies (red)")
+       title="Antenatal care coverage at 1st trimestre (blue), among \nwomen under 20 (pink), and among high risk pregnancies (red)")
+
+#? why does changing tick distance appear to change Y values of data? ----
+
+anc1 + theme(axis.text.y = element_text(size = 10))  #+
+  ylim("10%", "20%", "30%", "40%", "50%")
 
 ggsave("viz/ANC at TM1.png",
        device="png",
@@ -114,14 +119,27 @@ ggsave("viz/ANC at TM1.png",
        height=4,
        width=7)
 
-# ANC care
+#* ANC care (Folic acid + Fe) ----
+
+# Assign each value of folic = 100 if >100
+
+mat <- mat %>% 
+  rename(folic = 6,
+         fe = 7) %>% 
+  dplyr::mutate(folic = ifelse(folic > 100, 100, folic)) %>% 
+  dplyr::mutate(folicp = folic/100,
+                fep = fe/100) 
+
+str(mat) # 48 rows x 25 columns
+
+# To create legend, gather method for including a legend --
+
+mat <- gather(mat, key = vit, value = rate, c(folicp, fep)) # 96 rows x 25
+
+# Create mnthyr date var for y axis
 
 mat <- mat %>%
-  rename(folic = 6,
-         fe = 7) %>%
-  mutate(folicp = folic/100,
-         fep = fe/100,
-         month_chr = str_sub(periodname,
+  mutate(month_chr = str_sub(periodname,
                              start=1,
                              end=nchar(periodname)-5),
          month = factor(month_chr,
@@ -133,33 +151,52 @@ mat <- mat %>%
          monyr = paste(month_code, year, sep="-"),
          mnthyr = my(monyr))
 
-# Assign each value of folic = 100 if >100
+mat %>% 
+  ggplot(aes(x = mnthyr, y = rate, group = vit, colour = vit)) +
+  geom_point(alpha=.6, size=1) + 
+  geom_line() +
+  scale_y_continuous(limits = c(0,1),
+                    breaks = c(.1,.2,.3,.4,.5,.6,.7,.8,.9, 1),
+                    labels = percent))+
+  xlab("Month/Year") + 
+  ylab("Proportion of women \noffered iron or folic acid") +
+  ggtitle("ANC quality: Folic Acid (blue) and Iron (red)") +
+  scale_colour_manual(name = "Supplement",
+                      labels = c("Iron","Folic Acid"),
+                      values = c(usaid_red, usaid_blue)) +
+  theme(plot.title = element_text(size = 14), 
+        axis.title.x = element_text(size = 12),
+        axis.title.y = element_text(size = 12),
+        axis.text = element_text(size = 10),
+        legend.title = element_text(size = 12), 
+        legend.text = element_text(size = 11),
+  ) 
 
-mat <- mat %>%
-  for (i in mat {
-    if(i > 100) {
-      mutate(i  = 100) 
-    }
-  } 
+#? ----
 
-
-frq(mat$month) 
-frq(mat$anc1) 
-
-sum(mat$month_chr!=mat$month) # expecting 0 if vars same
-
+  
+    
+# old way - no legend produced
+  
 ggplot(mat, aes(x = mnthyr)) + 
-  geom_point(aes(y = folicp), color= "slateblue4", alpha=.6, size=1) + 
-  geom_line(aes(y = folicp), color= "slateblue4", alpha=.4, size = 1.5) +
-  stat_smooth(aes(y = folicp), method="lm", color="slateblue4", se=F, size=.5, alpha=.8) +
-  geom_point(aes(y = fep), color= "seagreen3", alpha=.6, size=1) + 
-  geom_line(aes(y = fep), color= "seagreen3", alpha=.4, size = 1.5) +
-  stat_smooth(aes(y = fep), method="lm", color= "seagreen3", se=F, size=.5, alpha=1) +
-  scale_y_continuous(limits=c(0,1.5),
+  geom_point(aes(y = folicp), color= medium_blue, size=1.2) + 
+  geom_line(aes(y = folicp), color= medium_blue, alpha=.6, size = 1) +
+#  stat_smooth(aes(y = folicp), method="lm", color=medium_blue, se=F, size=.5, alpha=.8) +
+  geom_point(aes(y = fep), color= usaid_red, size=1.2) + 
+  geom_line(aes(y = fep), color= usaid_red, alpha=.6, size = 1) +
+#  stat_smooth(aes(y = fep), method="lm", color= usaid_red, se=F, size=.5, alpha=1) +
+  scale_y_continuous(limits=c(0,1),
                      labels=percent) +
   labs(x="",
        y="",
-       title="ANC quality: Folic Acid ")
+       title="ANC quality: Folic Acid (blue) and Iron (red)")
+
+# Legend
+
+ggplot(iris, aes(x = Sepal.Length)) + geom_line(aes(…
+                                                                                                                                          
+p + theme(legend.position="bottom")
+
 
 ggsave("viz/ANC at TM1.png",
        device="png",
@@ -203,9 +240,9 @@ frq(ch$neod)
 sum(ch$month_chr!=ch$month) # expecting 0 if vars same
 
 ggplot(ch, aes(mnthyr, neod)) + 
-  geom_point(color="dodgerblue", alpha=.6, size=.8) + 
-  geom_line(color="dodgerblue", alpha=.4) +
-  stat_smooth(method="lm", color="dodgerblue", se=F, size=1.2, alpha=.8) +
+  geom_point(color= medium_blue, alpha=.6, size= 1.2) + 
+  geom_line(color= medium_blue, alpha=.6, size = .6) +
+  stat_smooth(method="lm", color= medium_blue, se=F, size=1, alpha=.6) +
   scale_y_continuous(limits=c(0,500)) +
   labs(x="",
        y="",
@@ -220,8 +257,8 @@ ggsave("viz/neonatal deaths.png",
 
 #* neonatal deaths ----
 
-mat_prov <- mat_prov %>%
-  rename(neod = 14) %>%
+ch <- ch  %>%
+  rename(neod = 6) %>%
   mutate(month_chr = str_sub(periodname,
                          start=1,
                          end=nchar(periodname)-5),
@@ -234,21 +271,18 @@ mat_prov <- mat_prov %>%
          monyr = paste(month_code, year, sep="-"),
          mnthyr = my(monyr))
 
-frq(ch$month) 
-frq(ch$neod) 
-
 sum(ch$month_chr!=ch$month) # expecting 0 if vars same
 
 ggplot(ch, aes(mnthyr, neod)) + 
-  geom_point(color="dodgerblue", alpha=.6, size=.8) + 
-  geom_line(color="dodgerblue", alpha=.4) +
-  stat_smooth(method="lm", color="dodgerblue", se=F, size=1.2, alpha=.8) +
+  geom_point(color= medium_blue, alpha=.6, size=.8) + 
+  geom_line(color= medium_blue, alpha=.4) +
+  stat_smooth(method="lm", color= medium_blue, se=F, size=1.1, alpha=.8) +
   scale_y_continuous(limits=c(0,500)) +
   labs(x="",
        y="",
        title="Neonatal Deaths")
 
-ggsave("viz/neonatal deaths from maternal dataset.png",
+ggsave("viz/Neonatal deaths.png",
        device="png",
        type="cairo",
        height=4,

@@ -1,9 +1,7 @@
 # Zambia 4 Health
 # practice
 
-d <- read_xlsx("data/Zambia provincial data.xlsx")
-
-d
+d <- read_xls("data/Downlaod Extract Maternal Yearly By Province.xls")
 
 d_l <- d %>%
   pivot_longer(-1,
