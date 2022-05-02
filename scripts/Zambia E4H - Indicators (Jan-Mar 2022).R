@@ -14,8 +14,6 @@ fam_prov <- read_xls("data/Downlaod Extract Family Planning Yearly At Province.x
 
 mat_prov <- read_xls("data/Downlaod Extract Maternal Yearly By Province.xls") 
 
-#mat_prov
-
 mat <- read_xls("data/Downlaod Extract Maternal Monthly At National.xls")
 
   # Family planning
@@ -66,6 +64,8 @@ ggsave("viz/Women of reproductive age visited by CHA (Jan-Mar 2022).png",
 #  stat_smooth(se=F)
   scale_x_continuous(breaks=1:16,
                      labels=qlabs)
+  
+    ### Family planning ### 
 
 
 # Women of reproductive age use modern family planning ---- 
@@ -165,7 +165,8 @@ ggsave("viz/Visited by CHA, use modern FP, ratio (Jan-Mar 2022).png",
        width=7)
 
 
+# Proportion of new FP acceptors ----
 
-
+names(fam)
 
 
