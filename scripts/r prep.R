@@ -96,13 +96,14 @@ qlabs <- c("2018-Q1",
            "2021-Q1",
            "2021-Q2",
            "2021-Q3",
-           "2021-Q4")
+           "2021-Q4",
+           "2022-Q1")
 
 #qlabs
 
-qkey <- data.frame(q_num=1:16,
+qkey <- data.frame(q_num=1:17,
                    qlab=qlabs,
-                   year=rep(2018:2021, each=4))
+                   year=c(rep(2018:2021, each=4), 2022))
 
 #qkey
 
