@@ -180,7 +180,7 @@ ggplot(dat_nutri, aes(x = mnthyr
   geom_line(size = .5, alpha = .6) +
   scale_y_continuous(limits = c(0,4),
                      labels = percent) +
-  facet_wrap(~ subpop
+  facet_wrap(vars(subpop)
              , nrow = 3
              , scales = "free_y") +
   labs(title = "Child Health (2018-2022)"
