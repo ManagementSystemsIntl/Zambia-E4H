@@ -60,7 +60,7 @@ dat_immun2 <- pivot_longer(dat_immun2
                      , values_to = "rate"
                      , cols = c(imm1,imm2,bcg1, measles1, measles2, dpt_hib_hep1))
 
-#basic line chart
+#basic line chart of immunization data
 ggplot(dat_immun2, aes(x = mnthyr
                        , y = rate
                        , group = subpop
@@ -104,8 +104,102 @@ ggplot(dat_immun2, aes(x = mnthyr
         legend.title = element_text(size = 12), 
         legend.text = element_text(size = 11)
   ) 
-
+#save the viz
 ggsave("viz/Immunizations.png",
+       device="png",
+       type="cairo",
+       height=4,
+       width=7)
+
+
+#Now use the child health data for nutrition
+
+#Select only the columns needed
+dat_nutri <- dat_immun %>% 
+  select(date = periodname
+         , vitA = 14
+         , deworm = 15
+         , stunt_u5 = 16
+         , waste_u5 = 17
+         , breastmilk_1h = 18
+         , breastfed_6m = 19
+         , pneu_5 = 20
+         , dia_no_blood_5 = 21
+         , dia_dehyd_5 = 22
+         , opd_1 = 23
+         , ebf_6m = 24) %>% 
+  mutate(vitA = vitA/100
+         , deworm = deworm/100
+         , stunt_u5 = stunt_u5/100
+         , waste_u5 = waste_u5/100
+         , breastmilk_1h = breastmilk_1h/100
+         , breastfed_6m = breastfed_6m/100
+         , pneu_5 = pneu_5/100
+         , dia_no_blood_5 = dia_no_blood_5/100
+         , dia_dehyd_5 = dia_dehyd_5/100
+         , ebf_6m = ebf_6m/100
+         , month_chr = str_sub(date
+                             , start = 1
+                             , end=nchar(date)-5)
+         , month = factor(month_chr
+                          , levels=c("January"
+                                     ,"February"
+                                     ,"March"
+                                     ,"April"
+                                     ,"May"
+                                     ,"June"
+                                     ,"July"
+                                     ,"August"
+                                     ,"September"
+                                     ,"October"
+                                     ,"November"
+                                     ,"December"))
+         , month_code = as.numeric(month) 
+         , year = str_sub(date
+                          , start=nchar(date)-4
+                          , end=nchar(date))
+         , monyr = paste(month_code, year, sep="-")
+         , mnthyr = my(monyr)
+  ) 
+
+#pivot the data 
+dat_nutri <- pivot_longer(dat_nutri
+                           , names_to = "subpop"
+                           , values_to = "rate"
+                           , cols = c(vitA,deworm,stunt_u5,waste_u5
+                                      , breastmilk_1h, breastfed_6m
+                                      , pneu_5, dia_no_blood_5, dia_dehyd_5
+                                      , opd_1, ebf_6m))
+
+#basic line chart of immunization data
+ggplot(dat_nutri, aes(x = mnthyr
+                       , y = rate
+                       , group = subpop
+                       , color = subpop)) +
+  geom_point(alpha = .6, size = 1) + 
+  geom_line(size = .5, alpha = .6) +
+  scale_y_continuous(limits = c(0,4),
+                     labels = percent) +
+  facet_wrap(~ subpop
+             , nrow = 3
+             , scales = "free_y") +
+  labs(title = "Child Health (2018-2022)"
+       , subtitle = "Subtitle"
+       , x = ""
+       , y = ""
+       , caption = "Source: Zambia Ministry of Health") +
+  scale_color_viridis_d(name = "",)+
+                        #labels = c(
+  theme(plot.title.position = "plot",
+        plot.title = element_text(size = 14, hjust = 0),
+        axis.title.x = element_text(size = 12),
+        axis.title.y = element_text(size = 12),
+        axis.text = element_text(size = 9),
+        legend.title = element_text(size = 12), 
+        legend.text = element_text(size = 11)
+  ) 
+#save the viz
+ggsave("viz/Nutrition.png",
        device="png",
        type="cairo",
        height=4,
