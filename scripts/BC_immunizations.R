@@ -66,29 +66,38 @@ ggplot(dat_immun2, aes(x = mnthyr
                        , group = subpop
                        , color = subpop)) +
   geom_point(alpha = .6, size = 1) + 
-  geom_line(size = .5) +
-  scale_y_continuous(limits = c(0,1),
-                     labels = percent,
-                     breaks = c(.1,.2,.3,.4,.5,.6,.7,.8,.9, 1)) +
-  xlab("") + 
-  ylab("") +
-  ggtitle("Immunization Rates (2018-2022)"
-          , subtitle = "A good subtitle") +
-  scale_colour_manual(name = "",
+  geom_line(size = .5, alpha = .6) +
+  annotate(geom = "text"
+           , x = min(dat_immun2$mnthyr)
+           , y = max(dat_immun2$rate)
+           , label = "Can someone check on these data?\n
+           Seems like a lot of % over 100 to me."
+           , hjust = 0
+           , vjust = 1
+           , size = 5
+           , color = "red")+
+  scale_y_continuous(limits = c(0,5),
+                     labels = percent) +
+  labs(title = "Immunization Rates (2018-2022)"
+       , subtitle = "Immunization rates are fairly consistent across categories"
+       , x = ""
+       , y = ""
+       , caption = "Source: Zambia Ministry of Health") +
+  scale_color_viridis_d(name = "",
                       labels = c("BCG under 1"
                                  ,"dpt, hib, hep under 1"
                                  ,"Fully immunized under 1"
-                                 , "Fully immunized under 1"
+                                 , "Fully immunized under 2"
                                  , "Measles coverage under 1"
-                                 , "Measles coverage under 2"),
-                      values = c(usaid_red
-                                 , medium_grey
-                                 , usaid_blue
-                                 , medium_blue
-                                 , medium_grey
-                                 , dark_grey)) +
-  theme(plot.title = element_text(size = 14),
-        plot.title.position = "left",
+                                 , "Measles coverage under 2"))+#,
+                      #values = c(light_blue
+                       #          , medium_grey
+                        #         , usaid_blue
+                         #        , usaid_red
+                          #       , medium_grey
+                           #      , rich_black)) +
+  theme(plot.title.position = "plot",
+        plot.title = element_text(size = 14),
         axis.title.x = element_text(size = 12),
         axis.title.y = element_text(size = 12),
         axis.text = element_text(size = 9),
