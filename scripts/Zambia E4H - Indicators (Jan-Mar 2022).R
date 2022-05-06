@@ -38,10 +38,12 @@ fam_mnth <- read_xls("data/Jan-Mar 2022/Family Planning Data_National Level(Mont
          year = str_sub(periodname, 
                         start=nchar(periodname)-4,
                         end=nchar(periodname)),
+         year = as.numeric(year),
          monyr = paste(month_code, year, sep="-"),
          mnthyr = my(monyr)) %>%
   relocate(mnthyr, .after=periodname)
 
+frq(fam_mnth$year)
 
 fam_mnth_labs <- data.frame(var_lab=names(fam_mnth))
 write_csv(fam_mnth_labs, "data/Jan-Mar 2022/fam_mnth_labs.csv")
@@ -85,14 +87,15 @@ frq(fam_prov_mnth$sunta)
 
 # Family Planning Ind 1: Women of reproductive age visited by CHA ---- 
 
+library(ggtext)
+
 fam <- fam %>%
   rename(cha_visit=6)
 
-
 ggplot(fam, aes(x=qdate, y=cha_visit)) + 
-  geom_vline(aes(xintercept=qdate[5]), size=1, color="darkgoldenrod2", alpha=.8) +
-  geom_line(color=medium_blue, size=1, alpha=.6) + 
-  geom_point(color=medium_blue, size=2.5) + 
+  geom_vline(aes(xintercept=qdate[5]), size=1.2, color=zamOrange, alpha=.6) +
+  geom_line(color=zamGreen, size=1, alpha=.6) + 
+  geom_point(color=zamGreen, size=2.5) + 
 #  stat_smooth(color=medium_blue) +
   scale_x_date(#limits=c(as.Date("2018-01-01"), as.Date("2021-12-31")),
                date_breaks="1 year",
@@ -100,8 +103,10 @@ ggplot(fam, aes(x=qdate, y=cha_visit)) +
   scale_y_continuous(labels=comma) +
   labs(x="",
        y="",
-       title="Women of reproductive age visited\nby Community Health Association") +
-  annotate("text", x=as.Date("2018-12-01"), y=45000, label="SUNTA\nlaunch", color="grey60", size=4)
+       title="CHA worker visits **declined** in Jan-Mar 2022,\ncontinuing a </span style='color:red;'>>trend</span> beginning in Q3 2020") +
+  annotate("text", x=as.Date("2018-12-01"), y=45000, label="SUNTA\nlaunch", color="grey60", size=4) +
+  theme(plot.title.position="plot",
+        plot.title=element_markdown())
 
 ggsave("viz/Jan-Mar 2022/Women of reproductive age visited by CHA (Jan-Mar 2022).png",
        device="png",
@@ -259,6 +264,313 @@ ggsave("viz/Women of reproductive age visited by CHA (Jan-Mar 2022).png",
 
 
 # Women of reproductive age use modern family planning ---- 
+
+  
+names(fam)  
+
+fam <- fam %>%
+    rename(cha_fp=7)
+
+library(psych)
+describe(fam$cha_fp)
+
+ggplot(fam, aes(x=qdate, y=cha_fp)) + 
+  geom_vline(aes(xintercept=qdate[5]), size=1.2, color=zamOrange, alpha=.6) +
+  geom_line(color=zamGreen, size=1, alpha=.6) + 
+  geom_point(color=zamGreen, size=2.5) + 
+  #  stat_smooth(color=medium_blue) +
+  scale_x_date(#limits=c(as.Date("2018-01-01"), as.Date("2021-12-31")),
+    date_breaks="1 year",
+    date_labels="%Y") +
+  scale_y_continuous(labels=comma) +
+  labs(x="",
+       y="",
+       title="Women adopting modern family planning method declined\nin Jan-Mar 2022, continuing a trend starting in Q1 2021") +
+  annotate("text", x=as.Date("2018-12-01"), y=25000, label="SUNTA\nlaunch", color="grey60", size=4) 
+
+ggsave("viz/Jan-Mar 2022/Women of reproductive age adopt modern family planning (Jan-Mar 2022).png",
+       device="png",
+       type="cairo",
+       height=4,
+       width=7)
+
+
+  # by province
+
+names(fam_prov_mnth)
+
+frq(fam_prov_mnth$mnthyr)
+
+fam_prov_mnth <- fam_prov_mnth %>%
+  rename(cha_fp=5)
+
+ggplot(fam_prov_mnth, aes(mnthyr, cha_fp, color=sunta)) + 
+  geom_point(size=.5, alpha=.5) + 
+  #geom_line() +
+  stat_smooth(se=F, size=.8, alpha=.6) +
+  facet_wrap(~province, ncol=4) +
+  faceted +
+  scale_color_manual(values=c(usaid_red, medium_blue)) +
+  scale_x_date(#limits=c(as.Date("2018-01-01"), as.Date("2021-12-31")),
+    date_breaks="2 years",
+    date_labels="%Y") +
+  scale_y_continuous(labels=comma) +
+  labs(x="",
+       y="",
+       title="Women adopting modern family planning declined in\nJan-Mar 2022, continuing a trend starting in 2021",
+       caption="Jan 2018-Mar 2022") +
+  theme(legend.title=element_blank(),
+        legend.position=c(.75,.15))
+
+ggsave("viz/Jan-Mar 2022/Women of reproductive adopt modern family planning province (Jan-Mar 2022).png",
+       device="png",
+       type="cairo",
+       height=5.5,
+       width=7)
+
+
+# by program area
+
+library(zoo)
+
+fam_prog <- fam_prov_mnth %>%
+  group_by(mnthyr, sunta) %>%
+  summarise(cha_fp=sum(cha_fp, na.rm=T)) %>%
+  mutate(#cha_fp=ifelse(is.na(cha_fp), 0, cha_fp),
+         qtr = as.yearqtr(mnthyr))
+
+fam_prog
+
+ggplot(fam_prog, aes(mnthyr, cha_fp, color=sunta)) + 
+#  geom_point() + 
+#  geom_line() +
+  stat_smooth(se=F) +
+  scale_color_manual(values=c(usaid_red, medium_blue)) 
+
++ 
+  theme(legend.title="none")
+
+fam_prog_qtr <- fam_prog %>%
+  group_by(qtr, sunta) %>%
+  summarise(cha_fp=sum(cha_fp)) %>%
+  as.data.frame()
+
+fam_prog_qtr
+str(fam_prog_qtr)
+
+
+ggplot(fam_prog_qtr, aes(qtr, cha_fp, color=sunta)) + 
+  geom_vline(aes(xintercept=qtr[9]), size=1, color="darkgoldenrod2", alpha=.8) + 
+  #geom_line() +
+  stat_smooth(se=F, size=1.4) +
+  scale_color_manual(values=c(usaid_red, medium_blue)) +
+  scale_y_continuous(labels=comma) +
+  theme(legend.title=element_blank(),
+        #legend.position="bottom",
+        legend.position=c(.7,.2)) +
+  labs(x="",
+       y="",
+       title="Women adopting modern family planning method\ndeclined in Jan-Mar 2022, continuing a trend starting in 2021") +
+  annotate("text", x=fam_prog_qtr$qtr[8], y=20000, label="SUNTA\nlaunch", color="grey60", size=4)
+
+ggsave("viz/Jan-Mar 2022/Women adopting modern family planning method, by program area legend (Jan-Mar 2022).png",
+       device="png",
+       type="cairo",
+       height=4,
+       width=7)
+
+
+
+library(geomtextpath)
+
+?geom_labelsmooth
+
+ggplot(fam_prog_qtr, aes(qtr, cha_fp, color=sunta)) + 
+  #geom_vline(aes(xintercept=qtr[9]), size=1, color=zamOrange, alpha=.8) + 
+  # geom_point() + 
+  #  geom_line() +
+  stat_smooth(se=F, size=1) +
+  geom_labelsmooth(aes(label=sunta), 
+                   text_smoothing=20, 
+                   method="loess",
+                   hjust="ymax") +
+  scale_color_manual(values=c(zamRed, zamGreen)) +
+  scale_y_continuous(labels=comma) +
+  labs(x="",
+       y="",
+       title="Women adopting modern family planning declined\nin Jan-Mar 2022, continuing a trend beginning in 2021",
+       caption="Provincial data, aggregated by quarter\nand to program or non-program areas") +
+#  annotate("text", x=fam_prog_qtr$qtr[8], y=20000, label="SUNTA\nlaunch", color="grey60", size=4) +
+  theme(legend.position="none")
+
+
+ggsave("viz/Jan-Mar 2022/Women adopting modern family planning, by program area textpath (Jan-Mar 2022).png",
+       device="png",
+       type="cairo",
+       height=4,
+       width=7)
+
+
+  # together and proportion 
+
+names(fam_mnth)
+
+fam_mnth <- fam_mnth %>%
+  rename(cha_visit=4,
+         cha_fp=5) %>%
+  mutate(fp_prop = cha_fp/cha_visit) %>%
+  relocate(fp_prop, .after=cha_fp)
+
+fam_mnth[1:10,1:7]
+
+ggplot(fam_mnth, aes(x=mnthyr, y=fp_prop)) +
+#  geom_point(color=medium_blue) + 
+#  geom_line(color=medium_blue) + 
+  stat_smooth(color=medium_blue, se=F) +
+  scale_x_date(#limits=c(as.Date("2018-01-01"), as.Date("2021-12-31")),
+    date_breaks="1 year",
+    date_labels="%Y") +
+  scale_y_continuous(labels=) +
+  labs(x="",
+       y="",
+       title="Women visited by CHA and adopting modern\nfamily planning method declined in Jan-Mar 2022") 
+
+
+ggsave("viz/Jan-Mar 2022/Women visited by CHA and adopt modern family planning (Jan-Mar 2022).png",
+       device="png",
+       type="cairo",
+       height=4,
+       width=7)
+
+# by quarter
+
+names(fam)
+
+fam <- fam %>%
+  mutate(fp_prop = cha_fp/cha_visit) %>%
+  relocate(fp_prop, .after=cha_fp)
+
+fam[1:10,1:8]
+
+a <- ggplot(fam, aes(qdate, fp_prop)) +
+  geom_point(color="darkgoldenrod2", size=1.5) + 
+  #geom_line(color=medium_blue, size=1) +
+  stat_smooth(color="darkgoldenrod2", method="lm", size=.8, se=F) +
+  #  geom_ribbon(aes(ymin=lower, ymax=upper), fill="lightgrey") +
+  #  stat_smooth(aes(y=lower), linetype="dotdash") + 
+  #  stat_smooth(aes(y=upper), linetype="dotdash") +
+#  geom_label(aes(label=paste(round(fp_prop*100,1),"%", sep="")), color=medium_blue) + 
+  scale_y_continuous(limits=c(.2,.8),
+                     breaks=seq(.25, .75, .25),
+                     labels=percent_format(accuracy=1)) +
+  labs(x="",
+       y="",
+       title="Proportion has steadily increased since 2018",
+       caption="Sharpest increase in\nproportion occured in 2021"
+  )
+
+a
+
+ggsave("viz/Jan-Mar 2022/Proportion of women visited by CHA and adopt modern family planning by quarter (Jan-Mar 2022).png",
+       device="png",
+       type="cairo",
+       height=4,
+       width=7)
+
+frq(fam$cha_visit)
+
+b <- ggplot(fam, aes(qdate)) + 
+  geom_point(aes(y=cha_visit), color=usaid_red) + 
+  geom_line(aes(y=cha_visit), color=usaid_red) + 
+  geom_point(aes(y=cha_fp), color=medium_blue) + 
+  geom_line(aes(y=cha_fp), color=medium_blue) +
+  scale_y_continuous(limits=c(0, 80315),
+                     breaks=seq(2e4, 8e4, 2e4),
+                     labels=comma) +
+  labs(x="",
+       y="",
+       title="Women visited by CHA and adopting modern\nfamily planning method declined in Jan-Mar 2022")
+
+b
+
+ggsave("viz/Jan-Mar 2022/Women visited by CHA and adopt modern family planning (Jan-Mar 2022).png",
+       device="png",
+       type="cairo",
+       height=4,
+       width=7)
+
+library(patchwork)
+
+b/a
+
+
+ggsave("viz/Jan-Mar 2022/Women visited and adopt, with proportion (Jan-Mar 2022).png",
+       device="png",
+       type="cairo",
+       height=5,
+       width=7)
+
+
+
+ggplot(fam_prog_qtr, aes(qtr, cha_fp, color=sunta)) + 
+  geom_vline(aes(xintercept=qtr[9]), size=1, color="darkgoldenrod2", alpha=.8) + 
+  #geom_line() +
+  stat_smooth(se=F, size=1.4) +
+  scale_color_manual(values=c(usaid_red, medium_blue)) +
+  scale_y_continuous(labels=comma) +
+  theme(legend.title=element_blank(),
+        #legend.position="bottom",
+        legend.position=c(.7,.2)) +
+  labs(x="",
+       y="",
+       title="Women adopting modern family planning method\ndeclined in Jan-Mar 2022, continuing a trend starting in 2021") +
+  annotate("text", x=fam_prog_qtr$qtr[8], y=20000, label="SUNTA\nlaunch", color="grey60", size=4)
+
+ggsave("viz/Jan-Mar 2022/Women adopting modern family planning method, by program area legend (Jan-Mar 2022).png",
+       device="png",
+       type="cairo",
+       height=4,
+       width=7)
+
+
+
+
+
+# by year
+
+library(plotrix)
+
+fam_yr <- fam_mnth %>%
+  group_by(year) %>%
+  summarise(se = std.error(fp_prop),
+            fp_prop=mean(fp_prop)) %>%
+  mutate(lower=fp_prop-1.96*se,
+         upper=fp_prop+1.96*se)
+
+fam_yr
+
+ggplot(fam_yr, aes(year, fp_prop)) +
+  geom_point(color=medium_blue, size=3) + 
+#  geom_line(color=medium_blue, size=1) +
+  stat_smooth(method="lm") +
+#  geom_ribbon(aes(ymin=lower, ymax=upper), fill="lightgrey") +
+#  stat_smooth(aes(y=lower), linetype="dotdash") + 
+#  stat_smooth(aes(y=upper), linetype="dotdash") +
+  geom_label(aes(label=paste(round(fp_prop*100,1),"%", sep="")), color=medium_blue) + 
+  scale_y_continuous(limits=c(0,1),
+                     labels=percent_format(accuracy=1)) +
+  labs(x="",
+       y="",
+       title="Proportion of women visited by CHA,\nand who adopt modern family planning method",
+       )
+
+?geom_ribbon
+
+
+
+
+  
+  
   
 modern_fp <- read_xls("data/Processed data.xls",
                       sheet="Family Planning",
@@ -353,6 +665,8 @@ ggsave("viz/Visited by CHA, use modern FP, ratio (Jan-Mar 2022).png",
        type="cairo",
        height=6,
        width=7)
+
+
 
 
 # Proportion of new FP acceptors ----

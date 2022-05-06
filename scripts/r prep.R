@@ -34,11 +34,11 @@ options(digits=4, scipen=8)
 # set default
 base <- theme_bw() + theme(panel.grid.minor.x=element_blank(),
                            panel.grid.minor.y=element_blank(),
-                           plot.title=element_text(face="bold",size=16, hjust=.5, family = "Gill Sans Mt"),
-                           plot.subtitle = element_text(size=16, family="Gill Sans Mt"),
+                           plot.title=element_text(face="bold",size=14, hjust=.5, family = "Gill Sans Mt"),
+                           plot.subtitle = element_text(size=12, family="Gill Sans Mt"),
                            plot.caption=element_text(size=12, family="Gill Sans Mt"),
-                           axis.title=element_text(size=16, family="Gill Sans Mt"),
-                           axis.text=element_text(size=14, family="Gill Sans Mt"),
+                           axis.title=element_text(size=14, family="Gill Sans Mt"),
+                           axis.text=element_text(size=12, family="Gill Sans Mt"),
                            legend.text=element_text(size=14, family="Gill Sans Mt"),
                            strip.text=element_text(size=14, family="Gill Sans Mt"),
                            panel.border=element_blank(),
@@ -49,8 +49,8 @@ theme_set(base)
 faceted <- theme_bw() +
   theme(panel.grid.minor.x=element_blank(),
         panel.grid.minor.y=element_blank(),
-        plot.title=element_text(face="bold",size=18, hjust=.5, family = "Gill Sans Mt"),
-        plot.subtitle = element_text(size=16, family="Gill Sans Mt"),
+        plot.title=element_text(face="bold",size=14, hjust=.5, family = "Gill Sans Mt"),
+        plot.subtitle = element_text(size=12, family="Gill Sans Mt"),
         plot.caption=element_text(size=12, family="Gill Sans Mt"),
         axis.title=element_text(size=16, family="Gill Sans Mt"),
         axis.text=element_text(size=14, family="Gill Sans Mt"),
@@ -70,6 +70,13 @@ dark_red <- "#651D32"
 dark_grey <- "#6C6463"
 medium_grey <- "#8C8985"
 light_grey <- "#CFCDC9"
+
+# Zambia colors
+
+zamGreen <- "#198a00ff"
+zamRed <- "#de2010ff"
+zamOrange <- "#EF7D00"
+zamBlack <- "#000000"
 
 #Here's a USAID color scheme to apply to scale_color_manual()
 #of all the plotting functions. To use it replace the existing color scale with
