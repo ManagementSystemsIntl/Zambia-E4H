@@ -42,7 +42,11 @@ base <- theme_bw() + theme(panel.grid.minor.x=element_blank(),
                            legend.text=element_text(size=14, family="Gill Sans Mt"),
                            strip.text=element_text(size=14, family="Gill Sans Mt"),
                            panel.border=element_blank(),
-                           axis.ticks = element_blank())
+                           axis.ticks = element_blank()) 
+
+scale_color_discrete <- usaid_palette
+
+opts <- options(ggplot2.discrete.color = usaid_palette)
 
 theme_set(base)
 
@@ -70,6 +74,30 @@ dark_red <- "#651D32"
 dark_grey <- "#6C6463"
 medium_grey <- "#8C8985"
 light_grey <- "#CFCDC9"
+
+usaid_palette <- c(web_blue, usaid_red, light_blue, dark_red, usaid_blue)
+usaid_palette
+
+# palette(usaid_palette)
+# 
+# data(mtcars)
+# head(mtcars)
+# 
+# ggplot(mtcars, aes(mpg, hp, color=as.factor(gear))) + 
+#   geom_point() +
+#   scale_color_brewer(palette="Set2")
+#   
+#   
+#   scale_color_discrete()
+# 
+# ?scale_color_discrete
+#   
+#   
+# 
+#   + 
+#   scale_color_manual(values=usaid_palette)
+
+options(ggplot2.discrete.color = usaid_palette)
 
 # Zambia colors
 
