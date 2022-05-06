@@ -175,7 +175,8 @@ dat_nutri <- pivot_longer(dat_nutri
 ggplot(dat_nutri, aes(x = mnthyr
                        , y = rate
                        , group = subpop
-                       , color = subpop)) +
+                       , color = subpop
+                      , label = subpop)) +
   geom_point(alpha = .6, size = 1) + 
   geom_line(size = .5, alpha = .6) +
   scale_y_continuous(limits = c(0,4),
@@ -197,6 +198,7 @@ ggplot(dat_nutri, aes(x = mnthyr
         axis.text = element_text(size = 9),
         legend.title = element_text(size = 12), 
         legend.text = element_text(size = 11)
+        , legend.position = "none"
   ) 
 #save the viz
 ggsave("viz/Nutrition.png",
@@ -204,3 +206,5 @@ ggsave("viz/Nutrition.png",
        type="cairo",
        height=4,
        width=7)
+
+
