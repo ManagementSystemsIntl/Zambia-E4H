@@ -12,7 +12,7 @@
 zam_packages <- c("tidyverse", "here", "gt","gtsummary","gghighlight","stringi","DT", "ggthemes","ggridges","viridis",
               "psych","labelled","readxl", "skimr","sjlabelled","sjstats","sjPlot", "sjmisc","readr","ggrepel","openxlsx",
               "sysfonts","scales","magrittr","knitr","lubridate","Hmisc","haven","tidyr","reshape2","DescTools","extrafont",
-              "extrafontdb")
+              "extrafontdb", "ggtext", "geomtextpath", "zoo")
 
 
 # lapply(zam_packages, install.packages, character.only=T)
@@ -26,7 +26,7 @@ lapply(zam_packages, library, character.only=T)
 
 # formatting ---- 
 
-font_add_google("Open Sans", "sans-serif")
+#font_add_google("Open Sans", "sans-serif")
 
 options(digits=4, scipen=8)
 #options(digits=8, scipen=9)
@@ -34,7 +34,10 @@ options(digits=4, scipen=8)
 # set default
 base <- theme_bw() + theme(panel.grid.minor.x=element_blank(),
                            panel.grid.minor.y=element_blank(),
-                           plot.title=element_text(face="bold",size=14, hjust=.5, family = "Gill Sans Mt"),
+                           plot.title=element_text(#face="bold",
+                                                   size=14, 
+                                                   #hjust=.5, 
+                                                   family = "Gill Sans Mt"),
                            plot.subtitle = element_text(size=12, family="Gill Sans Mt"),
                            plot.caption=element_text(size=12, family="Gill Sans Mt"),
                            axis.title=element_text(size=14, family="Gill Sans Mt"),
@@ -44,7 +47,7 @@ base <- theme_bw() + theme(panel.grid.minor.x=element_blank(),
                            panel.border=element_blank(),
                            axis.ticks = element_blank()) 
 
-scale_color_discrete <- usaid_palette
+#scale_color_discrete <- usaid_palette
 
 opts <- options(ggplot2.discrete.color = usaid_palette)
 
@@ -53,10 +56,13 @@ theme_set(base)
 faceted <- theme_bw() +
   theme(panel.grid.minor.x=element_blank(),
         panel.grid.minor.y=element_blank(),
-        plot.title=element_text(face="bold",size=14, hjust=.5, family = "Gill Sans Mt"),
+        plot.title=element_text(#face="bold",
+                                size=14, 
+                                #hjust=.5, 
+                                family = "Gill Sans Mt"),
         plot.subtitle = element_text(size=12, family="Gill Sans Mt"),
         plot.caption=element_text(size=12, family="Gill Sans Mt"),
-        axis.title=element_text(size=16, family="Gill Sans Mt"),
+        axis.title=element_text(size=14, family="Gill Sans Mt"),
         axis.text=element_text(size=14, family="Gill Sans Mt"),
         legend.text=element_text(size=14, family="Gill Sans Mt"),
         strip.text=element_text(size=14, family="Gill Sans Mt"))
@@ -78,15 +84,21 @@ light_grey <- "#CFCDC9"
 usaid_palette <- c(web_blue, usaid_red, light_blue, dark_red, usaid_blue)
 usaid_palette
 
+scale_colour_discrete <- function(...) scale_colour_manual(..., values = usaid_palette)
+
 # palette(usaid_palette)
 # 
-# data(mtcars)
-# head(mtcars)
-# 
-# ggplot(mtcars, aes(mpg, hp, color=as.factor(gear))) + 
-#   geom_point() +
-#   scale_color_brewer(palette="Set2")
-#   
+#  data(mtcars)
+# # head(mtcars)
+#  str(mtcars)
+# frq(mtcars$carb)
+# # 
+#  ggplot(mtcars, aes(mpg, hp, color=as.factor(carb))) + 
+#    geom_point() 
+#  
+#  +
+#    scale_color_brewer(palette="Set2")
+# #   
 #   
 #   scale_color_discrete()
 # 
@@ -112,6 +124,10 @@ zamBlack <- "#000000"
 
 # colors = c("#002F6C", "#BA0C2F", "#0067B9", "#6C6463", "#651D32", "#A7C6ED", "#8C8985")
 
+
+high_blue <- "<span style='color:#205493;'>**declined**</span>"
+  
+  
 
 # labels ---- 
 
