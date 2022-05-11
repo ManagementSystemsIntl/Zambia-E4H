@@ -12,7 +12,7 @@
 zam_packages <- c("tidyverse", "here", "gt","gtsummary","gghighlight","stringi","DT", "ggthemes","ggridges","viridis",
               "psych","labelled","readxl", "skimr","sjlabelled","sjstats","sjPlot", "sjmisc","readr","ggrepel","openxlsx",
               "sysfonts","scales","magrittr","knitr","lubridate","Hmisc","haven","tidyr","reshape2","DescTools","extrafont",
-              "extrafontdb", "ggtext", "geomtextpath", "zoo")
+              "patchwork", "extrafontdb", "ggtext", "geomtextpath", "zoo", "psych")
 
 
 # lapply(zam_packages, install.packages, character.only=T)
@@ -49,7 +49,7 @@ base <- theme_bw() + theme(panel.grid.minor.x=element_blank(),
 
 #scale_color_discrete <- usaid_palette
 
-opts <- options(ggplot2.discrete.color = usaid_palette)
+#opts <- options(ggplot2.discrete.color = usaid_palette)
 
 theme_set(base)
 
