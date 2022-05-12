@@ -116,26 +116,11 @@ ggsave("viz/Immunizations.png",
 #Select only the columns needed
 dat_nutri <- dat_immun %>% 
   select(date = periodname
-         , vitA = 14
-         , deworm = 15
-         , stunt_u5 = 16
-         , waste_u5 = 17
-         , breastmilk_1h = 18
-         , breastfed_6m = 19
-         , pneu_5 = 20
-         , dia_no_blood_5 = 21
-         , dia_dehyd_5 = 22
-         , opd_1 = 23
-         , ebf_6m = 24) %>% 
+         , vitA = 13
+         , breastmilk_1h = 17
+         , ebf_6m = 20) %>% 
   mutate(vitA = vitA/100
-         , deworm = deworm/100
-         , stunt_u5 = stunt_u5/100
-         , waste_u5 = waste_u5/100
          , breastmilk_1h = breastmilk_1h/100
-         , breastfed_6m = breastfed_6m/100
-         , pneu_5 = pneu_5/100
-         , dia_no_blood_5 = dia_no_blood_5/100
-         , dia_dehyd_5 = dia_dehyd_5/100
          , ebf_6m = ebf_6m/100
          , month_chr = str_sub(date
                              , start = 1
@@ -165,31 +150,34 @@ dat_nutri <- dat_immun %>%
 dat_nutri <- pivot_longer(dat_nutri
                            , names_to = "subpop"
                            , values_to = "rate"
-                           , cols = c(vitA,deworm,stunt_u5,waste_u5
-                                      , breastmilk_1h, breastfed_6m
-                                      , pneu_5, dia_no_blood_5, dia_dehyd_5
-                                      , opd_1, ebf_6m))
+                           , cols = c(vitA
+                                      , breastmilk_1h
+                                      , ebf_6m))
+
+dat_nutri <- dat_nutri %>% 
+  mutate(rate_fix = case_when(rate > 1 ~ 1
+                              , rate <= 1 ~ rate))
 
 #basic line chart of immunization data
 ggplot(dat_nutri, aes(x = mnthyr
-                       , y = rate
+                       , y = rate_fix
                        , group = subpop
                        , color = subpop
                       , label = subpop)) +
   geom_point(alpha = .6, size = 1) + 
   geom_line(size = .5, alpha = .6) +
-  scale_y_continuous(limits = c(0,4),
+  scale_y_continuous(limits = c(0,1),
                      labels = percent) +
-  facet_wrap(vars(subpop)
-             , nrow = 3
-             , scales = "free_y") +
-  labs(title = "Child Health (2018-2022)"
-       , subtitle = "Subtitle"
+  labs(title = "Child Health, 2018-2022"
+       , subtitle = "Percent of infants who have received Vitamin A,\nbreastmilk within 1 hour or exclusively breastfed at 6 months"
        , x = ""
        , y = ""
        , caption = "Source: Zambia Ministry of Health") +
-  scale_color_viridis_d(name = "",)+
-                        #labels = c(
+  scale_color_manual(name = ""
+                     , labels = c("Infants receiving breastmilk <= 1 hour"
+                                  , "EBF" 
+                                  , "Vitamin A")
+                     , values = usaid_palette) +
   theme(plot.title.position = "plot",
         plot.title = element_text(size = 14, hjust = 0),
         axis.title.x = element_text(size = 12),
