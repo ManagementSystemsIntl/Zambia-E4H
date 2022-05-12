@@ -158,6 +158,16 @@ dat_nutri <- dat_nutri %>%
   mutate(rate_fix = case_when(rate > 1 ~ 1
                               , rate <= 1 ~ rate))
 
+nut_names = c("breastmilk within 1 hour"
+              , "exclusively breastfed at 6 months"
+              , "Vitamin A at 6 and 11 months")
+
+color = c("#205493"
+          , "#BA0C2F"
+          , "#A7C6ED")                      
+                      
+subtitle <- "Percent of infants who have received <span style = 'color:#A7C6ED;'>Vitamin A at 6 and 11 months</span>,<br>
+ <span style = 'color:#205493;'>breastmilk within 1 hour</span> or are <span style = 'color:#BA0C2F;'>exclusively breastfed at 6 months</span>"
 #basic line chart of immunization data
 ggplot(dat_nutri, aes(x = mnthyr
                        , y = rate_fix
@@ -169,17 +179,18 @@ ggplot(dat_nutri, aes(x = mnthyr
   scale_y_continuous(limits = c(0,1),
                      labels = percent) +
   labs(title = "Child Health, 2018-2022"
-       , subtitle = "Percent of infants who have received Vitamin A,\nbreastmilk within 1 hour or exclusively breastfed at 6 months"
+       , subtitle = subtitle
        , x = ""
        , y = ""
        , caption = "Source: Zambia Ministry of Health") +
   scale_color_manual(name = ""
                      , labels = c("Infants receiving breastmilk <= 1 hour"
-                                  , "EBF" 
-                                  , "Vitamin A")
+                                  , "Infants exclusively breastfed at 6 months" 
+                                  , "Vitamin A coverage")
                      , values = usaid_palette) +
   theme(plot.title.position = "plot",
         plot.title = element_text(size = 14, hjust = 0),
+        plot.subtitle = ggtext::element_markdown(),
         axis.title.x = element_text(size = 12),
         axis.title.y = element_text(size = 12),
         axis.text = element_text(size = 9),
