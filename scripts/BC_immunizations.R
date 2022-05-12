@@ -4,7 +4,7 @@ remotes::install_github("AllanCameron/geomtextpath", quiet = T)
 library(geomtextpath)
 
 #get data
-dat_immun <- readxl::read_xls("data/Downlaod Extract Childhealth Monthly At National.xls")
+dat_immun <- readxl::read_xls("data/Jan-Mar 2022/Child Health Data_National Level(Monthly).xls")
 
 glimpse(dat_immun)
 
@@ -16,8 +16,7 @@ dat_immun <- dat_immun %>% clean_names() #not great, but I don't need too many s
 #select only the immunization columns
 
 dat_immun2 <- dat_immun %>% 
-  select(organisationunitname
-         , periodname
+  select(periodname
          , imm1 = fully_immunised_coverage_percent_under_1
          , imm2 = fully_immunised_coverage_percent_under_2_years
          , bcg1 = bcg_coverage_percent_under_1
@@ -60,42 +59,42 @@ dat_immun2 <- pivot_longer(dat_immun2
                      , values_to = "rate"
                      , cols = c(imm1,imm2,bcg1, measles1, measles2, dpt_hib_hep1))
 
+#add rate_fix as a new column that
+# with a max rate of 1 
+
+dat_immun2 <-  dat_immun2 %>% 
+  mutate(rate_fix = case_when(rate > 1 ~ 1
+                                , rate <= 1 ~ rate))
+
+
 #basic line chart of immunization data
 ggplot(dat_immun2, aes(x = mnthyr
-                       , y = rate
+                       , y = rate_fix
                        , group = subpop
                        , color = subpop)) +
   geom_point(alpha = .6, size = 1) + 
   geom_line(size = .5, alpha = .6) +
   annotate(geom = "text"
-           , x = min(dat_immun2$mnthyr)
-           , y = max(dat_immun2$rate)
-           , label = "Can someone check on these data?\n
-           Seems like a lot of % over 100 to me."
+           , x = as.Date(c("2018-01-01"))
+           , y = 0
            , hjust = 0
-           , vjust = 1
-           , size = 5
-           , color = "red")+
-  scale_y_continuous(limits = c(0,5),
+           , vjust = 0
+           , label = "Spring campaign") +
+  scale_y_continuous(limits = c(0,1),
                      labels = percent) +
   labs(title = "Immunization Rates (2018-2022)"
-       , subtitle = "Immunization rates are fairly consistent across categories"
+       , subtitle = "Immunization rates rise during spring and fall campaigns"
        , x = ""
        , y = ""
        , caption = "Source: Zambia Ministry of Health") +
-  scale_color_viridis_d(name = "",
+  scale_color_manual(name = "",
                       labels = c("BCG under 1"
                                  ,"dpt, hib, hep under 1"
                                  ,"Fully immunized under 1"
                                  , "Fully immunized under 2"
                                  , "Measles coverage under 1"
-                                 , "Measles coverage under 2"))+#,
-                      #values = c(light_blue
-                       #          , medium_grey
-                        #         , usaid_blue
-                         #        , usaid_red
-                          #       , medium_grey
-                           #      , rich_black)) +
+                                 , "Measles coverage under 2")
+                      , values = usaid_palette6) +
   theme(plot.title.position = "plot",
         plot.title = element_text(size = 14),
         axis.title.x = element_text(size = 12),

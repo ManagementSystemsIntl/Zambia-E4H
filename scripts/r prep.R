@@ -84,6 +84,12 @@ light_grey <- "#CFCDC9"
 usaid_palette <- c(web_blue, usaid_red, light_blue, dark_red, usaid_blue)
 usaid_palette
 
+usaid_palette6 <- c(web_blue
+                    , usaid_red
+                    , light_blue
+                    , dark_red
+                    , usaid_blue
+                    , medium_grey)
 scale_colour_discrete <- function(...) scale_colour_manual(..., values = usaid_palette)
 
 # palette(usaid_palette)
