@@ -205,4 +205,78 @@ ggsave("viz/Nutrition.png",
        height=4,
        width=7)
 
+####Mapping immunizations
 
+dat_immun_reg <- readxl::read_xls("data/Jan-Mar 2022/Child Health Data_Provincial Level(Quarterly).xls")
+
+#clean var names
+library(janitor)
+
+dat_immun_reg <- dat_immun_reg %>% clean_names() #not great, but I don't need too many so not a big deal
+
+#select only the immunization columns
+
+dat_immun_reg2 <- dat_immun_reg %>% 
+  select(organisationunitname
+         , periodname
+         , imm1 = fully_immunised_coverage_percent_under_1
+         , imm2 = fully_immunised_coverage_percent_under_2_years
+         , bcg1 = bcg_coverage_percent_under_1
+         , measles1 = measles_1_coverage_percent_under_1
+         , measles2 = measles_2_coverage_percent_under_2
+         , dpt_hib_hep1 = dpt_hib_hep_1st_dose_coverage_percent_under_1) %>% 
+  dplyr::mutate(
+    imm1 = imm1/100
+    , imm2 = imm2/100
+    , bcg1 = bcg1/100
+    , measles1 = measles1/100
+    , measles2 = measles2/100
+    , dpt_hib_hep1 = dpt_hib_hep1/100
+    , month_chr = str_sub(periodname
+                          , start = 1
+                          , end=nchar(periodname)-5)
+    , month = factor(month_chr
+                     , levels=c("January"
+                                ,"February"
+                                ,"March"
+                                ,"April"
+                                ,"May"
+                                ,"June"
+                                ,"July"
+                                ,"August"
+                                ,"September"
+                                ,"October"
+                                ,"November"
+                                ,"December"))
+    , month_code = as.numeric(month) 
+    , year = str_sub(periodname
+                     , start=nchar(periodname)-4
+                     , end=nchar(periodname))
+    , monyr = paste(month_code, year, sep="-")
+    , mnthyr = my(monyr)
+  )
+
+dat_immun_reg2 <- pivot_longer(dat_immun_reg2
+                           , names_to = "subpop"
+                           , values_to = "rate"
+                           , cols = c(imm1,imm2,bcg1, measles1, measles2, dpt_hib_hep1))
+
+#add rate_fix as a new column that
+# with a max rate of 1 
+
+dat_immun_reg2 <-  dat_immun_reg2 %>% 
+  mutate(rate_fix = case_when(rate > 1 ~ 1
+                              , rate <= 1 ~ rate))
+
+library(rgeoboundaries)
+
+zam <- geoboundaries(country = "Zambia"
+                     , adm_lvl = 1) %>% 
+  select(shapeName)
+
+zam$shapeName
+
+dat_immun_reg3 <- left_join(dat_immun_reg2
+                            , zam
+                            , by = c("organisationunitname" = "shapeName")) %>% 
+  sf::st_as_sf()
