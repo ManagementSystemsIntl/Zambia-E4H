@@ -356,16 +356,25 @@ dat_immun_reg3 <-  dat_immun_reg3 %>%
   mutate(rate_fix = case_when(rate > 1 ~ 1
                               , rate < 1 ~ rate))
 
+dat_immun_reg3$hjust <- dat_immun_reg3$rate_fix*.25
+
+hjust <- c(.1, .2, .3, .4, .5, .6)
+
 #smooth chart of immunization data
 ggplot(dat_immun_reg3, aes(x = quarter
                       , y = rate_fix
                       , group = subpop
                       , color = subpop
                       , label = subpop)) +
-  geom_smooth(method = lm
-              , size = .7
-              , se = FALSE
-              , alpha = .6) +
+  geom_textsmooth(aes(label = subpop)
+                  , size = 4
+                  , text_smoothing = 30
+                  , method = "loess"
+                  , linewidth = 1
+                  , hjust = rep(c(.05, .15, .3, .5, .7, .9), length.out = 480)
+                  , vjust = 0
+                  , gap = TRUE
+                  , alpha = .8)+
   scale_y_continuous(limits = c(0,1),
                      labels = percent) +
   labs(title = "Child Health, 2018-2022"
@@ -380,11 +389,8 @@ ggplot(dat_immun_reg3, aes(x = quarter
         plot.subtitle = ggtext::element_markdown(),
         axis.title.x = element_text(size = 12),
         axis.title.y = element_text(size = 12),
-        axis.text = element_text(size = 9),
-        legend.title = element_text(size = 12), 
-        legend.text = element_text(size = 9)
-        , legend.position = "bottom"
-  ) 
+        axis.text = element_text(size = 9)
+        , legend.position = "none") 
 
 #save the viz
 ggsave("viz/immun_region_smooth.png",
