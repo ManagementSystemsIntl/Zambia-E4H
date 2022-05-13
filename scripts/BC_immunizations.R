@@ -74,12 +74,6 @@ ggplot(dat_immun2, aes(x = mnthyr
                        , color = subpop)) +
   geom_point(alpha = .6, size = 1) + 
   geom_line(size = .5, alpha = .6) +
-  annotate(geom = "text"
-           , x = as.Date(c("2018-01-01"))
-           , y = 0
-           , hjust = 0
-           , vjust = 0
-           , label = "Spring campaign") +
   scale_y_continuous(limits = c(0,1),
                      labels = percent) +
   labs(title = "Immunization Rates (2018-2022)"
@@ -95,14 +89,16 @@ ggplot(dat_immun2, aes(x = mnthyr
                                  , "Measles coverage under 1"
                                  , "Measles coverage under 2")
                       , values = usaid_palette6) +
-  theme(plot.title.position = "plot",
-        plot.title = element_text(size = 14),
-        axis.title.x = element_text(size = 12),
-        axis.title.y = element_text(size = 12),
-        axis.text = element_text(size = 9),
-        legend.title = element_text(size = 12), 
-        legend.text = element_text(size = 11)
+  theme(plot.title.position = "plot"
+        , plot.title = element_text(size = 14)
+        , axis.title.x = element_text(size = 12)
+        , axis.title.y = element_text(size = 12)
+        , axis.text = element_text(size = 9)
+        , legend.title = element_text(size = 12) 
+        , legend.text = element_text(size = 7)
+        , legend.position = "bottom"
   ) 
+
 #save the viz
 ggsave("viz/Immunizations.png",
        device="png",
@@ -111,6 +107,46 @@ ggsave("viz/Immunizations.png",
        width=7)
 
 
+#Same viz with a geom_smooth() and not a geom_line()
+ggplot(dat_immun2, aes(x = mnthyr
+                       , y = rate_fix
+                       , group = subpop
+                       , color = subpop)) +
+  geom_smooth(method = lm
+              , size = .7
+              , se = FALSE
+              , alpha = .4) +
+  scale_y_continuous(limits = c(0,1),
+                     labels = percent) +
+  labs(title = "Immunization Rates (2018-2022)"
+       , subtitle = "Immunization rates rise during spring and fall campaigns"
+       , x = ""
+       , y = ""
+       , caption = "Source: Zambia Ministry of Health") +
+  scale_color_manual(name = "",
+                     labels = c("BCG under 1"
+                                ,"dpt, hib, hep under 1"
+                                ,"Fully immunized under 1"
+                                , "Fully immunized under 2"
+                                , "Measles coverage under 1"
+                                , "Measles coverage under 2")
+                     , values = usaid_palette6) +
+  theme(plot.title.position = "plot"
+        , plot.title = element_text(size = 14)
+        , axis.title.x = element_text(size = 12)
+        , axis.title.y = element_text(size = 12)
+        , axis.text = element_text(size = 9)
+        , legend.title = element_text(size = 12) 
+        , legend.text = element_text(size = 9)
+        , legend.position = "bottom"
+  ) 
+
+#save the viz
+ggsave("viz/Immunizations_smooth.png",
+       device="png",
+       type="cairo",
+       height=4,
+       width=7)
 #Now use the child health data for nutrition
 
 #Select only the columns needed
@@ -166,16 +202,18 @@ color = c("#205493"
           , "#BA0C2F"
           , "#A7C6ED")                      
                       
-subtitle <- "Percent of infants who have received <span style = 'color:#A7C6ED;'>Vitamin A at 6 and 11 months</span>,<br>
- <span style = 'color:#205493;'>breastmilk within 1 hour</span> or are <span style = 'color:#BA0C2F;'>exclusively breastfed at 6 months</span>"
+subtitle <- "Proportion of infants <span style = 'color:#205493;'>breastfed within an hour after birth </span>,<br>
+ <span style = 'color:#BA0C2F;'> exclusively breasfed until 6 months</span> and who received <span style = 'color:#A7C6ED;'>Vitamin A at 6 and 11 months</span>"
+
 #basic line chart of immunization data
 ggplot(dat_nutri, aes(x = mnthyr
                        , y = rate_fix
                        , group = subpop
                        , color = subpop
                       , label = subpop)) +
-  geom_point(alpha = .6, size = 1) + 
-  geom_line(size = .5, alpha = .6) +
+  geom_point(alpha = .6, size = .5)+
+  geom_line(size = .7
+              , alpha = .6) +
   scale_y_continuous(limits = c(0,1),
                      labels = percent) +
   labs(title = "Child Health, 2018-2022"
@@ -200,6 +238,46 @@ ggplot(dat_nutri, aes(x = mnthyr
   ) 
 #save the viz
 ggsave("viz/Nutrition.png",
+       device="png",
+       type="cairo",
+       height=4,
+       width=7)
+
+#smooth chart of immunization data
+ggplot(dat_nutri, aes(x = mnthyr
+                      , y = rate_fix
+                      , group = subpop
+                      , color = subpop
+                      , label = subpop)) +
+  geom_smooth(method = lm
+              , size = .7
+              , se = FALSE
+              , alpha = .6) +
+  scale_y_continuous(limits = c(0,1),
+                     labels = percent) +
+  labs(title = "Child Health, 2018-2022"
+       , subtitle = subtitle
+       , x = ""
+       , y = ""
+       , caption = "Source: Zambia Ministry of Health") +
+  scale_color_manual(name = ""
+                     , labels = c("Infants receiving breastmilk <= 1 hour"
+                                  , "Infants exclusively breastfed at 6 months" 
+                                  , "Vitamin A coverage")
+                     , values = usaid_palette) +
+  theme(plot.title.position = "plot",
+        plot.title = element_text(size = 14, hjust = 0),
+        plot.subtitle = ggtext::element_markdown(),
+        axis.title.x = element_text(size = 12),
+        axis.title.y = element_text(size = 12),
+        axis.text = element_text(size = 9),
+        legend.title = element_text(size = 12), 
+        legend.text = element_text(size = 11)
+        , legend.position = "none"
+  ) 
+
+#save the viz
+ggsave("viz/Nutrition_smooth.png",
        device="png",
        type="cairo",
        height=4,
