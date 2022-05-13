@@ -283,9 +283,10 @@ ggsave("viz/Nutrition_smooth.png",
        height=4,
        width=7)
 
+
 ####Mapping immunizations
 
-dat_immun_reg <- readxl::read_xls("data/Jan-Mar 2022/Child Health Data_Provincial Level(Quarterly).xls")
+dat_immun_reg <- readxl::read_xls("data/Jan-Mar 2022/Child Health Data_Provincial Level(Quarterly).xls") 
 
 #clean var names
 library(janitor)
@@ -295,7 +296,7 @@ dat_immun_reg <- dat_immun_reg %>% clean_names() #not great, but I don't need to
 #select only the immunization columns
 
 dat_immun_reg2 <- dat_immun_reg %>% 
-  select(organisationunitname
+  dplyr::select(organisationunitname
          , periodname
          , imm1 = fully_immunised_coverage_percent_under_1
          , imm2 = fully_immunised_coverage_percent_under_2_years
@@ -332,19 +333,67 @@ dat_immun_reg2 <- dat_immun_reg %>%
                      , end=nchar(periodname))
     , monyr = paste(month_code, year, sep="-")
     , mnthyr = my(monyr)
+    , quarter = zoo::as.yearqtr(mnthyr)
   )
 
 dat_immun_reg2 <- pivot_longer(dat_immun_reg2
                            , names_to = "subpop"
                            , values_to = "rate"
-                           , cols = c(imm1,imm2,bcg1, measles1, measles2, dpt_hib_hep1))
+                           , cols = c(imm1,imm2,bcg1, measles1, measles2, dpt_hib_hep1))  
+
+dat_immun_reg3 <- dat_immun_reg2 %>% 
+  select(organisationunitname
+         , year
+         , quarter
+         , subpop
+         , rate) %>% 
+  group_by(quarter)
 
 #add rate_fix as a new column that
 # with a max rate of 1 
 
-dat_immun_reg2 <-  dat_immun_reg2 %>% 
+dat_immun_reg3 <-  dat_immun_reg3 %>% 
   mutate(rate_fix = case_when(rate > 1 ~ 1
-                              , rate <= 1 ~ rate))
+                              , rate < 1 ~ rate))
+
+#smooth chart of immunization data
+ggplot(dat_immun_reg3, aes(x = quarter
+                      , y = rate_fix
+                      , group = subpop
+                      , color = subpop
+                      , label = subpop)) +
+  geom_smooth(method = lm
+              , size = .7
+              , se = FALSE
+              , alpha = .6) +
+  scale_y_continuous(limits = c(0,1),
+                     labels = percent) +
+  labs(title = "Child Health, 2018-2022"
+       , subtitle = "blah"
+       , x = ""
+       , y = ""
+       , caption = "Source: Zambia Ministry of Health") +
+  scale_color_manual(name = ""
+                     , values = usaid_palette6) +
+  theme(plot.title.position = "plot",
+        plot.title = element_text(size = 14, hjust = 0),
+        plot.subtitle = ggtext::element_markdown(),
+        axis.title.x = element_text(size = 12),
+        axis.title.y = element_text(size = 12),
+        axis.text = element_text(size = 9),
+        legend.title = element_text(size = 12), 
+        legend.text = element_text(size = 9)
+        , legend.position = "bottom"
+  ) 
+
+#save the viz
+ggsave("viz/immun_region_smooth.png",
+       device="png",
+       type="cairo",
+       height=4,
+       width=7)
+
+
 
 library(rgeoboundaries)
 
@@ -354,7 +403,16 @@ zam <- geoboundaries(country = "Zambia"
 
 zam$shapeName
 
-dat_immun_reg3 <- left_join(dat_immun_reg2
+dat_immun_geo <- left_join(dat_immun_reg3
                             , zam
                             , by = c("organisationunitname" = "shapeName")) %>% 
   sf::st_as_sf()
+
+
+
+
+ggplot(dat_immun_geo
+       , aes(geometry = geometry
+             , fill = rate_fix)) +
+  geom_sf()+
+  facet_grid(~year)
