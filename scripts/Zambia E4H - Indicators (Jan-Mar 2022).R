@@ -627,7 +627,7 @@ ggplot(iudL, aes(qdate, num, color=age_lab)) +
         plot.title=element_markdown()) +
   labs(x="",
        y="",
-       title="IUD insertions <span style='color:#205493;'>**increased**</span> among females age 20+,<br> reversing a <span style='color:#BA0C2F;'>**declining**</span> trend since Q2 2021")
+       title="Hormonal IUD insertions <span style='color:#205493;'>**increased**</span> among females age 20+,<br> reversing a <span style='color:#BA0C2F;'>**declining**</span> trend since Q2 2021")
 
 ggsave("viz/Jan-Mar 2022/Family planning/FP ind7 Hormonal IUDs inserted (Jan-Mar 2022).png",
        device="png",
