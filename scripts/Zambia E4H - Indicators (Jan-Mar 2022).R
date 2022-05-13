@@ -592,3 +592,95 @@ ggsave("viz/Jan-Mar 2022/Family planning/FP ind4 First-time users of modern cont
        width=7)
 
 
+# Hormonal IUDs inserted ---- 
+
+names(fam)
+
+iud <- fam %>%
+  select(1:4, 31:34) %>%
+  na.omit() 
+
+names(iud)[5:8] <- c("age2", "age3","age4","age1")
+
+iud
+
+iudL <- iud %>%
+  pivot_longer(cols=5:8,
+               names_to="age",
+               values_to="num") %>%
+  arrange(age) %>%
+  mutate(age_lab = factor(age, labels=c("under 15", "15-19", "20-24","25+"))) 
+
+iudL
+
+ggplot(iudL, aes(qdate, num, color=age_lab)) + 
+  geom_point(size=3) + 
+  geom_line(size=1) +
+  scale_y_continuous(labels=comma,
+                     sec.axis=sec_axis(~.,
+                              breaks=sec$num,
+                              labels=sec$age_lab)) +
+  theme(legend.position="bottom",
+        legend.title=element_blank(),
+        axis.text.y=element_markdown(),
+        plot.title.position="plot",
+        plot.title=element_markdown()) +
+  labs(x="",
+       y="",
+       title="IUD insertions <span style='color:#205493;'>**increased**</span> among females age 20+,<br> reversing a <span style='color:#BA0C2F;'>**declining**</span> trend since Q2 2021")
+
+ggsave("viz/Jan-Mar 2022/Family planning/FP ind7 Hormonal IUDs inserted (Jan-Mar 2022).png",
+       device="png",
+       type="cairo",
+       height=5.5,
+       width=7)
+
+
+
+usaid_red
+
+?last
+
+sec.axis=sec_axis(~.,
+                  breaks=reg_tar$n,
+                  labels=reg_tar$reg)
+
+
+
+library(glue)
+
+sec <- iudL %>%
+  select(age_lab, qdate, num) %>%
+  group_by(age_lab) %>%
+  filter(num==last(num)) %>%
+  ungroup() %>%
+  mutate(color=usaid_palette[1:4],
+         name = glue("<i style='color:{color}'>{age_lab}</i>"))
+
+
+
+?glue
+sec
+
+usaid_palette[1:4]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
