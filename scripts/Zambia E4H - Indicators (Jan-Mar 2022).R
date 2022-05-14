@@ -101,7 +101,7 @@ ggplot(fam, aes(x=qdate, y=cha_visit)) +
   scale_y_continuous(labels=comma) +
   labs(x="",
        y="",
-       title="CHA worker visits <span style='color:#205493;'>**declined**</span> in Jan-Mar 2022,\ncontinuing a trend beginning in Q3 2020") +
+       title="CHA worker visits to women of reproductive age <span style='color:#205493;'>**declined**</span> in Jan-Mar 2022,<br>continuing a trend beginning in Q3 2020") +
   annotate("text", x=as.Date("2018-12-01"), y=45000, label="SUNTA\nlaunch", color="grey60", size=4) +
   theme(plot.title.position="plot",
         plot.title=element_markdown())
@@ -469,7 +469,7 @@ a <- ggplot(fam, aes(qdate, fp_prop)) +
                      labels=percent_format(accuracy=1)) +
   labs(x="",
        y="",
-       title="Proportion has increased since 2018",
+       title="Coverage of modern family planning adoption<br>after visit by CHA has **increased** since 2018",
        caption="Sharpest increase in\nproportion occured in 2021") +
   theme(plot.title.position="plot",
         plot.title=element_markdown())
@@ -494,7 +494,7 @@ b <- ggplot(fam, aes(qdate)) +
                      labels=comma) +
   labs(x="",
        y="",
-       title="Women visited by CHA and adopting modern\nfamily planning method <span style='color:#205493;'>**declined**</span><br>in Jan-Mar 2022, continuing a trend starting in Q4 2020") +
+       title="Women <span style ='color:#BA0C2F;'</span>**visited by CHA**</span> and <span style='color:#205493;'>**adopting a modern\nfamily planning method**</span><br> **declined** in Jan-Mar 2022, continuing a trend starting in Q4 2020") +
   theme(plot.title.position="plot",
         plot.title=element_markdown())
 
@@ -526,33 +526,85 @@ fam <- fam %>%
     mutate(contra_prop=contra/100) %>%
     relocate(contra_prop, .after=contra)
 
+frq(fam$qdate)
 describe(fam$contra)
 
 ggplot(fam, aes(x=qdate, y=contra_prop)) + 
-    geom_vline(aes(xintercept=qdate[5]), size=1.2, color="darkgoldenrod2", alpha=.6) +
-    geom_line(color=web_blue, size=1, alpha=.6) + 
-    geom_point(color=web_blue, size=2, alpha=.9) + 
-    stat_smooth(color=medium_blue, method="lm", se=F, linetype="dashed") +
-    scale_x_date(#limits=c(as.Date("2018-01-01"), as.Date("2021-12-31")),
-        date_breaks="1 year",
-        date_labels="%Y") +
-    scale_y_continuous(limits=c(0,.2),
-                       labels=percent_format(accuracy=1)) +
-    labs(x="",
-         y="",
-         title="First-time users of modern contraception <span style='color:#205493;'>**increased**</span> in Jan-Mar 2022,<br> reversing a declining trend the previous three quarters") +
-    annotate("text", x=as.Date("2018-12-01"), y=.13, label="SUNTA\nlaunch", color="grey60", size=4) +
-    theme(plot.title.position="plot",
-          plot.title=element_markdown())
+  geom_vline(aes(xintercept=qdate[5]), size=1.2, color="darkgoldenrod2", alpha=.8) +
+  #    geom_line(color=web_blue, size=1, alpha=.6) + 
+  geom_point(data=fam[6:17,], color=web_blue, size=2, alpha=.6) + 
+  geom_point(data=cf3[1:5,], aes(y=contra_prop), color=dark_grey, alpha=.4, size=2) + 
+  #stat_smooth(data=filter(fam, qdate<as.Date("2019-6-01")), size=1, color=medium_blue, method="lm", se=F) +
+  stat_smooth(data=cf3, aes(y=contra_prop), size=.8, color=dark_grey, method="lm", se=F, linetype="dotdash") +
+  stat_smooth(data=filter(fam, qdate>as.Date("2018-12-01")), color=medium_blue, method="lm", se=F, size=1) +
+  scale_x_date(#limits=c(as.Date("2018-01-01"), as.Date("2021-12-31")),
+    date_breaks="1 year",
+    date_labels="%Y") +
+  scale_y_continuous(limits=c(0,.2),
+                     labels=percent_format(accuracy=1)) +
+  labs(x="",
+       y="",
+       title="First-time users of modern contraception <span style='color:#205493;'>**increased**</span> in Jan-Mar 2022,<br> reversing a declining trend the previous three quarters",
+       caption="Pre-SUNTA trend decreasing, post-SUNTA trend increasing") +
+  annotate("text", x=as.Date("2018-12-01"), y=.13, label="SUNTA\nlaunch", color="grey60", size=4) +
+  theme(plot.title.position="plot",
+        plot.title=element_markdown())
 
+#<br>
+#pre-SUNTA trend <span style='color:#BA0C2F;'>**declining**</span>, 
+#post-SUNTA trend <span style='color:#205493;'>**increasing**
 #<br>Long-term trend is steady increase
 
-ggsave("viz/Jan-Mar 2022/Family planning/FP ind4 First-time users of modern contraception (Jan-Mar 2022).png",
+ggsave("viz/Jan-Mar 2022/Family planning/FP ind4 First-time users of modern contraception counterfactual (Jan-Mar 2022).png",
        device="png",
        type="cairo",
        height=4,
        width=7)
 
+cf <- fam %>%
+  filter(qdate<as.Date("2019-06-01"))
+
+cf
+
+  
+tes <- lm(contra_prop ~ qrtr,
+   data=cf) 
+
+summary(tes)
+
+res <- 1:12
+
+cf2 <- data.frame(qdate=fam$qdate[5:17]) %>%
+  mutate(contra_prop = c(.048, rep(NA, 12))) 
+
+for(i in 2:13) {
+  cf2$contra_prop[i] = lag(cf2$contra_prop)[i] + tes$coef[2]
+}
+
+cf2
+
+cf3 <- bind_rows(fam[1:5,c(4,10)], cf2)
+cf3
+
+cf2$y[1]
+
+lag(cf2$y)[2]
+
+?lag
+
+
+lag(1:5) + tes$coef[2]
+
+fam
+
+v <- c(.048, rep(NA, 12))
+v
+
+x <- 1:5
+x
+lag(x)[2]
+
+lag(v)[2:]
 
 # by province
 
