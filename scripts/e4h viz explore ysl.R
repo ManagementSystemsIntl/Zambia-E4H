@@ -2,11 +2,9 @@
 
 # Prep ---- 
 
-setwd("C:/Users/yashin.lin/Dropbox/0 Current Work/R R for work/Zambia-E4H Git")
+#setwd("C:/Users/yashin.lin/Dropbox/0 Current Work/R R for work/Zambia-E4H")
 
 source("scripts/r prep.R")
-
-#ggplot_shiny()
 
 mat <- read_xls("data/Jan-Mar 2022/Reproductive Maternal Data_National Level(Monthly) updated.xls") 
 mat  <- mat  %>%
@@ -67,7 +65,7 @@ mat$subpop <- factor(mat$subpop, levels = unique(mat$subpop)) # transform into f
 levels(mat$subpop)
 
 ggplot(mat, aes(x = mnthyr, y = rate, group = subpop, colour = subpop)) +
-  geom_point(alpha=.6, size=1) + 
+  geom_point(alpha=.5, size=.5) + 
   geom_smooth(method = loess, size = .7, se=FALSE) +
   scale_y_continuous(limits = c(0,1),
                      labels = percent,
@@ -100,14 +98,14 @@ names(mat_prov)
 anc_prov <- mat_prov %>%
   rename(prov = 1,
          anc1 = 4,
-#         anc1u20 = 5,
+         anc1u20 = 5,
          anc1hr = 12) %>%
   mutate(anc1p = anc1/100,
-#         anc1u20p = anc1u20/100,
+         anc1u20p = anc1u20/100,
          anc1hrp = anc1hr/100,
          ) %>% 
-   select(prov, mnthyr, anc1p, anc1hrp) %>% 
-#  select(prov, mnthyr, anc1p, anc1u20p, anc1hrp) %>% 
+#  select(prov, mnthyr, anc1p, anc1hrp) %>% 
+  select(prov, mnthyr, anc1p, anc1u20p, anc1hrp) %>% 
   mutate(prov = factor(prov),
          ip = case_when(prov=="Northern" |
                           prov =="Central" |
@@ -119,8 +117,8 @@ anc_prov <- mat_prov %>%
 levels(anc_prov$prov)
 
 anc_prov_l <- anc_prov %>% 
-  gather(key = subpop , value = rate, c(anc1p, anc1hrp)) %>% 
-# gather(key = subpop , value = rate, c(anc1p,anc1u20p,anc1hrp)) %>% 
+# gather(key = subpop , value = rate, c(anc1p, anc1hrp)) %>% 
+  gather(key = subpop , value = rate, c(anc1p,anc1u20p,anc1hrp)) %>% 
   mutate(ip = factor(ip),
          subpop = factor(subpop))
   
@@ -128,7 +126,7 @@ levels(anc_prov_l$ip)
 levels(anc_prov_l$subpop)
 
 ggplot(anc_prov_l, aes(x = mnthyr, y = rate, group = subpop, colour = subpop)) +
-#  geom_point(alpha=.6, size=.6) + 
+# geom_point(alpha=.6, size=.6) + 
   geom_smooth(method = loess, size = .7, se=FALSE)  +
   facet_wrap(~prov) +
   faceted +
@@ -243,7 +241,7 @@ inst <- mat  %>%
 sum(inst$month_chr!=inst$month) # expecting 0 if vars same
 
 ggplot(inst, aes(x=mnthyr, y=instdelp)) + 
-  geom_point(color= usaid_blue, alpha=.6, size=.8) + 
+  geom_point(color= usaid_blue, alpha=.6, size=.7) + 
 # geom_line(color= usaid_blue, alpha=.4) +
   geom_smooth(color= usaid_blue, se=F, size=1.1, alpha=.8) +
   scale_y_continuous(limits=c(0,1),
@@ -351,20 +349,20 @@ ggsave("viz/Fetal deaths.png",
 
 #* (3) Facility: Postnatal care ====
 
-mat  <- mat  %>%
+pnc  <- mat  %>%
   rename(pnc = 11) %>%
   mutate(pncp = pnc/100)
 
-mat <- ggplot(mat, aes(mnthyr, pncp)) + 
+pnc_vz <- ggplot(pnc, aes(mnthyr, pncp)) + 
   geom_point(color= usaid_blue, alpha=.6, size=.8) + 
-  geom_line(color= usaid_blue, alpha=.4) +
+# geom_line(color= usaid_blue, alpha=.4) +
   scale_y_continuous(limits = c(0,1),
                      labels = percent,
                      breaks = c(.1, .2, .3, .4, .5, .6, .7, .8, .9, 1)) +
   stat_smooth(color= usaid_blue, se=F, size=1.1, alpha=.8) +
   labs(x="",
        y="",
-       title="Proportion of expected deliveries \nthat receive postnatal care within 48 hours after delivery has doubled since 2018*"
+       title="Proportion of expected deliveries that receive postnatal care \nwithin 48 hours after delivery has doubled since 2018*"
        ) +
   theme(plot.title = element_text(size = 14), 
         axis.title.x = element_text(size = 12),
@@ -372,9 +370,21 @@ mat <- ggplot(mat, aes(mnthyr, pncp)) +
         axis.text = element_text(size = 9),
         legend.title = element_text(size = 12), 
         legend.text = element_text(size = 11)
-        )
+        ) 
 
-mat + annotate(geom="text", x=as.Date("01-06-2021", format = "%d-%m-%Y"), y=.1, label="*home deliveries included", size =4, fontface = 'italic')
+#yearn <- lapply(mat$year, as.numeric)
+
+target2018 <- data.frame(x1= as.Date("2018-10-01"), x2=as.Date("2019-01-01"), y1=.74, y2=.74)
+target2019 <- data.frame(x1=as.Date("2019-10-01"), x2=as.Date("2020-01-01"), y1=.79, y2=.79)
+target2020 <- data.frame(x1=as.Date("2020-10-01"), x2=as.Date("2021-01-01"), y1=.85, y2=.85)
+target2021 <- data.frame(x1=as.Date("2021-10-01"), x2=as.Date("2022-01-01"), y1=.81, y2=.81)
+targets <- bind_rows(target2018, target2019, target2020, target2021)
+
+#targets <- data.frame(x1=c("2018-12-01", "2019-12-01", .., x2 = .., x3=..)
+
+pnc_vz + geom_segment(aes(x = x1, y = y1, xend = x2, yend = y2), colour = usaid_red, size=.8, data = targets) +
+ annotate(geom="text", x=as.Date("15-5-2018", format = "%d-%m-%Y"), y=.75, colour = usaid_red, label="National Targets", size= 3) +
+ annotate(geom="text", x=as.Date("01-06-2021", format = "%d-%m-%Y"), y=.1, label="*home deliveries included", size =3, fontface = 'italic')
 
 ggsave("viz/(3) Proportion of expected deliveries receiving PNC within 48 hrs.png",
        device="png",
@@ -395,9 +405,10 @@ matmm <- gather(matmm, key = mmtype , value = deaths, c(mmfr, mmf, mmc))
 matmm$mmtypef <- factor(matmm$mmtype, levels = unique(matmm$mmtype))
 levels(matmm$mmtypef)
 
-ggplot(matmm, aes(x = mnthyr, y = deaths, group = mmtypef, colour = mmtypef)) + 
-  geom_point(alpha=.6, size=1) + 
-  geom_line(size=.7) +
+mm_vz <- ggplot(matmm, aes(x = mnthyr, y = deaths, group = mmtypef, colour = mmtypef)) + 
+  geom_point(alpha=.6, size=.7) + 
+# geom_line(size=.7) +
+  geom_smooth(method = loess, size=.7, se=F) +
   scale_y_continuous(limits = c(0,200),
                      breaks = c(20,40,60,80,100,120,140,160,180,200),
                      labels = c("20","40","60","80","100","120","140","160","180","200")) +
@@ -407,19 +418,41 @@ ggplot(matmm, aes(x = mnthyr, y = deaths, group = mmtypef, colour = mmtypef)) +
   scale_colour_manual(name = "",
                     labels= c( "Maternal mortality facility ratio \n(per 10 000 live births)", "Health facility deaths", "Community deaths"),
                     values = c(usaid_blue, medium_grey, usaid_red)) +
-
-# [scale_colour_manual]: How to assign correct colour to correct label: ----
-# [general rule: r looks at data in  alphabetical order of variables or variable values
-# [values: assigns colour to data [in alphabetical order of variable name
-# [labels: assigns legend labels over data [by alphabetical order of var name
-  
   theme(plot.title = element_text(size = 14), 
         axis.title.x = element_text(size = 12),
         axis.title.y = element_text(size = 12),
         axis.text = element_text(size = 9.5),
         legend.position = "bottom", 
         legend.text = element_text(size = 10))
+
+
+# [scale_colour_manual]: How to assign correct colour to correct label: ----
+# [general rule: r looks at data in  alphabetical order of variables or variable values
+# [values: assigns colour to data [in alphabetical order of variable name
+# [labels: assigns legend labels over data [by alphabetical order of var name
+  
         
+# targets <- data.frame(x1 = c("2018-12-01", "2019-12-01", "2020-12-01", "2021-12-01"), 
+#                      xend = c("2019-12-01", "2020-12-01", "2021-12-01", "2022-12-01"),
+#                      y1 = c(250, 200, 150, 100),
+#                      yend = c(250, 200, 150, 100)
+#                      )
+
+target2018 <- data.frame(x1= as.Date("2018-10-01"), x2=as.Date("2019-01-01"), y1 = 250, y2 = 250)
+target2019 <- data.frame(x1=as.Date("2019-10-01"), x2=as.Date("2020-01-01"), y1 = 200, y2 = 200)
+target2020 <- data.frame(x1=as.Date("2020-10-01"), x2=as.Date("2021-01-01"), y1 = 150, y2 = 150)
+target2021 <- data.frame(x1=as.Date("2021-10-01"), x2=as.Date("2022-01-01"), y1 = 100, y2 = 100)
+targets <- bind_rows(target2018, target2019, target2020, target2021)
+
+#targets <- data.frame(x1=c("2018-12-01", "2019-12-01", .., x2 = .., x3=..)
+
+mm_vz + geom_segment(aes(x = x1, y = y1, xend = x2, yend = y2), colour = usaid_red, size=.8, data = targets) #+
+  annotate(geom="text", x=as.Date("15-5-2018", format = "%d-%m-%Y"), y=.75, colour = usaid_red, label="National Targets", size= 3) +
+  annotate(geom="text", x=as.Date("01-06-2021", format = "%d-%m-%Y"), y=.1, label="*home deliveries included", size =3, fontface = 'italic')
+
+mm_vz + geom_segment(aes(x = x1, y = y1, xend = x2, yend = y2), colour = usaid_red, size=.8, data = target2018) 
+                    
+                      
 ggsave("viz/(4) Maternal deaths.png",
        device="png",
        type="cairo",
@@ -467,7 +500,7 @@ ggplot(matd_prov, aes(x = mnthyr, y = mmrate, colour = ip)) +
         legend.text = element_text(size = 10),
         legend.title=element_blank(),
         legend.position=c(.75,.15))
-  ) 
+
 
 ggsave("viz/(7) Maternal mortality ratio by province.png",
        device="png",
@@ -501,7 +534,7 @@ levels(matsb_l$sbtype)
 
 ggplot(matsb_l, aes(x = mnthyr, y = sbrate, group = sbtype, colour = sbtype)) +
   geom_point(alpha=.6, size=.8) + 
-  geom_line(alpha=.4) +
+#  geom_line(alpha=.4) +
   stat_smooth(se=F, size=.8, alpha=.8) +
   scale_y_continuous(limits=c(0,18)) +
   labs(x="",
@@ -583,16 +616,16 @@ matnpr_l <- matnpr %>%
 
 levels(matnpr_l$drtype)
 
-glimpse(matnp_l$npdrate)
+glimpse(matnpr_l$npdrate)
 
 ggplot(matnpr_l, aes(x= mnthyr, y= nprrate, group=drtype, colour=drtype)) + 
-  geom_point(alpha=.6, size=2) + 
+  geom_point(alpha=.6, size=.5) + 
   geom_smooth(method = "lm", alpha=.4, size = 1, se = F) +
-#  stat_smooth(color= usaid_blue, se=F, size=1.1, alpha=.8) +
+# stat_smooth(color= usaid_blue, se=F, size=1.1, alpha=.8) +
   scale_y_continuous(limits=c(0,22)) +
   labs(x="",
        y="",
-       title="<span style='color:#205493;'>**Neonatal**</span> and <span style='color:#BA0C2F;'>**perinatal**</span> mortality rates") +
+       title="The <span style='color:#205493;'>**neonatal**</span> mortality rate has slightly increased since 2018, and <br>the <span style='color:#BA0C2F;'>**perinatal**</span> mortality rate has decreased since 2020") +
   scale_colour_manual(name = "",
                       values = c(usaid_blue, usaid_red),
                       labels= c("Neonatal", "Perinatal")) +
@@ -606,13 +639,7 @@ ggplot(matnpr_l, aes(x= mnthyr, y= nprrate, group=drtype, colour=drtype)) +
       plot.title=element_markdown()
       )
       
-title="CHA worker visits <span style='color:#205493;'>**declined**</span> in Jan-Mar 2022,\ncontinuing a trend beginning in Q3 2020") +
-  annotate("text", x=as.Date("2018-12-01"), y=45000, label="SUNTA\nlaunch", color="grey60", size=4) +
-  theme(plot.title.position="plot",
-        plot.title=element_markdown())
-
-
-ggsave("viz/Neonatal and perinatal mortality rates.png",
+ggsave("viz/(5) Neonatal and perinatal mortality rates.png",
        device="png",
        type="cairo",
        height=4,
