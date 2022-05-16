@@ -106,7 +106,46 @@ ggsave("viz/BCG.png",
        width=7)
 
 
-#
+#DPT object
+#A bcg object
+dat_immun2_dpt <- dat_immun2 %>% 
+  filter(subpop == "dpt_hib_hep1")
+
+#bcg chart
+ggplot(dat_immun2_dpt, aes(x = mnthyr
+                           , y = rate_fix
+                           , group = subpop
+                           , color = subpop)) +
+  geom_point(alpha = .6, size = 1) + 
+  geom_smooth(size = .7
+              
+              , se = FALSE) +
+  scale_y_continuous(limits = c(0,1),
+                     labels = percent) +
+  labs(title = "Proportion of infants who received the DPT-hib-hep \nvaccine within 1 year (2018-2022)"
+       #, subtitle = "Immunization rates rise during spring and fall campaigns"
+       , x = ""
+       , y = ""
+       , caption = "Source: Zambia Ministry of Health") +
+  scale_color_manual(name = "",
+                     values = usaid_palette) +
+  theme(plot.title.position = "plot"
+        , plot.title = element_text(size = 14)
+        , axis.title.x = element_text(size = 12)
+        , axis.title.y = element_text(size = 12)
+        , axis.text = element_text(size = 9)
+        , legend.title = element_text(size = 12) 
+        , legend.text = element_text(size = 7)
+        , legend.position = "bottom"
+  ) 
+
+#save the viz
+ggsave("viz/DPT.png",
+       device="png",
+       type="cairo",
+       height=4,
+       width=7)
+
 
 #basic line chart of immunization data
 ggplot(dat_immun2, aes(x = mnthyr
