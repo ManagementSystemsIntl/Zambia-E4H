@@ -73,12 +73,13 @@ dat_immun2_bcg <- dat_immun2 %>%
 #bcg target
 bcg_target <- read_xls("data/Processed data.xls",
                              sheet="Child Health",
-                             range="B20:E20") %>%
-  pivot_longer(2:5,
-               names_to="year") %>%
-  rename(type=1) %>%
+                             range="B19:E20") %>%
+  pivot_longer(1:4,
+               names_to="year"
+               , values_to="target") %>%
+  #rename(type=1) %>%
   mutate(year=as.numeric(year),
-         value=as.numeric(value),
+         value=as.numeric(target),
          mnthyr=ymd(paste(year, "-12-01")))
 
 #bcg chart
@@ -88,8 +89,15 @@ ggplot(dat_immun2_bcg, aes(x = mnthyr
                        , color = subpop)) +
   geom_point(alpha = .6, size = 1) + 
   geom_smooth(size = .7
-              
               , se = FALSE) +
+  geom_line(data=bcg_target, aes(x=mnthyr
+                                 , y=value)
+            , color="maroon") +
+  geom_label(data=bcg_target
+             , aes(x=mnthyr
+                   , y=value
+                   , label=paste(value*100, "%", sep=""))
+             , color="maroon") +
   scale_y_continuous(limits = c(0,1),
                      labels = percent) +
   labs(title = "Proportion of infants who received the Bacille \nCalmette-Guérin (BCG) vaccine within 1 year (2018-2022)"
