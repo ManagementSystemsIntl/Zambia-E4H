@@ -732,29 +732,49 @@ ggsave("viz/immun_region_smooth.png",
        height=4,
        width=7)
 
-#Shapes
+#Shapes to make maps
 library(rgeoboundaries)
 
 zam <- geoboundaries(country = "Zambia"
                      , adm_lvl = 1) %>% 
   select(shapeName)
 
-zam$shapeName
+zam$shapeName <- recode(zam$shapeName
+                        , "North Western" = "Northwestern")
 
 dat_immun_geo <- left_join(dat_immun_reg3
                             , zam
                             , by = c("organisationunitname" = "shapeName")) %>% 
   sf::st_as_sf()
 
+#Quick map of fully immune year 1
+#the statistic showed is an annual mean of the quarterly rates
+#devtools::install_github("yutannihilation/ggsflabel")
+library(ggsflabel) #provides geom_sf_text_repel
+
+#map colors
+#install.packages("rcartocolor")
+library(rcartocolor)
+
 dat_immun_geo <- dat_immun_geo %>% 
   group_by(year, organisationunitname, subpop) %>% 
   summarise(value = mean(rate_fix))
-
 
 ggplot(filter(dat_immun_geo, subpop == "imm1")
        , aes(geometry = geometry
              , fill = value)) +
   geom_sf()+
-  scale_fill_continuous()+
+  ggsflabel::geom_sf_text_repel(aes(label = organisationunitname)
+               , inherit.aes = TRUE
+               , size = 2)+
+  scale_fill_carto_c(name="Proportion of\ninfants vaccinated"
+                     , palette = "Sunset")+
   theme_void()+
-  facet_wrap(~year)
+  labs(title = "Proportion of infants fully immunized by region, 2018-2022"
+       , subtitle = "Lighter blues represented a higher proportion of vaccinated infants") +
+  facet_wrap(~year) +
+  theme(plot.title.position = "plot"
+        , plot.title = element_text(size = 14)
+        , legend.title = element_text(size = 12) 
+        , legend.text = element_text(size = 9)
+        , legend.position = "right")
