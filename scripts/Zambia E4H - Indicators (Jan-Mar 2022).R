@@ -274,7 +274,7 @@ describe(fam$cha_fp)
 ggplot(fam, aes(x=qdate, y=cha_fp)) + 
   geom_vline(aes(xintercept=qdate[5]), size=1.2, color="darkgoldenrod2", alpha=.6) +
   geom_line(color=web_blue, size=1, alpha=.6) + 
-  geom_point(color=web_blue, size=2.5) + 
+  geom_point(color=web_blue, size=1) + 
   #  stat_smooth(color=medium_blue) +
   scale_x_date(#limits=c(as.Date("2018-01-01"), as.Date("2021-12-31")),
     date_breaks="1 year",

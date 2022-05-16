@@ -548,7 +548,7 @@ mm_vz + geom_segment(aes(x = x1
                          , y = y1
                          , xend = x2
                          , yend = y2)
-                     , colour = usaid_red
+                     , colour = usaid_blue
                      , size=.8
                      , data = targets
                      , inherit.aes = FALSE) +
@@ -560,7 +560,7 @@ mm_vz + geom_segment(aes(x = x1
 #          , vjust = -.4
 #          , size = 3)
 #          , inherit.aes = FALSE) #+ 
-  annotate(geom="text", x=as.Date("15-5-2018", format = "%d-%m-%Y"), y=250, colour = usaid_red, label="National Targets", size= 3)
+  annotate(geom="text", x=as.Date("15-5-2018", format = "%d-%m-%Y"), y=250, colour = usaid_blue, label="National Targets", size= 3)
 
 ggsave("viz/(4) Maternal deaths.png",
        device="png",
@@ -883,11 +883,11 @@ ggsave("viz/maternal postnatal care overally month with targets.png",
        width=7)
 
 
-#*FP: Number of clients accessing LARC----
+# (11)*FP: Number of clients accessing LARC----
 
 source("scripts/r prep.R")
 
-fam_mnth <- read_xls("data/Jan-Mar 2022/Family Planning Data_National Level(Monthly).xls")   %>%
+fam_mnth <- read_xls("data/Jan-Mar 2022/Family Planning Data_National Level(Monthly) updated 2022.05.16.xls")   %>%
   mutate(month_chr = str_sub(periodname,
                              start=1,
                              end=nchar(periodname)-5),
@@ -904,4 +904,62 @@ fam_mnth <- read_xls("data/Jan-Mar 2022/Family Planning Data_National Level(Mont
 
 names(fam_mnth)
 
+larc <- fam_mnth %>%
+  rename(larc = 14) %>% 
+  select(mnthyr, larc) 
 
+frq(larc$larc)
+
+ggplot(larc, aes(x=mnthyr, y=larc)) + 
+  geom_point(color= usaid_blue, alpha=.6, size=1) + 
+  geom_smooth(color= usaid_blue, se=F, size=1.1, alpha=.8) +
+  scale_y_continuous(limits=c(0, 35000),
+                     breaks = c(5000, 10000, 15000, 20000, 25000, 30000)) +
+  labs(x="",
+       y="", 
+       title="Number of clients accessing LARCs (implants and IUDs) increased") +
+  theme(plot.title = element_text(size = 14), 
+        axis.title.x = element_text(size = 12),
+        axis.title.y = element_text(size = 12),
+        axis.text = element_text(size = 9),
+        legend.title = element_text(size = 12), 
+        legend.text = element_text(size = 11)
+  )
+
+ggsave("viz/(11) LARC.png",
+       device="png",
+       type="cairo",
+       height=4,
+       width=7)
+
+# (12)*FP: Number of clients discontinuing LARC----
+
+names(fam_mnth)
+
+larc <- fam_mnth %>%
+  rename(larcoff = 15) %>% 
+  select(mnthyr, larcoff) 
+
+frq(larc$larcoff)
+
+ggplot(larc, aes(x=mnthyr, y=larc)) + 
+  geom_point(color= usaid_blue, alpha=.6, size=1) + 
+  geom_smooth(color= usaid_blue, se=F, size=1.1, alpha=.8) +
+  scale_y_continuous(limits=c(0, 35000),
+                     breaks = c(5000, 10000, 15000, 20000, 25000, 30000)) +
+  labs(x="",
+       y="", 
+       title="Number of clients accessing LARCs (implants and IUDs) increased") +
+  theme(plot.title = element_text(size = 14), 
+        axis.title.x = element_text(size = 12),
+        axis.title.y = element_text(size = 12),
+        axis.text = element_text(size = 9),
+        legend.title = element_text(size = 12), 
+        legend.text = element_text(size = 11)
+  )
+
+ggsave("viz/(11) LARC.png",
+       device="png",
+       type="cairo",
+       height=4,
+       width=7)
