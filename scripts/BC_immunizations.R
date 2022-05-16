@@ -198,6 +198,82 @@ ggsave("viz/measles.png",
        height=4,
        width=7)
 
+#fully immunized 1 year
+#Measles 1 and 2 object and viz ----
+dat_immun2_ful <- dat_immun2 %>% 
+  filter(subpop %in% c("imm1"
+                       , "imm2"))
+
+targets <- data.frame(year = c(2018, 2019, 2020, 2021)
+                      , x1 = c(as.Date("2018-10-01")
+                               , as.Date("2019-10-01")
+                               , as.Date("2020-10-01")
+                               , as.Date("2021-10-01"))
+                      , x2 = c(as.Date("2019-01-01")
+                               , as.Date("2020-01-01")
+                               , as.Date("2021-01-01")
+                               , as.Date("2022-01-01"))
+                      , y1 = c(as.numeric(.79)
+                              , as.numeric(.85)
+                              , as.numeric(.9)
+                              , as.numeric(.96))
+                      , y2 = c(as.numeric(.79)
+                               , as.numeric(.85)
+                               , as.numeric(.9)
+                               , as.numeric(.96)))
+
+                      
+                    
+#fully immunized year 1 ----
+ggplot(filter(dat_immun2_ful, subpop == "imm1"), aes(x = mnthyr
+                           , y = rate_fix
+                           , group = subpop
+                           , color = subpop)) +
+  geom_point(alpha = .6, size = 1) + 
+  geom_smooth(size = .7
+              , se = FALSE) +
+  geom_segment(data = targets
+               , aes(x = x1
+                     , xend = x2
+                     , y = y1
+                     , yend = y2)
+               , color = "maroon"
+               , inherit.aes = FALSE) +
+  geom_text(data = targets
+            , aes(x = x2
+                  , y = y1
+                  , label = paste0(y1*100, "%"))
+            , color = "maroon"
+            , vjust = -.4
+            , size = 3
+            , inherit.aes = FALSE)+
+  scale_y_continuous(limits = c(0,1),
+                     labels = percent) +
+  labs(title = "Proportion of infants who received the measles \nvaccine within 1 and 2 years (2018-2022)"
+       #, subtitle = "Immunization rates rise during spring and fall campaigns"
+       , x = ""
+       , y = ""
+       , caption = "Source: Zambia Ministry of Health") +
+  scale_color_manual(name = "",
+                     values = usaid_palette) +
+  theme(plot.title.position = "plot"
+        , plot.title = element_text(size = 14)
+        , axis.title.x = element_text(size = 12)
+        , axis.title.y = element_text(size = 12)
+        , axis.text = element_text(size = 9)
+        , legend.title = element_text(size = 12) 
+        , legend.text = element_text(size = 7)
+        , legend.position = "none"
+  ) +
+  annotate(geom="text", x=as.Date("15-5-2018", format = "%d-%m-%Y"), y=.75, colour = usaid_red, label="National Targets", size= 3)
+  #annotate(geom="text", x=as.Date("01-06-2021", format = "%d-%m-%Y"), y=.1, label="*home deliveries included", size =3, fontface = 'italic')
+
+#save the viz
+ggsave("viz/fully imm 1 year.png",
+       device="png",
+       type="cairo",
+       height=4,
+       width=7)
 
 #basic line chart of immunization data ----
 ggplot(dat_immun2, aes(x = mnthyr
