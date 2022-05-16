@@ -515,9 +515,9 @@ mm_vz <- ggplot(matmm, aes(x = mnthyr, y = deaths, group = mmtypef, colour = mmt
   geom_point(alpha=.6, size=.7) + 
 # geom_line(size=.7) +
   geom_smooth(method = loess, size=.7, se=F) +
-  scale_y_continuous(limits = c(0,200),
-                     breaks = c(20,40,60,80,100,120,140,160,180,200),
-                     labels = c("20","40","60","80","100","120","140","160","180","200")) +
+  scale_y_continuous(limits = c(0,260),
+                     breaks = c(20,40,60,80,100,120,140,160,180,200, 220, 240),
+                     labels = c("20","40","60","80","100","120","140","160","180","200", "220", "240")) +
   xlab("") +
   ylab("Number of maternal deaths") +
   ggtitle("Maternal deaths occurring at health facilities \nand in the community, 2018-2022") +
@@ -544,9 +544,23 @@ targets <- bind_rows(target2018, target2019, target2020, target2021)
 
 #targets <- data.frame(x1=c("2018-12-01", "2019-12-01", .., x2 = .., x3=..)
 
-mm_vz + geom_segment(aes(x = x1, y = y1, xend = x2, yend = y2), colour = usaid_red, size=.8, data = targets) #+
-  annotate(geom="text", x=as.Date("15-5-2018", format = "%d-%m-%Y"), y=.75, colour = usaid_red, label="National Targets", size= 3) +
-  annotate(geom="text", x=as.Date("01-06-2021", format = "%d-%m-%Y"), y=.1, label="*home deliveries included", size =3, fontface = 'italic')
+mm_vz + geom_segment(aes(x = x1
+                         , y = y1
+                         , xend = x2
+                         , yend = y2)
+                     , colour = usaid_red
+                     , size=.8
+                     , data = targets
+                     , inherit.aes = FALSE) +
+# geom_text(data = targets
+#          , aes(x = x2
+#                , y = y1
+#                , label = paste0(y1)
+#          , color = "maroon"
+#          , vjust = -.4
+#          , size = 3)
+#          , inherit.aes = FALSE) #+ 
+  annotate(geom="text", x=as.Date("15-5-2018", format = "%d-%m-%Y"), y=250, colour = usaid_red, label="National Targets", size= 3)
 
 ggsave("viz/(4) Maternal deaths.png",
        device="png",
@@ -836,8 +850,7 @@ ggsave("viz/(10) Breastfed within 1hr by province.png",
        height=4,
        width=7)
 
-
-#* maternal postnatal care within 48 hrs
+#* <maternal postnatal care within 48 hrs other target method? ----
 
 postnatal_target <- read_xls("data/Processed data.xls",
                              sheet="Maternal",
@@ -870,6 +883,25 @@ ggsave("viz/maternal postnatal care overally month with targets.png",
        width=7)
 
 
+#*FP: Number of clients accessing LARC----
 
+source("scripts/r prep.R")
+
+fam_mnth <- read_xls("data/Jan-Mar 2022/Family Planning Data_National Level(Monthly).xls")   %>%
+  mutate(month_chr = str_sub(periodname,
+                             start=1,
+                             end=nchar(periodname)-5),
+         month = factor(month_chr,
+                        levels=c("January","February","March","April","May","June","July","August","September","October","November","December")),
+         month_code = as.numeric(month), 
+         year = str_sub(periodname, 
+                        start=nchar(periodname)-4,
+                        end=nchar(periodname)),
+         year = as.numeric(year),
+         monyr = paste(month_code, year, sep="-"),
+         mnthyr = my(monyr)) %>%
+  relocate(mnthyr, .after=periodname)
+
+names(fam_mnth)
 
 
