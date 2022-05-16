@@ -216,8 +216,9 @@ dat_immun2_ful1 <- dat_immun2 %>%
   filter(subpop %in% c("imm1"))
 
 #target
-targets <- tibble(year = as.Date(c(2018, 2019, 2020, 2021))
-                  , value = c(.79, .85, .885, .875))
+targets <- tibble(year = as.numeric(c(2018, 2019, 2020, 2021))
+                  , value = as.numeric(c(.79, .85, .885, .875))
+                  , mnthyr = ymd(paste(year, "-12-01")))
 
 #Fully immunized  chart
 ggplot(dat_immun2_ful1, aes(x = mnthyr
@@ -227,14 +228,16 @@ ggplot(dat_immun2_ful1, aes(x = mnthyr
   geom_point(alpha = .6, size = 1) + 
   geom_smooth(size = .7
               , se = FALSE) +
-  
+  geom_line(data = targets, aes(x = mnthyr, y = value), color = "maroon", inherit.aes = FALSE) +
+  geom_label(data=targets, aes(x=mnthyr, y=value, label=paste(value*100, "%", sep=""))
+             , color="maroon", inherit.aes = FALSE) +
   scale_y_continuous(limits = c(0,1),
                      labels = percent) +
-  labs(title = "Proportion of infants who received the measles \nvaccine<span style = 'color:#205493;'> within 1</span>  and <span style = 'color:#BA0C2F;'>2 years</span> (2018-2022)"
+  labs(title = "Proportion of infants who are <span style = 'color:#205493;'> fully vaccinated within 1 year</span>,  (2018-2022)"
        #, subtitle = "Immunization rates rise during spring and fall campaigns"
        , x = ""
        , y = ""
-       , caption = "Source: Zambia Ministry of Health") +
+       , caption = "Source: Zambia Ministry of Health; Annual targets in red") +
   scale_color_manual(name = "",
                      values = usaid_palette) +
   theme(plot.title.position = "plot"
@@ -247,7 +250,7 @@ ggplot(dat_immun2_ful1, aes(x = mnthyr
         , legend.position = "none") 
 
 #save the viz
-ggsave("viz/fully imm.png",
+ggsave("viz/fully imm1.png",
        device="png",
        type="cairo",
        height=4,
