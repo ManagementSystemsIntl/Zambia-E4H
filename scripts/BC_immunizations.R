@@ -90,14 +90,14 @@ ggplot(dat_immun2_bcg, aes(x = mnthyr
   geom_point(alpha = .6, size = 1) + 
   geom_smooth(size = .7
               , se = FALSE) +
-  geom_line(data=bcg_target, aes(x=mnthyr
-                                 , y=value)
-            , color="maroon") +
-  geom_label(data=bcg_target
-             , aes(x=mnthyr
-                   , y=value
-                   , label=paste(value*100, "%", sep=""))
-             , color="maroon") +
+  #geom_line(data=bcg_target, aes(x=mnthyr
+       #                          , y=value)
+       #     , color="maroon") +
+  #geom_label(data=bcg_target
+          #   , aes(x=mnthyr
+         #          , y=value
+         #         , label=paste(value*100, "%", sep=""))
+         #    , color="maroon") +
   scale_y_continuous(limits = c(0,1),
                      labels = percent) +
   labs(title = "Proportion of infants who received the Bacille \nCalmette-Guérin (BCG) vaccine within 1 year (2018-2022)"
