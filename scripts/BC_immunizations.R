@@ -114,7 +114,7 @@ ggplot(dat_immun2_bcg, aes(x = mnthyr
         , axis.text = element_text(size = 9)
         , legend.title = element_text(size = 12) 
         , legend.text = element_text(size = 7)
-        , legend.position = "bottom"
+        , legend.position = "none"
   ) 
 
 #save the viz
@@ -154,7 +154,7 @@ ggplot(dat_immun2_dpt, aes(x = mnthyr
         , axis.text = element_text(size = 9)
         , legend.title = element_text(size = 12) 
         , legend.text = element_text(size = 7)
-        , legend.position = "bottom"
+        , legend.position = "none"
   ) 
 
 #save the viz
@@ -170,15 +170,23 @@ dat_immun2_mea <- dat_immun2 %>%
   filter(subpop %in% c("measles1"
                        , "measles2"))
 
+#For some reason this breaks my plot
+#dat_immun2_mea$subpop <- dat_immun2_mea$subpop %>% 
+#  recode_factor("measles1" = "Oneyear"  
+#         , "measles2" = "Twoyears")
+
+pop <- paste0(c("1 year"
+               , "2 year"))
+
 #DPT chart
 ggplot(dat_immun2_mea, aes(x = mnthyr
                            , y = rate_fix
                            , group = subpop
                            , color = subpop)) +
   geom_point(alpha = .6, size = 1) + 
-  geom_smooth(size = .7
-              
-              , se = FALSE) +
+  geom_textsmooth(size = 5
+                  , label = pop) +
+              #, se = FALSE) +
   scale_y_continuous(limits = c(0,1),
                      labels = percent) +
   labs(title = "Proportion of infants who received the measles \nvaccine within 1 and 2 years (2018-2022)"
@@ -195,8 +203,7 @@ ggplot(dat_immun2_mea, aes(x = mnthyr
         , axis.text = element_text(size = 9)
         , legend.title = element_text(size = 12) 
         , legend.text = element_text(size = 7)
-        , legend.position = "bottom"
-  ) 
+        , legend.position = "bottom") 
 
 #save the viz
 ggsave("viz/measles.png",
