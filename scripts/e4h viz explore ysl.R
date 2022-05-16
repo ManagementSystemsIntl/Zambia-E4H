@@ -37,6 +37,22 @@ mat_prov  <- mat_prov  %>%
          monyr = paste(month_code, year, sep="-"),
          mnthyr = my(monyr))
 
+setwd("C:/Users/yashin.lin/Dropbox/0 Current Work/R R for work/Zambia-E4H")
+ch_prov <- readxl::read_xls("data/Jan-Mar 2022/Child Health Data_Provincial Level(Quarterly).xls")
+
+ch_prov  <- ch_prov  %>%
+  mutate(month_chr = str_sub(periodname,
+                             start=1,
+                             end=nchar(periodname)-5),
+         month = factor(month_chr,
+                        levels=c("January","February","March","April","May","June","July","August","September","October","November","December")),
+         month_code = as.numeric(month), 
+         year = str_sub(periodname, 
+                        start=nchar(periodname)-4,
+                        end=nchar(periodname)),
+         monyr = paste(month_code, year, sep="-"),
+         mnthyr = my(monyr))
+
 sum(mat_prov$month_chr!=mat_prov$month) # expecting 0 if vars same
 
 # Maternal ---- 
@@ -75,7 +91,7 @@ ggplot(mat, aes(x = mnthyr, y = rate, group = subpop, colour = subpop)) +
   ggtitle("Proportion of expected pregnancies receiving antenatal care (ANC), 2018-2022") +
   scale_color_manual(name ="",
                      values = usaid_palette,
-                     labels = c("1st ANC, all TMs", "ANC at TM1", "ANC at TM1: Women <20 yrs", "ANC at TM1: High risk pregs")
+                     labels = c("1st ANC, all TMs", "1st ANC at TM1", "1st ANC at TM1: Women <20 yrs", "ANC at TM1: High risk pregs")
   ) +
     theme(plot.title = element_text(size = 14), 
         axis.title.x = element_text(size = 12),
@@ -85,7 +101,7 @@ ggplot(mat, aes(x = mnthyr, y = rate, group = subpop, colour = subpop)) +
         legend.text = element_text(size = 9)
   ) 
 
-ggsave("viz/(1) Proportion of expected pregnancies receiving ANC.png",
+ggsave("viz/(1) Proportion of expected pregnancies receiving 1st ANC.png",
        device="png",
        type="cairo",
        height=4,
@@ -133,11 +149,12 @@ ggplot(anc_prov_l, aes(x = mnthyr, y = rate, group = subpop, colour = subpop)) +
   scale_y_continuous(limits = c(0,1),
                      labels = percent,
                      breaks = c(.2,.4,.6,.8, 1)) +
-  labs(x ="", y="", caption = "Provinces supported by FHN, MOMENT and G2G:<br>	Northern, Central, Luapula, Muchinga Southern and Eastern") +
-  ggtitle("Proportion of expected pregnancies receiving ANC at first trimester, 2018-2022") +
+  labs(x ="", y="", caption = "USAID supports Northern, Central, Luapula, Muchinga, Southern and Eastern") +
+  ggtitle("Proportion of expected pregnancies receiving 1st ANC visit <br> at first trimester, 2018-2022") +
   scale_color_manual(name= "", values = (usaid_palette), labels = c("High risk pregnancies", "All", "Pregnancies of women <20 years")) +
   theme(# plot.title = element_text(size = 12), 
     plot.title=element_markdown(),
+    plot.caption = element_text(size=10),
     axis.title.x = element_text(size = 10),
     axis.title.y = element_text(size = 10),
     axis.text.x = element_text(size = 7),
@@ -145,7 +162,7 @@ ggplot(anc_prov_l, aes(x = mnthyr, y = rate, group = subpop, colour = subpop)) +
     legend.text = element_text(size = 10),
     legend.title=element_blank(),
     legend.position=c(.75,.15),
-    strip.text=element_text(size=7, family="Gill Sans Mt"),
+    strip.text=element_text(size=10, family="Gill Sans Mt"),
     )
  
 ggsave("viz/(1.1) ANC by province faceted.png",
@@ -153,7 +170,6 @@ ggsave("viz/(1.1) ANC by province faceted.png",
        type="cairo",
        height=4,
        width=7)
-
 
 # -ANC care (Folic acid + Fe) ----
 
@@ -249,7 +265,7 @@ ggplot(inst, aes(x=mnthyr, y=instdelp)) +
                      breaks = c(.1,.2,.3,.4,.5,.6,.7,.8,.9, 1)) +
   labs(x="",
        y="",
-       title="Proportion of expected deliveries occurring in health facilities") +
+       title="Proportion of expected deliveries occurring in health facilities increased \nfrom 70% to 80% in 2018, then decreased back to 70% by 2022") +
   theme(plot.title = element_text(size = 14), 
         axis.title.x = element_text(size = 12),
         axis.title.y = element_text(size = 12),
@@ -259,6 +275,51 @@ ggplot(inst, aes(x=mnthyr, y=instdelp)) +
         )
 
 ggsave("viz/(2) Prop of expected deliveries occuring in health facilities.png",
+       device="png",
+       type="cairo",
+       height=4,
+       width=7)
+
+# (2.1) Institutional delivery coverage PROVINCIAL ====
+
+names(mat_prov)
+
+instd_prov <- mat_prov %>%
+  rename(prov = 1,
+         instdel = 8) %>%
+  select(prov, mnthyr, instdel) %>% 
+  mutate(prov = factor(prov),
+         ip = case_when(prov=="Northern" |
+                          prov =="Central" |
+                          prov =="Muchinga" |
+                          prov =="Southern" |
+                          prov =="Eastern" ~ "ip",
+                        TRUE ~ "non-ip"))
+
+levels(instd_prov$prov)
+
+ggplot(instd_prov, aes(x = mnthyr, y = instdel, colour = ip)) +
+  geom_point(alpha=.5, size=.8) + 
+  geom_smooth(method = loess, size = .8, se=FALSE)  +
+  facet_wrap(~prov) +
+  faceted +
+  scale_y_continuous(limits = c(0,100),
+                     breaks = c(20, 40, 60, 80)) +
+  xlab("") + 
+  ylab("") +
+  ggtitle("Proportion expected deliveries occurring in health facilities, 2018-2022") +
+  scale_color_manual(name= "", values = (usaid_palette), labels = c("Supported by FHN, MOMENT and G2G", "Not supported")) +
+  theme(# plot.title = element_text(size = 12), 
+    plot.title=element_markdown(),
+    axis.title.x = element_text(size = 10),
+    axis.title.y = element_text(size = 10),
+    axis.text.x = element_text(size = 7),
+    axis.text.y = element_text(size = 7),
+    legend.text = element_text(size = 10),
+    legend.title=element_blank(),
+    legend.position=c(.75,.15))
+
+ggsave("viz/(2.1) Institutional deliveries by province faceted.png",
        device="png",
        type="cairo",
        height=4,
@@ -387,6 +448,51 @@ pnc_vz + geom_segment(aes(x = x1, y = y1, xend = x2, yend = y2), colour = usaid_
  annotate(geom="text", x=as.Date("01-06-2021", format = "%d-%m-%Y"), y=.1, label="*home deliveries included", size =3, fontface = 'italic')
 
 ggsave("viz/(3) Proportion of expected deliveries receiving PNC within 48 hrs.png",
+       device="png",
+       type="cairo",
+       height=4,
+       width=7)
+
+#* (3.1) PNC PROVINCIAL FACETED
+
+names(mat_prov)
+
+pnc_prov <- mat_prov %>%
+  rename(prov = 1,
+         pncr  = 11) %>%
+  select(prov, mnthyr, pncr) %>% 
+  mutate(prov = factor(prov),
+         ip = case_when(prov=="Northern" |
+                          prov =="Central" |
+                          prov =="Muchinga" |
+                          prov =="Southern" |
+                          prov =="Eastern" ~ "ip",
+                        TRUE ~ "non-ip"))
+
+levels(instd_prov$prov)
+
+ggplot(pnc_prov, aes(x = mnthyr, y = pncr, colour = ip)) +
+  geom_point(alpha=.5, size=.8) + 
+  geom_smooth(method = loess, size = .7, se=FALSE)  +
+  facet_wrap(~prov) +
+  faceted +
+  scale_y_continuous(limits = c(0,100),
+                     breaks = c(20, 40, 60, 80)) +
+  xlab("") + 
+  ylab("") +
+  ggtitle("Proportion of expected deliveries receiving postnatal care within 48 hrs increased,<br>both in provinces supported and not supported by USAID activities, 2018-2022") +
+  scale_color_manual(name= "", values = (usaid_palette), labels = c("Supported by FHN, MOMENT and G2G", "Not supported")) +
+  theme(# plot.title = element_text(size = 12), 
+    plot.title=element_markdown(),
+    axis.title.x = element_text(size = 10),
+    axis.title.y = element_text(size = 10),
+    axis.text.x = element_text(size = 7),
+    axis.text.y = element_text(size = 7),
+    legend.text = element_text(size = 10),
+    legend.title=element_blank(),
+    legend.position=c(.75,.15))
+
+ggsave("viz/(3.1) PNC by province.png",
        device="png",
        type="cairo",
        height=4,
@@ -536,7 +642,7 @@ ggplot(matsb_l, aes(x = mnthyr, y = sbrate, group = sbtype, colour = sbtype)) +
   scale_y_continuous(limits=c(0,18)) +
   labs(x="",
        y="",
-       title="The proportion of stillbirths  that are macerated stillbirths has slightly increased \nin the last two years",
+       title="The proportion of stillbirths that are macerated stillbirths has slightly increased \nin the last two years",
        caption= "Stillbirth rates expressed per 1000 total births") +
   scale_color_manual(name= "",values = usaid_palette, labels = c("Fresh stillbirth rate", "Stillbirth rate (MSB + FSB)", "Macerated stillbirth rate")) +
   theme(plot.title = element_text(size = 14), 
@@ -545,7 +651,8 @@ ggplot(matsb_l, aes(x = mnthyr, y = sbrate, group = sbtype, colour = sbtype)) +
         axis.text = element_text(size = 9),
         legend.title = element_text(size = 12), 
         legend.position = "bottom", 
-        legend.text = element_text(size = 11)
+        legend.text = element_text(size = 11),
+        plot.caption = element_text(size=10)
         ) 
 
 ggsave("viz/(6) Stillbirths.png",
@@ -646,6 +753,97 @@ ggsave("viz/(5) Neonatal and perinatal mortality rates.png",
 # In last quarter's graph, the presentation showed there was a 
 # slight decrease in 2021--we will need to understand why current 
 # graph shows increase instead
+
+#* (5.2) Outcome: Neonatal mortality by PROVINCE FACETED
+
+names(mat_prov)
+
+nm_prov <- mat_prov %>%
+  rename(prov = 1,
+         nd  = 14) %>%
+  select(prov, mnthyr, pncr) %>% 
+  mutate(prov = factor(prov),
+         ip = case_when(prov=="Northern" |
+                          prov =="Central" |
+                          prov =="Muchinga" |
+                          prov =="Southern" |
+                          prov =="Eastern" ~ "ip",
+                        TRUE ~ "non-ip"))
+
+levels(instd_prov$prov)
+
+ggplot(pnc_prov, aes(x = mnthyr, y = pncr, colour = ip)) +
+  geom_point(alpha=.5, size=.8) + 
+  geom_smooth(method = loess, size = .7, se=FALSE)  +
+  facet_wrap(~prov) +
+  faceted +
+  scale_y_continuous(limits = c(0,100),
+                     breaks = c(20, 40, 60, 80)) +
+  xlab("") + 
+  ylab("") +
+  ggtitle("Proportion of expected deliveries receiving postnatal care within 48 hrs increased,<br>both in provinces supported and not supported by USAID activities, 2018-2022") +
+  scale_color_manual(name= "", values = (usaid_palette), labels = c("Supported by FHN, MOMENT and G2G", "Not supported")) +
+  theme(# plot.title = element_text(size = 12), 
+    plot.title=element_markdown(),
+    axis.title.x = element_text(size = 10),
+    axis.title.y = element_text(size = 10),
+    axis.text.x = element_text(size = 7),
+    axis.text.y = element_text(size = 7),
+    legend.text = element_text(size = 10),
+    legend.title=element_blank(),
+    legend.position=c(.75,.15))
+
+ggsave("viz/(3.1) PNC by province.png",
+       device="png",
+       type="cairo",
+       height=4,
+       width=7)
+
+#* (20) BF within an hour CHILD FACETED ----
+
+names(ch_prov)
+
+bf1hr_prov <- ch_prov %>%
+  rename(prov = 1,
+         bf1 = 18) %>%
+  select(prov, mnthyr, bf1) %>% 
+  mutate(prov = factor(prov),
+         ip = case_when(prov=="Northern" |
+                          prov =="Central" |
+                          prov =="Muchinga" |
+                          prov =="Southern" |
+                          prov =="Eastern" ~ "ip",
+                        TRUE ~ "non-ip"))
+
+levels(bf1hr_prov$prov)
+
+ggplot(bf1hr_prov, aes(x = mnthyr, y = bf1, colour = ip)) +
+  geom_point(alpha=.5, size=.8) + 
+  geom_smooth(method = loess, size = .7, se=FALSE)  +
+  facet_wrap(~prov) +
+  faceted +
+  scale_y_continuous(limits = c(0,100),
+                     breaks = c(20, 40, 60, 80)) +
+  xlab("") + 
+  ylab("") +
+  ggtitle("Proportion of neonates breastfed within 1 hour by province, 2018-2022") +
+  scale_color_manual(name= "", values = (usaid_palette), labels = c("Supported by FHN, MOMENT and G2G", "Not supported")) +
+  theme(# plot.title = element_text(size = 12), 
+    plot.title=element_markdown(),
+    axis.title.x = element_text(size = 10),
+    axis.title.y = element_text(size = 10),
+    axis.text.x = element_text(size = 7),
+    axis.text.y = element_text(size = 7),
+    legend.text = element_text(size = 10),
+    legend.title=element_blank(),
+    legend.position=c(.75,.15))
+
+ggsave("viz/(10) Breastfed within 1hr by province.png",
+       device="png",
+       type="cairo",
+       height=4,
+       width=7)
+
 
 #* maternal postnatal care within 48 hrs
 

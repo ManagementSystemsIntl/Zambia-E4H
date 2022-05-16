@@ -1,4 +1,5 @@
 
+
 source("scripts/r prep.R")
 remotes::install_github("AllanCameron/geomtextpath", quiet = T)
 library(geomtextpath)
@@ -66,7 +67,7 @@ dat_immun2 <-  dat_immun2 %>%
   mutate(rate_fix = case_when(rate > 1 ~ 1
                                 , rate <= 1 ~ rate))
 
-#A bcg object
+#A bcg object ----
 dat_immun2_bcg <- dat_immun2 %>% 
   filter(subpop == "bcg1")
 
@@ -81,7 +82,7 @@ bcg_target <- read_xls("data/Processed data.xls",
          value=as.numeric(value),
          mnthyr=ymd(paste(year, "-12-01")))
 
-#bcg chart
+#BCG chart ----
 ggplot(dat_immun2_bcg, aes(x = mnthyr
                        , y = rate_fix
                        , group = subpop
@@ -117,7 +118,7 @@ ggsave("viz/BCG.png",
        width=7)
 
 
-#DPT object
+#DPT object ----
 dat_immun2_dpt <- dat_immun2 %>% 
   filter(subpop == "dpt_hib_hep1")
 
@@ -132,7 +133,7 @@ ggplot(dat_immun2_dpt, aes(x = mnthyr
               , se = FALSE) +
   scale_y_continuous(limits = c(0,1),
                      labels = percent) +
-  labs(title = "Proportion of infants who received the DPT-hib-hep \nvaccine within 1 year (2018-2022)"
+  labs(title = "Proportion of infants who received the DPT-Hib-Hep 1st dose\nvaccine within 1 year (2018-2022)"
        #, subtitle = "Immunization rates rise during spring and fall campaigns"
        , x = ""
        , y = ""
@@ -157,12 +158,12 @@ ggsave("viz/DPT.png",
        width=7)
 
 
-#Measles 1 and 2 object and viz
+#Measles 1 and 2 object and viz ----
 dat_immun2_mea <- dat_immun2 %>% 
   filter(subpop %in% c("measles1"
                        , "measles2"))
 
-#DPT chart
+#DPT chart ----
 ggplot(dat_immun2_mea, aes(x = mnthyr
                            , y = rate_fix
                            , group = subpop
@@ -198,7 +199,7 @@ ggsave("viz/measles.png",
        width=7)
 
 
-#basic line chart of immunization data
+#basic line chart of immunization data ----
 ggplot(dat_immun2, aes(x = mnthyr
                        , y = rate_fix
                        , group = subpop
@@ -238,7 +239,7 @@ ggsave("viz/Immunizations.png",
        width=7)
 
 
-#Same viz with a geom_smooth() and not a geom_line()
+#Same viz with a geom_smooth() and not a geom_line() ----
 ggplot(dat_immun2, aes(x = mnthyr
                        , y = rate_fix
                        , group = subpop
@@ -278,7 +279,8 @@ ggsave("viz/Immunizations_smooth.png",
        type="cairo",
        height=4,
        width=7)
-#Now use the child health data for nutrition
+
+#Now use the child health data for nutrition  ----
 
 #Select only the columns needed
 dat_nutri <- dat_immun %>% 
@@ -336,7 +338,7 @@ color = c("#205493"
 subtitle <- "Proportion of infants <span style = 'color:#205493;'>breastfed within an hour after birth </span>,<br>
  <span style = 'color:#BA0C2F;'> exclusively breasfed until 6 months</span> and who received <span style = 'color:#A7C6ED;'>Vitamin A at 6 and 11 months</span>"
 
-#basic line chart of immunization data
+#basic line chart of immunization data  ----
 ggplot(dat_nutri, aes(x = mnthyr
                        , y = rate_fix
                        , group = subpop
@@ -374,7 +376,7 @@ ggsave("viz/Nutrition.png",
        height=4,
        width=7)
 
-#smooth chart of immunization data
+#smooth chart of immunization data  ----
 ggplot(dat_nutri, aes(x = mnthyr
                       , y = rate_fix
                       , group = subpop
@@ -415,7 +417,7 @@ ggsave("viz/Nutrition_smooth.png",
        width=7)
 
 
-####Mapping immunizations
+####Mapping immunizations ----
 
 dat_immun_reg <- readxl::read_xls("data/Jan-Mar 2022/Child Health Data_Provincial Level(Quarterly).xls") 
 
@@ -529,8 +531,6 @@ ggsave("viz/immun_region_smooth.png",
        type="cairo",
        height=4,
        width=7)
-
-
 
 library(rgeoboundaries)
 
