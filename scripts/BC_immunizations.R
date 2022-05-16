@@ -172,24 +172,22 @@ dat_immun2_mea <- dat_immun2 %>%
 
 #For some reason this breaks my plot
 #dat_immun2_mea$subpop <- dat_immun2_mea$subpop %>% 
-#  recode_factor("measles1" = "Oneyear"  
-#         , "measles2" = "Twoyears")
+#  recode_factor("measles1" = "Within 1 year"  
+#         , "measles2" = "Within 2 years")
 
-pop <- paste0(c("1 year"
-               , "2 year"))
 
-#DPT chart
+
+#Measles chart
 ggplot(dat_immun2_mea, aes(x = mnthyr
                            , y = rate_fix
                            , group = subpop
                            , color = subpop)) +
   geom_point(alpha = .6, size = 1) + 
-  geom_textsmooth(size = 5
-                  , label = pop) +
-              #, se = FALSE) +
+  geom_smooth(size = .7
+              , se = FALSE) +
   scale_y_continuous(limits = c(0,1),
                      labels = percent) +
-  labs(title = "Proportion of infants who received the measles \nvaccine within 1 and 2 years (2018-2022)"
+  labs(title = "Proportion of infants who received the measles \nvaccine<span style = 'color:#205493;'> within 1</span>  and <span style = 'color:#BA0C2F;'>2 years</span> (2018-2022)"
        #, subtitle = "Immunization rates rise during spring and fall campaigns"
        , x = ""
        , y = ""
@@ -197,16 +195,59 @@ ggplot(dat_immun2_mea, aes(x = mnthyr
   scale_color_manual(name = "",
                      values = usaid_palette) +
   theme(plot.title.position = "plot"
-        , plot.title = element_text(size = 14)
+        , plot.title = element_markdown(size = 14)
         , axis.title.x = element_text(size = 12)
         , axis.title.y = element_text(size = 12)
         , axis.text = element_text(size = 9)
         , legend.title = element_text(size = 12) 
         , legend.text = element_text(size = 7)
-        , legend.position = "bottom") 
+        , legend.position = "none") 
 
 #save the viz
 ggsave("viz/measles.png",
+       device="png",
+       type="cairo",
+       height=4,
+       width=7)
+
+
+#Fully immunized object and chart
+dat_immun2_ful1 <- dat_immun2 %>% 
+  filter(subpop %in% c("imm1"))
+
+#target
+targets <- tibble(year = as.Date(c(2018, 2019, 2020, 2021))
+                  , value = c(.79, .85, .885, .875))
+
+#Fully immunized  chart
+ggplot(dat_immun2_ful1, aes(x = mnthyr
+                           , y = rate_fix
+                           , group = subpop
+                           , color = subpop)) +
+  geom_point(alpha = .6, size = 1) + 
+  geom_smooth(size = .7
+              , se = FALSE) +
+  
+  scale_y_continuous(limits = c(0,1),
+                     labels = percent) +
+  labs(title = "Proportion of infants who received the measles \nvaccine<span style = 'color:#205493;'> within 1</span>  and <span style = 'color:#BA0C2F;'>2 years</span> (2018-2022)"
+       #, subtitle = "Immunization rates rise during spring and fall campaigns"
+       , x = ""
+       , y = ""
+       , caption = "Source: Zambia Ministry of Health") +
+  scale_color_manual(name = "",
+                     values = usaid_palette) +
+  theme(plot.title.position = "plot"
+        , plot.title = element_markdown(size = 14)
+        , axis.title.x = element_text(size = 12)
+        , axis.title.y = element_text(size = 12)
+        , axis.text = element_text(size = 9)
+        , legend.title = element_text(size = 12) 
+        , legend.text = element_text(size = 7)
+        , legend.position = "none") 
+
+#save the viz
+ggsave("viz/fully imm.png",
        device="png",
        type="cairo",
        height=4,
