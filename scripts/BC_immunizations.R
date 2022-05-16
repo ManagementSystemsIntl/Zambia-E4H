@@ -705,8 +705,7 @@ ggplot(dat_immun_reg3, aes(x = quarter
                   , text_smoothing = 30
                   , method = "loess"
                   , linewidth = 1
-                  , hjust = rep(c(.05, .15, .3, .5, .7, .9), length.out = 480)
-                  , vjust = 0
+                  , scale_hjust_manual = c(.1, .7, .5, .9, .1, .3)                 , vjust = 0
                   , gap = TRUE
                   , alpha = .8)+
   scale_y_continuous(limits = c(0,1),
@@ -733,6 +732,7 @@ ggsave("viz/immun_region_smooth.png",
        height=4,
        width=7)
 
+#Shapes
 library(rgeoboundaries)
 
 zam <- geoboundaries(country = "Zambia"
@@ -746,11 +746,15 @@ dat_immun_geo <- left_join(dat_immun_reg3
                             , by = c("organisationunitname" = "shapeName")) %>% 
   sf::st_as_sf()
 
+dat_immun_geo <- dat_immun_geo %>% 
+  group_by(year, organisationunitname, subpop) %>% 
+  summarise(value = mean(rate_fix))
 
 
-
-ggplot(dat_immun_geo
+ggplot(filter(dat_immun_geo, subpop == "imm1")
        , aes(geometry = geometry
-             , fill = rate_fix)) +
+             , fill = value)) +
   geom_sf()+
-  facet_grid(~year)
+  scale_fill_continuous()+
+  theme_void()+
+  facet_wrap(~year)
