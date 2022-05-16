@@ -362,7 +362,7 @@ pnc_vz <- ggplot(pnc, aes(mnthyr, pncp)) +
   stat_smooth(color= usaid_blue, se=F, size=1.1, alpha=.8) +
   labs(x="",
        y="",
-       title="Proportion of expected deliveries that receive postnatal care \nwithin 48 hours after delivery has doubled since 2018*"
+       title="The proportion of expected deliveries that receive postnatal care \nwithin 48 hours after delivery increased from 2018 to 2021 and has *"
        ) +
   theme(plot.title = element_text(size = 14), 
         axis.title.x = element_text(size = 12),
@@ -450,9 +450,6 @@ mm_vz + geom_segment(aes(x = x1, y = y1, xend = x2, yend = y2), colour = usaid_r
   annotate(geom="text", x=as.Date("15-5-2018", format = "%d-%m-%Y"), y=.75, colour = usaid_red, label="National Targets", size= 3) +
   annotate(geom="text", x=as.Date("01-06-2021", format = "%d-%m-%Y"), y=.1, label="*home deliveries included", size =3, fontface = 'italic')
 
-mm_vz + geom_segment(aes(x = x1, y = y1, xend = x2, yend = y2), colour = usaid_red, size=.8, data = target2018) 
-                    
-                      
 ggsave("viz/(4) Maternal deaths.png",
        device="png",
        type="cairo",
