@@ -531,18 +531,10 @@ mm_vz <- ggplot(matmm, aes(x = mnthyr, y = deaths, group = mmtypef, colour = mmt
         legend.position = "bottom", 
         legend.text = element_text(size = 10))
 
-
 # [scale_colour_manual]: How to assign correct colour to correct label: ----
 # [general rule: r looks at data in  alphabetical order of variables or variable values
 # [values: assigns colour to data [in alphabetical order of variable name
 # [labels: assigns legend labels over data [by alphabetical order of var name
-  
-        
-# targets <- data.frame(x1 = c("2018-12-01", "2019-12-01", "2020-12-01", "2021-12-01"), 
-#                      xend = c("2019-12-01", "2020-12-01", "2021-12-01", "2022-12-01"),
-#                      y1 = c(250, 200, 150, 100),
-#                      yend = c(250, 200, 150, 100)
-#                      )
 
 target2018 <- data.frame(x1= as.Date("2018-10-01"), x2=as.Date("2019-01-01"), y1 = 250, y2 = 250)
 target2019 <- data.frame(x1=as.Date("2019-10-01"), x2=as.Date("2020-01-01"), y1 = 200, y2 = 200)
