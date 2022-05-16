@@ -249,7 +249,7 @@ ggplot(filter(dat_immun2_ful, subpop == "imm1"), aes(x = mnthyr
             , inherit.aes = FALSE)+
   scale_y_continuous(limits = c(0,1),
                      labels = percent) +
-  labs(title = "Proportion of infants who received the measles \nvaccine within 1 and 2 years (2018-2022)"
+  labs(title = "Proportion of infants who are fully vaccinated within 1 year, (2018-2022)"
        #, subtitle = "Immunization rates rise during spring and fall campaigns"
        , x = ""
        , y = ""
