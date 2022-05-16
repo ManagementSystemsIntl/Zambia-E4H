@@ -540,6 +540,26 @@ ggsave("viz/Nutrition_smooth.png",
        height=4,
        width=7)
 
+#targets breastfeeding
+targets_bf <- data.frame(year = c(2018, 2019, 2020, 2021)
+                      , x1 = c(as.Date("2018-10-01")
+                               , as.Date("2019-10-01")
+                               , as.Date("2020-10-01")
+                               , as.Date("2021-10-01"))
+                      , x2 = c(as.Date("2019-01-01")
+                               , as.Date("2020-01-01")
+                               , as.Date("2021-01-01")
+                               , as.Date("2022-01-01"))
+                      , y1 = c(as.numeric(.79)
+                               , as.numeric(.86)
+                               , as.numeric(.93)
+                               , as.numeric(1))
+                      , y2 = c(as.numeric(.79)
+                               , as.numeric(.86)
+                               , as.numeric(.93)
+                               , as.numeric(1)))
+
+
 
 #Breastmilk within 1 hour chart
 #smooth chart of immunization data  ----
@@ -554,6 +574,22 @@ ggplot(filter(dat_nutri, subpop == "breastmilk_1h")
               , size = .7
               , se = FALSE
               , alpha = .6) +
+  geom_segment(data = targets_bf
+               , aes(x = x1
+                     , xend = x2
+                     , y = y1
+                     , yend = y2)
+               , color = "maroon"
+               , size = .7
+               , inherit.aes = FALSE)+
+  geom_text(data = targets_bf
+            , aes(x = x2
+                  , y = y1
+                  , label = paste0(y1*100, "%"))
+            , color = "maroon"
+            , vjust = -.4
+            , size = 3
+            , inherit.aes = FALSE)+
   scale_y_continuous(limits = c(0,1),
                      labels = percent) +
   labs(title = "Proportion of infants breastfeeding within 1 hour, 2018-2022"
@@ -561,9 +597,6 @@ ggplot(filter(dat_nutri, subpop == "breastmilk_1h")
        , y = ""
        , caption = "Source: Zambia Ministry of Health") +
   scale_color_manual(name = ""
-                     , labels = c("Infants receiving breastmilk <= 1 hour"
-                                  , "Infants exclusively breastfed at 6 months" 
-                                  , "Vitamin A coverage")
                      , values = usaid_palette) +
   theme(plot.title.position = "plot",
         plot.title = element_text(size = 14, hjust = 0),
@@ -574,7 +607,8 @@ ggplot(filter(dat_nutri, subpop == "breastmilk_1h")
         legend.title = element_text(size = 12), 
         legend.text = element_text(size = 11)
         , legend.position = "none"
-  ) 
+  ) +
+  annotate(geom="text", x=as.Date("15-5-2018", format = "%d-%m-%Y"), y=.75, colour = usaid_red, label="National Targets", size= 3)
 
 #save the viz
 ggsave("viz/breastfed within 1 hour.png",
