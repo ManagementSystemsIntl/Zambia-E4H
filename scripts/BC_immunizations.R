@@ -756,7 +756,10 @@ library(ggsflabel) #provides geom_sf_text_repel
 #install.packages("rcartocolor")
 library(rcartocolor)
 
-dat_immun_geo <- dat_immun_geo %>% 
+map_colors <- carto_pal(names = "Sunset")
+
+dat_immun_geo <- dat_immun_geo %>%
+  filter()
   group_by(year, organisationunitname, subpop) %>% 
   summarise(value = mean(rate_fix))
 
@@ -766,15 +769,21 @@ ggplot(filter(dat_immun_geo, subpop == "imm1")
   geom_sf()+
   ggsflabel::geom_sf_text_repel(aes(label = organisationunitname)
                , inherit.aes = TRUE
-               , size = 2)+
+               , size = 3)+
   scale_fill_carto_c(name="Proportion of\ninfants vaccinated"
                      , palette = "Sunset")+
   theme_void()+
   labs(title = "Proportion of infants fully immunized by region, 2018-2022"
-       , subtitle = "Lighter blues represented a higher proportion of vaccinated infants") +
+       , subtitle = "Darker colors represented a higher proportion of vaccinated infants") +
   facet_wrap(~year) +
   theme(plot.title.position = "plot"
         , plot.title = element_text(size = 14)
         , legend.title = element_text(size = 12) 
         , legend.text = element_text(size = 9)
         , legend.position = "right")
+
+ggsave("viz/map immun 1 year.png",
+       device="png",
+       type="cairo",
+       height=4,
+       width=7)
