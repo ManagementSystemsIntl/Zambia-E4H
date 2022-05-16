@@ -59,6 +59,8 @@ sum(mat_prov$month_chr!=mat_prov$month) # expecting 0 if vars same
 
 #* (1) Client: ANC coverage ----
 
+names(fam)
+
 mat <- mat %>%
   rename(ancc = 3,
          anc1 = 4,
@@ -932,24 +934,36 @@ ggsave("viz/(11) LARC.png",
        height=4,
        width=7)
 
-# (12)*FP: Number of clients discontinuing LARC----
+# (12)*FP: Percentage of clients discontinuing LARC----
 
 names(fam_mnth)
 
-larc <- fam_mnth %>%
-  rename(larcoff = 15) %>% 
-  select(mnthyr, larcoff) 
+fam_mnth <- fam_mnth %>%
+  rename(iucd_remove = 9,
+         implant_remove=10,
+         iucd_insert=12,
+         implant_insert=13,
+         larcoff = 15) %>% 
+#  select(mnthyr, larcoff) %>%
+  mutate(discont_larc = (iucd_remove + implant_remove) / (iucd_insert + implant_insert)) %>%
+  relocate(discont_larc, .after=implant_insert)
 
 frq(larc$larcoff)
+frq(fam_mnth$iucd_remove)
+frq(fam_mnth$discont_larc)
 
-ggplot(larc, aes(x=mnthyr, y=larc)) + 
+
+# 
+
+ggplot(fam_mnth, aes(x=mnthyr, y=larcoff)) + 
   geom_point(color= usaid_blue, alpha=.6, size=1) + 
-  geom_smooth(color= usaid_blue, se=F, size=1.1, alpha=.8) +
-  scale_y_continuous(limits=c(0, 35000),
-                     breaks = c(5000, 10000, 15000, 20000, 25000, 30000)) +
+  geom_smooth(color= usaid_blue, se=F, size=1.1, alpha=.8, method="lm") +
+  scale_y_continuous(limits=c(0,1),
+                     labels=percent) +
+                     #breaks = c(5000, 10000, 15000, 20000, 25000, 30000)) +
   labs(x="",
        y="", 
-       title="Number of clients accessing LARCs (implants and IUDs) increased") +
+       title="Number of clients accessing LARCs (implants\nand IUDs) has remained consistent since 2018") +
   theme(plot.title = element_text(size = 14), 
         axis.title.x = element_text(size = 12),
         axis.title.y = element_text(size = 12),
@@ -958,7 +972,7 @@ ggplot(larc, aes(x=mnthyr, y=larc)) +
         legend.text = element_text(size = 11)
   )
 
-ggsave("viz/(11) LARC.png",
+ggsave("viz/Jan-Mar 2022/Family planning/(11) discontinue LARC.png",
        device="png",
        type="cairo",
        height=4,
