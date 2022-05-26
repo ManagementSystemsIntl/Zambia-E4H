@@ -101,12 +101,13 @@ ggplot(fam, aes(x=qdate, y=cha_visit)) +
   scale_y_continuous(labels=comma) +
   labs(x="",
        y="",
-       title="CHA worker visits to women of reproductive age <span style='color:#205493;'>**declined**</span> in Jan-Mar 2022,<br>continuing a trend beginning in Q3 2020") +
+       title="CHA worker visits to women of reproductive age <span style='color:#205493;'>**declined**</span> in Jan-Mar 2022,<br>continuing a trend beginning in Q3 2020",
+       caption="SUNTA supports Community Heatlh Association (CHA) to conduct outreach") +
   annotate("text", x=as.Date("2018-12-01"), y=45000, label="SUNTA\nlaunch", color="grey60", size=4) +
   theme(plot.title.position="plot",
         plot.title=element_markdown())
 
-ggsave("viz/Jan-Mar 2022/Family planning/FP ind1 Women of reproductive age visited by CHA (Jan-Mar 2022).png",
+ggsave("viz/Jan-Mar 2022/Family planning/FP ind1 Women of reproductive age visited by CHA (Jan-Mar 2022) (26 May 2022).png",
        device="png",
        type="cairo",
        height=4,
@@ -134,7 +135,8 @@ ggplot(fam_prov_mnth, aes(mnthyr, cha_visit, color=sunta)) +
   scale_y_continuous(labels=comma) +
   labs(x="",
        y="",
-       title="CHA worker visits are <span style='color:#205493;'>**higher**</span> in SUNTA provinces, <br>trend in both program and non-program areas is <span style='color:#205493;'>**declining**</span>") +
+       title="CHA worker visits are <span style='color:#205493;'>**higher**</span> in SUNTA provinces, <br>trend in both program and non-program areas is <span style='color:#205493;'>**declining**</span>",
+       caption="SUNTA supports Community Heatlh Association (CHA) to conduct outreach") +
   theme(plot.title.position="plot",
         plot.title=element_markdown(),
         legend.title=element_blank(),
@@ -145,6 +147,80 @@ ggsave("viz/Jan-Mar 2022/Family planning/FP ind1 Women of reproductive age visit
          type="cairo",
          height=5.5,
          width=7)
+
+  # program and non-program provinces
+
+names(fam_prov_mnth)
+table(fam_prov_mnth$sunta, fam_prov_mnth$province)
+frq(fam_prov_mnth$sunta)
+
+sun <- fam_prov_mnth %>%
+  filter(sunta==1)
+
+sunprov <- ggplot(filter(fam_prov_mnth, sunta=="SUNTA"), aes(mnthyr, cha_visit)) + 
+  geom_point(size=.2, alpha=.4, color=web_blue) + 
+  #  geom_line() +
+  stat_smooth(se=F, size=.4, alpha=.4, span=.3, color=web_blue) +
+  facet_wrap(~province, ncol=2) +
+  faceted +
+#  scale_color_manual(values=c(usaid_red, medium_blue)) +
+  scale_x_date(#limits=c(as.Date("2018-01-01"), as.Date("2021-12-31")),
+    date_breaks="2 years",
+    date_labels="%Y") +
+  scale_y_continuous(labels=comma,
+                     limits=c(0,12046),
+                     breaks=seq(0,12000,4000)) +
+  labs(x="",
+       y="",
+       title="<span style='color:#205493;'>**SUNTA provinces**</span>") +
+#       title="CHA worker visits are <span style='color:#205493;'>**higher**</span> in SUNTA #provinces, <br>trend in both program and non-program areas is <span style='color:#205493;'#>**declining**</span>",
+#       caption="SUNTA supports Community Heatlh Association (CHA) to conduct outreach") +
+  theme(plot.title.position="plot",
+        plot.title=element_markdown(),
+        legend.title=element_blank(),
+        legend.position=c(.75,.15))
+
+sunprov
+
+nonsunprov <- ggplot(filter(fam_prov_mnth, sunta=="non-SUNTA"), aes(mnthyr, cha_visit)) + 
+  geom_point(size=.3, alpha=.4, color=usaid_red) + 
+  #  geom_line() +
+  stat_smooth(se=F, size=.2, alpha=.4, color=usaid_red, span=.3) +
+  facet_wrap(~province, ncol=3) +
+  faceted +
+  #  scale_color_manual(values=c(usaid_red, medium_blue)) +
+  scale_x_date(#limits=c(as.Date("2018-01-01"), as.Date("2021-12-31")),
+    date_breaks="2 years",
+    date_labels="%Y") +
+  scale_y_continuous(labels=comma,
+                     limits=c(0,12046),
+                     breaks=seq(0,12000, 3000)) +
+  labs(x="",
+       y="",
+       title="<span style='color:#BA0C2F;'>**non-SUNTA provinces**</span>") +
+
+#       title="CHA worker visits are <span style='color:#205493;'>**higher**</span> in SUNTA #provinces, <br>trend in both program and non-program areas is <span style='color:#205493;'#>**declining**</span>",
+#       caption="SUNTA supports Community Heatlh Association (CHA) to conduct outreach") +
+  theme(plot.title.position="plot",
+        plot.title=element_markdown(),
+        legend.title=element_blank(),
+        legend.position=c(.75,.15),
+        axis.text.y=element_blank(),
+        axis.ticks.y=element_blank())
+
+nonsunprov
+
+sunprov
+
+sunprov + nonsunprov + 
+  plot_annotation(title="CHA worker visits are higher in SUNTA provinces\nTrend in both program and non-program areas is declining",
+                  caption="Jan 2018-Mar 2022")
+
+ggsave("viz/Jan-Mar 2022/Family planning/FP ind1 Women of reproductive age visited by CHA province by program (Jan-Mar 2022).png",
+       device="png",
+       type="cairo",
+       height=4,
+       width=8)
 
 
   # by program area
@@ -331,6 +407,79 @@ ggsave("viz/Jan-Mar 2022/Family planning/FP ind2 Women of reproductive adopt mod
        width=7)
 
 
+# program and non-program provinces
+
+names(fam_prov_mnth)
+table(fam_prov_mnth$sunta, fam_prov_mnth$province)
+frq(fam_prov_mnth$sunta)
+
+fpsunprov <- ggplot(filter(fam_prov_mnth, sunta=="SUNTA"), aes(mnthyr, cha_fp)) + 
+  geom_point(size=.2, alpha=.4, color=web_blue) + 
+  #  geom_line() +
+  stat_smooth(se=F, size=.4, alpha=.4, span=.3, color=web_blue) +
+  facet_wrap(~province, ncol=2) +
+  faceted +
+  #  scale_color_manual(values=c(usaid_red, medium_blue)) +
+  scale_x_date(#limits=c(as.Date("2018-01-01"), as.Date("2021-12-31")),
+    date_breaks="2 years",
+    date_labels="%Y") +
+  scale_y_continuous(labels=comma,
+                     limits=c(0,5237),
+                     breaks=seq(0,5000,1000)) +
+  labs(x="",
+       y="",
+       title="<span style='color:#205493;'>**SUNTA provinces**</span>") +
+  #       title="CHA worker visits are <span style='color:#205493;'>**higher**</span> in SUNTA #provinces, <br>trend in both program and non-program areas is <span style='color:#205493;'#>**declining**</span>",
+  #       caption="SUNTA supports Community Heatlh Association (CHA) to conduct outreach") +
+  theme(plot.title.position="plot",
+        plot.title=element_markdown(),
+        legend.title=element_blank(),
+        legend.position=c(.75,.15))
+
+fpsunprov
+
+fpnonsunprov <- ggplot(filter(fam_prov_mnth, sunta=="non-SUNTA"), aes(mnthyr, cha_fp)) + 
+  geom_point(size=.3, alpha=.4, color=usaid_red) + 
+  #  geom_line() +
+  stat_smooth(se=F, size=.2, alpha=.4, color=usaid_red, span=.3) +
+  facet_wrap(~province, ncol=3) +
+  faceted +
+  #  scale_color_manual(values=c(usaid_red, medium_blue)) +
+  scale_x_date(#limits=c(as.Date("2018-01-01"), as.Date("2021-12-31")),
+    date_breaks="2 years",
+    date_labels="%Y") +
+  scale_y_continuous(labels=comma,
+                     limits=c(0,5237),
+                     breaks=seq(0,5000, 1000)) +
+  labs(x="",
+       y="",
+       title="<span style='color:#BA0C2F;'>**non-SUNTA provinces**</span>") +
+  
+  #       title="CHA worker visits are <span style='color:#205493;'>**higher**</span> in SUNTA #provinces, <br>trend in both program and non-program areas is <span style='color:#205493;'#>**declining**</span>",
+  #       caption="SUNTA supports Community Heatlh Association (CHA) to conduct outreach") +
+  theme(plot.title.position="plot",
+        plot.title=element_markdown(),
+        legend.title=element_blank(),
+        legend.position=c(.75,.15),
+        axis.text.y=element_blank(),
+        axis.ticks.y=element_blank())
+
+fpnonsunprov
+
+fpsunprov
+
+fpsunprov + fpnonsunprov + 
+  plot_annotation(title="Women adopting modern family planning is higher in SUNTA provinces\nTrend in both program and non-program areas is declining",
+                  caption="Jan 2018-Mar 2022")
+
+ggsave("viz/Jan-Mar 2022/Family planning/FP ind2 Women adopting modern fp method province by program (Jan-Mar 2022).png",
+       device="png",
+       type="cairo",
+       height=4,
+       width=8)
+
+
+
 # by program area
 
 fam_prog <- fam_prov_mnth %>%
@@ -387,7 +536,7 @@ ggsave("viz/Jan-Mar 2022/Family planning/FP ind2 Women adopting modern family pl
 
 
 ggplot(fam_prog_qtr, aes(qtr, cha_fp, color=sunta)) + 
-  #geom_vline(aes(xintercept=qtr[9]), size=1, color=zamOrange, alpha=.8) + 
+  geom_vline(aes(xintercept=qtr[9]), size=1, color="darkgoldenrod2", alpha=.8) + 
   # geom_point() + 
   #  geom_line() +
   stat_smooth(se=F, size=1) +
@@ -399,9 +548,9 @@ ggplot(fam_prog_qtr, aes(qtr, cha_fp, color=sunta)) +
   scale_y_continuous(labels=comma) +
   labs(x="",
        y="",
-       title="CHA worker visits are <span style='color:#205493;'>**higher**</span> in SUNTA provinces, <br>trend in both program and non-program areas is <span style='color:#205493;'>**declining**</span>",
+       title="Women adopting modern family planning method <span style='color:#205493;'>**higher**</span> in SUNTA provinces, <br>Trend in both program and non-program areas is <span style='color:#205493;'>**declining**</span>",
        caption="Provincial data, aggregated by quarter\nand to program or non-program areas") +
-#  annotate("text", x=fam_prog_qtr$qtr[8], y=20000, label="SUNTA\nlaunch", color="grey60", size=4) +
+  annotate("text", x=fam_prog_qtr$qtr[8], y=12000, label="SUNTA\nlaunch", color="grey60", size=4) +
   theme(plot.title.position="plot",
         plot.title=element_markdown(),
         legend.position="none")
@@ -641,6 +790,169 @@ ggsave("viz/Jan-Mar 2022/Family planning/FP ind4 First-time users of modern cont
        device="png",
        type="cairo",
        height=5.5,
+       width=7)
+
+
+
+
+# program and non-program provinces
+
+names(fam_prov_mnth)
+table(fam_prov_mnth$sunta, fam_prov_mnth$province)
+frq(fam_prov_mnth$sunta)
+
+ftsunprov <- ggplot(filter(fam_prov_mnth, sunta=="SUNTA"), aes(mnthyr, contra_prop)) + 
+  geom_point(size=.2, alpha=.4, color=web_blue) + 
+  #  geom_line() +
+  stat_smooth(se=T, size=.4, alpha=.4, color=web_blue) +
+  facet_wrap(~province, ncol=2) +
+  faceted +
+  #  scale_color_manual(values=c(usaid_red, medium_blue)) +
+  scale_x_date(#limits=c(as.Date("2018-01-01"), as.Date("2021-12-31")),
+    date_breaks="2 years",
+    date_labels="%Y") +
+  scale_y_continuous(labels=percent_format(accuracy=1),
+                     limits=c(0,.2),
+                     breaks=seq(0,.2,.05)) +
+  labs(x="",
+       y="",
+       title="<span style='color:#205493;'>**SUNTA provinces**</span>") +
+  #       title="CHA worker visits are <span style='color:#205493;'>**higher**</span> in SUNTA #provinces, <br>trend in both program and non-program areas is <span style='color:#205493;'#>**declining**</span>",
+  #       caption="SUNTA supports Community Heatlh Association (CHA) to conduct outreach") +
+  theme(plot.title.position="plot",
+        plot.title=element_markdown(),
+        legend.title=element_blank(),
+        legend.position=c(.75,.15))
+
+ftsunprov
+
+ftnonsunprov <- ggplot(filter(fam_prov_mnth, sunta=="non-SUNTA"), aes(mnthyr, contra_prop)) + 
+  geom_point(size=.3, alpha=.4, color=usaid_red) + 
+  #  geom_line() +
+  stat_smooth(se=T, size=.2, alpha=.4, color=usaid_red) +
+  facet_wrap(~province, ncol=3) +
+  faceted +
+  #  scale_color_manual(values=c(usaid_red, medium_blue)) +
+  scale_x_date(#limits=c(as.Date("2018-01-01"), as.Date("2021-12-31")),
+    date_breaks="2 years",
+    date_labels="%Y") +
+  scale_y_continuous(labels=comma,
+                     limits=c(0,.2),
+                     breaks=seq(0,.2, .05)) +
+  labs(x="",
+       y="",
+       title="<span style='color:#BA0C2F;'>**non-SUNTA provinces**</span>") +
+  
+  #       title="CHA worker visits are <span style='color:#205493;'>**higher**</span> in SUNTA #provinces, <br>trend in both program and non-program areas is <span style='color:#205493;'#>**declining**</span>",
+  #       caption="SUNTA supports Community Heatlh Association (CHA) to conduct outreach") +
+  theme(plot.title.position="plot",
+        plot.title=element_markdown(),
+        legend.title=element_blank(),
+        legend.position=c(.75,.15),
+        axis.text.y=element_blank(),
+        axis.ticks.y=element_blank())
+
+ftnonsunprov
+
+ftsunprov
+
+ftsunprov + ftnonsunprov + 
+  plot_annotation(title="First time use of modern contraception is higher in SUNTA provinces",
+                  caption="Jan 2018-Mar 2022")
+
+ggsave("viz/Jan-Mar 2022/Family planning/FP ind4 First time use of contraception province by program (Jan-Mar 2022).png",
+       device="png",
+       type="cairo",
+       height=4,
+       width=8)
+
+
+
+# by program area
+
+fam_prog <- fam_prov_mnth %>%
+  group_by(mnthyr, sunta) %>%
+  summarise(contra_prop=mean(contra_prop, na.rm=T)) %>%
+  mutate(#cha_fp=ifelse(is.na(cha_fp), 0, cha_fp),
+    qtr = as.yearqtr(mnthyr))
+
+fam_prog
+
+ggplot(fam_prog, aes(mnthyr, contra_prop, color=sunta)) + 
+  #  geom_point() + 
+  #  geom_line() +
+  stat_smooth(se=F) +
+  scale_color_manual(values=c(usaid_red, medium_blue)) 
+
++ 
+  theme(legend.title="none")
+
+fam_prog_qtr <- fam_prog %>%
+  group_by(qtr, sunta) %>%
+  summarise(contra_prop=mean(contra_prop)) %>%
+  as.data.frame()
+
+fam_prog_qtr
+str(fam_prog_qtr)
+
+
+ggplot(fam_prog_qtr, aes(qtr, contra_prop, color=sunta)) + 
+  geom_vline(aes(xintercept=qtr[9]), size=1, color="darkgoldenrod2", alpha=.8) + 
+  #geom_line() +
+  stat_smooth(se=F, size=1.4) +
+  scale_color_manual(values=c(usaid_red, medium_blue)) +
+  scale_y_continuous(labels=percent_format(accuracy=1),
+                     limits=c(0,.2),
+                     breaks=seq(0,.2,.05)) +
+  theme(plot.title.position="plot",
+        plot.title=element_markdown(),
+        legend.title=element_blank(),
+        #legend.position="bottom",
+        legend.position=c(.7,.2)) +
+  labs(x="",
+       y="",
+       title="CHA worker visits are <span style='color:#205493;'>**higher**</span> in SUNTA provinces, <br>trend in both program and non-program areas is <span style='color:#205493;'>**declining**</span>") +
+  annotate("text", x=fam_prog_qtr$qtr[8], y=20000, label="SUNTA\nlaunch", color="grey60", size=4)
+
+#"Women adopting modern family planning method\ndeclined in Jan-Mar 2022, continuing a trend starting in Q3 2020
+
+
+ggsave("viz/Jan-Mar 2022/Family planning/FP ind2 Women adopting modern family planning method, by program area legend (Jan-Mar 2022).png",
+       device="png",
+       type="cairo",
+       height=4,
+       width=7)
+
+
+
+ggplot(fam_prog_qtr, aes(qtr, contra_prop, color=sunta)) + 
+  geom_vline(aes(xintercept=qtr[9]), size=1, color="darkgoldenrod2", alpha=.8) + 
+  # geom_point() + 
+  #  geom_line() +
+  stat_smooth(se=F, size=1) +
+  geom_labelsmooth(aes(label=sunta), 
+                   text_smoothing=20, 
+                   method="loess",
+                   hjust="ymax") +
+  scale_color_manual(values=c(usaid_red, web_blue)) +
+  scale_y_continuous(labels=percent_format(accuracy=1),
+                     limits=c(0,.2),
+                     breaks=seq(0,.2,.05)) +
+  labs(x="",
+       y="",
+       title="First time use of contraception <span style='color:#205493;'>**higher**</span> in SUNTA provinces, <br>Trend in both program and non-program areas is <span style='color:#205493;'>**increasing**</span>",
+       caption="Provincial data, aggregated by quarter\nand to program or non-program areas") +
+  #  annotate("text", x=fam_prog_qtr$qtr[8], y=20000, label="SUNTA\nlaunch", color="grey60", size=4) +
+  theme(plot.title.position="plot",
+        plot.title=element_markdown(),
+        legend.position="none")
+
+#"Women adopting modern family planning declined\nin Jan-Mar 2022, continuing a trend beginning in 2021"
+
+ggsave("viz/Jan-Mar 2022/Family planning/FP ind4 First time use of contraception, by program area textpath (Jan-Mar 2022).png",
+       device="png",
+       type="cairo",
+       height=4,
        width=7)
 
 
