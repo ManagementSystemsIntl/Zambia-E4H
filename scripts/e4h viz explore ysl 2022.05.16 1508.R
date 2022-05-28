@@ -1,10 +1,13 @@
 # Zambia 4 Health
 
+
 # Prep ---- 
 
 #setwd("C:/Users/yashin.lin/Dropbox/0 Current Work/R R for work/Zambia-E4H")
 
 source("scripts/r prep.R")
+
+setwd("C:/Users/yashin.lin/Dropbox/0 Current Work/R R for work/Zambia-E4H")
 
 mat <- read_xls("data/Jan-Mar 2022/Reproductive Maternal Data_National Level(Monthly) updated.xls") 
 mat  <- mat  %>%
@@ -18,14 +21,17 @@ mat  <- mat  %>%
                         start=nchar(periodname)-4,
                         end=nchar(periodname)),
          monyr = paste(month_code, year, sep="-"),
-         mnthyr = my(monyr))
+         mnthyr = my(monyr)
+         )
 
 sum(mat$month_chr!=mat$month) # expecting 0 if vars same
 
 matq <- read_xls("data/Jan-Mar 2022/Reproductive Maternal Data_National Level(Quarterly).xls")
+
 mat_prov <- read_xls("data/Jan-Mar 2022/Reproductive Maternal Data_Provincial Level(Monthly).xls")
 mat_prov  <- mat_prov  %>%
-  mutate(month_chr = str_sub(periodname,
+  mutate(
+        month_chr = str_sub(periodname,
                              start=1,
                              end=nchar(periodname)-5),
          month = factor(month_chr,
@@ -35,9 +41,9 @@ mat_prov  <- mat_prov  %>%
                         start=nchar(periodname)-4,
                         end=nchar(periodname)),
          monyr = paste(month_code, year, sep="-"),
-         mnthyr = my(monyr))
+         mnthyr = my(monyr)
+        )
 
-setwd("C:/Users/yashin.lin/Dropbox/0 Current Work/R R for work/Zambia-E4H")
 ch_prov <- readxl::read_xls("data/Jan-Mar 2022/Child Health Data_Provincial Level(Quarterly).xls")
 
 ch_prov  <- ch_prov  %>%
@@ -57,9 +63,7 @@ sum(mat_prov$month_chr!=mat_prov$month) # expecting 0 if vars same
 
 # Maternal ---- 
 
-#* (1) Client: ANC coverage ----
-
-names(fam)
+#* (1) ANC coverage ----
 
 mat <- mat %>%
   rename(ancc = 3,
@@ -83,17 +87,17 @@ mat$subpop <- factor(mat$subpop, levels = unique(mat$subpop)) # transform into f
 levels(mat$subpop)
 
 ggplot(mat, aes(x = mnthyr, y = rate, group = subpop, colour = subpop)) +
-  geom_point(alpha=.5, size=.5) + 
+  geom_point(alpha=.5, size=1) + 
   geom_smooth(method = loess, size = .7, se=FALSE) +
   scale_y_continuous(limits = c(0,1),
                      labels = percent,
                      breaks = c(.1,.2,.3,.4,.5,.6,.7,.8,.9, 1)) +
   xlab("") + 
   ylab("") +
-  ggtitle("Proportion of expected pregnancies receiving antenatal care (ANC), 2018-2022") +
+  ggtitle("Proportion of expected pregnancies receiving antenatal care at all trimesters \nand at 1st trimester (TM1), 2018-2022") +
   scale_color_manual(name ="",
                      values = usaid_palette,
-                     labels = c("1st ANC, all TMs", "1st ANC at TM1", "1st ANC at TM1: Women <20 yrs", "ANC at TM1: High risk pregs")
+                     labels = c("1st ANC, all trimestres", "1st ANC at TM1", "1st ANC at TM1: Women <20 yrs", "ANC at TM1: Hi risk pregnancy")
   ) +
     theme(plot.title = element_text(size = 14), 
         axis.title.x = element_text(size = 12),
@@ -107,7 +111,7 @@ ggsave("viz/(1) Proportion of expected pregnancies receiving 1st ANC.png",
        device="png",
        type="cairo",
        height=4,
-       width=7)
+       width=8)
 
 #* (1.1) Client: ANC coverage PROVINCIAL ----
 
@@ -131,6 +135,9 @@ anc_prov <- mat_prov %>%
                           prov =="Southern" |
                           prov =="Eastern" ~ "ip",
                         TRUE ~ "non-ip"))
+
+table(anc_prov$ip, anc_prov$prov)
+frq(anc_prov$ip) #sjmisc
 
 levels(anc_prov$prov)
 
@@ -172,6 +179,133 @@ ggsave("viz/(1.1) ANC by province faceted.png",
        type="cairo",
        height=4,
        width=7)
+
+#* (1.2) ANC coverage separating program and non-program provinces on plot ----
+
+names(anc_prov)
+table(anc_prov$ip, anc_prov$prov)
+frq(anc_prov$ip) #sjmisc
+
+# redraw for all USAID-funded provinces
+
+ipyes <- anc_prov %>%
+  filter(ip=="ip")
+
+levels(anc_prov$prov)
+
+ipyes_l <- ipyes %>% 
+  gather(key = subpop , value = rate, c(anc1p,anc1u20p,anc1hrp)) %>% 
+  mutate(ip = factor(ip),
+         subpop = factor(subpop))
+
+levels(ipyes_l$ip)
+levels(ipyes_l$subpop)
+
+ipprov <- ggplot(ipyes_l, aes(x = mnthyr, y = rate, group = subpop, colour = subpop)) +
+  # geom_point(alpha=.6, size=.6) + 
+  geom_smooth(method = loess, size = .7, se=FALSE)  +
+  facet_wrap(~prov) +
+  faceted +
+  scale_y_continuous(limits = c(0,1),
+                     labels = percent,
+                     breaks = c(.2,.4,.6,.8, 1)) +
+  labs(x ="", y="", caption = "USAID supports Northern, Central, Luapula, Muchinga, Southern and Eastern") +
+  ggtitle("Proportion of expected pregnancies receiving 1st ANC visit <br> at first trimester, 2018-2022") +
+  scale_color_manual(name= "", values = (usaid_palette), labels = c("High risk pregnancies", "All", "Pregnancies of women <20 years")) +
+  theme(# plot.title = element_text(size = 12), 
+    plot.title=element_markdown(),
+    plot.caption = element_text(size=10),
+    axis.title.x = element_text(size = 10),
+    axis.title.y = element_text(size = 10),
+    axis.text.x = element_text(size = 7),
+    axis.text.y = element_text(size = 7),
+    legend.text = element_text(size = 10),
+    legend.title=element_blank(),
+    legend.position=c(.75,.15),
+    strip.text=element_text(size=10, family="Gill Sans Mt"),
+  )
+
+# redraw for all NON USAID-funded provinces
+
+# define non IP provinces
+
+ipno <- anc_prov %>%
+  filter(ip=="non-ip")
+
+levels(ipno$prov)
+
+ipno_l <- ipno %>% 
+  gather(key = subpop , value = rate, c(anc1p,anc1u20p,anc1hrp)) %>% 
+  mutate(ip = factor(ip),
+         subpop = factor(subpop))
+
+levels(ipno_l$subpop)
+
+nonipprov <- ggplot(ipno_l, aes(x = mnthyr, y = rate, group = subpop, colour = subpop)) +
+  # geom_point(alpha=.6, size=.6) + 
+  geom_smooth(method = loess, size = .7, se=FALSE)  +
+  facet_wrap(~prov) +
+  faceted +
+  scale_y_continuous(limits = c(0,1),
+                     labels = percent,
+                     breaks = c(.2,.4,.6,.8, 1)) +
+  labs(x ="", y="", caption = "USAID supports Northern, Central, Luapula, Muchinga, Southern and Eastern") +
+  ggtitle("Proportion of expected pregnancies receiving 1st ANC visit <br> at first trimester, 2018-2022") +
+  scale_color_manual(name= "", values = (usaid_palette), labels = c("High risk pregnancies", "All", "Pregnancies of women <20 years")) +
+  theme(# plot.title = element_text(size = 12), 
+    plot.title=element_markdown(),
+    plot.caption = element_text(size=10),
+    axis.title.x = element_text(size = 10),
+    axis.title.y = element_text(size = 10),
+    axis.text.x = element_text(size = 7),
+    axis.text.y = element_text(size = 7),
+    legend.text = element_text(size = 10),
+    legend.title=element_blank(),
+    legend.position=c(.75,.15),
+    strip.text=element_text(size=10, family="Gill Sans Mt"),
+  )
+
+sunprov
+
+nonsunprov <- ggplot(filter(fam_prov_mnth, sunta=="non-SUNTA"), aes(mnthyr, cha_visit)) + 
+  geom_point(size=.3, alpha=.4, color=usaid_red) + 
+  #  geom_line() +
+  stat_smooth(se=F, size=.2, alpha=.4, color=usaid_red, span=.3) +
+  facet_wrap(~province, ncol=3) +
+  faceted +
+  #  scale_color_manual(values=c(usaid_red, medium_blue)) +
+  scale_x_date(#limits=c(as.Date("2018-01-01"), as.Date("2021-12-31")),
+    date_breaks="2 years",
+    date_labels="%Y") +
+  scale_y_continuous(labels=comma,
+                     limits=c(0,12046),
+                     breaks=seq(0,12000, 3000)) +
+  labs(x="",
+       y="",
+       title="<span style='color:#BA0C2F;'>**non-SUNTA provinces**</span>") +
+  
+  #       title="CHA worker visits are <span style='color:#205493;'>**higher**</span> in SUNTA #provinces, <br>trend in both program and non-program areas is <span style='color:#205493;'#>**declining**</span>",
+  #       caption="SUNTA supports Community Heatlh Association (CHA) to conduct outreach") +
+  theme(plot.title.position="plot",
+        plot.title=element_markdown(),
+        legend.title=element_blank(),
+        legend.position=c(.75,.15),
+        axis.text.y=element_blank(),
+        axis.ticks.y=element_blank())
+
+nonsunprov
+
+sunprov
+
+sunprov + nonsunprov + 
+  plot_annotation(title="CHA worker visits are higher in SUNTA provinces\nTrend in both program and non-program areas is declining",
+                  caption="Jan 2018-Mar 2022")
+
+ggsave("viz/Jan-Mar 2022/Family planning/FP ind1 Women of reproductive age visited by CHA province by program (Jan-Mar 2022).png",
+       device="png",
+       type="cairo",
+       height=4,
+       width=8)
 
 # -ANC care (Folic acid + Fe) ----
 
@@ -425,7 +559,7 @@ pnc_vz <- ggplot(pnc, aes(mnthyr, pncp)) +
   stat_smooth(color= usaid_blue, se=F, size=1.1, alpha=.8) +
   labs(x="",
        y="",
-       title="The proportion of expected deliveries that receive postnatal care \nwithin 48 hours after delivery increased from 2018 to 2021 and has *"
+       title="The proportion of expected deliveries that receive postnatal care within 48 hrs \nafter delivery decreased in the last quarter, following a decreasing trend \nthat started in Aug 2021"
        ) +
   theme(plot.title = element_text(size = 14), 
         axis.title.x = element_text(size = 12),
@@ -521,8 +655,8 @@ mm_vz <- ggplot(matmm, aes(x = mnthyr, y = deaths, group = mmtypef, colour = mmt
                      breaks = c(20,40,60,80,100,120,140,160,180,200, 220, 240),
                      labels = c("20","40","60","80","100","120","140","160","180","200", "220", "240")) +
   xlab("") +
-  ylab("Number of maternal deaths") +
-  ggtitle("Maternal deaths occurring at health facilities \nand in the community, 2018-2022") +
+  ylab("") +
+  ggtitle("Maternal deaths occurring at health facilities and in the community, 2018-2022") +
   scale_colour_manual(name = "",
                     labels= c( "Maternal mortality facility ratio \n(per 10 000 live births)", "Health facility deaths", "Community deaths"),
                     values = c(usaid_blue, medium_grey, usaid_red)) +
@@ -579,7 +713,7 @@ names(mat_prov)
 matd_prov <- mat_prov %>%
   select(1, 16, mnthyr) %>% 
   rename(prov = 1,
-         mmrate = 2
+         mmrate = 16,
          ) %>% 
   mutate(prov = factor(prov),
          ip = case_when(prov=="Northern" |
@@ -919,7 +1053,7 @@ ggplot(larc, aes(x=mnthyr, y=larc)) +
                      breaks = c(5000, 10000, 15000, 20000, 25000, 30000)) +
   labs(x="",
        y="", 
-       title="Number of clients accessing LARCs (implants and IUDs) increased") +
+       title="Number of clients accessing LARCs (implants and IUDs) has also increased \nsince 2018, though variance has also increased in the last two years") +
   theme(plot.title = element_text(size = 14), 
         axis.title.x = element_text(size = 12),
         axis.title.y = element_text(size = 12),
@@ -938,6 +1072,11 @@ ggsave("viz/(11) LARC.png",
 
 names(fam_mnth)
 
+<<<<<<< HEAD
+larcoff <- fam_mnth %>%
+  rename(larcoff = 15) %>% 
+  select(mnthyr, larcoff) 
+=======
 fam_mnth <- fam_mnth %>%
   rename(iucd_remove = 9,
          implant_remove=10,
@@ -947,6 +1086,7 @@ fam_mnth <- fam_mnth %>%
 #  select(mnthyr, larcoff) %>%
   mutate(discont_larc = (iucd_remove + implant_remove) / (iucd_insert + implant_insert)) %>%
   relocate(discont_larc, .after=implant_insert)
+>>>>>>> 84907b4993b8e5ddf4bf2f855b27803ca584bed0
 
 frq(larc$larcoff)
 frq(fam_mnth$iucd_remove)
@@ -977,3 +1117,5 @@ ggsave("viz/Jan-Mar 2022/Family planning/(11) discontinue LARC.png",
        type="cairo",
        height=4,
        width=7)
+
+
