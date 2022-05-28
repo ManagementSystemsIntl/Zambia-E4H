@@ -7,8 +7,6 @@
 
 source("scripts/r prep.R")
 
-setwd("C:/Users/yashin.lin/Dropbox/0 Current Work/R R for work/Zambia-E4H")
-
 mat <- read_xls("data/Jan-Mar 2022/Reproductive Maternal Data_National Level(Monthly) updated.xls") 
 mat  <- mat  %>%
   mutate(month_chr = str_sub(periodname,
@@ -127,8 +125,9 @@ anc_prov <- mat_prov %>%
          anc1hrp = anc1hr/100,
          ) %>% 
 #  select(prov, mnthyr, anc1p, anc1hrp) %>% 
-  select(prov, mnthyr, anc1p, anc1u20p, anc1hrp) %>% 
-  mutate(prov = factor(prov),
+#  select(prov, mnthyr, anc1p, anc1u20p, anc1hrp) %>% 
+   select(prov, mnthyr, anc1p, anc1hrp) %>% 
+    mutate(prov = factor(prov),
          ip = case_when(prov=="Northern" |
                           prov =="Central" |
                           prov =="Muchinga" |
@@ -144,6 +143,7 @@ levels(anc_prov$prov)
 anc_prov_l <- anc_prov %>% 
 # gather(key = subpop , value = rate, c(anc1p, anc1hrp)) %>% 
   gather(key = subpop , value = rate, c(anc1p,anc1u20p,anc1hrp)) %>% 
+
   mutate(ip = factor(ip),
          subpop = factor(subpop))
   
@@ -180,7 +180,7 @@ ggsave("viz/(1.1) ANC by province faceted.png",
        height=4,
        width=7)
 
-#* (1.2) ANC coverage separating program and non-program provinces on plot ----
+#* (1.2) ANC coverage PROV SEPARATED ----
 
 names(anc_prov)
 table(anc_prov$ip, anc_prov$prov)
@@ -194,7 +194,7 @@ ipyes <- anc_prov %>%
 levels(anc_prov$prov)
 
 ipyes_l <- ipyes %>% 
-  gather(key = subpop , value = rate, c(anc1p,anc1u20p,anc1hrp)) %>% 
+  gather(key = subpop , value = rate, c(anc1p,anc1hrp)) %>% 
   mutate(ip = factor(ip),
          subpop = factor(subpop))
 
@@ -202,16 +202,15 @@ levels(ipyes_l$ip)
 levels(ipyes_l$subpop)
 
 ipprov <- ggplot(ipyes_l, aes(x = mnthyr, y = rate, group = subpop, colour = subpop)) +
-  # geom_point(alpha=.6, size=.6) + 
   geom_smooth(method = loess, size = .7, se=FALSE)  +
   facet_wrap(~prov) +
   faceted +
   scale_y_continuous(limits = c(0,1),
                      labels = percent,
                      breaks = c(.2,.4,.6,.8, 1)) +
-  labs(x ="", y="", caption = "USAID supports Northern, Central, Luapula, Muchinga, Southern and Eastern") +
-  ggtitle("Proportion of expected pregnancies receiving 1st ANC visit <br> at first trimester, 2018-2022") +
-  scale_color_manual(name= "", values = (usaid_palette), labels = c("High risk pregnancies", "All", "Pregnancies of women <20 years")) +
+  labs(x ="", y="", caption = "") +
+  ggtitle("USAID-supported provinces") +
+  scale_color_manual(name= "", values = (usaid_palette)) +
   theme(# plot.title = element_text(size = 12), 
     plot.title=element_markdown(),
     plot.caption = element_text(size=10),
@@ -221,7 +220,7 @@ ipprov <- ggplot(ipyes_l, aes(x = mnthyr, y = rate, group = subpop, colour = sub
     axis.text.y = element_text(size = 7),
     legend.text = element_text(size = 10),
     legend.title=element_blank(),
-    legend.position=c(.75,.15),
+    legend.position="none",
     strip.text=element_text(size=10, family="Gill Sans Mt"),
   )
 
@@ -235,7 +234,7 @@ ipno <- anc_prov %>%
 levels(ipno$prov)
 
 ipno_l <- ipno %>% 
-  gather(key = subpop , value = rate, c(anc1p,anc1u20p,anc1hrp)) %>% 
+  gather(key = subpop , value = rate, c(anc1p, anc1hrp)) %>% 
   mutate(ip = factor(ip),
          subpop = factor(subpop))
 
@@ -249,9 +248,9 @@ nonipprov <- ggplot(ipno_l, aes(x = mnthyr, y = rate, group = subpop, colour = s
   scale_y_continuous(limits = c(0,1),
                      labels = percent,
                      breaks = c(.2,.4,.6,.8, 1)) +
-  labs(x ="", y="", caption = "USAID supports Northern, Central, Luapula, Muchinga, Southern and Eastern") +
-  ggtitle("Proportion of expected pregnancies receiving 1st ANC visit <br> at first trimester, 2018-2022") +
-  scale_color_manual(name= "", values = (usaid_palette), labels = c("High risk pregnancies", "All", "Pregnancies of women <20 years")) +
+  labs(x ="", y="", caption = "") +
+  ggtitle("Non USAID-supported provinces") +
+  scale_color_manual(name= "", values = (usaid_palette), labels = c("High risk pregnancies", "All pregnancies", "Women <20 yrs")) +
   theme(# plot.title = element_text(size = 12), 
     plot.title=element_markdown(),
     plot.caption = element_text(size=10),
@@ -259,53 +258,24 @@ nonipprov <- ggplot(ipno_l, aes(x = mnthyr, y = rate, group = subpop, colour = s
     axis.title.y = element_text(size = 10),
     axis.text.x = element_text(size = 7),
     axis.text.y = element_text(size = 7),
-    legend.text = element_text(size = 10),
+    legend.text = element_text(size = 8),
     legend.title=element_blank(),
-    legend.position=c(.75,.15),
+    legend.position=c("bottom"),
     strip.text=element_text(size=10, family="Gill Sans Mt"),
   )
 
-sunprov
 
-nonsunprov <- ggplot(filter(fam_prov_mnth, sunta=="non-SUNTA"), aes(mnthyr, cha_visit)) + 
-  geom_point(size=.3, alpha=.4, color=usaid_red) + 
-  #  geom_line() +
-  stat_smooth(se=F, size=.2, alpha=.4, color=usaid_red, span=.3) +
-  facet_wrap(~province, ncol=3) +
-  faceted +
-  #  scale_color_manual(values=c(usaid_red, medium_blue)) +
-  scale_x_date(#limits=c(as.Date("2018-01-01"), as.Date("2021-12-31")),
-    date_breaks="2 years",
-    date_labels="%Y") +
-  scale_y_continuous(labels=comma,
-                     limits=c(0,12046),
-                     breaks=seq(0,12000, 3000)) +
-  labs(x="",
-       y="",
-       title="<span style='color:#BA0C2F;'>**non-SUNTA provinces**</span>") +
-  
-  #       title="CHA worker visits are <span style='color:#205493;'>**higher**</span> in SUNTA #provinces, <br>trend in both program and non-program areas is <span style='color:#205493;'#>**declining**</span>",
-  #       caption="SUNTA supports Community Heatlh Association (CHA) to conduct outreach") +
-  theme(plot.title.position="plot",
-        plot.title=element_markdown(),
-        legend.title=element_blank(),
-        legend.position=c(.75,.15),
-        axis.text.y=element_blank(),
-        axis.ticks.y=element_blank())
+ipprov
+nonipprov
 
-nonsunprov
+ipprov + nonipprov + 
+  plot_annotation(title="ANC coverage for high risk pregnancies has increased in last two years independently \nof USAID support. No other pattern apparent.")
 
-sunprov
-
-sunprov + nonsunprov + 
-  plot_annotation(title="CHA worker visits are higher in SUNTA provinces\nTrend in both program and non-program areas is declining",
-                  caption="Jan 2018-Mar 2022")
-
-ggsave("viz/Jan-Mar 2022/Family planning/FP ind1 Women of reproductive age visited by CHA province by program (Jan-Mar 2022).png",
+ggsave("viz/(1.2) ANC by province faceted partitioned.png",
        device="png",
        type="cairo",
        height=4,
-       width=8)
+       width=7)
 
 # -ANC care (Folic acid + Fe) ----
 
@@ -416,7 +386,33 @@ ggsave("viz/(2) Prop of expected deliveries occuring in health facilities.png",
        height=4,
        width=7)
 
-# (2.1) Institutional delivery coverage PROVINCIAL ====
+# (2.1) Client: Institutional delivery coverage bar chart ----
+
+ggplot(inst, aes(x=mnthyr, y=instdelp)) + 
+  geom_col(fill = usaid_red) + 
+  geom_smooth(color= usaid_blue, se=F, size=1.1, alpha=.8) +
+  scale_y_continuous(limits=c(0,1),
+                     labels = percent,
+                     breaks = c(.1,.2,.3,.4,.5,.6,.7,.8,.9, 1)) +
+  labs(x="",
+       y="",
+       title="Proportion of expected deliveries occurring in health facilities increased \nfrom 70% to 80% in 2018, then decreased back to 70% by 2022") +
+  theme(plot.title = element_text(size = 14), 
+        axis.title.x = element_text(size = 12),
+        axis.title.y = element_text(size = 12),
+        axis.text = element_text(size = 9),
+        legend.title = element_text(size = 12), 
+        legend.text = element_text(size = 11)
+  )
+
+ggsave("viz/(2.1) Inst deliveries bar chart.png",
+       device="png",
+       type="cairo",
+       height=4,
+       width=7)
+
+
+# (2.2) Institutional delivery coverage PROVINCIAL ====
 
 names(mat_prov)
 
@@ -461,6 +457,76 @@ ggsave("viz/(2.1) Institutional deliveries by province faceted.png",
        height=4,
        width=7)
 
+# (2.3) Inst delivery PROV SEPARATED ----
+
+names(instd_prov)
+table(instd_prov$ip, instd_prov$prov)
+frq(instd_prov$ip) #sjmisc
+
+# redraw for all USAID-funded provinces
+
+ipyes <- instd_prov %>%
+  filter(ip=="ip")
+
+insdelyeschart
+
+<- ggplot(ipyes, aes(x = mnthyr, y = instdel, colour = ip)) +
+  geom_point(alpha=.5, size=.8) + 
+  geom_smooth(method = loess, size = .8, se=FALSE)  +
+  facet_wrap(~prov) +
+  faceted +
+  scale_y_continuous(limits = c(0,100),
+                     breaks = c(20, 40, 60, 80)) +
+  xlab("") + 
+  ylab("") +
+# ggtitle("Proportion expected deliveries occurring in health facilities, 2018-2022") +
+  scale_color_manual(name= "", values = (usaid_palette)) +
+  theme(# plot.title = element_text(size = 12), 
+    plot.title=element_markdown(),
+    axis.title.x = element_text(size = 10),
+    axis.title.y = element_text(size = 10),
+    axis.text.x = element_text(size = 7),
+    axis.text.y = element_text(size = 7),
+    legend.text = element_text(size = 10),
+    legend.title=element_blank(),
+    legend.position=c("none"))
+
+ipno <- instd_prov %>%
+  filter(ip=="non-ip")
+
+ipnochart <- ggplot(ipno, aes(x = mnthyr, y = instdel, colour = ip)) +
+  geom_point(alpha=.5, size=.8) + 
+  geom_smooth(method = loess, size = .8, se=FALSE)  +
+  facet_wrap(~prov) +
+  faceted +
+  scale_y_continuous(limits = c(0,100),
+                     breaks = c(20, 40, 60, 80)) +
+  xlab("") + 
+  ylab("") +
+  scale_color_manual(name= "", values = (usaid_palette)) +
+  theme(# plot.title = element_text(size = 12), 
+    plot.title=element_markdown(),
+    axis.title.x = element_text(size = 10),
+    axis.title.y = element_text(size = 10),
+    axis.text.x = element_text(size = 7),
+    axis.text.y = element_text(size = 7),
+    legend.text = element_text(size = 10),
+    legend.title=element_blank(),
+    legend.position=c("none"))
+
+ipyeschart
+ipnochart
+
+ipyeschart + ipnochart + 
+  plot_annotation(title="ANC coverage for high risk pregnancies has increased in last two years independently \nof USAID support. No other pattern apparent.")
+
+ggsave("viz/(1.2) ANC by province faceted partitioned.png",
+       device="png",
+       type="cairo",
+       height=4,
+       width=7)
+
+
 # -F/C: Cesarean rate ====
 
 mat  <- mat  %>%
@@ -502,6 +568,8 @@ ggsave("viz/Cesarean section.png",
        type="cairo",
        height=4,
        width=7)
+
+
 
 #* Outcome: Stillbirths
 
