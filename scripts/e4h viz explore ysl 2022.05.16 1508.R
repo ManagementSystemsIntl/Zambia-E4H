@@ -1,6 +1,5 @@
 # Zambia 4 Health
 
-
 # Prep ---- 
 
 #setwd("C:/Users/yashin.lin/Dropbox/0 Current Work/R R for work/Zambia-E4H")
@@ -43,7 +42,6 @@ mat_prov  <- mat_prov  %>%
         )
 
 ch_prov <- readxl::read_xls("data/Jan-Mar 2022/Child Health Data_Provincial Level(Quarterly).xls")
-
 ch_prov  <- ch_prov  %>%
   mutate(month_chr = str_sub(periodname,
                              start=1,
@@ -61,7 +59,7 @@ sum(mat_prov$month_chr!=mat_prov$month) # expecting 0 if vars same
 
 # Maternal ---- 
 
-#* (1) ANC coverage ----
+# (1) ANC coverage ----
 
 mat <- mat %>%
   rename(ancc = 3,
@@ -97,7 +95,7 @@ ggplot(mat, aes(x = mnthyr, y = rate, group = subpop, colour = subpop)) +
                      values = usaid_palette,
                      labels = c("1st ANC, all trimestres", "1st ANC at TM1", "1st ANC at TM1: Women <20 yrs", "ANC at TM1: Hi risk pregnancy")
   ) +
-    theme(plot.title = element_text(size = 14), 
+    theme(#plot.title = element_text(size = 14), 
         axis.title.x = element_text(size = 12),
         axis.title.y = element_text(size = 12),
         axis.text = element_text(size = 9),
@@ -111,7 +109,7 @@ ggsave("viz/(1) Proportion of expected pregnancies receiving 1st ANC.png",
        height=4,
        width=8)
 
-#* (1.1) Client: ANC coverage PROVINCIAL ----
+#* (1.1) ANC coverage PROVINCIAL ----
 
 names(mat_prov)
 
@@ -277,7 +275,7 @@ ggsave("viz/(1.2) ANC by province faceted partitioned.png",
        height=4,
        width=7)
 
-# -ANC care (Folic acid + Fe) ----
+#* ANC care (Folic acid + Fe) ----
 
 # Assign each value of folic = 100 if >100
 
@@ -343,7 +341,7 @@ ggsave("viz/Folic Acid and Iron Supplementation during ANC.png",
        height=4,
        width=7)
 
-#* (2) Client: Institutional delivery coverage ----
+# (2) Inst delivery coverage ----
 
 inst <- mat  %>%
   rename(instdel = 8) %>%
@@ -386,7 +384,7 @@ ggsave("viz/(2) Prop of expected deliveries occuring in health facilities.png",
        height=4,
        width=7)
 
-# (2.1) Client: Institutional delivery coverage bar chart ----
+#* (2.1) Inst delivery coverage bar chart ----
 
 ggplot(inst, aes(x=mnthyr, y=instdelp)) + 
   geom_col(fill = usaid_red) + 
@@ -411,14 +409,22 @@ ggsave("viz/(2.1) Inst deliveries bar chart.png",
        height=4,
        width=7)
 
-
-# (2.2) Institutional delivery coverage PROVINCIAL ====
+#* (2.2) Inst delivery coverage PROVINCIAL ====
 
 names(mat_prov)
+
+#instd_prov$prov <- ifelse(instd_prov$prov == 'Central'
+#                                   , "NW"
+#                                   , instd_prov$prov
+#                                   )
+#                      )
+
+names(inst)
 
 instd_prov <- mat_prov %>%
   rename(prov = 1,
          instdel = 8) %>%
+# mutate(prov = case_when(prov == 'Northwestern' ~ 'NW'))#
   select(prov, mnthyr, instdel) %>% 
   mutate(prov = factor(prov),
          ip = case_when(prov=="Northern" |
@@ -451,26 +457,24 @@ ggplot(instd_prov, aes(x = mnthyr, y = instdel, colour = ip)) +
     legend.title=element_blank(),
     legend.position=c(.75,.15))
 
-ggsave("viz/(2.1) Institutional deliveries by province faceted.png",
+ggsave("viz/(2.2) Institutional deliveries by prov faceted.png",
        device="png",
        type="cairo",
        height=4,
        width=7)
 
-# (2.3) Inst delivery PROV SEPARATED ----
+#* (2.3) Inst delivery PROV PARTITIONED ----
 
 names(instd_prov)
 table(instd_prov$ip, instd_prov$prov)
 frq(instd_prov$ip) #sjmisc
 
-# redraw for all USAID-funded provinces
+# redraw inst deliveries for all USAID-funded provinces
 
 ipyes <- instd_prov %>%
   filter(ip=="ip")
 
-insdelyeschart
-
-<- ggplot(ipyes, aes(x = mnthyr, y = instdel, colour = ip)) +
+instd.ipvz <- ggplot(ipyes, aes(x = mnthyr, y = instdel, colour = ip)) +
   geom_point(alpha=.5, size=.8) + 
   geom_smooth(method = loess, size = .8, se=FALSE)  +
   facet_wrap(~prov) +
@@ -479,7 +483,7 @@ insdelyeschart
                      breaks = c(20, 40, 60, 80)) +
   xlab("") + 
   ylab("") +
-# ggtitle("Proportion expected deliveries occurring in health facilities, 2018-2022") +
+  ggtitle("USAID-supported provinces") +
   scale_color_manual(name= "", values = (usaid_palette)) +
   theme(# plot.title = element_text(size = 12), 
     plot.title=element_markdown(),
@@ -487,14 +491,15 @@ insdelyeschart
     axis.title.y = element_text(size = 10),
     axis.text.x = element_text(size = 7),
     axis.text.y = element_text(size = 7),
-    legend.text = element_text(size = 10),
-    legend.title=element_blank(),
+    strip.text.x = element_text(size = 9.5),
     legend.position=c("none"))
+
+# inst deliveries for non-usaid provinces 
 
 ipno <- instd_prov %>%
   filter(ip=="non-ip")
 
-ipnochart <- ggplot(ipno, aes(x = mnthyr, y = instdel, colour = ip)) +
+instd.nonipvz <- ggplot(ipno, aes(x = mnthyr, y = instdel, colour = ip)) +
   geom_point(alpha=.5, size=.8) + 
   geom_smooth(method = loess, size = .8, se=FALSE)  +
   facet_wrap(~prov) +
@@ -503,6 +508,7 @@ ipnochart <- ggplot(ipno, aes(x = mnthyr, y = instdel, colour = ip)) +
                      breaks = c(20, 40, 60, 80)) +
   xlab("") + 
   ylab("") +
+  ggtitle("Non USAID-supported provinces") +
   scale_color_manual(name= "", values = (usaid_palette)) +
   theme(# plot.title = element_text(size = 12), 
     plot.title=element_markdown(),
@@ -510,24 +516,22 @@ ipnochart <- ggplot(ipno, aes(x = mnthyr, y = instdel, colour = ip)) +
     axis.title.y = element_text(size = 10),
     axis.text.x = element_text(size = 7),
     axis.text.y = element_text(size = 7),
-    legend.text = element_text(size = 10),
-    legend.title=element_blank(),
+    strip.text.x = element_text(size = 9.5),
     legend.position=c("none"))
 
-ipyeschart
-ipnochart
+instd.ipvz
+instd.nonipvz
 
-ipyeschart + ipnochart + 
-  plot_annotation(title="ANC coverage for high risk pregnancies has increased in last two years independently \nof USAID support. No other pattern apparent.")
+instd.ipvz + instd.nonipvz + 
+  plot_annotation(title="Proportion expected deliveries occurring in health facilities, 2018-2022")
 
-ggsave("viz/(1.2) ANC by province faceted partitioned.png",
+ggsave("viz/(2.3) Inst deliveries by prov partitioned.png",
        device="png",
        type="cairo",
        height=4,
        width=7)
 
-
-# -F/C: Cesarean rate ====
+#* Cesarean rate OMITTED ====
 
 mat  <- mat  %>%
 rename(cesar = 9) %>%
@@ -612,7 +616,7 @@ ggsave("viz/Fetal deaths.png",
        height=4,
        width=7)
 
-#* (3) Facility: Postnatal care ====
+# (3) Postnatal care ====
 
 pnc  <- mat  %>%
   rename(pnc = 11) %>%
@@ -657,7 +661,7 @@ ggsave("viz/(3) Proportion of expected deliveries receiving PNC within 48 hrs.pn
        height=4,
        width=7)
 
-#* (3.1) PNC PROVINCIAL FACETED
+#* (3.1) PNC PROVINCIAL FACETED ----
 
 names(mat_prov)
 
@@ -696,20 +700,80 @@ ggplot(pnc_prov, aes(x = mnthyr, y = pncr, colour = ip)) +
     legend.title=element_blank(),
     legend.position=c(.75,.15))
 
-ggsave("viz/(3.1) PNC by province.png",
+ggsave("viz/(3.1) PNC by USAID prov.png",
        device="png",
        type="cairo",
        height=4,
        width=7)
 
-#* (4) Outcome: Maternal deaths ----
+#* (3.2) PNC PROV FACETED PARTITIONED ----
+
+ipyes <- pnc_prov %>%
+  filter(ip=="ip")
+
+pnc.ipvz <- ggplot(ipyes, aes(x = mnthyr, y = pncr, colour = ip)) +
+  geom_point(alpha=.5, size=.8) + 
+  geom_smooth(method = loess, size = .7, se=FALSE)  +
+  facet_wrap(~prov) +
+  faceted +
+  scale_y_continuous(limits = c(0,100),
+                     breaks = c(20, 40, 60, 80)) +
+  xlab("") + 
+  ylab("") +
+# ggtitle("Proportion of expected deliveries receiving postnatal care within 48 hrs increased,<br>both in provinces supported and not supported by USAID activities, 2018-2022") +
+  scale_color_manual(name= "", values = (usaid_palette), labels = c("Supported by FHN, MOMENT and G2G", "Not supported")) +
+  theme(# plot.title = element_text(size = 12), 
+    plot.title=element_markdown(),
+    axis.title.x = element_text(size = 10),
+    axis.title.y = element_text(size = 10),
+    axis.text.x = element_text(size = 7),
+    axis.text.y = element_text(size = 7),
+    legend.text = element_text(size = 10),
+    legend.title=element_blank(),
+    legend.position="blank")
+
+ipno <- pnc_prov %>%
+  filter(ip=="non-ip")
+
+pnc.ipnonvz <- ggplot(ipno, aes(x = mnthyr, y = pncr, colour = ip)) +
+  geom_point(alpha=.5, size=.8) + 
+  geom_smooth(method = loess, size = .7, se=FALSE)  +
+  facet_wrap(~prov) +
+  faceted +
+  scale_y_continuous(limits = c(0,100),
+                     breaks = c(20, 40, 60, 80)) +
+  xlab("") + 
+  ylab("") +
+# ggtitle("Proportion of expected deliveries receiving postnatal care within 48 hrs increased,<br>both in provinces supported and not supported by USAID activities, 2018-2022") +
+  scale_color_manual(name= "", values = (usaid_palette), labels = c("Supported by FHN, MOMENT and G2G", "Not supported")) +
+  theme(# plot.title = element_text(size = 12), 
+    plot.title=element_markdown(),
+    axis.title.x = element_text(size = 10),
+    axis.title.y = element_text(size = 10),
+    axis.text.x = element_text(size = 7),
+    axis.text.y = element_text(size = 7),
+    legend.text = element_text(size = 10),
+    legend.title=element_blank(),
+    legend.position="blank")
+
+pnc.ipvz 
+pnc.ipnonvz 
+pnc.ipvz + pnc.ipnonvz + 
+  plot_annotation(title="Proportion of expected deliveries receiving postnatal care within 48 hrs increased, \nboth in provinces supported and not supported by USAID activities")
+
+ggsave("viz/(3.2) PNC 48hrs by prov PARTITIONED.png",
+       device="png",
+       type="cairo",
+       height=4,
+       width=7)
+
+# (4) Maternal deaths ----
  
 matmm <- mat %>%
   rename(mmfr = 16,
          mmf = 13,
          mmc = 22
          ) 
-
 matmm <- gather(matmm, key = mmtype , value = deaths, c(mmfr, mmf, mmc)) 
 
 matmm$mmtypef <- factor(matmm$mmtype, levels = unique(matmm$mmtype))
@@ -772,17 +836,15 @@ ggsave("viz/(4) Maternal deaths.png",
        height=4,
        width=7)
 
-#* Maternal Provincial ---- 
-
-#* (4.1) Outcome: Maternal mortality PROVINCIAL ----
+#* (4.1) Maternal mortality PROVINCIAL ----
 
 names(mat_prov)
 
 matd_prov <- mat_prov %>%
-  select(1, 16, mnthyr) %>% 
   rename(prov = 1,
          mmrate = 16,
          ) %>% 
+  select(1, 16, mnthyr) %>% 
   mutate(prov = factor(prov),
          ip = case_when(prov=="Northern" |
                           prov =="Central" |
@@ -814,18 +876,82 @@ ggplot(matd_prov, aes(x = mnthyr, y = mmrate, colour = ip)) +
         legend.title=element_blank(),
         legend.position=c(.75,.15))
 
-
 ggsave("viz/(7) Maternal mortality ratio by province.png",
        device="png",
        type="cairo",
        height=4,
        width=7)
 
+#* (4.2) Maternal mortality PROV PARTITIONED ----
+
+ipyes <- matd_prov %>%
+  filter(ip=="ip")
+
+mm.ipvz <- ggplot(ipyes, aes(x = mnthyr, y = mmrate, colour = ip)) +
+  geom_point(alpha=.6, size=1) + 
+  geom_smooth(method = loess, size = .7, se=FALSE)  +
+  facet_wrap(~prov) +
+  faceted +
+  scale_y_continuous(limits = c(0,500),
+                     breaks = c(100, 200, 300, 400)) +
+  xlab("") + 
+  ylab("") +
+  ggtitle("USAID-supported provinces") +
+  scale_color_manual(name= "", values = (usaid_palette), labels = c("Supported by FHN, MOMENT and G2G", "Not supported")) +
+  theme(#plot.title = element_text(size = 11), 
+#? Dan: not sure why this plot.title line not working ----
+    plot.title=element_markdown(),
+    axis.title.x = element_text(size = 10),
+    axis.title.y = element_text(size = 10),
+    axis.text.x = element_text(size = 7),
+    axis.text.y = element_text(size = 7),
+    legend.text = element_text(size = 10),
+    legend.title=element_blank(),
+    legend.position=c("blank"))
+
+ipno <- matd_prov %>%
+  filter(ip=="non-ip")
+
+mm.ipnovz <- ggplot(ipno, aes(x = mnthyr, y = mmrate, colour = ip)) +
+  geom_point(alpha=.6, size=1) + 
+  geom_smooth(method = loess, size = .7, se=FALSE)  +
+  facet_wrap(~prov) +
+  faceted +
+  scale_y_continuous(limits = c(0,500),
+                     breaks = c(100, 200, 300, 400)) +
+  xlab("") + 
+  ylab("") +
+  ggtitle("Non USAID-supported provinces") +
+  scale_color_manual(name= "", values = (usaid_palette), labels = c("Supported by FHN, MOMENT and G2G", "Not supported")) +
+  theme(#plot.title = element_text(size = 11), 
+    plot.title=element_markdown(),
+    axis.title.x = element_text(size = 10),
+    axis.title.y = element_text(size = 10),
+    axis.text.x = element_text(size = 7),
+    axis.text.y = element_text(size = 7),
+    legend.text = element_text(size = 10),
+    legend.title=element_blank(),
+    legend.position=c("blank")
+    )
+
+mm.ipvz
+mm.ipnovz
+
+mm.ipvz + mm.ipnovz + 
+  plot_annotation(title="Facility maternal mortality ratio increasing in Eastern, Northern and Southern and \ndecreasing in Muchinga and Central")
+
+ggsave("viz/(4.3) Maternal mortality by prov PARTITIONED.png",
+       device="png",
+       type="cairo",
+       height=4,
+       width=7)
+
+
 # Child Health ---- 
 
 names(ch)
 
-#* (6) Outcome: Stillbirths  ---- 
+#* (6) Stillbirths  ---- 
 
 names(mat)
 
@@ -871,7 +997,7 @@ ggsave("viz/(6) Stillbirths.png",
        height=4,
        width=7)
 
-#* (5.1) Outcome: Neonatal/perinatal deaths ----
+#* (5.1) Neonatal/perinatal deaths ----
 
 names(mat)
 
@@ -913,7 +1039,7 @@ ggsave("viz/(5) Neonatal and perinatal deaths.png",
        width=7)
 
 
-#*(5) Outcome: Neonatal rates ----
+#*(5) Neonatal rates ----
 
 names(mat)
 
