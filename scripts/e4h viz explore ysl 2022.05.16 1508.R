@@ -523,7 +523,7 @@ instd.ipvz
 instd.nonipvz
 
 instd.ipvz + instd.nonipvz + 
-  plot_annotation(title="Proportion expected deliveries occurring in health facilities, 2018-2022")
+  plot_annotation(title="The proportion of expected deliveries occurring in health facilities has decreased \nsince 2020 in most provinces, except Central, Northern, and Northwestern")
 
 ggsave("viz/(2.3) Inst deliveries by prov partitioned.png",
        device="png",
@@ -759,7 +759,7 @@ pnc.ipnonvz <- ggplot(ipno, aes(x = mnthyr, y = pncr, colour = ip)) +
 pnc.ipvz 
 pnc.ipnonvz 
 pnc.ipvz + pnc.ipnonvz + 
-  plot_annotation(title="Proportion of expected deliveries receiving postnatal care within 48 hrs increased, \nboth in provinces supported and not supported by USAID activities")
+  plot_annotation(title="The proportion of expected deliveries receiving postnatal care within 48 hrs has \nincreased in most provinces since Jan 2021, except for Central, Northern, NW, \nand Lusaka")
 
 ggsave("viz/(3.2) PNC 48hrs by prov PARTITIONED.png",
        device="png",
@@ -788,7 +788,7 @@ mm_vz <- ggplot(matmm, aes(x = mnthyr, y = deaths, group = mmtypef, colour = mmt
                      labels = c("20","40","60","80","100","120","140","160","180","200", "220", "240")) +
   xlab("") +
   ylab("") +
-  ggtitle("Maternal deaths occurring at health facilities and in the community, 2018-2022") +
+  ggtitle("Maternal deaths: facility numbers and rates have increased since 2020, \nwhile community numbers have decreased") +
   scale_colour_manual(name = "",
                     labels= c( "Maternal mortality facility ratio \n(per 10 000 live births)", "Health facility deaths", "Community deaths"),
                     values = c(usaid_blue, medium_grey, usaid_red)) +
@@ -947,7 +947,7 @@ ggsave("viz/(4.3) Maternal mortality by prov PARTITIONED.png",
        width=7)
 
 
-# Child Health ---- 
+# Stillbirths/Perinatal/Neonatal deaths ---- 
 
 names(ch)
 
@@ -971,7 +971,7 @@ levels(matsb_l$sbtype)
 
 # ancv <- ggplot(mat, aes(x = mnthyr, y = rate, group = subpop, colour = subpop)) +
 
-ggplot(matsb_l, aes(x = mnthyr, y = sbrate, group = sbtype, colour = sbtype)) +
+sb_vz <- ggplot(matsb_l, aes(x = mnthyr, y = sbrate, group = sbtype, colour = sbtype)) +
   geom_point(alpha=.6, size=.8) + 
 #  geom_line(alpha=.4) +
   stat_smooth(se=F, size=.8, alpha=.8) +
@@ -990,6 +990,17 @@ ggplot(matsb_l, aes(x = mnthyr, y = sbrate, group = sbtype, colour = sbtype)) +
         legend.text = element_text(size = 11),
         plot.caption = element_text(size=10)
         ) 
+
+sb_vz 
+target2018 <- data.frame(x1= as.Date("2018-10-01"), x2=as.Date("2019-01-01"), y1=.10, y2=.10)
+target2019 <- data.frame(x1=as.Date("2019-10-01"), x2=as.Date("2020-01-01"), y1=.08, y2=.08)
+target2020 <- data.frame(x1=as.Date("2020-10-01"), x2=as.Date("2021-01-01"), y1=.06, y2=.06)
+target2021 <- data.frame(x1=as.Date("2021-10-01"), x2=as.Date("2022-01-01"), y1=.04, y2=.04)
+targets <- bind_rows(target2018, target2019, target2020, target2021)
+
+sb_vz + geom_segment(aes(x = x1, y = y1, xend = x2, yend = y2), colour = usaid_red, size=.8, data = targets) +
+  annotate(geom="text", x=as.Date("15-5-2018", format = "%d-%m-%Y"), y=.75, colour = usaid_red, label="National Targets", size= 3) +
+  annotate(geom="text", x=as.Date("01-06-2021", format = "%d-%m-%Y"), y=.1, label="*home deliveries included", size =3, fontface = 'italic')
 
 ggsave("viz/(6) Stillbirths.png",
        device="png",
@@ -1031,6 +1042,16 @@ neoperid_vz <- ggplot(matnp_l, aes(x=mnthyr, y=npdrate, group = npdtype, colour 
         legend.position = "bottom", 
         legend.text = element_text(size = 11)
   ) 
+
+target2018 <- data.frame(x1= as.Date("2018-10-01"), x2=as.Date("2019-01-01"), y1=.10, y2=.18)
+target2019 <- data.frame(x1=as.Date("2019-10-01"), x2=as.Date("2020-01-01"), y1=.08, y2=.16)
+target2020 <- data.frame(x1=as.Date("2020-10-01"), x2=as.Date("2021-01-01"), y1=.06, y2=.14)
+target2021 <- data.frame(x1=as.Date("2021-10-01"), x2=as.Date("2022-01-01"), y1=.04, y2=.12)
+targets <- bind_rows(target2018, target2019, target2020, target2021)
+
+neoperid_vz + geom_segment(aes(x = x1, y = y1, xend = x2, yend = y2), colour = usaid_red, size=.8, data = targets) +
+  annotate(geom="text", x=as.Date("15-5-2018", format = "%d-%m-%Y"), y=.75, colour = usaid_red, label="National Targets", size= 3) +
+  annotate(geom="text", x=as.Date("01-06-2021", format = "%d-%m-%Y"), y=.1, label="*home deliveries included", size =3, fontface = 'italic')
 
 ggsave("viz/(5) Neonatal and perinatal deaths.png",
        device="png",
