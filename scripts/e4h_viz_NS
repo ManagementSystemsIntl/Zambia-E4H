@@ -2,7 +2,7 @@
 
 # Prep ---- 
 
-#from Dan & Yashin
+#from Dan & Yash
 
 source("scripts/r prep.R")
 
