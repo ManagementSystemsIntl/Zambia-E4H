@@ -7,6 +7,7 @@
 source("scripts/r prep.R")
 
 mat <- read_xls("data/Jan-Mar 2022/Reproductive Maternal Data_National Level(Monthly) updated.xls") 
+
 mat  <- mat  %>%
   mutate(month_chr = str_sub(periodname,
                              start=1,
@@ -26,6 +27,7 @@ sum(mat$month_chr!=mat$month) # expecting 0 if vars same
 matq <- read_xls("data/Jan-Mar 2022/Reproductive Maternal Data_National Level(Quarterly).xls")
 
 mat_prov <- read_xls("data/Jan-Mar 2022/Reproductive Maternal Data_Provincial Level(Monthly).xls")
+
 mat_prov  <- mat_prov  %>%
   mutate(
         month_chr = str_sub(periodname,
@@ -42,6 +44,7 @@ mat_prov  <- mat_prov  %>%
         )
 
 ch_prov <- readxl::read_xls("data/Jan-Mar 2022/Child Health Data_Provincial Level(Quarterly).xls")
+
 ch_prov  <- ch_prov  %>%
   mutate(month_chr = str_sub(periodname,
                              start=1,
@@ -966,7 +969,9 @@ matsb <- mat  %>%
 
 matsb_l <- matsb %>% 
   pivot_longer(c(sbh, sbm, sbf), names_to= "sbtype", values_to = "sbrate") %>% 
-  mutate(sbtype = factor(sbtype))
+  mutate(sbtype = factor(sbtype),
+         year=year(mnthyr))
+
 levels(matsb_l$sbtype)
 
 # ancv <- ggplot(mat, aes(x = mnthyr, y = rate, group = subpop, colour = subpop)) +
@@ -992,13 +997,19 @@ sb_vz <- ggplot(matsb_l, aes(x = mnthyr, y = sbrate, group = sbtype, colour = sb
         ) 
 
 sb_vz 
+
 target2018 <- data.frame(x1= as.Date("2018-10-01"), x2=as.Date("2019-01-01"), y1=.10, y2=.10)
 target2019 <- data.frame(x1=as.Date("2019-10-01"), x2=as.Date("2020-01-01"), y1=.08, y2=.08)
 target2020 <- data.frame(x1=as.Date("2020-10-01"), x2=as.Date("2021-01-01"), y1=.06, y2=.06)
 target2021 <- data.frame(x1=as.Date("2021-10-01"), x2=as.Date("2022-01-01"), y1=.04, y2=.04)
-targets <- bind_rows(target2018, target2019, target2020, target2021)
 
-sb_vz + geom_segment(aes(x = x1, y = y1, xend = x2, yend = y2), colour = usaid_red, size=.8, data = targets) +
+targets <- bind_rows(target2018, target2019, target2020, target2021)
+targets
+
+sb_vz + 
+  geom_segment(aes(x = x1, y = y1, xend = x2, yend = y2), colour = usaid_red, size=.8, data = targets) 
+
+
   annotate(geom="text", x=as.Date("15-5-2018", format = "%d-%m-%Y"), y=.75, colour = usaid_red, label="National Targets", size= 3) +
   annotate(geom="text", x=as.Date("01-06-2021", format = "%d-%m-%Y"), y=.1, label="*home deliveries included", size =3, fontface = 'italic')
 
@@ -1007,6 +1018,60 @@ ggsave("viz/(6) Stillbirths.png",
        type="cairo",
        height=4,
        width=7)
+
+
+  # Dan 
+
+library(plotrix)
+
+d <- matsb_l %>%
+  mutate(sbrate=sbrate/100) %>%
+  group_by(sbtype, year) %>%
+  summarise(sbrate_se = std.error(sbrate),
+            sbrate=mean(sbrate)) %>%
+  mutate(lower=sbrate-1.96*sbrate_se,
+         upper=sbrate+1.96*sbrate_se)
+
+tar <- data.frame(year=2018:2022,
+                  target=c(.1,.08,.06,.04, .04))
+
+tar
+
+d <- d %>%
+  left_join(tar) %>%
+  filter(sbtype=="sbh")
+
+ggplot(d, aes(year)) + 
+#  geom_line(aes(y=lower), color=usaid_blue, linetype="dotdash", size=1.2) +
+#  geom_line(aes(y=upper), color=usaid_blue, linetype="dotdash", size=1.2) +
+  geom_line(aes(y=sbrate), color=usaid_blue, size=1.2) +
+  geom_line(aes(y=target), color=usaid_red, size=1.2) +
+  geom_point(aes(y=target), size=3.5, color=usaid_red) +
+  geom_point(aes(y=sbrate), size=3.5, color=usaid_blue) +
+  geom_label(aes(label=paste(round(target*100,1), "%", sep=""), y=target), size=3.5, color=usaid_red) +
+  geom_label(aes(label=paste(round(sbrate*100, 1), "%", sep=""), y=sbrate), size=3.5, color=usaid_blue) +
+#  geom_ribbon(aes(ymin=lower, ymax=upper), fill="lightgrey", alpha=.4) +
+  scale_y_continuous(limits=c(0,.2),
+                     breaks=seq(0,.2,.05),
+                     labels=percent_format(accuracy=1),
+                     sec.axis=sec_axis(~.,
+                     breaks=c(.136, .04),
+                     labels=c("<b style='color:#0067B9;'>Actual</i>",
+                              "<b style='color:#BA0C2F;'>Target</i>"))) +
+  labs(x="",
+       y="",
+       title="Stillbirth rate has <b>declined</b>, but not on pace with national targets") +
+  theme(plot.title.position="plot",
+        plot.title=element_markdown(),
+        axis.text.y.right=element_markdown())
+
+ggsave("viz/(6) Stillbirths annual targets.png",
+       device="png",
+       type="cairo",
+       height=3.5,
+       width=7)
+
+
 
 #* (5.1) Neonatal/perinatal deaths ----
 
@@ -1020,7 +1085,8 @@ matnp <- mat %>%
 matnp_l <- matnp %>% 
   pivot_longer(c(neod, perid), names_to= "npdtype", values_to = "npdrate") %>% 
   mutate(npdtype = factor(npdtype))
-  levels(matnp_l$npdtype)
+  
+levels(matnp_l$npdtype)
 
 #  scale_y_continuous(limits = c(0,1),
 #                     labels = percent,
@@ -1043,11 +1109,18 @@ neoperid_vz <- ggplot(matnp_l, aes(x=mnthyr, y=npdrate, group = npdtype, colour 
         legend.text = element_text(size = 11)
   ) 
 
+neoperid_vz
+
 target2018 <- data.frame(x1= as.Date("2018-10-01"), x2=as.Date("2019-01-01"), y1=.10, y2=.18)
 target2019 <- data.frame(x1=as.Date("2019-10-01"), x2=as.Date("2020-01-01"), y1=.08, y2=.16)
 target2020 <- data.frame(x1=as.Date("2020-10-01"), x2=as.Date("2021-01-01"), y1=.06, y2=.14)
 target2021 <- data.frame(x1=as.Date("2021-10-01"), x2=as.Date("2022-01-01"), y1=.04, y2=.12)
+
 targets <- bind_rows(target2018, target2019, target2020, target2021)
+
+# targs <- data.frame(year=210:2022,
+#                     neonatal = c(18,16,14,12),
+#                     )
 
 neoperid_vz + geom_segment(aes(x = x1, y = y1, xend = x2, yend = y2), colour = usaid_red, size=.8, data = targets) +
   annotate(geom="text", x=as.Date("15-5-2018", format = "%d-%m-%Y"), y=.75, colour = usaid_red, label="National Targets", size= 3) +
@@ -1073,7 +1146,8 @@ matnpr <- mat %>%
 
 matnpr_l <- matnpr %>% 
   pivot_longer(c(neodr, peridr), names_to= "drtype", values_to = "nprrate") %>% 
-  mutate(drtype = factor(drtype))
+  mutate(drtype = factor(drtype),
+         year=year(mnthyr))
 
 levels(matnpr_l$drtype)
 
@@ -1110,6 +1184,49 @@ ggsave("viz/(5) Neonatal and perinatal mortality rates.png",
 # In last quarter's graph, the presentation showed there was a 
 # slight decrease in 2021--we will need to understand why current 
 # graph shows increase instead
+
+
+  # Dan 
+
+out <- matnpr_l %>%
+  group_by(year, drtype) %>%
+  summarise(nprrate=mean(nprrate, na.rm=T)/100) %>%
+  na.omit() %>%
+  filter(drtype=="neodr") %>%
+  ungroup() %>%
+  mutate(neonatal = c(18,16,14,12, 12)/100)
+
+str(out)
+
+ggplot(out, aes(year)) +
+  geom_line(aes(y=nprrate), color=medium_blue, size=1) +
+  geom_label(aes(y=nprrate, label=paste(round(nprrate*100,1), "%", sep="")), color=medium_blue, size=3) +
+  geom_line(aes(y=neonatal), color=usaid_red, size=1) +
+  geom_label(aes(y=neonatal, label=paste(round(neonatal*100,1), "%", sep="")), color=usaid_red, size=3) +
+  scale_y_continuous(limits=c(0,.2),
+                     breaks=seq(0,.2,.05),
+                     labels=percent_format(accuracy=1),
+                     sec.axis=sec_axis(~.,
+                                       breaks=c(.022, .12),
+                                       labels=c("<b style='color:#0067B9;'>Actual</i>",
+                                                "<b style='color:#BA0C2F;'>Target</i>"))) +
+  labs(x="",
+       y="",
+       title="Neonatal death rate increasing, but still well below targets") +
+  theme(plot.title.position="plot",
+        plot.title=element_markdown(),
+        axis.text.y.right=element_markdown())
+  
+
+ggsave("viz/neonatal death rate with targets.png",
+       device="png",
+       type="cairo",
+       height=3.5,
+       width=7)
+
+
+
+
 
 #* (5.2) Outcome: Neonatal mortality by PROVINCE FACETED
 
