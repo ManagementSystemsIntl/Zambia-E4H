@@ -1,82 +1,163 @@
 # Zambia 4 Health
 
-# prep ---- 
+# Prep ---- 
+
+setwd("C:/Users/yashin.lin/Dropbox/0 Current Work/R R for work/Zambia-E4H Git")
 
 source("scripts/r prep.R")
 
-ch <- read_xls("data/Downlaod Extract Childhealth Monthly At National.xls")
-fam <- read_xls("data/Downlaod Extract Family Planning Monthly At National.xls")
-fam_prov <- read_xls("data/Downlaod Extract Family Planning Yearly At Province.xls")
-mat_prov <- read_xls("data/Downlaod Extract Maternal Yearly By Province.xls") 
-mat_prov
-mat <- read_xls("data/Downlaod Extract Maternal Monthly At National.xls")
+#ggplot_shiny()
 
-# Family ---- 
-
-
-
-# Family provincial ---- 
-
-
-# Maternal ---- 
-
-#* Client: ANC coverage at first trimestre  ----
-
-mat <- mat %>%
-  rename(anc1 = 4,
-         anc1u20 = 5,
-         anc1hr = 12) %>%
-  mutate(
-    anc1p = anc1/100,
-    anc1u20p = anc1u20/100,
-    anc1hrp = anc1hr/100,
-    month_chr = str_sub(periodname,
-                        start=1,
-                        end=nchar(periodname)-5),
-    month = factor(month_chr,
-                   levels=c("January","February","March","April","May","June","July","August","September","October","November","December")),
-    month_code = as.numeric(month), 
-    year = str_sub(periodname, 
-                   start=nchar(periodname)-4,
-                   end=nchar(periodname)),
-    monyr = paste(month_code, year, sep="-"),
-    mnthyr = my(monyr)
-  )
-
-# To create legend, gather method for including a legend --
-
-mat <- gather(mat, key = subpop , value = rate, c(anc1p,anc1u20p,anc1hrp)) # 
+mat <- read_xls("data/Jan-Mar 2022/Reproductive Maternal Data_National Level(Monthly) updated.xls") 
+mat  <- mat  %>%
+  mutate(month_chr = str_sub(periodname,
+                             start=1,
+                             end=nchar(periodname)-5),
+         month = factor(month_chr,
+                        levels=c("January","February","March","April","May","June","July","August","September","October","November","December")),
+         month_code = as.numeric(month), 
+         year = str_sub(periodname, 
+                        start=nchar(periodname)-4,
+                        end=nchar(periodname)),
+         monyr = paste(month_code, year, sep="-"),
+         mnthyr = my(monyr))
 
 sum(mat$month_chr!=mat$month) # expecting 0 if vars same
 
+matq <- read_xls("data/Jan-Mar 2022/Reproductive Maternal Data_National Level(Quarterly).xls")
+mat_prov <- read_xls("data/Jan-Mar 2022/Reproductive Maternal Data_Provincial Level(Monthly).xls")
+mat_prov  <- mat_prov  %>%
+  mutate(month_chr = str_sub(periodname,
+                             start=1,
+                             end=nchar(periodname)-5),
+         month = factor(month_chr,
+                        levels=c("January","February","March","April","May","June","July","August","September","October","November","December")),
+         month_code = as.numeric(month), 
+         year = str_sub(periodname, 
+                        start=nchar(periodname)-4,
+                        end=nchar(periodname)),
+         monyr = paste(month_code, year, sep="-"),
+         mnthyr = my(monyr))
+
+sum(mat_prov$month_chr!=mat_prov$month) # expecting 0 if vars same
+
+# Maternal ---- 
+
+#* (1) Client: ANC coverage ----
+
+mat <- mat %>%
+  rename(ancc = 3,
+         anc1 = 4,
+         anc1u20 = 5,
+         anc1hr = 12) %>%
+  mutate(anccp = ancc/100,
+    anc1p = anc1/100,
+    anc1u20p = anc1u20/100,
+    anc1hrp = anc1hr/100)
+
+# set anccp to 100 for all values >100
+mat <- mat %>% 
+  dplyr::mutate(ancc = ifelse(ancc > 100, 100, ancc)) %>% 
+  dplyr::mutate(anccp = ancc/100)
+
+# To create legend, gather method for including a legend --
+
+mat <- gather(mat, key = subpop , value = rate, c(anccp, anc1p,anc1u20p,anc1hrp))
+mat$subpop <- factor(mat$subpop, levels = unique(mat$subpop)) # transform into factor
+levels(mat$subpop)
+
 ggplot(mat, aes(x = mnthyr, y = rate, group = subpop, colour = subpop)) +
   geom_point(alpha=.6, size=1) + 
-  geom_line(size = .5) +
-  geom_smooth(method = lm, size = .7, se=FALSE) +
+  geom_smooth(method = loess, size = .7, se=FALSE) +
   scale_y_continuous(limits = c(0,1),
                      labels = percent,
                      breaks = c(.1,.2,.3,.4,.5,.6,.7,.8,.9, 1)) +
   xlab("") + 
-  ylab("Proportion receiving ANC at TM1") +
-  ggtitle("Proportion of expected pregnancies \n receiving antenatal care at first trimester (2018-2022)") +
-  scale_colour_manual(name = "",
-                      labels = c("High risk pregnancies","All women","Women under 20"),
-                      values = c(usaid_red, medium_grey, usaid_blue)) +
-  theme(plot.title = element_text(size = 14), 
+  ylab("") +
+  ggtitle("Proportion of expected pregnancies receiving antenatal care (ANC), 2018-2022") +
+  scale_color_manual(name ="",
+                     values = usaid_palette,
+                     labels = c("1st ANC, all TMs", "ANC at TM1", "ANC at TM1: Women <20 yrs", "ANC at TM1: High risk pregs")
+  ) +
+    theme(plot.title = element_text(size = 14), 
         axis.title.x = element_text(size = 12),
         axis.title.y = element_text(size = 12),
         axis.text = element_text(size = 9),
-        legend.title = element_text(size = 12), 
-        legend.text = element_text(size = 11)
+        legend.position = "bottom", 
+        legend.text = element_text(size = 9)
   ) 
 
-ggsave("viz/Antenatal care at first trimester.png",
+ggsave("viz/(1) Proportion of expected pregnancies receiving ANC.png",
        device="png",
        type="cairo",
        height=4,
        width=7)
 
-#* Facility: ANC care (Folic acid + Fe) ----
+#* (1.1) Client: ANC coverage PROVINCIAL ----
+
+names(mat_prov)
+
+anc_prov <- mat_prov %>%
+  rename(prov = 1,
+         anc1 = 4,
+#         anc1u20 = 5,
+         anc1hr = 12) %>%
+  mutate(anc1p = anc1/100,
+#         anc1u20p = anc1u20/100,
+         anc1hrp = anc1hr/100,
+         ) %>% 
+   select(prov, mnthyr, anc1p, anc1hrp) %>% 
+#  select(prov, mnthyr, anc1p, anc1u20p, anc1hrp) %>% 
+  mutate(prov = factor(prov),
+         ip = case_when(prov=="Northern" |
+                          prov =="Central" |
+                          prov =="Muchinga" |
+                          prov =="Southern" |
+                          prov =="Eastern" ~ "ip",
+                        TRUE ~ "non-ip"))
+
+levels(anc_prov$prov)
+
+anc_prov_l <- anc_prov %>% 
+  gather(key = subpop , value = rate, c(anc1p, anc1hrp)) %>% 
+# gather(key = subpop , value = rate, c(anc1p,anc1u20p,anc1hrp)) %>% 
+  mutate(ip = factor(ip),
+         subpop = factor(subpop))
+  
+levels(anc_prov_l$ip)
+levels(anc_prov_l$subpop)
+
+ggplot(anc_prov_l, aes(x = mnthyr, y = rate, group = subpop, colour = subpop)) +
+#  geom_point(alpha=.6, size=.6) + 
+  geom_smooth(method = loess, size = .7, se=FALSE)  +
+  facet_wrap(~prov) +
+  faceted +
+  scale_y_continuous(limits = c(0,1),
+                     labels = percent,
+                     breaks = c(.2,.4,.6,.8, 1)) +
+  labs(x ="", y="", caption = "Provinces supported by FHN, MOMENT and G2G:<br>	Northern, Central, Luapula, Muchinga Southern and Eastern") +
+  ggtitle("Proportion of expected pregnancies receiving ANC at first trimester, 2018-2022") +
+  scale_color_manual(name= "", values = (usaid_palette), labels = c("High risk pregnancies", "All", "Pregnancies of women <20 years")) +
+  theme(# plot.title = element_text(size = 12), 
+    plot.title=element_markdown(),
+    axis.title.x = element_text(size = 10),
+    axis.title.y = element_text(size = 10),
+    axis.text.x = element_text(size = 7),
+    axis.text.y = element_text(size = 7),
+    legend.text = element_text(size = 10),
+    legend.title=element_blank(),
+    legend.position=c(.75,.15),
+    strip.text=element_text(size=7, family="Gill Sans Mt"),
+    )
+ 
+ggsave("viz/(1.1) ANC by province faceted.png",
+       device="png",
+       type="cairo",
+       height=4,
+       width=7)
+
+
+# -ANC care (Folic acid + Fe) ----
 
 # Assign each value of folic = 100 if >100
 
@@ -96,22 +177,27 @@ mat <- gather(mat, key = vit, value = rate, c(folicp, fep)) # 96 rows x 25
 # Create mnthyr date var for y axis
 
 mat <- mat %>%
-  mutate(month_chr = str_sub(periodname,
+  dplyr::mutate(month_chr = str_sub(periodname,
                              start=1,
-                             end=nchar(periodname)-5),
+                             end=nchar(periodname)-5
+                             ),
          month = factor(month_chr,
-                        levels=c("January","February","March","April","May","June","July","August","September","October","November","December")),
+                        levels=c("January","February","March","April","May","June","July","August","September","October","November","December")
+                        ),
          month_code = as.numeric(month), 
          year = str_sub(periodname, 
                         start=nchar(periodname)-4,
-                        end=nchar(periodname)),
+                        end=nchar(periodname)
+                        ),
          monyr = paste(month_code, year, sep="-"),
-         mnthyr = my(monyr))
+         mnthyr = my(monyr)
+         )
 
-mat %>% 
-  ggplot(aes(x = mnthyr, y = rate, group = vit, colour = vit)) +
+suppressMessages(expr, classes = "message")
+
+ggplot(mat, aes(x = mnthyr, y = rate, group = vit, colour = vit)) +
   geom_point(alpha=.6, size=1) + 
-  geom_smooth(se= FALSE) +
+  geom_smooth(method = loess, se= FALSE) +
   scale_y_continuous(limits = c(0,1),
                      labels = percent,
                      breaks = c(.1,.2,.3,.4,.5,.6,.7,.8,.9, 1)) +
@@ -129,6 +215,7 @@ mat %>%
         legend.text = element_text(size = 11),
   ) 
 
+#? cannot save viz
 
 ggsave("viz/Folic Acid and Iron Supplementation during ANC.png",
        device="png",
@@ -136,9 +223,9 @@ ggsave("viz/Folic Acid and Iron Supplementation during ANC.png",
        height=4,
        width=7)
 
-#* Client: Institutional delivery coverage ----
+#* (2) Client: Institutional delivery coverage ----
 
-mat <- mat  %>%
+inst <- mat  %>%
   rename(instdel = 8) %>%
   mutate(instdelp = instdel/100,
          month_chr = str_sub(periodname,
@@ -153,12 +240,12 @@ mat <- mat  %>%
          monyr = paste(month_code, year, sep="-"),
          mnthyr = my(monyr))
 
-sum(mat$month_chr!=mat$month) # expecting 0 if vars same
+sum(inst$month_chr!=inst$month) # expecting 0 if vars same
 
-ggplot(mat, aes(x=mnthyr, y=instdelp)) + 
+ggplot(inst, aes(x=mnthyr, y=instdelp)) + 
   geom_point(color= usaid_blue, alpha=.6, size=.8) + 
-  geom_line(color= usaid_blue, alpha=.4) +
-  stat_smooth(color= usaid_blue, se=F, size=1.1, alpha=.8) +
+# geom_line(color= usaid_blue, alpha=.4) +
+  geom_smooth(color= usaid_blue, se=F, size=1.1, alpha=.8) +
   scale_y_continuous(limits=c(0,1),
                      labels = percent,
                      breaks = c(.1,.2,.3,.4,.5,.6,.7,.8,.9, 1)) +
@@ -170,15 +257,16 @@ ggplot(mat, aes(x=mnthyr, y=instdelp)) +
         axis.title.y = element_text(size = 12),
         axis.text = element_text(size = 9),
         legend.title = element_text(size = 12), 
-        legend.text = element_text(size = 11))
+        legend.text = element_text(size = 11)
+        )
 
-ggsave("viz/Institutional births.png",
+ggsave("viz/(2) Prop of expected deliveries occuring in health facilities.png",
        device="png",
        type="cairo",
        height=4,
        width=7)
 
-#* F/C: Cesarean rate ====
+# -F/C: Cesarean rate ====
 
 mat  <- mat  %>%
 rename(cesar = 9) %>%
@@ -220,7 +308,7 @@ ggsave("viz/Cesarean section.png",
        height=4,
        width=7)
 
-#* Outcome: Stillbirths ====
+#* Outcome: Stillbirths
 
 mat  <- mat  %>%
   rename(sbr = 15) %>%
@@ -261,24 +349,11 @@ ggsave("viz/Fetal deaths.png",
        height=4,
        width=7)
 
-#* Facility: Postnatal care ====
+#* (3) Facility: Postnatal care ====
 
 mat  <- mat  %>%
   rename(pnc = 11) %>%
-  mutate(pncp = pnc/100,
-         month_chr = str_sub(periodname,
-                             start=1,
-                             end=nchar(periodname)-5),
-         month = factor(month_chr,
-                        levels=c("January","February","March","April","May","June","July","August","September","October","November","December")),
-         month_code = as.numeric(month), 
-         year = str_sub(periodname, 
-                        start=nchar(periodname)-4,
-                        end=nchar(periodname)),
-         monyr = paste(month_code, year, sep="-"),
-         mnthyr = my(monyr))
-
-sum(mat$month_chr!=mat$month) # expecting 0 if vars same
+  mutate(pncp = pnc/100)
 
 mat <- ggplot(mat, aes(mnthyr, pncp)) + 
   geom_point(color= usaid_blue, alpha=.6, size=.8) + 
@@ -286,52 +361,41 @@ mat <- ggplot(mat, aes(mnthyr, pncp)) +
   scale_y_continuous(limits = c(0,1),
                      labels = percent,
                      breaks = c(.1, .2, .3, .4, .5, .6, .7, .8, .9, 1)) +
-  stat_smooth(method="lm", color= usaid_blue, se=F, size=1.1, alpha=.8) +
+  stat_smooth(color= usaid_blue, se=F, size=1.1, alpha=.8) +
   labs(x="",
        y="",
-       title="Proportion of expected deliveries \nthat receive postnatal care within 48 hours after delivery* ") +
+       title="Proportion of expected deliveries \nthat receive postnatal care within 48 hours after delivery has doubled since 2018*"
+       ) +
   theme(plot.title = element_text(size = 14), 
         axis.title.x = element_text(size = 12),
         axis.title.y = element_text(size = 12),
         axis.text = element_text(size = 9),
         legend.title = element_text(size = 12), 
-        legend.text = element_text(size = 11))
+        legend.text = element_text(size = 11)
+        )
 
 mat + annotate(geom="text", x=as.Date("01-06-2021", format = "%d-%m-%Y"), y=.1, label="*home deliveries included", size =4, fontface = 'italic')
 
-ggsave("viz/Postnatal care.png",
+ggsave("viz/(3) Proportion of expected deliveries receiving PNC within 48 hrs.png",
        device="png",
        type="cairo",
        height=4,
        width=7)
 
-
-#* Outcome: Maternal deaths ----
+#* (4) Outcome: Maternal deaths ----
  
-#? Waiting to learn from Gift which variables to use ----
-
-mat <- mat %>%
+matmm <- mat %>%
   rename(mmfr = 16,
          mmf = 13,
          mmc = 22
-         ) %>%
-  mutate(month_chr = str_sub(periodname,
-                             start=1,
-                             end=nchar(periodname)-5),
-         month = factor(month_chr,
-                        levels=c("January","February","March","April","May","June","July","August","September","October","November","December")),
-         month_code = as.numeric(month), 
-         year = str_sub(periodname, 
-                        start=nchar(periodname)-4,
-                        end=nchar(periodname)),
-         monyr = paste(month_code, year, sep="-"),
-         mnthyr = my(monyr))
+         ) 
 
-str(mat)
+matmm <- gather(matmm, key = mmtype , value = deaths, c(mmfr, mmf, mmc)) 
 
-mat <- gather(mat, key = mmtype , value = deaths, c(mmfr, mmf, mmc)) 
+matmm$mmtypef <- factor(matmm$mmtype, levels = unique(matmm$mmtype))
+levels(matmm$mmtypef)
 
-ggplot(mat, aes(x = mnthyr, y = deaths, group = mmtype, colour = mmtype)) + 
+ggplot(matmm, aes(x = mnthyr, y = deaths, group = mmtypef, colour = mmtypef)) + 
   geom_point(alpha=.6, size=1) + 
   geom_line(size=.7) +
   scale_y_continuous(limits = c(0,200),
@@ -339,194 +403,216 @@ ggplot(mat, aes(x = mnthyr, y = deaths, group = mmtype, colour = mmtype)) +
                      labels = c("20","40","60","80","100","120","140","160","180","200")) +
   xlab("") +
   ylab("Number of maternal deaths") +
-  ggtitle("Maternal deaths occurring at health facilities \nand in the community  (2018-2022)") +
+  ggtitle("Maternal deaths occurring at health facilities \nand in the community, 2018-2022") +
   scale_colour_manual(name = "",
-                    labels= c( "Community deaths", "Health facility deaths", "Maternal mortality facility ratio \n(per 10 000 live births)"),
-                    values = c(medium_grey, usaid_red, usaid_blue)) +
+                    labels= c( "Maternal mortality facility ratio \n(per 10 000 live births)", "Health facility deaths", "Community deaths"),
+                    values = c(usaid_blue, medium_grey, usaid_red)) +
 
-# scale_colour_manual: How to assign correct colour to correct label: ----
-# general rule: r looks at data in  alphabetical order of variables or variable values
-# values: assigns colour to data [in alphabetical order of variable name]
-# labels: assigns legend labels over data [by alphabetical order of var name]
+# [scale_colour_manual]: How to assign correct colour to correct label: ----
+# [general rule: r looks at data in  alphabetical order of variables or variable values
+# [values: assigns colour to data [in alphabetical order of variable name
+# [labels: assigns legend labels over data [by alphabetical order of var name
   
   theme(plot.title = element_text(size = 14), 
         axis.title.x = element_text(size = 12),
         axis.title.y = element_text(size = 12),
         axis.text = element_text(size = 9.5),
+        legend.position = "bottom", 
         legend.text = element_text(size = 10))
         
-ggsave("viz/Maternal deaths.png",
+ggsave("viz/(4) Maternal deaths.png",
        device="png",
        type="cairo",
        height=4,
        width=7)
 
-# Maternal Provincial ---- 
+#* Maternal Provincial ---- 
 
-#* Outcome: maternal deaths by province ====
+#* (4.1) Outcome: Maternal mortality PROVINCIAL ----
 
-names(fam_prov)
+names(mat_prov)
 
-fam_prov <- fam_prov %>%
-  rename(inst_deliv = 8)
+matd_prov <- mat_prov %>%
+  select(1, 16, mnthyr) %>% 
+  rename(prov = 1,
+         mmrate = 2
+         ) %>% 
+  mutate(prov = factor(prov),
+         ip = case_when(prov=="Northern" |
+                          prov =="Central" |
+                          prov =="Muchinga" |
+                          prov =="Southern" |
+                          prov =="Eastern" ~ "ip",
+                          TRUE ~ "non-ip"))
 
-frq(fam_prov$inst_deliv)
+levels(matd_prov$ip)
 
-d <- read_xls("data/Downlaod Extract Maternal Yearly By Province.xls")
-
-d_l <- d %>%
-  pivot_longer(-1,
-               names_to="month") %>%
-  mutate(Month=factor(month, 
-                      labels=c("Jan","Feb","Mar","Apr","May", "Jun","Jul","Aug","Sep","Oct","Nov","Dec")))
-
-d_l
-
-ggplot(d_l, aes(Month, value, color=Province, group=Province)) + 
-  geom_line() + 
-  geom_label(aes(label=value), size=3) + 
-  scale_color_viridis_d()
-
-ggplot(d_l, aes(Month, value, color=Province, group=Province)) + 
-  stat_smooth(se=F, size=1) + 
-  geom_point(size=1, alpha=.8) +
-  #  geom_label(aes(label=value), size=3) + 
-  scale_color_viridis_d() + 
-  facet_wrap(~Province) +
+ggplot(matd_prov, aes(x = mnthyr, y = mmrate, colour = ip)) +
+  geom_point(alpha=.6, size=1) + 
+  geom_smooth(method = loess, size = .7, se=FALSE)  +
+  facet_wrap(~prov) +
   faceted +
-  theme(legend.position="none") +
-  labs(x="",
-       y="",
-       title="Maternal deaths, by province",
-       caption="Calendar year 2021") +
-  scale_x_discrete(breaks=c("Feb","Apr","Jun","Aug","Oct","Dec")) +
-  scale_y_continuous(limits=c(0,20))
+  scale_y_continuous(limits = c(0,500),
+                     breaks = c(100, 200, 300, 400)) +
+  xlab("") + 
+  ylab("") +
+  ggtitle("Facility maternal mortality ratio, 2018-2022") +
+  scale_color_manual(name= "", values = (usaid_palette), labels = c("Supported by FHN, MOMENT and G2G", "Not supported")) +
+  theme(# plot.title = element_text(size = 12), 
+        plot.title=element_markdown(),
+        axis.title.x = element_text(size = 10),
+        axis.title.y = element_text(size = 10),
+        axis.text.x = element_text(size = 7),
+        axis.text.y = element_text(size = 7),
+        legend.text = element_text(size = 10),
+        legend.title=element_blank(),
+        legend.position=c(.75,.15))
+  ) 
 
-ggsave("viz/Zambia maternal deaths, by province (22 Apr 2022).png",
+ggsave("viz/(7) Maternal mortality ratio by province.png",
        device="png",
        type="cairo",
-       height=5,
-       width=9)
-
-
+       height=4,
+       width=7)
 
 # Child Health ---- 
 
 names(ch)
 
-# Immunisations ---- 
+#* (6) Outcome: Stillbirths  ---- 
 
-ch <- ch  %>%
-  rename( = 6) %>%
-  mutate(month_chr = str_sub(periodname,
-                             start=1,
-                             end=nchar(periodname)-5),
-         month = factor(month_chr,
-                        levels=c("January","February","March","April","May","June","July","August","September","October","November","December")),
-         month_code = as.numeric(month), 
-         year = str_sub(periodname, 
-                        start=nchar(periodname)-4,
-                        end=nchar(periodname)),
-         monyr = paste(month_code, year, sep="-"),
-         mnthyr = my(monyr))
+names(mat)
 
-sum(ch$month_chr!=ch$month) # expecting 0 if vars same
+matsb <- mat  %>%
+  rename( sbh = 15,
+          sbm = 19,
+          sbf = 20
+          ) %>% 
+  select(1, mnthyr, sbh, sbm, sbf) 
 
-ggplot(ch, aes(mnthyr, neod)) + 
-  geom_point(color= usaid_blue, alpha=.6, size=.8) + 
-  geom_line(color= usaid_blue, alpha=.4) +
-  stat_smooth(method="lm", color= usaid_blue, se=F, size=1.1, alpha=.8) +
-  scale_y_continuous(limits=c(0,500)) +
+# [pivot_longer syntax] ----
+
+matsb_l <- matsb %>% 
+  pivot_longer(c(sbh, sbm, sbf), names_to= "sbtype", values_to = "sbrate") %>% 
+  mutate(sbtype = factor(sbtype))
+levels(matsb_l$sbtype)
+
+# ancv <- ggplot(mat, aes(x = mnthyr, y = rate, group = subpop, colour = subpop)) +
+
+ggplot(matsb_l, aes(x = mnthyr, y = sbrate, group = sbtype, colour = sbtype)) +
+  geom_point(alpha=.6, size=.8) + 
+  geom_line(alpha=.4) +
+  stat_smooth(se=F, size=.8, alpha=.8) +
+  scale_y_continuous(limits=c(0,18)) +
   labs(x="",
        y="",
-       title="Neonatal Deaths") +
+       title="The proportion of stillbirths  that are macerated stillbirths has slightly increased \nin the last two years",
+       caption= "Stillbirth rates expressed per 1000 total births") +
+  scale_color_manual(name= "",values = usaid_palette, labels = c("Fresh stillbirth rate", "Stillbirth rate (MSB + FSB)", "Macerated stillbirth rate")) +
   theme(plot.title = element_text(size = 14), 
         axis.title.x = element_text(size = 12),
         axis.title.y = element_text(size = 12),
         axis.text = element_text(size = 9),
         legend.title = element_text(size = 12), 
-        legend.text = element_text(size = 11))
+        legend.position = "bottom", 
+        legend.text = element_text(size = 11)
+        ) 
 
-ggsave("viz/Neonatal deaths.png",
+ggsave("viz/(6) Stillbirths.png",
        device="png",
        type="cairo",
        height=4,
        width=7)
 
+#* (5.1) Outcome: Neonatal/perinatal deaths ----
 
-#* Outcome: Perinatal deaths ----
+names(mat)
 
-#? Need help from Gift to understand how to download data ----
+matnp <- mat %>%
+  rename(neod = 14,
+         perid = 26) %>% 
+  select(mnthyr, neod, perid) 
 
-ch <- ch %>%
-  rename(neod = 6) %>%
-  mutate(month_chr = str_sub(periodname,
-                             start=1,
-                             end=nchar(periodname)-5),
-         month = factor(month_chr,
-                        levels=c("January","February","March","April","May","June","July","August","September","October","November","December")),
-         month_code = as.numeric(month), 
-         year = str_sub(periodname, 
-                        start=nchar(periodname)-4,
-                        end=nchar(periodname)),
-         monyr = paste(month_code, year, sep="-"),
-         mnthyr = my(monyr))
+matnp_l <- matnp %>% 
+  pivot_longer(c(neod, perid), names_to= "npdtype", values_to = "npdrate") %>% 
+  mutate(npdtype = factor(npdtype))
+  levels(matnp_l$npdtype)
 
-frq(ch$month) 
-frq(ch$neod) 
+#  scale_y_continuous(limits = c(0,1),
+#                     labels = percent,
+#                     breaks = c(.1,.2,.3,.4,.5,.6,.7,.8,.9, 1)) +
 
-sum(ch$month_chr!=ch$month) # expecting 0 if vars same
-
-ggplot(ch, aes(mnthyr, neod)) + 
-  geom_point(color= medium_blue, alpha=.6, size= 1.2) + 
-  geom_line(color= medium_blue, alpha=.6, size = .6) +
-  stat_smooth(method="lm", color= medium_blue, se=F, size=1, alpha=.6) +
-  scale_y_continuous(limits=c(0,500)) +
+neoperid_vz <- ggplot(matnp_l, aes(x=mnthyr, y=npdrate, group = npdtype, colour = npdtype)) + 
+  geom_point(alpha=.6, size= 1.2) + 
+  geom_line(alpha=.6, size = .6) +
+  scale_y_continuous(limits = c(0,1000)) +
   labs(x="",
        y="",
-       title="Neonatal Deaths")
-
-ggsave("viz/neonatal deaths.png",
-       device="png",
-       type="cairo",
-       height=4,
-       width=7)
-
-
-#* Outcome: Neonatal deaths ----
-
-ch <- ch  %>%
-  rename(neod = 6) %>%
-  mutate(month_chr = str_sub(periodname,
-                         start=1,
-                         end=nchar(periodname)-5),
-         month = factor(month_chr,
-                        levels=c("January","February","March","April","May","June","July","August","September","October","November","December")),
-         month_code = as.numeric(month), 
-         year = str_sub(periodname, 
-                        start=nchar(periodname)-4,
-                        end=nchar(periodname)),
-         monyr = paste(month_code, year, sep="-"),
-         mnthyr = my(monyr))
-
-sum(ch$month_chr!=ch$month) # expecting 0 if vars same
-
-ggplot(ch, aes(mnthyr, neod)) + 
-  geom_point(color= usaid_blue, alpha=.6, size=.8) + 
-  geom_line(color= usaid_blue, alpha=.4) +
-  stat_smooth(method="lm", color= usaid_blue, se=F, size=1.1, alpha=.8) +
-  scale_y_continuous(limits=c(0,500)) +
-  labs(x="",
-       y="",
-       title="Neonatal Deaths") +
+       title="Neonatal and perinatal deaths") +
+  scale_color_manual(name= "", values = (usaid_palette), labels = c("Neonatal", "Perinatal")) +
   theme(plot.title = element_text(size = 14), 
-      axis.title.x = element_text(size = 12),
-      axis.title.y = element_text(size = 12),
+        axis.title.x = element_text(size = 12),
+        axis.title.y = element_text(size = 12),
+        axis.text = element_text(size = 9),
+        legend.title = element_text(size = 12), 
+        legend.position = "bottom", 
+        legend.text = element_text(size = 11)
+  ) 
+
+ggsave("viz/(5) Neonatal and perinatal deaths.png",
+       device="png",
+       type="cairo",
+       height=4,
+       width=7)
+
+
+#*(5) Outcome: Neonatal rates ----
+
+names(mat)
+
+matnpr <- mat %>%
+  rename(neod = 14,
+         peridr = 29,
+         lb = 28) %>% 
+  select(mnthyr, neod, peridr, lb) %>% 
+  mutate(neodr = neod/lb * 1000)
+
+matnpr_l <- matnpr %>% 
+  pivot_longer(c(neodr, peridr), names_to= "drtype", values_to = "nprrate") %>% 
+  mutate(drtype = factor(drtype))
+
+levels(matnpr_l$drtype)
+
+glimpse(matnp_l$npdrate)
+
+ggplot(matnpr_l, aes(x= mnthyr, y= nprrate, group=drtype, colour=drtype)) + 
+  geom_point(alpha=.6, size=2) + 
+  geom_smooth(method = "lm", alpha=.4, size = 1, se = F) +
+#  stat_smooth(color= usaid_blue, se=F, size=1.1, alpha=.8) +
+  scale_y_continuous(limits=c(0,22)) +
+  labs(x="",
+       y="",
+       title="<span style='color:#205493;'>**Neonatal**</span> and <span style='color:#BA0C2F;'>**perinatal**</span> mortality rates") +
+  scale_colour_manual(name = "",
+                      values = c(usaid_blue, usaid_red),
+                      labels= c("Neonatal", "Perinatal")) +
+  theme(#plot.title = element_text(size = 14), 
+      axis.title = element_text(size = 12),
       axis.text = element_text(size = 9),
       legend.title = element_text(size = 12), 
-      legend.text = element_text(size = 11))
+      legend.text = element_text(size = 11),
+      legend.position = "bottom",
+      plot.title.position="plot",
+      plot.title=element_markdown()
+      )
       
-ggsave("viz/Neonatal deaths.png",
+title="CHA worker visits <span style='color:#205493;'>**declined**</span> in Jan-Mar 2022,\ncontinuing a trend beginning in Q3 2020") +
+  annotate("text", x=as.Date("2018-12-01"), y=45000, label="SUNTA\nlaunch", color="grey60", size=4) +
+  theme(plot.title.position="plot",
+        plot.title=element_markdown())
+
+
+ggsave("viz/Neonatal and perinatal mortality rates.png",
        device="png",
        type="cairo",
        height=4,
