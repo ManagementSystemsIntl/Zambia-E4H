@@ -103,7 +103,7 @@ ggplot(mat, aes(x = mnthyr, y = rate, group = subpop, colour = subpop)) +
     legend.text = element_text(size = 9)
   ) 
 
-ggsave("viz/(1) expected pregnancies receiving 1st ANC.png",
+ggsave("viz/(1) nsexpected pregnancies receiving 1st ANC.png",
        device="png",
        type="cairo",
        height=4,
@@ -172,7 +172,7 @@ ggplot(anc_prov_l, aes(x = mnthyr, y = rate, group = subpop, colour = subpop)) +
     strip.text=element_text(size=10, family="Gill Sans Mt"),
   )
 
-ggsave("viz/ Maternal faceted.png",
+ggsave("viz/ nsMaternal faceted.png",
        device="png",
        type="cairo",
        height=4,
@@ -269,7 +269,7 @@ nonipprov
 ipprov + nonipprov + 
   plot_annotation(title="ANC coverage for high risk pregnancies has increased in last two years independently \nof USAID support. No other pattern apparent.")
 
-ggsave("viz/(1.2) ANC by province faceted partitioned.png",
+ggsave("viz/(1.2) nsANC by province faceted partitioned.png",
        device="png",
        type="cairo",
        height=4,
@@ -1287,11 +1287,10 @@ ggsave("viz/(11) LARC.png",
 
 names(fam_mnth)
 
-<<<<<<< HEAD
 larcoff <- fam_mnth %>%
   rename(larcoff = 15) %>% 
   select(mnthyr, larcoff) 
-=======
+
   fam_mnth <- fam_mnth %>%
   rename(iucd_remove = 9,
          implant_remove=10,
@@ -1301,7 +1300,6 @@ larcoff <- fam_mnth %>%
   #  select(mnthyr, larcoff) %>%
   mutate(discont_larc = (iucd_remove + implant_remove) / (iucd_insert + implant_insert)) %>%
   relocate(discont_larc, .after=implant_insert)
->>>>>>> 84907b4993b8e5ddf4bf2f855b27803ca584bed0
 
 frq(larc$larcoff)
 frq(fam_mnth$iucd_remove)
