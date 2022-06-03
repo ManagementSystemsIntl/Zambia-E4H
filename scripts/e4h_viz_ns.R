@@ -172,7 +172,7 @@ ggplot(anc_prov_l, aes(x = mnthyr, y = rate, group = subpop, colour = subpop)) +
     strip.text=element_text(size=10, family="Gill Sans Mt"),
   )
 
-ggsave("viz/ ANC by province faceted.png",
+ggsave("viz/ Maternal faceted.png",
        device="png",
        type="cairo",
        height=4,

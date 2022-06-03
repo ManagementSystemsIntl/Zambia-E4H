@@ -9,15 +9,23 @@
 #               "plm", "brms", "rstan", "rstanarm","tidybayes","texreg","gt","gtsummary","huxtable","stargazer", "gsynth",
 #               "panelView", "assertr", "pointblank", "validate", "sandwich", "workflowr", "here", "missForest", "ltm")
 
-zam_packages <- c("tidyverse", "here", "gt","gtsummary","gghighlight","stringi","DT", "ggthemes","ggridges","viridis",
-              "psych","labelled","readxl", "skimr","sjlabelled","sjstats","sjPlot", "sjmisc","readr","ggrepel","openxlsx",
-              "sysfonts","scales","magrittr","knitr","lubridate","Hmisc","haven","tidyr","reshape2","DescTools","extrafont",
-              "extrafontdb")
+# zam_packages <- c("tidyverse", "here", "gt","gtsummary","gghighlight","stringi","DT", "ggthemes","ggridges","viridis",
+#               "psych","labelled","readxl", "skimr","sjlabelled","sjstats","sjPlot", "sjmisc","readr","ggrepel","openxlsx",
+#               "sysfonts","scales","magrittr","knitr","lubridate","Hmisc","haven","tidyr","reshape2","DescTools","extrafont",
+#               "extrafontdb")
+
+zam_packages2 <- c("tidyverse", "here", 
+                  #"gt","gtsummary",
+                  "gghighlight","stringi","DT", "ggthemes","ggridges","viridis",
+                  "psych","labelled","readxl", "skimr","sjlabelled","sjstats","sjPlot", "sjmisc","readr","ggrepel","openxlsx",
+                  "sysfonts","scales","magrittr","knitr","lubridate","Hmisc","haven","tidyr","reshape2","DescTools","extrafont",
+                  "extrafontdb")
 
 
 # lapply(zam_packages, install.packages, character.only=T)
 
-lapply(zam_packages, library, character.only=T)
+#lapply(zam_packages, library, character.only=T)
+lapply(zam_packages2, library, character.only=T)
 
 # font_import()
 # loadfonts(device="win")
