@@ -15,10 +15,11 @@ pmi_data %>%
   #geom_point(size=2, colour="002a6c")
   #scale_color_viridis(discrete = TRUE) +
   #theme_ipsum() +
-  theme(
+  #theme(
     legend.position="none",
     plot.title = element_text(size=11),
     panel.grid = element_blank()
   ) +
   ggtitle("Confirmed Malria Cases") +
   facet_wrap(~name)+faceted
+
