@@ -1,11 +1,14 @@
 #Dont mind directory, i was working off Report
-source("C:/Users/NyimbiliShida/Documents/MSI/GIS & Visuals/R Data/Scripts/r prep.R")
+source("C:/Users/NyimbiliShida/Documents/MSI/GIS & Visuals/R Data/Scripts/r prep.R") # use the package 'here'
+
 library(ggplot2)
 library(hrbrthemes)
 
 #Dont mind directory, i was working off Report
 data <- read_xls("C:/Users/NyimbiliShida/Documents/MSI/GIS & Visuals/R Data/Data PMI/Nchelenge Confirmed Cases.xls")
-pmi_data <- data %>%
+dat <- read_xls(here("data/Nchelenge Confirmed Cases.xls")) # don't use 'data' as the name of your object, because that is a base function in R. I usually use 'dat'. 
+
+pmi_data <- dat %>%
   mutate(name2=name)
 
 pmi_data %>%
@@ -22,3 +25,20 @@ pmi_data %>%
   ) +
   ggtitle("Confirmed Malria Cases") +
   facet_wrap(~name)+faceted
+
+pmi_data %>%
+  ggplot(aes(x=year, y=Confirmed_Cases)) + 
+  geom_col(width=.4, fill=medium_blue, alpha=.4) + 
+  scale_x_continuous(breaks=2014:2021) +
+  scale_y_continuous(labels=comma) +
+  labs(title="centered title",
+       x="",
+       y="Confirmed\ncases") +
+  theme(axis.title.y=element_text(angle=0, vjust=.5),
+        plot.title=element_text(hjust=.5)) # note that this in line 53 of the r prep file. YOu could just uncomment line 53 to get centered titles for all your plots
+
+ggsave("viz/Nchelenge confirmed cases bar.png",
+       device="png",
+       type="cairo",
+       height=4,
+       width=7)
