@@ -18,7 +18,7 @@ pmi_data %>%
   #geom_point(size=2, colour="002a6c")
   #scale_color_viridis(discrete = TRUE) +
   #theme_ipsum() +
-  theme(
+  #theme(
     legend.position="none",
     plot.title = element_text(size=11),
     panel.grid = element_blank()
@@ -26,6 +26,7 @@ pmi_data %>%
   ggtitle("Confirmed Malria Cases") +
   facet_wrap(~name)+faceted
 
+<<<<<<< HEAD
 pmi_data %>%
   ggplot(aes(x=year, y=Confirmed_Cases)) + 
   geom_col(width=.4, fill=medium_blue, alpha=.4) + 
@@ -42,3 +43,5 @@ ggsave("viz/Nchelenge confirmed cases bar.png",
        type="cairo",
        height=4,
        width=7)
+=======
+>>>>>>> c6038ebef2555eebad55779c58589a27a03bb369
