@@ -3,6 +3,8 @@ source("C:/Users/NyimbiliShida/Documents/MSI/GIS & Visuals/R Data/Scripts/r prep
 dat <- read_xls("C:/Users/NyimbiliShida/Documents/MSI/GIS & Visuals/R Data/Data PMI/Book3.xls")
 dat <- melt(dat[, c(1, 2, 3)], id.vars = 'Year')
 
+sapply(dat, mode)
+
 ggplot(dat, aes(x=Year, y=value, fill = variable)) + 
   geom_area()+
   #scale_fill_manual(values=c("#212721","#EF7D00"))+
@@ -20,5 +22,5 @@ ggplot(dat, aes(x=Year, y=value, fill = variable)) +
          type="cairo",
          height=6,
          width=10)
-  
+
   
