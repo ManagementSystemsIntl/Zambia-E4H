@@ -193,6 +193,17 @@ qkey <- data.frame(q_num=1:17,
                    qlab=qlabs,
                    qdate=qdate,
                    year=c(rep(2018:2021, each=4), 2022))
+#Malaria Campaigns
+vline1 <- 2016
+vline2 <- 2017
+vline3 <- 2018
+vline4 <- 2020
+
+vline5 <- 2016
+vline6 <- 2017-10-01
+vline7 <- 2018-10-01
+vline8 <- 2020-10-01
+
 
 #qkey
 
