@@ -3,6 +3,29 @@
 source("C:/Users/NyimbiliShida/Documents/MSI/GIS & Visuals/R Data/Scripts/r prep.R")
 source("scripts/r prep.r")
 
+#Malaria Deaths
+dth <- read_xls("C:/Users/NyimbiliShida/Documents/MSI/GIS & Visuals/R Data/Data PMI/deaths.xls")
+#dth <- melt(dth[, c(1, 2,3)], id.vars = 'Year')
+dth$Year <- as.Date(dth$Year)             
+
+dt<-dth
+dt %>%
+  ggplot() +
+  scale_x_date(date_labels="%Y-%m",date_breaks="6 months")+
+  geom_line(aes(x=Year, y=Death_above_5),size=1, color="#A7C6ED", alpha=2) +
+  geom_point(aes(x=Year, y=Death_above_5), size=2, color="#0067B9", alpha=0.8)+
+  geom_line(aes(x=Year, y=Death_under_5),size=1, color="#BA0C2F", alpha=0.6)+
+  geom_point(aes(x=Year, y=Death_under_5),size=2, color="#BA0C2F", alpha=0.8)+
+  labs(title="Malaria Deaths",
+       x="",
+       y="cases")+ base
+
+ggsave("C:/Users/NyimbiliShida/Documents/MSI/GIS & Visuals/R Data/Visuals Exports/Nchelenge confirmed deaths.png",
+       device="png",
+       type="cairo",
+       height=4,
+       width=9)
+
 
 #Malaria Nchelenge trend line 2014-2021 with campaigns
 
@@ -24,7 +47,7 @@ pmi_data %>%
   labs(title="Nchelenge Confirmed Cases",
        x="",
        y="cases") +
-  faceted
+  base
   
   ggsave("C:/Users/NyimbiliShida/Documents/MSI/GIS & Visuals/R Data/Visuals Exports/Nchelenge confirmed cases trendline with IRS.png",
          device="png",
