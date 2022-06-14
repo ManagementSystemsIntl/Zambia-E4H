@@ -3,6 +3,7 @@
 source("C:/Users/NyimbiliShida/Documents/MSI/GIS & Visuals/R Data/Scripts/r prep.R")
 source("scripts/r prep.r")
 
+
 #Malaria Deaths
 dth <- read_xls("C:/Users/NyimbiliShida/Documents/MSI/GIS & Visuals/R Data/Data PMI/deaths.xls")
 #dth <- melt(dth[, c(1, 2,3)], id.vars = 'Year')
@@ -10,21 +11,21 @@ dth$Year <- as.Date(dth$Year)
 
 dt<-dth
 dt %>%
-  ggplot() +
+  ggplot(aes(x=Year, y=Death_above_5, color="#A7C6ED", alpha=2)) +
+  geom_line(aes(x=Year, y=Death_above_5),size=1, color="#0067B9", alpha=0.5) +
   scale_x_date(date_labels="%Y-%m",date_breaks="6 months")+
-  geom_line(aes(x=Year, y=Death_above_5),size=1, color="#A7C6ED", alpha=2) +
-  geom_point(aes(x=Year, y=Death_above_5), size=2, color="#0067B9", alpha=0.8)+
+  geom_point(aes(x=Year, y=Death_above_5), size=2, color="#0067B9", alpha=0.7)+
   geom_line(aes(x=Year, y=Death_under_5),size=1, color="#BA0C2F", alpha=0.6)+
-  geom_point(aes(x=Year, y=Death_under_5),size=2, color="#BA0C2F", alpha=0.8)+
+  geom_point(aes(x=Year, y=Death_under_5),size=2, color="#BA0C2F", alpha=0.7)+
   labs(title="Malaria Deaths",
-       x="",
+       x="Months",
        y="cases")+ base
 
 ggsave("C:/Users/NyimbiliShida/Documents/MSI/GIS & Visuals/R Data/Visuals Exports/Nchelenge confirmed deaths.png",
        device="png",
        type="cairo",
-       height=4,
-       width=9)
+       height=6,
+       width=13)
 
 
 #Malaria Nchelenge trend line 2014-2021 with campaigns
@@ -114,28 +115,24 @@ ggsave("C:/Users/NyimbiliShida/Documents/MSI/GIS & Visuals/R Data/Visuals Export
 dat2 <- read_xls("C:/Users/NyimbiliShida/Documents/MSI/GIS & Visuals/R Data/Data PMI/Nchelenge Confirmed Cases Monthly 2014-2021.xls")
 dat2 <- melt(dat1[, c(1, 2)], id.vars = 'monthyr')
 
-dat1$monthyr <- as.Date(dat1$monthyr)                 
+dat2$monthyr <- as.Date(dat2$monthyr)                 
 dat2 <- dat2[order(dat1$monthyr), ]
 
 dat2
-sapply(dat1,mode)
+sapply(dat2,mode)
 
-# dat1$monthyr <- as.Date(as.yearmon(dat1$monthyr))
-# df$monthyr <- as.Date(as.yearqtr(df$monthyr))
-
-#monthyr = as.Date.character(monthyr,"%Y/%m/%d")
 ggplot(dat2, aes(x=monthyr, y=value)) +
   geom_line(size=1, color="#A7C6ED", alpha=0.6) +
   geom_point(size=3, color="#0067B9", alpha=0.8)+
-  #geom_vline()+
-  scale_x_date(date_labels="%Y-%m",date_breaks="6 months")+
-  #geom_text(aes(label=Malaria_Confirmed_Cases), vjust = 1.5, color="white", size=2) +
-  # scale_x_continuous(breaks = "monthyr") +
+  scale_x_date(date_labels="%Y-%m-%d",date_breaks="4 months")+
+  #scale_x_continuous(breaks = "") +
   scale_y_continuous(labels=comma) +
   labs(title="Nchelenge Trend Monthly Confirmed Cases",
-       x="",
+       x="Month",
        y="Cases") +
-  base +
+  base
+  #geom_vline(xintercept = c(as.POSIXct("2014-10-01"), as.POSIXct("2020-10-01")),color=c("#EF7D00","#EF7D00"), lty=c("solid", "solid") , size=c(1,1),  alpha=1)
+            
   #annotate("text", x = as.POSIXct("2019-10-01"), y = 0, label = substitute(paste(bold('ITNS Mass Dist. Campaigns:2019-10'))), size=3, angle=90, hjust =-0.8, vjust=-2) +
   #annotate("text", x = as.POSIXct("2020-10-01"), y = 0, label = substitute(paste(bold('ITNS Mass Dist. Campaigns:2020-10'))), size=3, angle=90, hjust =-0.7, vjust=2)+
   #faceted
@@ -217,7 +214,7 @@ pmi_2 <-ggplot(dat4, aes(x=Year, y=value, fill = variable)) +
 
 pmi_2
 
-plot_grid(pmi_2, pmi_1, nrows= 2, ncol= 1)
+plot_grid(pmi_2, pmi_1, nrows=2, ncol=1)
 
 ggsave("C:/Users/NyimbiliShida/Documents/MSI/GIS & Visuals/R Data/Visuals Exports/Nchelenge HLC Shikapande fg.png",
        #ggsave("viz/Malaria/Nchelenge HLC Manchene fg.png",
@@ -280,7 +277,10 @@ pmi_3 <-ggplot(dat6, aes(x=Year, y=value, fill = variable)) +
 
 pmi_3
 
-plot_grid(pmi_3, pmi_4, nrows= 2, ncol= 1)
+plot_grid(pmi_3, pmi_4,
+          nrows = 2,
+          ncol = 1
+          )
 
 ggsave("C:/Users/NyimbiliShida/Documents/MSI/GIS & Visuals/R Data/Visuals Exports/Nchelenge HLC Manchene fg.png",
 #ggsave("viz/Malaria/Nchelenge HLC Manchene fg.png",

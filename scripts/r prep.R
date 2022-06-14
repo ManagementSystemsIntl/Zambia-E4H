@@ -55,6 +55,7 @@ base <- theme_bw() + theme(panel.grid.minor.x=element_blank(),
                            plot.caption=element_text(size=12, family="Gill Sans Mt"),
                            axis.title=element_text(size=12, family="Gill Sans Mt"),
                            axis.text=element_text(size=9, family="Gill Sans Mt"),
+                           #axis.text.x = element_text(angle = 90, family="Gill Sans Mt"),
                            legend.text=element_text(size=11, family="Gill Sans Mt"),
                            strip.text=element_text(size=12, family="Gill Sans Mt"),
                            panel.border=element_blank(),
@@ -78,6 +79,7 @@ faceted <- theme_bw() +
         axis.title=element_text(size=12, family="Gill Sans Mt"),
         axis.text=element_text(size=9, family="Gill Sans Mt"),
         legend.text=element_text(size=11, family="Gill Sans Mt"),
+        legend.position = "bottom", 
         strip.text=element_text(size=12, family="Gill Sans Mt"))
 
 
@@ -199,14 +201,21 @@ vline2 <- 2017
 vline3 <- 2018
 vline4 <- 2020
 
-vline5 <- 2016
+vline5 <- "2022-04-01"
 vline6 <- 2017-10-01
 vline7 <- 2018-10-01
 vline8 <- 2020-10-01
 
+#Arrows
+
+arrow.length <- 10
+touchoff.distance <- 4 # distance between data and start of arrow
+arrowhead.size <- 2.5 # in millimeters
+
+above_5yrs <-"#205493"
+under_5yrs <-"#BA0C2F"
 
 #qkey
-
 
 # functions ---- 
 
