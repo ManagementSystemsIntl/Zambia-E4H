@@ -55,10 +55,11 @@ base <- theme_bw() + theme(panel.grid.minor.x=element_blank(),
                            axis.title=element_text(size=12, family="Gill Sans Mt"),
                            axis.text=element_text(size=9, family="Gill Sans Mt"),
                            #axis.text.x = element_text(angle = 90, family="Gill Sans Mt"),
-                           legend.text=element_text(size=11, family="Gill Sans Mt"),
+                           legend.text=element_text(size=12, family="Gill Sans Mt"),
                            strip.text=element_text(size=12, family="Gill Sans Mt"),
                            panel.border=element_blank(),
                            axis.ticks = element_blank(),
+                           legend.position = "bottom", 
                            geom_line(size=1, alpha=0.7),
                            geom_point(size=2, alpha=0.7))
 

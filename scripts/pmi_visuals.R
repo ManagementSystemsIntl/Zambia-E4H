@@ -2,30 +2,70 @@
 
 source("C:/Users/NyimbiliShida/Documents/MSI/GIS & Visuals/R Data/Scripts/r prep.R")
 source("scripts/r prep.r")
+library(hablar)
 
-#Heatmap Luapula Malaria Deaths By Districts
+
+##Malaria Incidence Nchelenge
+
+malin <- read_xls("C:/Users/NyimbiliShida/Documents/MSI/GIS & Visuals/R Data/Data PMI/Malariaincidence.xls")
+
+malin$year <- as.Date(malin$year)
+
+malin_data <- malin
+
+sapply(malin, mode)
+
+malin %>% 
+  convert(int(Incidence_all_ages, Incidence_rate_under5, Incidence_rate_above5))
+
+ggplot(malin,aes(x=year))+
+  # geom_line(aes(y=Incidence_all_ages, color="Incidence_all_ages"))+
+  # geom_point(aes(y=Incidence_all_ages, color="Incidence_all_ages"))+
+  geom_line(aes(y=Incidence_rate_under5, color="Incidence_rate_under5"))+
+  geom_point(aes(y=Incidence_rate_under5, color="Incidence_rate_under5"))+
+  geom_line(aes(y=Incidence_rate_above5, color="Incidence_rate_above5"))+
+  geom_point(aes(y=Incidence_rate_above5, color="Incidence_rate_above5"))+
+  scale_x_date(date_labels="%Y-%m",date_breaks="6 months")+
+  labs(title="Malaria Incidence Rates",
+       x="Months",
+       y="Rate") + 
+  faceted
+  # theme(legend.position = "Bottom")
+
+
+ggsave("C:/Users/NyimbiliShida/Documents/MSI/GIS & Visuals/R Data/Visuals Exports/Nchelenge Malaria Incidence Rates5s.png",
+       device="png",
+       type="cairo",
+       height = 7,
+       width = 13)
+
+
+
+
+##Heatmap Luapula Malaria Deaths By Districts
 
 #ht <- read_xls("C:/Users/NyimbiliShida/Documents/MSI/GIS & Visuals/R Data/Data PMI/districtdeathsluapula.xls")
 dt1 <- "C:/Users/NyimbiliShida/Documents/MSI/GIS & Visuals/R Data/Data PMI/districtdeathsluapula.csv"
 ht <- read.csv(dt1, row.names = 1)
 
-#d3heatmap(ht, scale = "row", dendrogram = "none",colors=usaid_palette6)
+#d3heatmap(ht, scale = "row", dendrogram = "none",colors=usaid_palette6) #using d3heatmap
 
 htplt <-pheatmap(ht,
          treeheight_row=0, 
          treeheight_col=0,  
          cutree_rows = 3,
          cluster_cols=FALSE,
-         main = "Nchelenge leads in Malaria Deaths",
-         color = colorRampPalette(brewer.pal(9,"Reds"))(400))
-#htplt <-pheatmap(ht, treeheight_row=0, treeheight_col=0,  cutree_rows = 3)
+         #main ="Nchelenge leads in Malaria Deaths",
+         axis.title=element_text(size=12, family="Gill Sans Mt"),
+         axis.text=element_text(size=12, family="Gill Sans Mt"),
+         axis.ticks = element_blank(),
+         color = colorRampPalette(brewer.pal(8,"Reds"))(400))
 
-
-ggsave("C:/Users/NyimbiliShida/Documents/MSI/GIS & Visuals/R Data/Visuals Exports/heatmap Malaria Deaths.png",
+ggsave("C:/Users/NyimbiliShida/Documents/MSI/GIS & Visuals/R Data/Visuals Exports/heatmap Malaria Deaths1.png",
        plot = htplt,
        device="png",
        type="cairo",
-       height=6,
+       height=8,
        width=13)
 
 
@@ -36,43 +76,42 @@ ggsave("viz/Malaria/heatmap Malaria Deaths.png",
        height=6,
        width=13)
 
-# ht
-# pheatmap(ht, cutree_rows = 4, Rowv = NA, Colv = NA)
-
-#Deheatmap
 
 
+##Malaria Deaths trendline
 
-#Malaria Deaths
 dth <- read_xls("C:/Users/NyimbiliShida/Documents/MSI/GIS & Visuals/R Data/Data PMI/deaths.xls")
 #dth <- melt(dth[, c(1, 2,3)], id.vars = 'Year')
-dth$Year <- as.Date(dth$Year)             
+dth$Year <- as.Date(dth$Year)
 
-dt<-dth
-dt %>%
-  ggplot(aes(x=Year, y=Death_above_5, color="#A7C6ED", alpha=2)) +
-  geom_line(aes(x=Year, y=Death_above_5),size=1, color="#0067B9", alpha=0.5) +
+sapply(dth, mode)
+dth
+
+ggplot(dth,aes(x=Year))+
+  geom_line(aes(y=Death_above_5, color="Death_above_5"))+
+  geom_point(aes(y=Death_above_5, color="Death_above_5"))+
+  geom_line(aes(y=Death_under_5, color="Death_under_5"))+
+  geom_point(aes(y=Death_under_5, color="Death_under_5"))+
   scale_x_date(date_labels="%Y-%m",date_breaks="6 months")+
-  geom_point(aes(x=Year, y=Death_above_5), size=2, color="#0067B9", alpha=0.7)+
-  geom_line(aes(x=Year, y=Death_under_5),size=1, color="#BA0C2F", alpha=0.6)+
-  geom_point(aes(x=Year, y=Death_under_5),size=2, color="#BA0C2F", alpha=0.7)+
   labs(title="Malaria Deaths",
-       x="Months",
-       y="cases")+ base
+      x="Months",
+      y="cases")+ 
+  base
+  
 
-ggsave("C:/Users/NyimbiliShida/Documents/MSI/GIS & Visuals/R Data/Visuals Exports/Nchelenge confirmed death1s.png",
+ggsave("C:/Users/NyimbiliShida/Documents/MSI/GIS & Visuals/R Data/Visuals Exports/Nchelenge confirmed death11s.png",
        device="png",
        type="cairo",
        height=6,
        width=13)
 
 
-#Malaria Nchelenge trend line 2014-2021 with campaigns
+##Malaria Nchelenge trend line 2014-2021 with campaigns
 
 dat <- read_xls("C:/Users/NyimbiliShida/Documents/MSI/GIS & Visuals/R Data/Data PMI/Nchelenge Confirmed Cases.xls")
 pmi_data <- dat %>%
   mutate(name2=name)
-
+pmi_data
 pmi_data %>%
   ggplot(aes(x=Year, y=Confirmed_Cases,group=name))+
   geom_line( dat=pmi_data %>% dplyr::select(-name), aes(group=name2), color="#BA0C2F", size=1, alpha=0.6) +
