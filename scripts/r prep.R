@@ -23,7 +23,8 @@
 zam_packages <- c("tidyverse", "here", "gt","gtsummary","gghighlight","stringi","DT", "ggthemes","ggridges","viridis",
                   "psych","labelled","readxl", "skimr","sjlabelled","sjstats","sjPlot", "sjmisc","readr","ggrepel","openxlsx",
                   "sysfonts","scales","magrittr","knitr","lubridate","Hmisc","haven","tidyr","reshape2","DescTools","extrafont",
-                  "patchwork", "extrafontdb", "ggtext", "geomtextpath","zoo","psych","cowplot","kableExtra","ztable","pheatmap","RColorBrewer", "d3heatmap","hablar")
+                  "patchwork", "extrafontdb", "ggtext", "geomtextpath","zoo","psych","cowplot","kableExtra","ztable","pheatmap",
+                  "RColorBrewer", "d3heatmap","hablar")
 
 
 # lapply(zam_packages, install.packages, character.only=T)
@@ -54,13 +55,13 @@ base <- theme_bw() + theme(panel.grid.minor.x=element_blank(),
                            plot.caption=element_text(size=12, family="Gill Sans Mt"),
                            axis.title=element_text(size=12, family="Gill Sans Mt"),
                            axis.text=element_text(size=9, family="Gill Sans Mt"),
-                           #axis.text.x = element_text(angle = 90, family="Gill Sans Mt"),
+                           axis.text.x = element_text(angle = 90, family="Gill Sans Mt"),
                            legend.text=element_text(size=12, family="Gill Sans Mt"),
+                           legend.position = "bottom",
                            strip.text=element_text(size=12, family="Gill Sans Mt"),
                            panel.border=element_blank(),
                            axis.ticks = element_blank(),
-                           legend.position = "bottom", 
-                           geom_line(size=1, alpha=0.7),
+                           geom_line(aes(size=3, alpha=0.7)),
                            geom_point(size=2, alpha=0.7))
 
 #scale_color_discrete <- usaid_palette
@@ -81,7 +82,7 @@ faceted <- theme_bw() +
         axis.title=element_text(size=12, family="Gill Sans Mt"),
         axis.text=element_text(size=9, family="Gill Sans Mt"),
         legend.text=element_text(size=11, family="Gill Sans Mt"),
-        legend.position = "bottom", 
+        legend.position = "bottom",
         strip.text=element_text(size=12, family="Gill Sans Mt"))
 
 
