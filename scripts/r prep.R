@@ -24,7 +24,7 @@ zam_packages <- c("tidyverse", "here", "gt","gtsummary","gghighlight","stringi",
                   "psych","labelled","readxl", "skimr","sjlabelled","sjstats","sjPlot", "sjmisc","readr","ggrepel","openxlsx",
                   "sysfonts","scales","magrittr","knitr","lubridate","Hmisc","haven","tidyr","reshape2","DescTools","extrafont",
                   "patchwork", "extrafontdb", "ggtext", "geomtextpath","zoo","psych","cowplot","kableExtra","ztable","pheatmap",
-                  "RColorBrewer", "d3heatmap","hablar")
+                  "RColorBrewer", "d3heatmap","hablar", "gganimate", "gapminder", "hrbrthemes")
 
 
 # lapply(zam_packages, install.packages, character.only=T)

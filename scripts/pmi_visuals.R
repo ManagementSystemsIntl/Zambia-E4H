@@ -45,15 +45,15 @@ iptm_plt <- ggplot(iptm_long, aes(x=period, y=value,  color=variable)) +
   transition_reveal(period) + base
 animate(iptm_plt, height = 800, width =1000)
 
-anim_save("C:/Users/NyimbiliShida/Documents/MSI/GIS & Visuals/R Data/Visuals Exports/smooth-animation-Severe-Malaria.gif",
-          device="gif",
-          type="cairo",
-          height = 7,
-          width = 15)
+# #anim_save("C:/Users/NyimbiliShida/Documents/MSI/GIS & Visuals/R Data/Visuals Exports/smooth-animation-Severe-Malaria.gif",
+#           device="gif",
+#           type="cairo",
+#           height = 7,
+#           width = 15)
 
-ggsave("viz/Malaria/severe.png",
+anim_save("viz/Malaria/severe.gif",
        plot = iptm_plt,
-       device="png",
+       device="gif",
        type="cairo",
        height=6,
        width=13)
