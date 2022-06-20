@@ -2,14 +2,7 @@
 
 source("C:/Users/NyimbiliShida/Documents/MSI/GIS & Visuals/R Data/Scripts/r prep.R")
 source("scripts/r prep.r")
-library(hablar)
-library(lubridate)
-source("C:/Users/NyimbiliShida/Documents/MSI/GIS & Visuals/R Data/Scripts/r prep.R")
-library(ggplot2)
-library(gganimate)
-#library(babynames)
-library(hrbrthemes)
-library(gapminder)
+
 
 
 
@@ -80,7 +73,7 @@ gfg_plot <- ggplot(iptm_long,aes(x = period,y = value, color = variable)) +  geo
   base
 gfg_plot
 
-ggsave("C:/Users/NyimbiliShida/Documents/MSI/GIS & Visuals/R Data/Visuals Exports/Malaria in pregnancy.png",
+ggsave("C:/Users/NyimbiliShida/Documents/MSI/GIS & Visuals/R Data/Visuals Exports/Malaria in pregnanc2y.png",
        device="png",
        type="cairo",
        height = 7,
