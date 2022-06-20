@@ -3,7 +3,168 @@
 source("C:/Users/NyimbiliShida/Documents/MSI/GIS & Visuals/R Data/Scripts/r prep.R")
 source("scripts/r prep.r")
 library(hablar)
+library(lubridate)
+source("C:/Users/NyimbiliShida/Documents/MSI/GIS & Visuals/R Data/Scripts/r prep.R")
+library(ggplot2)
+library(gganimate)
+#library(babynames)
+library(hrbrthemes)
+library(gapminder)
 
+
+
+##Animated trends Malaria
+
+iptm <- read_xls("C:/Users/NyimbiliShida/Documents/MSI/GIS & Visuals/R Data/Data PMI/ipt.xls")
+
+
+
+# # Keep only 3 names
+# don <- babynames %>% 
+#   filter(name %in% c("Ashley", "Patricia", "Helen")) %>%
+#   filter(sex=="F")
+
+
+
+iptm_data$period <- as.Date(as.character(iptm$period), format = "%Y")
+
+iptm_long <- melt(iptm_data, id = "period")
+iptm_long
+
+# Plot
+iptm_plt <- ggplot(iptm_long, aes(x=period, y=value,  color=variable)) +
+  geom_line(size=1, alpha=0.5) +
+  geom_point(size=3) +
+  scale_color_viridis(discrete = TRUE) +
+  scale_x_date(date_labels="%Y",date_breaks="1 year") +
+  scale_color_manual(values=c("#002A6C","#C2113A", "#EF7D00"))+
+  scale_y_continuous(labels=comma) +
+  labs(color="Legend:", title="Nchelenge Confirmed Cases",
+       x="",
+       y="cases") +
+  transition_reveal(period) + base
+animate(iptm_plt, height = 800, width =1000)
+
+anim_save("C:/Users/NyimbiliShida/Documents/MSI/GIS & Visuals/R Data/Visuals Exports/smooth-animation-Severe-Malaria.gif",
+          device="gif",
+          type="cairo",
+          height = 7,
+          width = 15)
+
+ggsave("viz/Malaria/severe.png",
+       plot = iptm_plt,
+       device="png",
+       type="cairo",
+       height=6,
+       width=13)
+##Malaria In Pregnancy
+
+iptm <- read_xls("C:/Users/NyimbiliShida/Documents/MSI/GIS & Visuals/R Data/Data PMI/ipt.xls")
+
+iptm
+
+iptm_data$period <- as.Date(as.character(iptm$period), format = "%Y")      #Date type in R is always a combination of year, month and day (not necessarily in this order). You cannot have a Date type with only the year
+
+class(period)
+
+sapply(iptm_data, mode)
+
+iptm_long <- melt(iptm_data, id = "period")
+gfg_plot <- ggplot(iptm_long,aes(x = period,y = value, color = variable)) +  geom_line(size=1, alpha=0.5) + geom_point(size=3)+
+  scale_x_date(date_labels="%Y",date_breaks="1 year") +
+  scale_color_manual(values=c("#002A6C","#C2113A", "#EF7D00"))+
+  scale_y_continuous(labels=comma) +
+  labs(color="Legend:", title="Nchelenge Confirmed Cases",
+       x="",
+       y="cases") +
+  base
+gfg_plot
+
+ggsave("C:/Users/NyimbiliShida/Documents/MSI/GIS & Visuals/R Data/Visuals Exports/Malaria in pregnancy.png",
+       device="png",
+       type="cairo",
+       height = 7,
+       width = 12)
+
+
+
+## Severe Malaria and Deaths
+
+malsv <- read_xls("C:/Users/NyimbiliShida/Documents/MSI/GIS & Visuals/R Data/Data PMI/severemalaria.xls")
+
+lapply(malsv, na.omit)
+malsv
+
+malsv <- melt(malsv[c(1, 2,4)], id = 'period')
+# 
+# as.character(malsv$period)  #Fix this
+# 
+# str(malsv$period)
+# 
+# as.Date(as.character(malsv$period),format="%Y%m%d")
+# as.Date(as.Date.numeric(malsv$period),origin = "2016-01-01", format = "%Y%m%d")
+
+malsv <- ggplot(malsv, aes(x=period, y=value, fill = variable)) +
+  geom_area(alpha=.7)+
+  scale_fill_manual(values=c("#002A6C","#C2113A")) +
+  scale_y_continuous(labels=comma) +
+  scale_x_date(date_labels="%Y-%b",date_breaks="6 months")+
+  labs(fill="Legend:", title="Severe Malaria and Deaths",
+       x="",
+       y="Cases") +
+  base +
+  geom_vline(xintercept = c(as.POSIXct("2018-10-01"), as.POSIXct("2017-10-01"), as.POSIXct("2020-10-01")),
+             color=c("#EF7D00","#198a00ff", "#198a00ff"),
+             lty=c("solid","dotted", "dotted") ,
+             size=c(2,1,1),
+             alpha=1) +
+  annotate("text", x = as.POSIXct("2018-10-01"), y = 0, label = substitute(paste(bold('Integrated community case management: Oct'))), size=4, angle=90, hjust =-0.3, vjust=-1, color="#EF7D00")+
+  annotate("text", x = as.POSIXct("2017-10-01"), y = 0, label = substitute(paste(bold('ITNS Mass Dist.Campaigns: Oct'))), size=4, angle=90, hjust =-1, vjust=-0.7, color="#198a00ff")+
+  annotate("text", x = as.POSIXct("2020-12-01"), y = 0, label = substitute(paste(bold('ITNS Mass Dist.Campaigns: Dec'))), size=4, angle=90, hjust =-1, vjust=-0.5, color="#198a00ff")
+
+
+malsv
+ggsave("C:/Users/NyimbiliShida/Documents/MSI/GIS & Visuals/R Data/Visuals Exports/Severe & Death Cases.png",
+       device="png",
+       type="cairo",
+       height=7,
+       width=13)
+
+
+##Malaria Cases -5 & 5+
+mal5 <- read_xls("C:/Users/NyimbiliShida/Documents/MSI/GIS & Visuals/R Data/Data PMI/malariacasesfives.xls")
+
+lapply(mal5, na.omit)
+
+mal5 <- melt(mal5[, c(1, 2,3)], id = 'year')
+
+as.Date(as.Date.numeric(mal5$year,origin = "2016-10-01"),format = "%Y%m%d")
+
+mal5plt <- ggplot(mal5, aes(x=year, y=value, fill = variable)) +
+  geom_area(alpha=.7)+
+  scale_fill_manual(values=c("#002A6C","#C2113A")) +
+  scale_y_continuous(labels=comma) +
+  #scale_x_date(date_labels="%Y-%m",date_breaks="6 months")+
+  labs(title="Malaria Cases by Age groups",
+    x="",
+    y="Cases") +
+  faceted + 
+  geom_vline(xintercept = c(as.POSIXct("2016-10-01"), as.POSIXct("2017-10-01"), as.POSIXct("2017-09-01"), as.POSIXct("2018-10-01"), as.POSIXct("2019-10-01"), as.POSIXct("2020-10-01"), as.POSIXct("2020-12-01"),  as.POSIXct("2021-10-01")),
+             color=c("#EF7D00","#198a00ff","#EF7D00","#EF7D00","#EF7D00","#EF7D00","#198a00ff","#EF7D00"),
+             lty=c("1343","solid", "1343", "1343", "1343", "1343", "solid",  "1343") ,
+             size=c(1,1.5,1,1,1,1,1.5,1),
+             alpha=1) +
+  annotate("text", x = as.POSIXct("2016-10-01"), y = 0, label = substitute(paste(bold('IRS Campaigns: Oct'))), size=4, angle=90, hjust =-2.5, vjust=-0.6, color="#EF7D00") +
+  annotate("text", x = as.POSIXct("2017-10-01"), y = 0, label = substitute(paste(bold('ITNS Mass Dist.Campaigns: Oct'))), size=4, angle=90, hjust =-1, vjust=1.5, color="#198a00ff")+
+  annotate("text", x = as.POSIXct("2020-12-01"), y = 0, label = substitute(paste(bold('ITNS Mass Dist.Campaigns: Dec'))), size=4, angle=90, hjust =-1, vjust=2.5, color="#198a00ff")
+
+mal5plt
+
+ggsave("C:/Users/NyimbiliShida/Documents/MSI/GIS & Visuals/R Data/Visuals Exports/Nchelenge confirmed By Age group.png",
+        device="png",
+        type="cairo",
+        height=7,
+        width=13)
 
 ##Malaria Incidence Nchelenge
 
@@ -19,25 +180,22 @@ malin %>%
   convert(int(Incidence_all_ages, Incidence_rate_under5, Incidence_rate_above5))
 
 ggplot(malin,aes(x=year))+
-  # geom_line(aes(y=Incidence_all_ages, color="Incidence_all_ages"))+
-  # geom_point(aes(y=Incidence_all_ages, color="Incidence_all_ages"))+
   geom_line(aes(y=Incidence_rate_under5, color="Incidence_rate_under5"))+
   geom_point(aes(y=Incidence_rate_under5, color="Incidence_rate_under5"))+
+  geom_line(aes(y=Incidence_all_ages, color="Incidence_all_ages"))+
+  geom_point(aes(y=Incidence_all_ages, color="Incidence_all_ages"))+
   geom_line(aes(y=Incidence_rate_above5, color="Incidence_rate_above5"))+
   geom_point(aes(y=Incidence_rate_above5, color="Incidence_rate_above5"))+
   scale_x_date(date_labels="%Y-%m",date_breaks="6 months")+
-  labs(title="Malaria Incidence Rates",
-       x="Months",
-       y="Rate") + 
+  labs(x="Months", y="Rate") + 
+  scale_color_manual(values = c("Incidence_rate_under5"="#BA0C2F", "Incidence_all_ages"="#205493", "Incidence_rate_above5"="#EF7D00"))+
   faceted
-  # theme(legend.position = "Bottom")
 
-
-ggsave("C:/Users/NyimbiliShida/Documents/MSI/GIS & Visuals/R Data/Visuals Exports/Nchelenge Malaria Incidence Rates5s.png",
+ggsave("C:/Users/NyimbiliShida/Documents/MSI/GIS & Visuals/R Data/Visuals Exports/Nchelenge Malaria Incidence Rates all.png",
        device="png",
        type="cairo",
        height = 7,
-       width = 13)
+       width = 12)
 
 
 
@@ -95,8 +253,8 @@ ggplot(dth,aes(x=Year))+
   scale_x_date(date_labels="%Y-%m",date_breaks="6 months")+
   labs(title="Malaria Deaths",
       x="Months",
-      y="cases")+ 
-  base
+      y="cases")+
+  faceted
   
 
 ggsave("C:/Users/NyimbiliShida/Documents/MSI/GIS & Visuals/R Data/Visuals Exports/Nchelenge confirmed death11s.png",
@@ -191,24 +349,42 @@ ggsave("C:/Users/NyimbiliShida/Documents/MSI/GIS & Visuals/R Data/Visuals Export
 #Malaria Nchelenge Monthly trend line 2014-2021
 
 dat2 <- read_xls("C:/Users/NyimbiliShida/Documents/MSI/GIS & Visuals/R Data/Data PMI/Nchelenge Confirmed Cases Monthly 2014-2021.xls")
-dat2 <- melt(dat1[, c(1, 2)], id.vars = 'monthyr')
+# dat2 <- melt(dat1[, c(1, 2)], id.vars = 'monthyr')
 
-dat2$monthyr <- as.Date(dat2$monthyr)                 
-dat2 <- dat2[order(dat1$monthyr), ]
+# dat2$monthyr <- as.Date(dat2$monthyr)                 
+# dat2 <- dat2[order(dat1$monthyr), ]
 
 dat2
 sapply(dat2,mode)
 
-ggplot(dat2, aes(x=monthyr, y=value)) +
-  geom_line(size=1, color="#A7C6ED", alpha=0.6) +
-  geom_point(size=3, color="#0067B9", alpha=0.8)+
-  scale_x_date(date_labels="%Y-%m-%d",date_breaks="4 months")+
-  #scale_x_continuous(breaks = "") +
-  scale_y_continuous(labels=comma) +
-  labs(title="Nchelenge Trend Monthly Confirmed Cases",
-       x="Month",
-       y="Cases") +
-  base
+ggplot(dat2,aes(x=monthyr))+
+  geom_line(aes(y=Malaria_Confirmed_Cases, color="Malaria_Confirmed_Cases"))+
+  geom_point(aes(y=Malaria_Confirmed_Cases, color="Malaria_Confirmed_Cases"))+
+  #scale_x_date(date_labels="%Y-%m",date_breaks="6 months")+
+  scale_color_manual(values ="#205493")+
+    labs(title="Nchelenge Trend Monthly Confirmed Cases with Campaigns",
+         x="Months",
+         y="cases")+
+  faceted +
+geom_vline(xintercept = c(as.POSIXct("2014-10-01"), as.POSIXct("2015-10-01"), as.POSIXct("2016-10-01"), as.POSIXct("2017-10-01"), as.POSIXct("2017-09-01"), as.POSIXct("2018-10-01"), as.POSIXct("2019-10-01"), as.POSIXct("2020-10-01"), as.POSIXct("2020-12-01"),  as.POSIXct("2021-10-01")),
+           color=c("#EF7D00","#EF7D00","#EF7D00","#198a00ff","#EF7D00","#EF7D00","#EF7D00","#EF7D00","#198a00ff","#EF7D00"),
+           lty=c("1343","1343","1343","solid", "1343", "1343", "1343", "1343", "solid",  "1343") ,
+           size=c(1,1,1,1.5,1,1,1,1,1.5,1),
+           alpha=1) +
+  annotate("text", x = as.POSIXct("2014-10-01"), y = 0, label = substitute(paste(bold('IRS Campaigns: Oct'))), size=4, angle=90, hjust =-2.5, vjust=-0.6, color="#EF7D00") +
+  annotate("text", x = as.POSIXct("2017-10-01"), y = 0, label = substitute(paste(bold('ITNS Mass Dist.Campaigns: Oct'))), size=4, angle=90, hjust =-1, vjust=1.5, color="#198a00ff")+
+  annotate("text", x = as.POSIXct("2020-12-01"), y = 0, label = substitute(paste(bold('ITNS Mass Dist.Campaigns: Dec'))), size=4, angle=90, hjust =-1, vjust=2.5, color="#198a00ff")
+
+# ggplot(dat2, aes(x=monthyr, y=value)) +
+#   geom_line(size=1, color="#A7C6ED", alpha=0.6) +
+#   geom_point(size=3, color="#0067B9", alpha=0.8)+
+#   scale_x_date(date_labels="%Y-%m",date_breaks="6 months")+
+#   #scale_x_continuous(breaks = "") +
+#   scale_y_continuous(labels=comma) +
+#   labs(title="Nchelenge Trend Monthly Confirmed Cases",
+#        x="Month",
+#        y="Cases") +
+#   base
   #geom_vline(xintercept = c(as.POSIXct("2014-10-01"), as.POSIXct("2020-10-01")),color=c("#EF7D00","#EF7D00"), lty=c("solid", "solid") , size=c(1,1),  alpha=1)
             
   #annotate("text", x = as.POSIXct("2019-10-01"), y = 0, label = substitute(paste(bold('ITNS Mass Dist. Campaigns:2019-10'))), size=3, angle=90, hjust =-0.8, vjust=-2) +
@@ -218,7 +394,7 @@ ggplot(dat2, aes(x=monthyr, y=value)) +
 ggsave("C:/Users/NyimbiliShida/Documents/MSI/GIS & Visuals/R Data/Visuals Exports/Nchelenge confirmed cases trendline with monthly1.png",
        device="png",
        type="cairo",
-       height=6,
+       height=8,
        width=14)
 
 #Malaria Area Plot wiith Campaigns
@@ -270,6 +446,7 @@ pmi_1 <- ggplot(dat3, aes(x=Year, y=value, fill = variable)) +
 pmi_1
 
 dat4 <- melt(dat4[, c(1, 2, 3)], id.vars = 'Year')
+dat4
 
 pmi_2 <-ggplot(dat4, aes(x=Year, y=value, fill = variable)) + 
   geom_area(alpha=.7)+
@@ -346,11 +523,11 @@ pmi_3 <-ggplot(dat6, aes(x=Year, y=value, fill = variable)) +
   #  faceted # don't use this if the plot doesn't have facet_wrap
   geom_vline(xintercept = c(as.POSIXct("2019-10-01"), as.POSIXct("2020-10-01")),
              color=c("#EF7D00","#EF7D00"),
-             lty=c("1343", "1343") ,
+             lty=c("1343", "1343"),
              size=c(1,1),
              alpha=1) +
   annotate("text", x = as.POSIXct("2019-10-01"), y = 0, label = substitute(paste(bold('ITNS Mass Dist. Campaigns:2019-10'))), size=3.4, angle=90, hjust =-0.9, vjust=-0.5) +
-  annotate("text", x = as.POSIXct("2020-10-01"), y = 0, label = substitute(paste(bold('ITNS Mass Dist. Campaigns:2020-10'))), size=3.4, angle=90, hjust =-0.9, vjust=-0.5)+
+  annotate("text", x = as.POSIXct("2020-10-01"), y = 0, label = substitute(paste(bold('ITNS Mass Dist. Campaigns:2020-10'))), size=3.4, angle=90, hjust =-0.9, vjust=-0.5) +
   faceted
 
 pmi_3
