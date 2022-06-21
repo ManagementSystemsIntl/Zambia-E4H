@@ -11,14 +11,6 @@ source("scripts/r prep.r")
 iptm <- read_xls("C:/Users/NyimbiliShida/Documents/MSI/GIS & Visuals/R Data/Data PMI/ipt.xls")
 
 
-
-# # Keep only 3 names
-# don <- babynames %>% 
-#   filter(name %in% c("Ashley", "Patricia", "Helen")) %>%
-#   filter(sex=="F")
-
-
-
 iptm_data$period <- as.Date(as.character(iptm$period), format = "%Y")
 
 iptm_long <- melt(iptm_data, id = "period")
@@ -50,6 +42,8 @@ anim_save("viz/Malaria/severe.gif",
        type="cairo",
        height=6,
        width=13)
+
+
 ##Malaria In Pregnancy
 
 iptm <- read_xls("C:/Users/NyimbiliShida/Documents/MSI/GIS & Visuals/R Data/Data PMI/ipt.xls")
@@ -125,6 +119,11 @@ ggsave("C:/Users/NyimbiliShida/Documents/MSI/GIS & Visuals/R Data/Visuals Export
 
 
 ##Malaria Cases -5 & 5+
+
+source("C:/Users/NyimbiliShida/Documents/MSI/GIS & Visuals/R Data/Scripts/r prep.R")
+source("scripts/r prep.r")
+library(gganimate)
+
 mal5 <- read_xls("C:/Users/NyimbiliShida/Documents/MSI/GIS & Visuals/R Data/Data PMI/malariacasesfives.xls")
 
 lapply(mal5, na.omit)
@@ -141,7 +140,6 @@ mal5plt <- ggplot(mal5, aes(x=year, y=value, fill = variable)) +
   labs(title="Malaria Cases by Age groups",
     x="",
     y="Cases") +
-  faceted + 
   geom_vline(xintercept = c(as.POSIXct("2016-10-01"), as.POSIXct("2017-10-01"), as.POSIXct("2017-09-01"), as.POSIXct("2018-10-01"), as.POSIXct("2019-10-01"), as.POSIXct("2020-10-01"), as.POSIXct("2020-12-01"),  as.POSIXct("2021-10-01")),
              color=c("#EF7D00","#198a00ff","#EF7D00","#EF7D00","#EF7D00","#EF7D00","#198a00ff","#EF7D00"),
              lty=c("1343","solid", "1343", "1343", "1343", "1343", "solid",  "1343") ,
@@ -149,9 +147,16 @@ mal5plt <- ggplot(mal5, aes(x=year, y=value, fill = variable)) +
              alpha=1) +
   annotate("text", x = as.POSIXct("2016-10-01"), y = 0, label = substitute(paste(bold('IRS Campaigns: Oct'))), size=4, angle=90, hjust =-2.5, vjust=-0.6, color="#EF7D00") +
   annotate("text", x = as.POSIXct("2017-10-01"), y = 0, label = substitute(paste(bold('ITNS Mass Dist.Campaigns: Oct'))), size=4, angle=90, hjust =-1, vjust=1.5, color="#198a00ff")+
-  annotate("text", x = as.POSIXct("2020-12-01"), y = 0, label = substitute(paste(bold('ITNS Mass Dist.Campaigns: Dec'))), size=4, angle=90, hjust =-1, vjust=2.5, color="#198a00ff")
+  annotate("text", x = as.POSIXct("2020-12-01"), y = 0, label = substitute(paste(bold('ITNS Mass Dist.Campaigns: Dec'))), size=4, angle=90, hjust =-1, vjust=2.5, color="#198a00ff") + transition_reveal(year) + base
+animate(mal5plt, height = 800, width =1000)
 
 mal5plt
+
+anim_save("C:/Users/NyimbiliShida/Documents/MSI/GIS & Visuals/R Data/Visuals Exports/smooth-animation-Malaria-age-group.gif",
+          device="gif",
+          type="cairo",
+          height = 800,
+          width=1000)
 
 ggsave("C:/Users/NyimbiliShida/Documents/MSI/GIS & Visuals/R Data/Visuals Exports/Nchelenge confirmed By Age group.png",
         device="png",
@@ -230,6 +235,10 @@ ggsave("viz/Malaria/heatmap Malaria Deaths.png",
 
 
 ##Malaria Deaths trendline
+source("C:/Users/NyimbiliShida/Documents/MSI/GIS & Visuals/R Data/Scripts/r prep.R")
+source("scripts/r prep.r")
+library(gganimate)
+
 
 dth <- read_xls("C:/Users/NyimbiliShida/Documents/MSI/GIS & Visuals/R Data/Data PMI/deaths.xls")
 #dth <- melt(dth[, c(1, 2,3)], id.vars = 'Year')
@@ -246,8 +255,9 @@ ggplot(dth,aes(x=Year))+
   scale_x_date(date_labels="%Y-%m",date_breaks="6 months")+
   labs(title="Malaria Deaths",
       x="Months",
-      y="cases")+
-  faceted
+      y="cases") + base + 
+  transition_reveal(Year)
+animate(iptm_plt, height = 800, width =1000)
   
 
 ggsave("C:/Users/NyimbiliShida/Documents/MSI/GIS & Visuals/R Data/Visuals Exports/Nchelenge confirmed death11s.png",
@@ -355,7 +365,7 @@ ggplot(dat2,aes(x=monthyr))+
   geom_point(aes(y=Malaria_Confirmed_Cases, color="Malaria_Confirmed_Cases"))+
   #scale_x_date(date_labels="%Y-%m",date_breaks="6 months")+
   scale_color_manual(values ="#205493")+
-    labs(title="Nchelenge Trend Monthly Confirmed Cases with Campaigns",
+    labs(fill="Legend:", title="Nchelenge Trend Monthly Confirmed Cases with Campaigns",
          x="Months",
          y="cases")+
   faceted +
@@ -391,18 +401,21 @@ ggsave("C:/Users/NyimbiliShida/Documents/MSI/GIS & Visuals/R Data/Visuals Export
        width=14)
 
 #Malaria Area Plot wiith Campaigns
+source("C:/Users/NyimbiliShida/Documents/MSI/GIS & Visuals/R Data/Scripts/r prep.R")
+source("scripts/r prep.r")
+library(cowplot)
 
 dat3 <- read_xls("C:/Users/NyimbiliShida/Documents/MSI/GIS & Visuals/R Data/Data PMI/hlb.xls")
 dat4 <- read_xls("C:/Users/NyimbiliShida/Documents/MSI/GIS & Visuals/R Data/Data PMI/shakall.xls")
-dat5 <- read_xls("C:/Users/NyimbiliShida/Documents/MSI/GIS & Visuals/R Data/Data PMI/Manchene indoors.xls")
-dat6 <- read_xls("C:/Users/NyimbiliShida/Documents/MSI/GIS & Visuals/R Data/Data PMI/Manchene outdoors.xls")
+#dat5 <- read_xls("C:/Users/NyimbiliShida/Documents/MSI/GIS & Visuals/R Data/Data PMI/Manchene indoors.xls")
+#dat6 <- read_xls("C:/Users/NyimbiliShida/Documents/MSI/GIS & Visuals/R Data/Data PMI/Manchene outdoors.xls")
 #dat3<- read_xls(here("data/Malaria/shakall.xls"))
 #dat2 <- read_xls(here("data/Malaria/hlb.xls"))
 
 dat3
 dat4
-dat5
-dat6
+# dat5
+# dat6
 
 # dat <- dat2 %>%
 #   pivot_longer(2:3,
@@ -444,7 +457,7 @@ dat4
 pmi_2 <-ggplot(dat4, aes(x=Year, y=value, fill = variable)) + 
   geom_area(alpha=.7)+
   scale_fill_manual(values=c("#002A6C","#C2113A")) +
-  labs(title="Number of bites per person per Night at Shikapande(Sprayed)",
+  labs(fill="Legend:", title="Number of bites per person per Night at Shikapande(Sprayed)",
     x="",
     y="Human Bite Rate") +
   theme(
@@ -456,20 +469,20 @@ pmi_2 <-ggplot(dat4, aes(x=Year, y=value, fill = variable)) +
              lty=c("1343", "1343") ,
              size=c(1,1),
              alpha=1) +
-  annotate("text", x = as.POSIXct("2019-10-01"), y = 0, label = substitute(paste(bold('ITNS Mass Dist. Campaigns:2019-10'))), size=3.4, angle=90, hjust =-0.9, vjust=-0.5) +
-  annotate("text", x = as.POSIXct("2020-10-01"), y = 0, label = substitute(paste(bold('ITNS Mass Dist. Campaigns:2020-10'))), size=3.4, angle=90, hjust =-0.9, vjust=-0.5)+
+  annotate("text", x = as.POSIXct("2019-10-01"), y = 0, label = substitute(paste(bold('IRS'))), size=3.4, angle=90, hjust =-0.9, vjust=-0.5) +
+  annotate("text", x = as.POSIXct("2020-10-01"), y = 0, label = substitute(paste(bold('IRS'))), size=3.4, angle=90, hjust =-0.9, vjust=-0.5)+
   faceted
 
 pmi_2
 
-plot_grid(pmi_2, pmi_1, nrows=2, ncol=1)
+plot_grid(pmi_2, pmi_1, nrows = 2, ncol = 1)
 
 ggsave("C:/Users/NyimbiliShida/Documents/MSI/GIS & Visuals/R Data/Visuals Exports/Nchelenge HLC Shikapande fg.png",
        #ggsave("viz/Malaria/Nchelenge HLC Manchene fg.png",
        device="png",
        #type="cairo",
-       height=16,
-       width=18)
+       height=19,
+       width=15)
 
 
 
@@ -507,7 +520,7 @@ dat6 <- melt(dat6[, c(1, 2, 3)], id.vars = 'Year')
 pmi_3 <-ggplot(dat6, aes(x=Year, y=value, fill = variable)) + 
   geom_area(alpha=.7)+
   scale_fill_manual(values=c("#002A6C","#C2113A")) +
-  labs(title="Number of bites per person per Night at Manchene (Not Sprayed)",
+  labs(fill="Legend:", title="Number of bites per person per Night at Manchene (Not Sprayed)",
        x="",
        y="Human Bite Rate") +
   theme(

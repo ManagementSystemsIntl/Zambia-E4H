@@ -20,11 +20,11 @@
 #                    "sysfonts","scales","magrittr","knitr","lubridate","Hmisc","haven","tidyr","reshape2","DescTools","extrafont",
 #                    "extrafontdb")
 
-zam_packages <- c("tidyverse", "here", "gt","gtsummary","gghighlight","stringi","DT", "ggthemes","ggridges","viridis",
+zam_packages <- c("tidyverse", "here", "gifski", "gt","gtsummary","gghighlight","stringi","DT", "ggthemes","ggridges","viridis",
                   "psych","labelled","readxl", "skimr","sjlabelled","sjstats","sjPlot", "sjmisc","readr","ggrepel","openxlsx",
                   "sysfonts","scales","magrittr","knitr","lubridate","Hmisc","haven","tidyr","reshape2","DescTools","extrafont",
                   "patchwork", "extrafontdb", "ggtext", "geomtextpath","zoo","psych","cowplot","kableExtra","ztable","pheatmap",
-                  "RColorBrewer", "d3heatmap","hablar", "gganimate", "gapminder", "hrbrthemes")
+                  "RColorBrewer", "d3heatmap","hablar", "gganimate", "PhantomJS", "dygraphs", "gapminder", "hrbrthemes")
 
 
 # lapply(zam_packages, install.packages, character.only=T)
