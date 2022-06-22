@@ -24,7 +24,9 @@ zam_packages <- c("tidyverse", "here", "gifski", "gt","gtsummary","gghighlight",
                   "psych","labelled","readxl", "skimr","sjlabelled","sjstats","sjPlot", "sjmisc","readr","ggrepel","openxlsx",
                   "sysfonts","scales","magrittr","knitr","lubridate","Hmisc","haven","tidyr","reshape2","DescTools","extrafont",
                   "patchwork", "extrafontdb", "ggtext", "geomtextpath","zoo","psych","cowplot","kableExtra","ztable","pheatmap",
-                  "RColorBrewer", "d3heatmap","hablar", "gganimate", "PhantomJS", "dygraphs", "gapminder", "hrbrthemes")
+                  "RColorBrewer", "d3heatmap","hablar", "gganimate", "PhantomJS", "dygraphs", "gapminder", "hrbrthemes", "geomtextpath")
+
+
 
 
 # lapply(zam_packages, install.packages, character.only=T)
@@ -53,15 +55,20 @@ base <- theme_bw() + theme(panel.grid.minor.x=element_blank(),
                              family = "Gill Sans Mt"),
                            plot.subtitle = element_text(size=12, family="Gill Sans Mt"),
                            plot.caption=element_text(size=12, family="Gill Sans Mt"),
-                           axis.title=element_text(size=12, family="Gill Sans Mt"),
-                           axis.text=element_text(size=9, family="Gill Sans Mt"),
+                           axis.title=element_text(size=14, family="Gill Sans Mt"),
+                           axis.text=element_text(size=14, family="Gill Sans Mt"),
                            axis.text.x = element_text(angle = 0, family="Gill Sans Mt"),
-                           legend.text=element_text(size=12, family="Gill Sans Mt"),
-                           legend.position = "bottom",
-                           strip.text=element_text(size=12, family="Gill Sans Mt"),
+                           legend.text=element_text(size=13, family="Gill Sans Mt"),
+                           #legend.position = "left",
+                           legend.position = c(.67,.99),
+                           legend.justification = c("left", "top"),
+                           legend.box.just = "left",
+                           strip.text=element_text(size=13, family="Gill Sans Mt"),
                            panel.border=element_blank(),
-                           axis.ticks = element_blank())
-                        
+                           axis.ticks = element_blank(),
+                           legend.background = element_rect(fill = "white", color = "black"))
+
+
 
 #scale_color_discrete <- usaid_palette
 
@@ -72,16 +79,19 @@ theme_set(base)
 faceted <- theme_bw() +
   theme(panel.grid.minor.x=element_blank(),
         panel.grid.minor.y=element_blank(),
-        plot.title=element_text(#face="bold",
-          size=14, 
-          #hjust=.5, 
+        plot.title=element_text(face="bold",
+          size=16, 
+          hjust=.5, 
           family = "Gill Sans Mt"),
         plot.subtitle = element_text(size=12, family="Gill Sans Mt"),
         plot.caption=element_text(size=12, family="Gill Sans Mt"),
         axis.title=element_text(size=12, family="Gill Sans Mt"),
-        axis.text=element_text(size=9, family="Gill Sans Mt"),
-        legend.text=element_text(size=11, family="Gill Sans Mt"),
-        legend.position = "bottom",
+        axis.text=element_text(size=12, family="Gill Sans Mt"),
+        legend.text=element_text(size=12, family="Gill Sans Mt"),
+        #legend.position = "left",
+        legend.position = c(.68,.99),
+        legend.justification = c("left", "top"),
+        legend.box.just = "left",
         strip.text=element_text(size=12, family="Gill Sans Mt"))
 
 

@@ -20,7 +20,7 @@ iptm_long
 iptm_plt <- ggplot(iptm_long, aes(x=period, y=value,  color=variable)) +
   geom_line(size=1, alpha=0.5) +
   geom_point(size=3) +
-  scale_color_viridis(discrete = TRUE) +
+  # scale_color_viridis(discrete = TRUE) +
   scale_x_date(date_labels="%Y",date_breaks="1 year") +
   scale_color_manual(values=c("#002A6C","#C2113A", "#EF7D00"))+
   scale_y_continuous(labels=comma) +
@@ -401,19 +401,22 @@ ggsave("C:/Users/NyimbiliShida/Documents/MSI/GIS & Visuals/R Data/Visuals Export
        width=14)
 
 #Malaria Area Plot wiith Campaigns
+
 source("C:/Users/NyimbiliShida/Documents/MSI/GIS & Visuals/R Data/Scripts/r prep.R")
 source("scripts/r prep.r")
 library(cowplot)
+library(geomtextpath)
 
-dat3 <- read_xls("C:/Users/NyimbiliShida/Documents/MSI/GIS & Visuals/R Data/Data PMI/hlb.xls")
-dat4 <- read_xls("C:/Users/NyimbiliShida/Documents/MSI/GIS & Visuals/R Data/Data PMI/shakall.xls")
+anf <- read_xls("C:/Users/NyimbiliShida/Documents/MSI/GIS & Visuals/R Data/Data PMI/hlb.xls")
+ani <- read_xls("C:/Users/NyimbiliShida/Documents/MSI/GIS & Visuals/R Data/Data PMI/insecticide.xls")
+ang <- read_xls("C:/Users/NyimbiliShida/Documents/MSI/GIS & Visuals/R Data/Data PMI/shakall.xls")
 #dat5 <- read_xls("C:/Users/NyimbiliShida/Documents/MSI/GIS & Visuals/R Data/Data PMI/Manchene indoors.xls")
 #dat6 <- read_xls("C:/Users/NyimbiliShida/Documents/MSI/GIS & Visuals/R Data/Data PMI/Manchene outdoors.xls")
 #dat3<- read_xls(here("data/Malaria/shakall.xls"))
 #dat2 <- read_xls(here("data/Malaria/hlb.xls"))
 
-dat3
-dat4
+anf
+ang
 # dat5
 # dat6
 
@@ -424,65 +427,65 @@ dat4
 
 # Nchelenge HLC Shikapande FvG
 
-dat3<- melt(dat3[, c(1, 2, 3)], id.vars = 'Year')
+anf<- melt(anf[, c(1, 2, 3)], id.vars = 'Year')
 
-dat3
+anf
 
-sapply(dat3, mode)
+sapply(anf, mode)
 
 
-pmi_1 <- ggplot(dat3, aes(x=Year, y=value, fill = variable)) + 
-  geom_area(alpha=.7)+
-  scale_fill_manual(values=c("#002A6C","#C2113A")) +
-  labs(#title="Number of bites per person per Night at Manchene (Not Sprayed)",
+pmi_1 <- ggplot(anf, aes(x=Year, y=value, fill = variable)) + 
+  geom_area(alpha=.7) +
+  geom_rect(data=ani, aes(NULL,NULL,xmin=Start,xmax=End,fill=Inserticide),
+            ymin=0,ymax=220, colour="#CFCDC9", size=0.6, alpha=0.5, lty="twodash") +
+  scale_fill_manual(values=c("#002A6C","#C2113A", "#EF7D00", "#198a00ff")) +
+  labs(fill="Legend:", title="Number of bites per person per Night in Sprayed and Unsprayed Areas",
        x="",
        y="Human Bite Rate") +
-  theme(
-    axis.title.y=element_text(angle=0, hjust=2, vjust=6),
-    plot.title=element_text(size=10, hjust=1.5)) + 
-  #  faceted # don't use this if the plot doesn't have facet_wrap
-  geom_vline(xintercept = c(as.POSIXct("2019-10-01"), as.POSIXct("2020-10-01")),
-             color=c("#EF7D00","#EF7D00"),
-             lty=c("1343", "1343") ,
-             size=c(1,1), 
-             alpha=1) + 
-  #annotate("text", x = as.POSIXct("2019-10-01"), y = 0, label = substitute(paste(bold('ITNS Mass Dist. Campaigns:2019-10'))), size=3, angle=90, hjust =-0.8, vjust=-2) +
-  #annotate("text", x = as.POSIXct("2020-10-01"), y = 0, label = substitute(paste(bold('ITNS Mass Dist. Campaigns:2020-10'))), size=3, angle=90, hjust =-0.7, vjust=2)+
-  faceted
+  # geom_vline(xintercept = c(as.POSIXct("2019-10-01"), as.POSIXct("2020-10-01")),
+  #            color=c("#EF7D00","#EF7D00"),
+  #            lty=c("1343", "1343") ,
+  #            size=c(1,1),
+  #            alpha=1) +
+  base +
+  annotate("text", x = as.POSIXct("2019-10-01"), y = 0, label = substitute(paste(bold('Indoor Residual Spraying'))), size=5, angle=90, hjust =-1.3, vjust=-1) +
+  annotate("text", x = as.POSIXct("2020-10-01"), y = 0, label = substitute(paste(bold('Indoor Residual Spraying'))), size=5, angle=90, hjust =-1.3, vjust=-0.7)
+
+
 pmi_1
 
-dat4 <- melt(dat4[, c(1, 2, 3)], id.vars = 'Year')
-dat4
+ang <- melt(ang[, c(1, 2, 3)], id.vars = 'Year')
+ang
 
-pmi_2 <-ggplot(dat4, aes(x=Year, y=value, fill = variable)) + 
-  geom_area(alpha=.7)+
-  scale_fill_manual(values=c("#002A6C","#C2113A")) +
-  labs(fill="Legend:", title="Number of bites per person per Night at Shikapande(Sprayed)",
+pmi_2 <-ggplot(ang, aes(x=Year, y=value, xaxt="n", fill = variable)) + 
+  geom_area(alpha=.7) + 
+  geom_rect(data=ani, aes(NULL,NULL,xmin=Start,xmax=End,fill=Inserticide),
+           ymin=0,ymax=220, colour="#CFCDC9", size=0.6, alpha=0.5, lty="twodash") +
+  scale_fill_manual(values=c("#002A6C","#C2113A", "#EF7D00", "#198a00ff")) +
+  labs(fill="Legend:", #title="Number of bites per person per Night in Sprayed and Unsprayed Areas",
     x="",
     y="Human Bite Rate") +
-  theme(
-    axis.title.y=element_text(angle=0, hjust=2, vjust=6),
-    plot.title=element_text(size=10, hjust=1.5)) +
-  #  faceted # don't use this if the plot doesn't have facet_wrap
-  geom_vline(xintercept = c(as.POSIXct("2019-10-01"), as.POSIXct("2020-10-01")),
-             color=c("#EF7D00","#EF7D00"),
-             lty=c("1343", "1343") ,
-             size=c(1,1),
-             alpha=1) +
-  annotate("text", x = as.POSIXct("2019-10-01"), y = 0, label = substitute(paste(bold('IRS'))), size=3.4, angle=90, hjust =-0.9, vjust=-0.5) +
-  annotate("text", x = as.POSIXct("2020-10-01"), y = 0, label = substitute(paste(bold('IRS'))), size=3.4, angle=90, hjust =-0.9, vjust=-0.5)+
-  faceted
+  # geom_vline(xintercept = c(as.POSIXct("2019-10-01"), as.POSIXct("2020-10-01")),
+  #            color=c("#EF7D00","#EF7D00"),
+  #            lty=c("1343", "1343") ,
+  #            size=c(1,1),
+  #            alpha=1) + 
+  base +
+  annotate("text", x = as.POSIXct("2019-10-01"), y = 0, label = substitute(paste(bold('Indoor Residual Spraying'))), size=5, angle=90, hjust =-1.3, vjust=-1) +
+  annotate("text", x = as.POSIXct("2020-10-01"), y = 0, label = substitute(paste(bold('Indoor Residual Spraying'))), size=5, angle=90, hjust =-1.3, vjust=-0.7)
+
+
 
 pmi_2
 
-plot_grid(pmi_2, pmi_1, nrows = 2, ncol = 1)
+plot_grid(pmi_1, pmi_2, nrows = 2, ncol = 1)
 
-ggsave("C:/Users/NyimbiliShida/Documents/MSI/GIS & Visuals/R Data/Visuals Exports/Nchelenge HLC Shikapande fg.png",
+ggsave("C:/Users/NyimbiliShida/Documents/MSI/GIS & Visuals/R Data/Visuals Exports/Nchelenge HBR All1 Indoors.png",
        #ggsave("viz/Malaria/Nchelenge HLC Manchene fg.png",
        device="png",
        #type="cairo",
-       height=19,
-       width=15)
+       height=22,
+       width=18)
 
 
 
@@ -498,7 +501,7 @@ sapply(dat5, mode)
 pmi_4 <- ggplot(dat5, aes(x=Year, y=value, fill = variable)) + 
   geom_area(alpha=.7)+
   scale_fill_manual(values=c("#002A6C","#C2113A")) +
-  labs(#title="Number of bites per person per Night at Manchene (Not Sprayed)",
+  labs(fill="Legend:", #title="Number of bites per person per Night at Manchene (Not Sprayed)",
     x="",
     y="Human Bite Rate") +
   theme(
