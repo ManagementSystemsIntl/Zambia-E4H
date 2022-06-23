@@ -2,6 +2,7 @@
 
 source("C:/Users/NyimbiliShida/Documents/MSI/GIS & Visuals/R Data/Scripts/r prep.R")
 source("scripts/r prep.r")
+library(gganimate)
 
 
 
@@ -406,6 +407,8 @@ source("C:/Users/NyimbiliShida/Documents/MSI/GIS & Visuals/R Data/Scripts/r prep
 source("scripts/r prep.r")
 library(cowplot)
 library(geomtextpath)
+library(writexl)
+
 
 anf <- read_xls("C:/Users/NyimbiliShida/Documents/MSI/GIS & Visuals/R Data/Data PMI/hlb.xls")
 ani <- read_xls("C:/Users/NyimbiliShida/Documents/MSI/GIS & Visuals/R Data/Data PMI/insecticide.xls")
@@ -414,9 +417,9 @@ ang <- read_xls("C:/Users/NyimbiliShida/Documents/MSI/GIS & Visuals/R Data/Data 
 #dat6 <- read_xls("C:/Users/NyimbiliShida/Documents/MSI/GIS & Visuals/R Data/Data PMI/Manchene outdoors.xls")
 #dat3<- read_xls(here("data/Malaria/shakall.xls"))
 #dat2 <- read_xls(here("data/Malaria/hlb.xls"))
+# new_anf <- as.data.frame(anf) 
+# new_anf
 
-anf
-ang
 # dat5
 # dat6
 
@@ -427,19 +430,24 @@ ang
 
 # Nchelenge HLC Shikapande FvG
 
-anf<- melt(anf[, c(1, 2, 3)], id.vars = 'Year')
+anf <- melt(anf[, c(1, 4, 5)], id = 'period')
 
-anf
+# anf$period <- as.Date(as.character(anf$period), format = "%Y-%m-%d")
 
-sapply(anf, mode)
+# str(new_anf1)
 
+sapply(new_anf1, mode)
+class(period)
 
-pmi_1 <- ggplot(anf, aes(x=Year, y=value, fill = variable)) + 
+# write_xlsx(new_anf1,"C:/Users/NyimbiliShida/Documents/MSI/GIS & Visuals/R Data/Data PMI/dfdemo.xlsx")
+
+pmi_1 <- ggplot(anf, aes(x = period, y = value, fill = variable)) + 
   geom_area(alpha=.7) +
   geom_rect(data=ani, aes(NULL,NULL,xmin=Start,xmax=End,fill=Inserticide),
             ymin=0,ymax=220, colour="#CFCDC9", size=0.6, alpha=0.5, lty="twodash") +
   scale_fill_manual(values=c("#002A6C","#C2113A", "#EF7D00", "#198a00ff")) +
-  labs(fill="Legend:", title="Number of bites per person per Night in Sprayed and Unsprayed Areas",
+  #scale_x_date(date_breaks="4 months", date_labels="%Y-%b") +
+  labs(fill="Legend:", title="Number of bites per person per Night in Sprayed and Unsprayed Areas - Outdoor",
        x="",
        y="Human Bite Rate") +
   # geom_vline(xintercept = c(as.POSIXct("2019-10-01"), as.POSIXct("2020-10-01")),
@@ -454,10 +462,10 @@ pmi_1 <- ggplot(anf, aes(x=Year, y=value, fill = variable)) +
 
 pmi_1
 
-ang <- melt(ang[, c(1, 2, 3)], id.vars = 'Year')
+ang <- melt(ang[, c(1, 4, 5)], id.vars = 'period')
 ang
 
-pmi_2 <-ggplot(ang, aes(x=Year, y=value, xaxt="n", fill = variable)) + 
+pmi_2 <-ggplot(ang, aes(x=period, y=value, fill = variable)) + 
   geom_area(alpha=.7) + 
   geom_rect(data=ani, aes(NULL,NULL,xmin=Start,xmax=End,fill=Inserticide),
            ymin=0,ymax=220, colour="#CFCDC9", size=0.6, alpha=0.5, lty="twodash") +
@@ -480,7 +488,7 @@ pmi_2
 
 plot_grid(pmi_1, pmi_2, nrows = 2, ncol = 1)
 
-ggsave("C:/Users/NyimbiliShida/Documents/MSI/GIS & Visuals/R Data/Visuals Exports/Nchelenge HBR All1 Indoors.png",
+ggsave("C:/Users/NyimbiliShida/Documents/MSI/GIS & Visuals/R Data/Visuals Exports/Nchelenge HBR All1 outdoors.png",
        #ggsave("viz/Malaria/Nchelenge HLC Manchene fg.png",
        device="png",
        #type="cairo",
