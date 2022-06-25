@@ -116,7 +116,7 @@ source("C:/Users/NyimbiliShida/Documents/MSI/GIS & Visuals/R Data/Scripts/r prep
 source("scripts/r prep.r")
 
 dat2 <- read_xls("C:/Users/NyimbiliShida/Documents/MSI/GIS & Visuals/R Data/Data PMI/Nchelenge Confirmed Cases Monthly 2014-2021.xls")
-dat2 <- melt(dat1[, c(1, 2)], id.vars = 'monthyr')
+dat2 <- melt(dat2[, c(1, 2)], id.vars = 'monthyr')
 
 dat2$monthyr <- as.Date(dat2$monthyr)                 
 dat2 <- dat2[order(dat1$monthyr), ]
@@ -131,7 +131,7 @@ str(dat2$monthyr)
 dat2_plt <- ggplot(dat2, aes(x=monthyr, y=value)) +
   geom_line(size=1, color="#A7C6ED", alpha=0.6) +
   geom_point(size=3, color="#0067B9", alpha=0.8)+
-  scale_x_date(date_labels="%Y/%m",date_breaks="4 months")+
+  scale_x_date(date_labels="%Y/%m",date_breaks="6 months")+
   #scale_x_continuous(breaks=2014:2021) +
   scale_y_continuous(labels=comma) +
   labs(title="Nchelenge Trend Monthly Confirmed Cases",

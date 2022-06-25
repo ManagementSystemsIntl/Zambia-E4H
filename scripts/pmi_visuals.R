@@ -57,9 +57,11 @@ class(period)
 
 sapply(iptm_data, mode)
 
+str(iptm_data)
+
 iptm_long <- melt(iptm_data, id = "period")
 gfg_plot <- ggplot(iptm_long,aes(x = period,y = value, color = variable)) +  geom_line(size=1, alpha=0.5) + geom_point(size=3)+
-  scale_x_date(date_labels="%Y",date_breaks="1 year") +
+  #scale_x_continuous(date_breaks(width="4 months")) +
   scale_color_manual(values=c("#002A6C","#C2113A", "#EF7D00"))+
   scale_y_continuous(labels=comma) +
   labs(color="Legend:", title="Nchelenge Confirmed Cases",
@@ -77,41 +79,40 @@ ggsave("C:/Users/NyimbiliShida/Documents/MSI/GIS & Visuals/R Data/Visuals Export
 
 
 ## Severe Malaria and Deaths
+source("scripts/r prep.r")
 
 malsv <- read_xls("C:/Users/NyimbiliShida/Documents/MSI/GIS & Visuals/R Data/Data PMI/severemalaria.xls")
 
-lapply(malsv, na.omit)
+#lapply(malsv, na.omit)
 malsv
 
-malsv <- melt(malsv[c(1, 2,4)], id = 'period')
-# 
-# as.character(malsv$period)  #Fix this
-# 
-# str(malsv$period)
-# 
-# as.Date(as.character(malsv$period),format="%Y%m%d")
-# as.Date(as.Date.numeric(malsv$period),origin = "2016-01-01", format = "%Y%m%d")
+malsv <- melt(malsv[c(1, 2, 3)], id = 'period')
 
-malsv <- ggplot(malsv, aes(x=period, y=value, fill = variable)) +
+malsv$period <- as.Date(malsv$period)                 
+malsv1 <- malsv[order(malsv$period), ]
+
+#Campaigns
+dt <- as.Date("2017-10-01")
+dt1 <- as.Date("2018-10-01")
+dt2 <- as.Date("2020-12-01")
+
+malsv <- ggplot(malsv1, aes(x=period, y=value, fill = variable)) +
   geom_area(alpha=.7)+
-  scale_fill_manual(values=c("#002A6C","#C2113A")) +
+  scale_fill_manual(values=c("#A7C6ED","#C2113A")) +
   scale_y_continuous(labels=comma) +
-  scale_x_date(date_labels="%Y-%b",date_breaks="6 months")+
+  scale_x_date(date_labels="%b %Y",date_breaks="4 month", limits = NULL) +
   labs(fill="Legend:", title="Severe Malaria and Deaths",
        x="",
        y="Cases") +
   base +
-  geom_vline(xintercept = c(as.POSIXct("2018-10-01"), as.POSIXct("2017-10-01"), as.POSIXct("2020-10-01")),
-             color=c("#EF7D00","#198a00ff", "#198a00ff"),
-             lty=c("solid","dotted", "dotted") ,
-             size=c(2,1,1),
-             alpha=1) +
-  annotate("text", x = as.POSIXct("2018-10-01"), y = 0, label = substitute(paste(bold('Integrated community case management: Oct'))), size=4, angle=90, hjust =-0.3, vjust=-1, color="#EF7D00")+
-  annotate("text", x = as.POSIXct("2017-10-01"), y = 0, label = substitute(paste(bold('ITNS Mass Dist.Campaigns: Oct'))), size=4, angle=90, hjust =-1, vjust=-0.7, color="#198a00ff")+
-  annotate("text", x = as.POSIXct("2020-12-01"), y = 0, label = substitute(paste(bold('ITNS Mass Dist.Campaigns: Dec'))), size=4, angle=90, hjust =-1, vjust=-0.5, color="#198a00ff")
+  geom_vline(xintercept = c(dt, dt1, dt2) ,color=c("#EF7D00","#198a00ff", "#198a00ff") ,lty=c("solid","dotted", "dotted") ,size=c(2,1,1), alpha=1)+
+  annotate("text", x = dt, y = 0, label = substitute(paste(bold('Integrated community case management: Oct'))), size=4, angle=90, hjust =-0.3, vjust=-1, color="#EF7D00")+
+  annotate("text", x = dt1, y = 0, label = substitute(paste(bold('ITNS Mass Dist.Campaigns: Oct'))), size=4, angle=90, hjust =-1, vjust=-0.7, color="#198a00ff")+
+  annotate("text", x = dt2, y = 0, label = substitute(paste(bold('ITNS Mass Dist.Campaigns: Dec'))), size=4, angle=90, hjust =-1, vjust=-0.5, color="#198a00ff")
 
 
 malsv
+
 ggsave("C:/Users/NyimbiliShida/Documents/MSI/GIS & Visuals/R Data/Visuals Exports/Severe & Death Cases.png",
        device="png",
        type="cairo",
@@ -327,10 +328,11 @@ ggsave("C:/Users/NyimbiliShida/Documents/MSI/GIS & Visuals/R Data/Visuals Export
 
 dat1 <- read_xls("C:/Users/NyimbiliShida/Documents/MSI/GIS & Visuals/R Data/Data PMI/Nchelenge Confirmed Cases Monthly 2014-2021.xls")
 
-monthly_data <- dat1 %>%
-  
-geom_line( dat1=monthly_data %>% dplyr::select(-name), aes(group=name2), color="#BA0C2F", size=1, alpha=0.6) +
-geom_point(aes(color = name, group =-name), color="#BA0C2F", size=3, alpha=6 ) +
+ggplot(dat1, aes(monthyr, Malaria_Confirmed_Cases)) + geom_line()
+# monthly_data <- dat1 %>%
+#   
+# geom_line( dat1=monthly_data %>% dplyr::select(-name), aes(group=name2), color="#BA0C2F", size=1, alpha=0.6) +
+# geom_point(aes(color = name, group =-name), color="#BA0C2F", size=3, alpha=6 ) +
 # geom_vline(xintercept = c(vline1, vline2, vline3, vline4, vline5),color=c("#212721","#EF7D00", "#0067B9","#EF7D00","#198a00ff") ,lty=c("solid", "solid", "solid", "solid", "dotted") ,size=5, alpha=0.5)+
 # annotate("text", x = vline1, y = 0, label = "SBC", size=2, angle=90, hjust =-10) +
 # annotate("text", x = vline2, y = 0, label = "Mass ITNS Distribution", size=2, angle=90, hjust =-2)+
@@ -432,32 +434,45 @@ ang <- read_xls("C:/Users/NyimbiliShida/Documents/MSI/GIS & Visuals/R Data/Data 
 
 anf <- melt(anf[, c(1, 4, 5)], id = 'period')
 
-# anf$period <- as.Date(as.character(anf$period), format = "%Y-%m-%d")
+anf$period <- as.Date(anf$period)  
 
-# str(new_anf1)
+anf1 <- anf[order(anf$period), ]
 
-sapply(new_anf1, mode)
+
+ani$Start <- as.Date(ani$Start) 
+ani$End <- as.Date(ani$End) 
+
+ani1 <- ani[order(ani$Start), ]
+ani1 <- ani[order(ani$End), ]
+
+#campaigns
+cm <- as.Date("2019-10-01")
+cm1 <- as.Date("2020-10-01")
+Start <- as.Date(NULL)
+End <- as.Date(NULL)
+
+str(anf1$period)
+
+sapply(anf, mode)
+
 class(period)
+ani
 
 # write_xlsx(new_anf1,"C:/Users/NyimbiliShida/Documents/MSI/GIS & Visuals/R Data/Data PMI/dfdemo.xlsx")
 
-pmi_1 <- ggplot(anf, aes(x = period, y = value, fill = variable)) + 
+pmi_1 <- ggplot(anf1, aes(x = period, y = value, fill = variable)) + 
   geom_area(alpha=.7) +
   geom_rect(data=ani, aes(NULL,NULL,xmin=Start,xmax=End,fill=Inserticide),
             ymin=0,ymax=220, colour="#CFCDC9", size=0.6, alpha=0.5, lty="twodash") +
-  scale_fill_manual(values=c("#002A6C","#C2113A", "#EF7D00", "#198a00ff")) +
-  #scale_x_date(date_breaks="4 months", date_labels="%Y-%b") +
+  scale_fill_manual(values=c("#A7C6ED","#C2113A", "#EF7D00", "#198a00ff")) +
+  scale_x_date(date_breaks="3 months", date_labels="%b %Y") +
   labs(fill="Legend:", title="Number of bites per person per Night in Sprayed and Unsprayed Areas - Outdoor",
        x="",
        y="Human Bite Rate") +
-  # geom_vline(xintercept = c(as.POSIXct("2019-10-01"), as.POSIXct("2020-10-01")),
-  #            color=c("#EF7D00","#EF7D00"),
-  #            lty=c("1343", "1343") ,
-  #            size=c(1,1),
-  #            alpha=1) +
+
   base +
-  annotate("text", x = as.POSIXct("2019-10-01"), y = 0, label = substitute(paste(bold('Indoor Residual Spraying'))), size=5, angle=90, hjust =-1.3, vjust=-1) +
-  annotate("text", x = as.POSIXct("2020-10-01"), y = 0, label = substitute(paste(bold('Indoor Residual Spraying'))), size=5, angle=90, hjust =-1.3, vjust=-0.7)
+  annotate("text", x = cm, y = 0, label = substitute(paste(bold('Indoor Residual Spraying'))), size=5, angle=90, hjust =-1.3, vjust=-1) +
+  annotate("text", x = cm1, y = 0, label = substitute(paste(bold('Indoor Residual Spraying'))), size=5, angle=90, hjust =-1.3, vjust=-0.7)
 
 
 pmi_1
@@ -465,22 +480,23 @@ pmi_1
 ang <- melt(ang[, c(1, 4, 5)], id.vars = 'period')
 ang
 
-pmi_2 <-ggplot(ang, aes(x=period, y=value, fill = variable)) + 
+ang$period <- as.Date(ang$period)  
+
+ang1 <- ang[order(ang$period), ]
+
+
+pmi_2 <-ggplot(ang1, aes(x=period, y=value, fill = variable)) + 
   geom_area(alpha=.7) + 
   geom_rect(data=ani, aes(NULL,NULL,xmin=Start,xmax=End,fill=Inserticide),
            ymin=0,ymax=220, colour="#CFCDC9", size=0.6, alpha=0.5, lty="twodash") +
-  scale_fill_manual(values=c("#002A6C","#C2113A", "#EF7D00", "#198a00ff")) +
+  scale_fill_manual(values=c("#A7C6ED","#C2113A", "#EF7D00", "#198a00ff")) +
+  scale_x_date(date_breaks="3 months", date_labels="%b %Y")+
   labs(fill="Legend:", #title="Number of bites per person per Night in Sprayed and Unsprayed Areas",
     x="",
     y="Human Bite Rate") +
-  # geom_vline(xintercept = c(as.POSIXct("2019-10-01"), as.POSIXct("2020-10-01")),
-  #            color=c("#EF7D00","#EF7D00"),
-  #            lty=c("1343", "1343") ,
-  #            size=c(1,1),
-  #            alpha=1) + 
   base +
-  annotate("text", x = as.POSIXct("2019-10-01"), y = 0, label = substitute(paste(bold('Indoor Residual Spraying'))), size=5, angle=90, hjust =-1.3, vjust=-1) +
-  annotate("text", x = as.POSIXct("2020-10-01"), y = 0, label = substitute(paste(bold('Indoor Residual Spraying'))), size=5, angle=90, hjust =-1.3, vjust=-0.7)
+  annotate("text", x = cm, y = 0, label = substitute(paste(bold('Indoor Residual Spraying'))), size=5, angle=90, hjust =-1.3, vjust=-1) +
+  annotate("text", x = cm1, y = 0, label = substitute(paste(bold('Indoor Residual Spraying'))), size=5, angle=90, hjust =-1.3, vjust=-0.7)
 
 
 
