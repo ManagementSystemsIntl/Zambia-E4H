@@ -24,7 +24,7 @@ zam_packages <- c("tidyverse", "here", "gifski", "gt","gtsummary","gghighlight",
                   "psych","labelled","readxl", "skimr","sjlabelled","sjstats","sjPlot", "sjmisc","readr","ggrepel","openxlsx",
                   "sysfonts","scales","magrittr","knitr","lubridate","Hmisc","haven","tidyr","reshape2","DescTools","extrafont",
                   "patchwork", "extrafontdb", "ggtext", "geomtextpath","zoo","psych","cowplot","kableExtra","ztable","pheatmap",
-                  "RColorBrewer", "d3heatmap","hablar", "gganimate", "PhantomJS", "dygraphs", "gapminder", "hrbrthemes", "geomtextpath")
+                  "RColorBrewer", "data.table", "d3heatmap","hablar", "gganimate", "PhantomJS", "dygraphs", "gapminder", "hrbrthemes", "geomtextpath")
 
 
 
@@ -59,10 +59,10 @@ base <- theme_bw() + theme(panel.grid.minor.x=element_blank(),
                            axis.text=element_text(size=13, family="Gill Sans Mt"),
                            axis.text.x = element_text(angle = 0, family="Gill Sans Mt"),
                            legend.text=element_text(size=10, family="Gill Sans Mt"),
-                           #legend.position = "left",
-                           legend.position = c(.67,.99),
-                           legend.justification = c("left", "top"),
-                           legend.box.just = "left",
+                           legend.position = "bottom",
+                           # legend.position = c(.67,.99),
+                           # legend.justification = c("left", "top"),
+                           # legend.box.just = "left",
                            strip.text=element_text(size=13, family="Gill Sans Mt"),
                            panel.border=element_blank(),
                            axis.ticks = element_blank(),

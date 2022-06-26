@@ -3,7 +3,97 @@
 source("C:/Users/NyimbiliShida/Documents/MSI/GIS & Visuals/R Data/Scripts/r prep.R")
 source("scripts/r prep.r")
 library(gganimate)
+library(data.table)
 
+
+##indoor resting density
+insecty <- read_xls("C:/Users/NyimbiliShida/Documents/MSI/GIS & Visuals/R Data/Data PMI/insecticidetype.xls")
+
+
+# ggplot(dat1, aes(monthyr, Malaria_Confirmed_Cases)) + geom_line()
+#insecty <- melt(data = indens, id.vars = c("mnth","gambia", "Site","funestus"), variable.name = "mnth")
+
+insecty
+
+# insecty$mont <- as.Date(insecty$mont) origin="2014"
+# insect1 <- insecty[order(insecty$mont), ]
+# # 
+# indens1
+
+#Calculation sd
+# sd(indens1$funestus)
+
+id_plt <- ggplot(insecty) + 
+  geom_bar(aes(x=mont, y=Coverage*100), stat="identity", labels=scales::percent, position = "dodge", color="#A7C6ED") +
+  geom_line(aes(x=mont, y=Malaria), stat="identity",color="#A7C6ED") +
+  scale_y_continuous("Malaria", sec.axis=sec_axis(~.*0.001,name="Malaria Cases"))+
+  labs(fill="Legend:", title="Insecticide Types Used Over Time - Nchelenge",
+       x=" Period",
+       y="Coverage(%)") + base
+
+id_plt
+
+ggsave("C:/Users/NyimbiliShida/Documents/MSI/GIS & Visuals/R Data/Visuals Exports/resting density an An.gambia.png",
+       device="png",
+       type="cairo",
+       height = 7,
+       width = 12)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+##indoor resting density
+indens <- read_xls("C:/Users/NyimbiliShida/Documents/MSI/GIS & Visuals/R Data/Data PMI/inddensity.xls")
+
+indens <- melt(data = indens, id.vars = c("mnth","gambia", "Site","funestus"), variable.name = "mnth")
+
+indens
+
+indens$mnth <- as.Date(indens$mnth)  
+
+indens1 <- indens[order(indens$mnth), ]
+
+indens1
+
+#Calculation sd
+sd(indens1$funestus)
+
+id_plt <- ggplot(indens1, aes(x=mnth, y=gambia, fill = Site)) +
+  geom_bar(stat="identity", position = "dodge") + 
+  geom_errorbar( aes(x=mnth, ymin=gambia-sd, ymax=gambia+sd), width=0.4, colour="orange", alpha=0.9, size=0.9) +
+  scale_x_date(date_labels="%b %Y",date_breaks="3 months", limits = NULL) + 
+  scale_fill_manual(values=c("#A7C6ED","#C2113A")) +
+  labs(fill="Legend:", title="Indoor Resting Density An.gambia s.I",
+       x=" Period",
+       y="Indoor density (No of vectors per house per night)")
+
+id_plt
+
+ggsave("C:/Users/NyimbiliShida/Documents/MSI/GIS & Visuals/R Data/Visuals Exports/resting density an An.gambia.png",
+       device="png",
+       type="cairo",
+       height = 7,
+       width = 12)
 
 
 
@@ -415,24 +505,16 @@ library(writexl)
 anf <- read_xls("C:/Users/NyimbiliShida/Documents/MSI/GIS & Visuals/R Data/Data PMI/hlb.xls")
 ani <- read_xls("C:/Users/NyimbiliShida/Documents/MSI/GIS & Visuals/R Data/Data PMI/insecticide.xls")
 ang <- read_xls("C:/Users/NyimbiliShida/Documents/MSI/GIS & Visuals/R Data/Data PMI/shakall.xls")
+rf <- read_xls("C:/Users/NyimbiliShida/Documents/MSI/GIS & Visuals/R Data/Data PMI/rainfall.xls")
 #dat5 <- read_xls("C:/Users/NyimbiliShida/Documents/MSI/GIS & Visuals/R Data/Data PMI/Manchene indoors.xls")
 #dat6 <- read_xls("C:/Users/NyimbiliShida/Documents/MSI/GIS & Visuals/R Data/Data PMI/Manchene outdoors.xls")
 #dat3<- read_xls(here("data/Malaria/shakall.xls"))
 #dat2 <- read_xls(here("data/Malaria/hlb.xls"))
-# new_anf <- as.data.frame(anf) 
-# new_anf
 
-# dat5
-# dat6
-
-# dat <- dat2 %>%
-#   pivot_longer(2:3,
-#                names_to="variable",
-#                values_to="value")
 
 # Nchelenge HLC Shikapande FvG
 
-anf <- melt(anf[, c(1, 4, 5)], id = 'period')
+anf <- melt(anf[, c(1, 2, 3)], id = 'period')
 
 anf$period <- as.Date(anf$period)  
 
@@ -445,6 +527,11 @@ ani$End <- as.Date(ani$End)
 ani1 <- ani[order(ani$Start), ]
 ani1 <- ani[order(ani$End), ]
 
+
+rf <- rf[order(rf$period), ]
+rf1 <- rf[order(rf$period), ]
+
+
 #campaigns
 cm <- as.Date("2019-10-01")
 cm1 <- as.Date("2020-10-01")
@@ -456,17 +543,20 @@ str(anf1$period)
 sapply(anf, mode)
 
 class(period)
-ani
+ani1
+anf1
+rf1
 
 # write_xlsx(new_anf1,"C:/Users/NyimbiliShida/Documents/MSI/GIS & Visuals/R Data/Data PMI/dfdemo.xlsx")
 
-pmi_1 <- ggplot(anf1, aes(x = period, y = value, fill = variable)) + 
+pmi_1 <- ggplot(data=anf1, aes(x = period, y = value, fill = variable)) + 
   geom_area(alpha=.7) +
-  geom_rect(data=ani, aes(NULL,NULL,xmin=Start,xmax=End,fill=Inserticide),
+  #geom_line(data=rf1, aes(x = period, y = Rainfall)) + 
+  geom_rect(data=ani1, aes(NULL, NULL, xmin=Start, xmax=End, fill=Inserticide),
             ymin=0,ymax=220, colour="#CFCDC9", size=0.6, alpha=0.5, lty="twodash") +
   scale_fill_manual(values=c("#A7C6ED","#C2113A", "#EF7D00", "#198a00ff")) +
   scale_x_date(date_breaks="3 months", date_labels="%b %Y") +
-  labs(fill="Legend:", title="Number of bites per person per Night in Sprayed and Unsprayed Areas - Outdoor",
+  labs(fill="Legend:", title="Number of bites per person per Night in Sprayed and Unsprayed Areas - indoor",
        x="",
        y="Human Bite Rate") +
 
@@ -474,10 +564,9 @@ pmi_1 <- ggplot(anf1, aes(x = period, y = value, fill = variable)) +
   annotate("text", x = cm, y = 0, label = substitute(paste(bold('Indoor Residual Spraying'))), size=5, angle=90, hjust =-1.3, vjust=-1) +
   annotate("text", x = cm1, y = 0, label = substitute(paste(bold('Indoor Residual Spraying'))), size=5, angle=90, hjust =-1.3, vjust=-0.7)
 
-
 pmi_1
 
-ang <- melt(ang[, c(1, 4, 5)], id.vars = 'period')
+ang <- melt(ang[, c(1, 2, 3)], id.vars = 'period')
 ang
 
 ang$period <- as.Date(ang$period)  
