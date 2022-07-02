@@ -75,6 +75,7 @@ ggsave("C:/Users/NyimbiliShida/Documents/MSI/GIS & Visuals/R Data/Visuals Export
 
   
 ###IPT ITNS
+library(gganimate)
 ip <- read_xls("C:/Users/NyimbiliShida/Documents/MSI/GIS & Visuals/R Data/Data PMI/iptpreg.xls")
 
 # ip <- melt(data = ip, id.vars = c("periodname","IPT_1ANC", "ITN_Preganant_Women","Malaria_In_Pregnancy"), variable.name = "periodname")
@@ -290,6 +291,7 @@ ggsave("C:/Users/NyimbiliShida/Documents/MSI/GIS & Visuals/R Data/Visuals Export
 
 
 ##Animated trends Malaria
+library(gganimate)
 
 iptm <- read_xls("C:/Users/NyimbiliShida/Documents/MSI/GIS & Visuals/R Data/Data PMI/ipt.xls")
 
