@@ -45,26 +45,26 @@ ggsave("C:/Users/NyimbiliShida/Documents/MSI/GIS & Visuals/R Data/Visuals Export
 
 
 ##Death and Artesunate stockouts
-ats <- read_xls("C:/Users/NyimbiliShida/Documents/MSI/GIS & Visuals/R Data/Data PMI/ArtusunateS.xls")
+ats <- read_xls("C:/Users/NyimbiliShida/Documents/MSI/GIS & Visuals/R Data/Data PMI/ArtusunateSs.xls")
 
 ats
 
+ats$ReportingMonth <- as.Date(ats$ReportingMonth)  
 
+ats1 <- ats[order(ats$ReportingMonth), ]
 
-ats
-
-ats$reporting <- as.Date(ats$reporting)  
-
-ats1 <- ats[order(ats$reporting), ]
+# ats1 <- melt(ats1, id = "ReportingMonth")
 
 ats1
 
 
-id_plt <- ggplot(ats1, aes(x=reporting, y=deaths,  fill=stockouts)) +
-  geom_bar(stat="identity", position = "dodge") +
-  scale_x_date(date_labels="%b %Y",date_breaks="4 months")+
-  labs(fill="Stockouts", title="Malaria Deaths And Commodity Stockouts - Nchelenge", x="Period", y="Malaria Death") + 
-  scale_fill_manual(values = c("#85C1E9",  "#BA0C2F")) + base
+id_plt <- ggplot(ats1) +
+  geom_bar(aes(x=ReportingMonth, y=Stockout,  fill=commodity), stat="identity", position = "dodge") +
+  geom_line(aes(x=ReportingMonth, y=Deaths, fill="Deaths") ,color="#BA0C2F", size=1)+
+  scale_y_continuous(sec.axis=sec_axis(trans = ~ .*1, name = "Malaria Deaths")) +
+  scale_x_date(date_labels="%b %Y",date_breaks="2 months")+
+  labs(fill="Stockouts", title="Malaria Deaths And Commodity Stockouts - Nchelenge", x="Period", y="Number of stockout days") + 
+  scale_fill_manual(values = c("#85C1E9", "#BA0C2F", "#002F6C", "#EF7D00")) + base
 
 id_plt
 ggsave("C:/Users/NyimbiliShida/Documents/MSI/GIS & Visuals/R Data/Visuals Exports/Death and commodity.png",
@@ -769,18 +769,18 @@ pmi_1 <- ggplot(data=anf1, aes(x = period, y = value, fill = variable)) +
   geom_area(alpha=.7) +
   #geom_line(data=rf1, aes(x = period, y = Rainfall)) + 
   geom_rect(data=ani1, aes(NULL, NULL, xmin=Start, xmax=End, fill=Inserticide),
-            ymin=0,ymax=220, colour="#CFCDC9", size=0.6, alpha=0.5, lty="twodash") +
-  scale_fill_manual(values=c("#A7C6ED","#C2113A", "#EF7D00", "#198a00ff")) +
+            ymin=c(62.125, 84.3), ymax=c(220, 220), colour="#CFCDC9", size=0.6, alpha=0.5, lty="twodash") +
+  scale_fill_manual(values=c("#A7C6ED","#C2113A", "#EF7D00",  "#EF7D00", "#198a00ff")) +
   scale_x_date(date_breaks="3 months", date_labels="%b %Y") +
   labs(fill="Legend:", title="Number of bites per person per Night in Sprayed and Unsprayed Areas - indoor",
        x="",
-       y="Human Bite Rate") +
-
+       y="Human Bite Rate") + 
   base +
   annotate("text", x = cm, y = 0, label = substitute(paste(bold('Indoor Residual Spraying'))), size=5, angle=90, hjust =-1.3, vjust=-1) +
   annotate("text", x = cm1, y = 0, label = substitute(paste(bold('Indoor Residual Spraying'))), size=5, angle=90, hjust =-1.3, vjust=-0.7)
 
 pmi_1
+
 
 ang <- melt(ang[, c(1, 2, 3)], id.vars = 'period')
 ang
@@ -793,19 +793,20 @@ ang1 <- ang[order(ang$period), ]
 pmi_2 <-ggplot(ang1, aes(x=period, y=value, fill = variable)) + 
   geom_area(alpha=.7) + 
   geom_rect(data=ani, aes(NULL,NULL,xmin=Start,xmax=End,fill=Inserticide),
-           ymin=0,ymax=220, colour="#CFCDC9", size=0.6, alpha=0.5, lty="twodash") +
+           ymin=c(1.25,0.7) ,ymax=c(60,60), colour="#CFCDC9", size=0.6, alpha=0.5, lty="twodash") +
   scale_fill_manual(values=c("#A7C6ED","#C2113A", "#EF7D00", "#198a00ff")) +
   scale_x_date(date_breaks="3 months", date_labels="%b %Y")+
   labs(fill="Legend:", #title="Number of bites per person per Night in Sprayed and Unsprayed Areas",
     x="",
     y="Human Bite Rate") +
   base +
-  annotate("text", x = cm, y = 0, label = substitute(paste(bold('Indoor Residual Spraying'))), size=5, angle=90, hjust =-1.3, vjust=-1) +
-  annotate("text", x = cm1, y = 0, label = substitute(paste(bold('Indoor Residual Spraying'))), size=5, angle=90, hjust =-1.3, vjust=-0.7)
+  annotate("text", x = cm, y = 0, label = substitute(paste(bold('Indoor Residual Spraying'))), size=5, angle=90, hjust =-1.1, vjust=-1) +
+  annotate("text", x = cm1, y = 0, label = substitute(paste(bold('Indoor Residual Spraying'))), size=5, angle=90, hjust =-1.1, vjust=-0.7)
 
 
 
 pmi_2
+
 
 plot_grid(pmi_1, pmi_2, nrows = 2, ncol = 1)
 
