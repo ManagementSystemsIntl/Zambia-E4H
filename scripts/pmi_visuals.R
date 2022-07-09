@@ -730,7 +730,7 @@ rf <- read_xls("C:/Users/NyimbiliShida/Documents/MSI/GIS & Visuals/R Data/Data P
 
 # Nchelenge HLC Shikapande FvG
 
-anf <- melt(anf[, c(1, 2, 3)], id = 'period')
+anf <- melt(anf[, c(1, 4, 5, 6)], id = 'period')
 
 anf$period <- as.Date(anf$period)  
 
@@ -769,10 +769,10 @@ pmi_1 <- ggplot(data=anf1, aes(x = period, y = value, fill = variable)) +
   geom_area(alpha=.7) +
   #geom_line(data=rf1, aes(x = period, y = Rainfall)) + 
   geom_rect(data=ani1, aes(NULL, NULL, xmin=Start, xmax=End, fill=Inserticide),
-            ymin=c(62.125, 84.3), ymax=c(220, 220), colour="#CFCDC9", size=0.6, alpha=0.5, lty="twodash") +
-  scale_fill_manual(values=c("#A7C6ED","#C2113A", "#EF7D00",  "#EF7D00", "#198a00ff")) +
+            ymin=c(29,33), ymax=c(220, 220), colour="#CFCDC9", size=0.6, alpha=0.4, lty="twodash") +
+  scale_fill_manual(values=c("#A7C6ED","#C2113A", "#EF7D00",  "#C5EFB6", "#198a00ff")) +
   scale_x_date(date_breaks="3 months", date_labels="%b %Y") +
-  labs(fill="Legend:", title="Number of bites per person per Night in Sprayed and Unsprayed Areas - indoor",
+  labs(fill="Legend:", title="Number of bites per person per Night in Sprayed and Unsprayed Areas - Outdoor",
        x="",
        y="Human Bite Rate") + 
   base +
@@ -782,7 +782,7 @@ pmi_1 <- ggplot(data=anf1, aes(x = period, y = value, fill = variable)) +
 pmi_1
 
 
-ang <- melt(ang[, c(1, 2, 3)], id.vars = 'period')
+ang <- melt(ang[, c(1, 4, 5, 6)], id.vars = 'period')
 ang
 
 ang$period <- as.Date(ang$period)  
@@ -793,8 +793,8 @@ ang1 <- ang[order(ang$period), ]
 pmi_2 <-ggplot(ang1, aes(x=period, y=value, fill = variable)) + 
   geom_area(alpha=.7) + 
   geom_rect(data=ani, aes(NULL,NULL,xmin=Start,xmax=End,fill=Inserticide),
-           ymin=c(1.25,0.7) ,ymax=c(60,60), colour="#CFCDC9", size=0.6, alpha=0.5, lty="twodash") +
-  scale_fill_manual(values=c("#A7C6ED","#C2113A", "#EF7D00", "#198a00ff")) +
+           ymin=c(4.25,0.7) ,ymax=c(78,78), colour="#CFCDC9", size=0.6, alpha=0.4, lty="twodash") +
+  scale_fill_manual(values=c("#A7C6ED","#C2113A", "#EF7D00", "#C5EFB6")) +
   scale_x_date(date_breaks="3 months", date_labels="%b %Y")+
   labs(fill="Legend:", #title="Number of bites per person per Night in Sprayed and Unsprayed Areas",
     x="",
