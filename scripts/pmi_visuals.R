@@ -5,9 +5,47 @@
 source("scripts/r prep.r")
 
 
+#Severe Malaria by Age groups +-5
+ua5 <- read_xls("C:/Users/NyimbiliShida/Documents/MSI/GIS & Visuals/R Data/Data PMI/severe5.xls")
+
+# ua5 <- melt(ua5[, c(1, 2,3)], id = 'periodname')
+
+ua5$periodname <- as.Date(ua5$periodname)
+
+
+p1 <- ggplot(ua5,aes(x=periodname))+
+  geom_smooth(aes(y=Under_5yrs, color="Under_5yrs"), method = loess, size = 1.7, se=FALSE) +
+  geom_point(aes(y= Under_5yrs, color="Under_5yrs"), size=3) +
+  geom_smooth(aes(y=Above_5yrs, color="Above_5yrs"), method = loess, size = 1.7, se=FALSE) +
+  geom_point(aes(y=Above_5yrs, color="Above_5yrs"), size=3)+
+  scale_x_date(date_breaks = "5 months", date_labels = "%b %Y")+
+  scale_color_manual(values = c("Above_5yrs"="#85C1E9", "Under_5yrs"="#BA0C2F"))+
+  labs(color="Legend", title="Severe Malaria in Under & Abover 5yrs", x="Period", y="Number of cases") + base
+
+p1
+
+  
+p2 <- ggplot(ua5)+
+  geom_line(aes(x=periodname, y=value, color=variable))
+  
+p2
+library(areaplot)
+
+ua5 <- read_xls("C:/Users/NyimbiliShida/Documents/MSI/GIS & Visuals/R Data/Data PMI/severe5.xls")
+ua5$periodname <- as.Date(ua5$periodname)
+
+
+p2 <- ggplot(ua5, aes(x=periodname, y=Under_5yrs)) +
+  geom_area(alpha=.7, fill="#BA0C2F", alpha=0.6, position=position_dodge())+
+  geom_area(aes(y= Above_5yrs), fill="#85C1E9", alpha=0.4, position=position_dodge())
+  # scale_color_manual(values = c("#85C1E9", "#BA0C2F"))
+
+
+
+p2
 ##Malaria 2020
 
-ip <- read_xls("C:/Users/NyimbiliShida/Documents/MSI/GIS & Visuals/R Data/Data PMI/malrain.xls")
+ip <- read_xls("C:/Users/NyimbiliShida/Documents/MSI/GIS & Visuals/R Data/Data PMI/Nchelenge Confirmed Cases Monthly 2014-2021.xls")
 
 
 ip$period <- as.Date(ip$period)  
@@ -19,13 +57,13 @@ ip1
 #plot
 
 ot_plt <- ggplot(ip1,aes(x=period))+
-  geom_line(aes(y=Malaria_Cases, color="Malaria Cases"), size=1) +
-  geom_line(aes(y=Rainfall*200, color="Rainfall(mm)"), size=1) + 
-  geom_point(aes(y=Rainfall*200, color="Rainfall(mm)"), size=3)+
-  scale_x_date(date_labels="%b %Y",date_breaks="1 month")+
+  geom_area(aes(y=Rainfall*200, fill="Rainfall"), size=1) + 
+  geom_line(aes(y=Malaria_Cases, fill="Malaria Cases"), size=1, colour="#BA0C2F") +
+  # geom_point(aes(y=Malaria_Cases), size=3, color="#BA0C2F")+
+  scale_x_date(date_labels="%b %Y",date_breaks="8 month")+
   scale_y_continuous(sec.axis=sec_axis(trans = ~ .*0.005, labels=comma, name = "Rainfall (mm)"))+
-  labs(color="Legend:", title="Malaria Cases: A focus on 2020", x="Period", y="Malaria Cases") + 
-  scale_color_manual(values = c("Malaria Cases"="#BA0C2F", "Rainfall(mm)"="#002A6C")) + base
+  labs(fill="Legend:", title="Malaria Cases and Rainfall Trends", x="Period", y="Malaria Cases") + 
+  scale_fill_manual(values = c("Malaria Cases"="#BA0C2F", "Rainfall"="#002A6C")) + base
 
 ot_plt
 
@@ -59,8 +97,9 @@ ats1
 
 
 id_plt <- ggplot(ats1) +
-  geom_bar(aes(x=ReportingMonth, y=Stockout,  fill=commodity), stat="identity", position = "dodge") +
+  geom_bar(aes(x=ReportingMonth, y=Stockout,  fill=commodity), stat="identity", position = "dodge", alpha=0.6) +
   geom_line(aes(x=ReportingMonth, y=Deaths, fill="Deaths") ,color="#BA0C2F", size=1)+
+  geom_point(aes(x=ReportingMonth, y=Deaths) ,color="#BA0C2F", size=3)+
   scale_y_continuous(sec.axis=sec_axis(trans = ~ .*1, name = "Malaria Deaths")) +
   scale_x_date(date_labels="%b %Y",date_breaks="2 months")+
   labs(fill="Stockouts", title="Malaria Deaths And Commodity Stockouts - Nchelenge", x="Period", y="Number of stockout days") + 
@@ -99,7 +138,7 @@ ot_plt <- ggplot(ip1,aes(x=periodname))+
   # geom_line(aes(y=Malaria_In_Pregnancy, color="Malaria In Pregnancy"), size=1)+
   geom_point(aes(y=Malaria_In_Pregnancy, color="Malaria In Pregnancy"), size=3)+
   geom_smooth(aes(y=Malaria_In_Pregnancy, color="Malaria In Pregnancy"), method = loess, size = 1.7, se=FALSE) +
-  scale_x_date(date_labels="%b %Y",date_breaks="3 months")+
+  scale_x_date(date_labels="%b %Y",date_breaks="5 months")+
   scale_y_continuous(labels=comma) +
   labs(color="Legend:", title="Malaria in pregnancy, IPT and ITN provided to pregnant woman at ANC coverage visit - Nchelenge", x="Period", y="Count") + 
   scale_color_manual(values = c("IPT 1ANC"="#002A6C", "ITN Preganant Women"="#AEB6BF", "Malaria In Pregnancy"="#BA0C2F")) + base
@@ -178,7 +217,7 @@ rdt_plt <- ggplot(rdt1) +
   geom_bar(aes(x=period, y=RDT1/5, fill=RDT), stat="identity") +
   scale_fill_manual(values=c("#BA0C2F", "#002F6C")) +
   geom_line(aes(x=period, y=positivity_rate, fill=positive), color="#BA0C2F", size=1)+
-  #geom_point(aes(x=period, y=positivity_rate), stat="identity",color="#BA0C2F",size=2, alpha=0.5) +
+  geom_point(aes(x=period, y=positivity_rate), stat="identity",color="#BA0C2F",size=3, alpha=0.9) +
   scale_x_date(date_labels="%b %Y",date_breaks="4 months")+
   scale_y_continuous(sec.axis=sec_axis(trans = ~ .*5, labels=comma, name = "RDT"))+
   labs(fill="Legend:", title="RDT confirmed overlayed with Malaria diagnostic positivity rate - Nchelenge",
@@ -449,15 +488,17 @@ End <- as.Date(NULL)
 
 
 
-mal5plt <- ggplot(mal5,aes(x=peri, y=value, fill = variable),alpha=0.6) +
-  geom_area(stat = "bin", position=position_dodge()) +
+mal5plt <- ggplot(mal5,aes(x=peri, y=value, fill = variable), alpha=0.2) +
+  geom_area(alpha=0.4, position = position_dodge()) +
   geom_rect(data=ani1, aes(NULL, NULL, xmin=Start, xmax=End, fill=Inserticide),
             ymin=0,ymax=10000, colour="#CFCDC9", size=0.6, alpha=0.6, lty="twodash") +
+  geom_vline(xintercept = c(cm2, cm3,cm4,cm5),color=c("#198a00ff","#198a00ff","#198a00ff","#198a00ff"),
+             lty=c("solid", "solid","solid", "solid") ,size=3, alpha=0.5)+
   scale_fill_manual(values=c("Actelic Insecticide"="#002A6C", "Fludora Insecticide"="#F5B041", 
-                             "Sumishield Insecticide"="#BA0C2F","Below 5yrs"= "#8C8985", "Above 5yrs"="#A7C6ED")) +
+                             "Sumishield Insecticide"="#8C8985","Above 5yrs"="#A7C6ED","Under 5yrs"= "#BA0C2F")) +
   scale_y_continuous(labels=comma) +
   scale_x_date(date_labels="%b %Y",date_breaks="6 months")+
-  labs(fill="Legend", title="Malaria Cases by Age groups",
+  labs(fill="Legend", title="Malaria Cases by Age groups with all Interventions",
     x="",
     y="Cases") + base +
 # + transition_reveal(year) + base
