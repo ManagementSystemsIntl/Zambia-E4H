@@ -640,7 +640,7 @@ ggsave("C:/Users/NyimbiliShida/Documents/MSI/GIS & Visuals/R Data/Visuals Export
 
 
 ##Heatmap Luapula Malaria Deaths By Districts
-
+library(pheatmap)
 #ht <- read_xls("C:/Users/NyimbiliShida/Documents/MSI/GIS & Visuals/R Data/Data PMI/districtdeathsluapula.xls")
 dt1 <- "C:/Users/NyimbiliShida/Documents/MSI/GIS & Visuals/R Data/Data PMI/districtdeathsluapula.csv"
 ht <- read.csv(dt1, row.names = 1)
@@ -886,7 +886,9 @@ rf <- read_xls("C:/Users/NyimbiliShida/Documents/MSI/GIS & Visuals/R Data/Data P
 
 # Nchelenge HLC Shikapande FvG
 
-anf <- melt(anf[, c(1, 4, 5, 6)], id = 'period')
+# anf <- melt(anf[, c(1, 4, 5, 6)], id = 'period')
+anf <- anf %>% select(1, 4, 5, 6)
+anf
 
 anf$period <- as.Date(anf$period)  
 
@@ -921,13 +923,17 @@ rf1
 
 # write_xlsx(new_anf1,"C:/Users/NyimbiliShida/Documents/MSI/GIS & Visuals/R Data/Data PMI/dfdemo.xlsx")
 
-pmi_1 <- ggplot(data=anf1, aes(x = period, y = value, fill = variable)) + 
-  geom_area(alpha=.7) +
-  #geom_line(data=rf1, aes(x = period, y = Rainfall)) + 
+pmi_1 <- ggplot(anf1,aes(x=period))+
+  
+  geom_area(aes(y=funestus_OUTDOOR_sprayed, fill="funestus_OUTDOOR_sprayed"), alpha=1, color="#CFCDC9", position=position_dodge())+
   geom_rect(data=ani1, aes(NULL, NULL, xmin=Start, xmax=End, fill=Inserticide),
-            ymin=c(29,33), ymax=c(220, 220), colour="#CFCDC9", size=0.6, alpha=0.4, lty="twodash") +
-  scale_fill_manual(values=c("#A7C6ED","#C2113A", "#EF7D00",  "#C5EFB6", "#198a00ff")) +
+            ymin=c(0,0), ymax=c(220, 220), colour="#CFCDC9", size=0.6, alpha=0.8, lty="twodash") +
+  geom_area(aes(y=funestus_OUTDOOR_Unsprayed , fill="funestus_OUTDOOR_Unsprayed"), alpha=0.85, color="#A7C6ED", position=position_dodge())+ 
+  geom_line(aes(y=Rainfall/1, fill="Rainfall"), color="#A7C6ED", size=1) +
+ 
+  scale_fill_manual(values=c("#EF7D00","#CFCDC9","#002F6C","#A7C6ED")) +
   scale_x_date(date_breaks="3 months", date_labels="%b %Y") +
+  scale_y_continuous(sec.axis = sec_axis(trans = ~ .*1, labels=comma, name = "Rainfall(mm)"), labels=comma)+
   labs(fill="Legend:", title="Number of bites per person per Night in Sprayed and Unsprayed Areas - Outdoor",
        x="",
        y="Human Bite Rate") + 
@@ -935,10 +941,9 @@ pmi_1 <- ggplot(data=anf1, aes(x = period, y = value, fill = variable)) +
   annotate("text", x = cm, y = 0, label = substitute(paste(bold('Indoor Residual Spraying'))), size=5, angle=90, hjust =-1.3, vjust=-1) +
   annotate("text", x = cm1, y = 0, label = substitute(paste(bold('Indoor Residual Spraying'))), size=5, angle=90, hjust =-1.3, vjust=-0.7)
 
-pmi_1
+pm1 <- pmi_1 + geom_point(aes(y=Rainfall/1),color="#A7C6ED", size=3)
 
-
-ang <- melt(ang[, c(1, 4, 5, 6)], id.vars = 'period')
+ang <- ang %>% select(1, 4, 5, 6)
 ang
 
 ang$period <- as.Date(ang$period)  
@@ -946,12 +951,15 @@ ang$period <- as.Date(ang$period)
 ang1 <- ang[order(ang$period), ]
 
 
-pmi_2 <-ggplot(ang1, aes(x=period, y=value, fill = variable)) + 
-  geom_area(alpha=.7) + 
+pmi_2 <-ggplot(ang1,aes(x=period)) +
+  geom_area(aes(y=gambiae_OUTDOOR_sprayed, fill="gambiae_OUTDOOR_sprayed"), alpha=1, color="#CFCDC9", position=position_dodge())+ 
   geom_rect(data=ani, aes(NULL,NULL,xmin=Start,xmax=End,fill=Inserticide),
-           ymin=c(4.25,0.7) ,ymax=c(78,78), colour="#CFCDC9", size=0.6, alpha=0.4, lty="twodash") +
-  scale_fill_manual(values=c("#A7C6ED","#C2113A", "#EF7D00", "#C5EFB6")) +
+            ymin=c(0,0) ,ymax=c(78,78), colour="#CFCDC9", size=0.6, alpha=0.8, lty="twodash") +
+  geom_area(aes(y=gambiae_OUTDOOR_Unsprayed , fill="gambiae_OUTDOOR_Unsprayed"), alpha=0.7, color="#A7C6ED", position=position_dodge())+ 
+  geom_line(aes(y=Rainfall/1, fill="Rainfall"), color="#A7C6ED", size=1) +
+  scale_fill_manual(values=c("#EF7D00","#CFCDC9","#002F6C","#A7C6ED")) +
   scale_x_date(date_breaks="3 months", date_labels="%b %Y")+
+  scale_y_continuous(sec.axis = sec_axis(trans = ~ .*1, labels=comma, name = "Rainfall(mm)"), labels=comma)+
   labs(fill="Legend:", #title="Number of bites per person per Night in Sprayed and Unsprayed Areas",
     x="",
     y="Human Bite Rate") +
@@ -961,10 +969,10 @@ pmi_2 <-ggplot(ang1, aes(x=period, y=value, fill = variable)) +
 
 
 
-pmi_2
+pm2 <- pmi_2 + geom_point(aes(y=Rainfall/1),color="#A7C6ED", size=3)
 
 
-plot_grid(pmi_1, pmi_2, nrows = 2, ncol = 1)
+plot_grid(pm1, pm2, nrows = 2, ncol = 1)
 
 ggsave("C:/Users/NyimbiliShida/Documents/MSI/GIS & Visuals/R Data/Visuals Exports/Nchelenge HBR All1 outdoors.png",
        #ggsave("viz/Malaria/Nchelenge HLC Manchene fg.png",
