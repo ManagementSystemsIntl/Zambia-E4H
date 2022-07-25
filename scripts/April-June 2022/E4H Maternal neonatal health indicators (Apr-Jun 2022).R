@@ -2,7 +2,6 @@
 # Maternal neonatal health indicators
 # April - June 2022
 
-setwd("C:/Users/NyimbiliShida/Documents/MSI/GIS & Visuals/R/Zambia-E4H git")
 
 source("scripts/r prep.R")
 
@@ -67,8 +66,8 @@ mat$subpop <- factor(mat$subpop, levels = unique(mat$subpop)) # transform into f
 levels(mat$subpop)
 
 ggplot(mat, aes(x = mnthyr, y = rate, group = subpop, colour = subpop)) +
-  geom_point(alpha=.6, size=1) + 
-  geom_smooth(method = loess, size = .7, se=FALSE) +
+  geom_point(alpha=.6, size=1.5) + 
+  geom_smooth(method = loess, size = .8, se=FALSE) +
   scale_y_continuous(limits = c(0,1),
                      labels = percent,
                      breaks = c(.1,.2,.3,.4,.5,.6,.7,.8,.9, 1)) +
@@ -77,7 +76,7 @@ ggplot(mat, aes(x = mnthyr, y = rate, group = subpop, colour = subpop)) +
   ggtitle("Proportion of expected pregnancies receiving antenatal care (ANC), 2018-2022") +
   scale_color_manual(name ="",
                      values = usaid_palette,
-                     labels = c("1st ANC, all TMs", "ANC at TM1", "ANC at TM1: Women <20 yrs", "ANC at TM1: High risk pregs")
+                     labels = c("1st ANC, all TMs", "1st ANC at TM1", "1st ANC at TM1: Women <20 yrs", "ANC at TM1: High risk pregs")
   ) + base
   # theme(plot.title = element_text(size = 14), 
   #       axis.title.x = element_text(size = 12),
@@ -87,14 +86,74 @@ ggplot(mat, aes(x = mnthyr, y = rate, group = subpop, colour = subpop)) +
   #       legend.text = element_text(size = 9)
   # ) 
 
-ggsave("viz/deleteme.png",
+ggsave("viz/Apr-Jun 2022/Reproductive Maternal & Neontal/Proportion of expected pregnancies receiving antenatal care.png",
        device="png",
        type="cairo",
        height = 5.5,
-       width = 7)
+       width = 10)
 
-# ggsave("viz/Apr-Jun 2022/Proportion of expected pregnancies receiving ANC.png",
-#        device="png",
-#        type="cairo",
-#        height=6,
-#        width=12)
+
+#* (1.1) Client: ANC coverage PROVINCIAL ----
+
+names(mat_prov)
+
+anc_prov <- mat_prov %>%
+  rename(prov = 1,
+         anc1 = 4,
+         #         anc1u20 = 5,
+         anc1hr = 12) %>%
+  mutate(anc1p = anc1/100,
+         #         anc1u20p = anc1u20/100,
+         anc1hrp = anc1hr/100,
+  ) %>% 
+  select(prov, mnthyr, anc1p, anc1hrp) %>% 
+  #  select(prov, mnthyr, anc1p, anc1u20p, anc1hrp) %>% 
+  mutate(prov = factor(prov),
+         ip = case_when(prov=="Northern" |
+                          prov =="Central" |
+                          prov =="Muchinga" |
+                          prov =="Southern" |
+                          prov =="Eastern" ~ "ip",
+                        TRUE ~ "non-ip"))
+
+levels(anc_prov$prov)
+
+anc_prov_l <- anc_prov %>% 
+  gather(key = subpop , value = rate, c(anc1p, anc1hrp)) %>% 
+  # gather(key = subpop , value = rate, c(anc1p,anc1u20p,anc1hrp)) %>% 
+  mutate(ip = factor(ip),
+         subpop = factor(subpop))
+
+levels(anc_prov_l$ip)
+levels(anc_prov_l$subpop)
+
+ggplot(anc_prov_l, aes(x = mnthyr, y = rate, group = subpop, colour = subpop)) +
+  #  geom_point(alpha=.6, size=.6) + 
+  geom_smooth(method = loess, size = .7, se=FALSE)  +
+  facet_wrap(~prov) +
+  faceted +
+  scale_y_continuous(limits = c(0,1),
+                     labels = percent,
+                     breaks = c(.2,.4,.6,.8, 1)) +
+  labs(x ="", y="", caption = "Provinces supported by FHN, MOMENT and G2G:\nNorthern, Central, Luapula, Muchinga Southern and Eastern") +
+  ggtitle("ANC coverage for high risk pregnancies has increased in the last two years independently 
+          \nof USAID support., 2018-2022") +
+  scale_color_manual(name= "", values = (usaid_palette), labels = c("High risk pregnancies", "All", "Pregnancies of women <20 years")) +
+  theme(# plot.title = element_text(size = 12), 
+    plot.title=element_markdown(),
+    axis.title.x = element_text(size = 10),
+    axis.title.y = element_text(size = 10),
+    axis.text.x = element_text(size = 7),
+    axis.text.y = element_text(size = 7),
+    legend.text = element_text(size = 10),
+    legend.title=element_blank(),
+    legend.position=c(.75,.15),
+    strip.text=element_text(size=7, family="Gill Sans Mt"),
+  )
+
+ggsave("viz/Apr-Jun 2022/Reproductive Maternal & Neontal/ANC by province faceted.png",
+       device="png",
+       type="cairo",
+       height=5.5,
+       width=10)
+
