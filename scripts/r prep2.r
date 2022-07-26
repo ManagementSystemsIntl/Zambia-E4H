@@ -25,7 +25,7 @@ zam_packages <- c("tidyverse", "here", "gifski", "gt","gtsummary","gghighlight",
                   "sysfonts","scales","magrittr","knitr","lubridate","Hmisc","haven","tidyr","reshape2","DescTools","extrafont",
                   "patchwork", "extrafontdb", "ggtext", "geomtextpath","zoo","psych","cowplot","kableExtra","ztable","pheatmap",
                   "RColorBrewer", "data.table", "d3heatmap","hablar", "gganimate", "PhantomJS", "dygraphs", "gapminder", "hrbrthemes",
-                  "geomtextpath", "patchwork")
+                  "geomtextpath", "patchwork", "gridExtra", "grid")
 
 
 
@@ -58,11 +58,12 @@ base <- theme_bw() + theme(panel.grid.minor.x=element_blank(),
                            plot.caption=element_text(size=12, family="Gill Sans Mt"),
                            axis.title=element_text(size=14, family="Gill Sans Mt"),
                            axis.text=element_text(size=13, family="Gill Sans Mt"),
-                           axis.text.x = element_text(angle = 0, family="Gill Sans Mt"),
+                           axis.text.x = element_text(size = 7, family="Gill Sans Mt", face="bold"),
+                           axis.text.y = element_text(size = 7, family="Gill Sans Mt", face="bold"),
                            legend.text=element_text(size=11, family="Gill Sans Mt"),
                            legend.position = "bottom",
                            # legend.position = c(.73,.99),
-                           # legend.justification = c("left", "top", lty=1, cex=0.5),
+                           # legend.justification = c("left", "top"),
                            # legend.box.just = "left",
                            strip.text=element_text(size=13, family="Gill Sans Mt"),
                            panel.border=element_blank(),
@@ -70,6 +71,46 @@ base <- theme_bw() + theme(panel.grid.minor.x=element_blank(),
                            # legend.box="horizontal",
                            legend.background = element_rect(fill = "white", color = "black"))
 
+
+non_base <- theme_bw() + theme(panel.grid.minor.x=element_blank(),
+                           panel.grid.minor.y=element_blank(),
+                           plot.title=element_text(face="bold",
+                                                   size=14, 
+                                                   hjust=.5, 
+                                                   family = "Gill Sans Mt"),
+                           plot.subtitle = element_text(size=12, family="Gill Sans Mt"),
+                           plot.caption=element_text(size=12, family="Gill Sans Mt"),
+                           axis.title=element_text(size=14, family="Gill Sans Mt"),
+                           axis.text=element_text(size=13, family="Gill Sans Mt"),
+                           axis.text.x = element_text(size = 7, family="Gill Sans Mt", face="bold"),
+                           axis.text.y = element_text(size = 7, family="Gill Sans Mt", face="bold"),
+                           legend.text=element_text(size=11, family="Gill Sans Mt"),
+                           legend.position = "none",
+                           # legend.position = c(.73,.99),
+                           # legend.justification = c("left", "top"),
+                           # legend.box.just = "left",
+                           strip.text=element_text(size=13, family="Gill Sans Mt"),
+                           panel.border=element_blank(),
+                           axis.ticks = element_blank(),
+                           # legend.box="horizontal",
+                           legend.background = element_rect(fill = "white", color = "black"))
+
+
+
+
+
+baseX <- theme(# plot.title = element_text(size = 12),
+  plot.title=element_markdown(),
+  plot.caption = element_text(size=10),
+  axis.title.x = element_text(size = 10),
+  axis.title.y = element_text(size = 10),
+  axis.text.x = element_text(size = 7),
+  axis.text.y = element_text(size = 7),
+  legend.text = element_text(size = 10),
+  legend.title=element_blank(),
+  legend.position="none",
+  strip.text=element_text(size=10, family="Gill Sans Mt"),
+)
 
 
 #scale_color_discrete <- usaid_palette
@@ -220,6 +261,13 @@ vline5 <- "2022-04-01"
 vline6 <- 2017-10-01
 vline7 <- 2018-10-01
 vline8 <- 2020-10-01
+
+##
+cl1 = c("#CFCDC9","#CFCDC9","#CFCDC9","#CFCDC9","#CFCDC9","#CFCDC9","#CFCDC9","#CFCDC9","#CFCDC9","#CFCDC9","#CFCDC9","#CFCDC9")
+cl2 = c("#205493","#205493","#205493","#205493","#205493","#205493","#205493","#205493","#205493","#205493","#205493","#205493")
+cl3 = c("#002F6C","#002F6C","#002F6C","#002F6C","#002F6C","#002F6C","#002F6C","#002F6C","#002F6C","#002F6C","#002F6C","#002F6C")
+cl4 = c("#000000","#000000","#000000","#000000","#000000","#000000","#000000","#000000","#000000","#000000","#000000","#000000")
+cl5 = c("#BA0C2F","#BA0C2F","#BA0C2F","#BA0C2F","#BA0C2F","#BA0C2F","#BA0C2F","#BA0C2F","#BA0C2F","#BA0C2F","#BA0C2F","#BA0C2F")
 
 # above_5yrs <-"#205493"
 # under_5yrs <-"#BA0C2F"
