@@ -1,7 +1,7 @@
 # Zambia 4 Health
 # practice
-
-d <- read_xls("data/Downlaod Extract Maternal Yearly By Province.xls")
+source("scripts/r prep.r")
+d <- read_xls("C:/Users/NyimbiliShida/Documents/MSI/GIS & Visuals/R Data/Data PMI/Downlaod Extract Maternal Yearly By Province.xls")
 
 d_l <- d %>%
   pivot_longer(-1,

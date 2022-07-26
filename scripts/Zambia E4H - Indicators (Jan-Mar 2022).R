@@ -5,6 +5,7 @@
 # prep ---- 
 
 source("scripts/r prep.R")
+library(ggtext)
 
 chld_mnth <- read_xls("data/Jan-Mar 2022/Child Health Data_National Level(Monthly).xls")
 
