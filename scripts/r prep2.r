@@ -61,7 +61,7 @@ base <- theme_bw() + theme(panel.grid.minor.x=element_blank(),
                            axis.text.x = element_text(size = 7, family="Gill Sans Mt", face="bold"),
                            axis.text.y = element_text(size = 7, family="Gill Sans Mt", face="bold"),
                            legend.text=element_text(size=11, family="Gill Sans Mt"),
-                           legend.position = "bottom",
+                           legend.position = "bottom right",
                            # legend.position = c(.73,.99),
                            # legend.justification = c("left", "top"),
                            # legend.box.just = "left",
@@ -70,6 +70,36 @@ base <- theme_bw() + theme(panel.grid.minor.x=element_blank(),
                            axis.ticks = element_blank(),
                            # legend.box="horizontal",
                            legend.background = element_rect(fill = "white", color = "black"))
+
+
+baseX <- theme(# plot.title = element_text(size = 12),
+  plot.caption = element_text(size=10),
+  axis.title.x = element_text(size = 10),
+  axis.title.y = element_text(size = 10),
+  axis.text.x = element_text(size = 7),
+  axis.text.y = element_text(size = 7),
+  legend.text = element_text(size = 10),
+  legend.title=element_blank(),
+  legend.position="none",
+  strip.text=element_text(size=10, family="Gill Sans Mt"),
+)
+
+
+
+basey <- theme(# plot.title = element_text(size = 12),
+  plot.caption = element_text(size=10),
+  axis.title.x = element_text(size = 10),
+  axis.title.y = element_text(size = 10),
+  axis.text.x = element_text(size = 7),
+  axis.text.y = element_text(size = 7),
+  legend.text = element_text(size = 10),
+  legend.title=element_blank(),
+  legend.position="bottom",
+  strip.text=element_text(size=10, family="Gill Sans Mt"),
+  legend.background = element_rect(fill = "white", color = "black"),
+)
+
+
 
 
 non_base <- theme_bw() + theme(panel.grid.minor.x=element_blank(),
@@ -98,19 +128,6 @@ non_base <- theme_bw() + theme(panel.grid.minor.x=element_blank(),
 
 
 
-
-baseX <- theme(# plot.title = element_text(size = 12),
-  plot.title=element_markdown(),
-  plot.caption = element_text(size=10),
-  axis.title.x = element_text(size = 10),
-  axis.title.y = element_text(size = 10),
-  axis.text.x = element_text(size = 7),
-  axis.text.y = element_text(size = 7),
-  legend.text = element_text(size = 10),
-  legend.title=element_blank(),
-  legend.position="none",
-  strip.text=element_text(size=10, family="Gill Sans Mt"),
-)
 
 
 #scale_color_discrete <- usaid_palette
