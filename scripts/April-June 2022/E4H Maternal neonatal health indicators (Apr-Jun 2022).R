@@ -341,6 +341,22 @@ ggsave("viz/Apr-Jun 2022/Reproductive Maternal & Neontal/Expected deliveries ns.
 
 
 #'*4.1 Inst delivery PROV SEPARATED BY USAID SUPPORTED AND NONE ----*
+names(inst)
+
+instd_prov <- mat_prov %>%
+  rename(prov = 1,
+         instdel = 8) %>%
+  # mutate(prov = case_when(prov == 'Northwestern' ~ 'NW'))#
+  select(prov, mnthyr, instdel) %>% 
+  mutate(prov = factor(prov),
+         ip = case_when(prov=="Northern" |
+                          prov =="Central" |
+                          prov =="Muchinga" |
+                          prov == "Luapula" |
+                          prov =="Southern" |
+                          prov =="Eastern" ~ "ip",
+                        TRUE ~ "non-ip"))
+
 
 names(instd_prov)
 table(instd_prov$ip, instd_prov$prov)
