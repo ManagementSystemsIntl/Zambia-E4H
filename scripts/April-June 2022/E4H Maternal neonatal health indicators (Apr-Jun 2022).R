@@ -86,7 +86,7 @@ ggplot(mat, aes(x = mnthyr, y = rate, group = subpop, colour = subpop)) +
   #       legend.text = element_text(size = 9)
   # ) 
 
-ggsave("viz/Apr-Jun 2022/Reproductive Maternal & Neontal/Proportion of expected pregnancies receiving antenatal care.png",
+ggsave("viz/Apr-Jun 2022/Reproductive Maternal & Neontal/Proportion of expected pregnancies receiving antenatal care ns.png",
        device="png",
        type="cairo",
        height = 5.5,
@@ -151,7 +151,7 @@ ggplot(anc_prov_l, aes(x = mnthyr, y = rate, group = subpop, colour = subpop)) +
     strip.text=element_text(size=7, family="Gill Sans Mt"),
   )
 
-ggsave("viz/Apr-Jun 2022/Reproductive Maternal & Neontal/ANC by province faceted.png",
+ggsave("viz/Apr-Jun 2022/Reproductive Maternal & Neontal/ANC by province faceted ns.png",
        device="png",
        type="cairo",
        height=5.5,
