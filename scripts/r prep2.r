@@ -32,8 +32,8 @@ zam_packages <- c("tidyverse", "here", "gifski", "gt","gtsummary","gghighlight",
 
 # lapply(zam_packages, install.packages, character.only=T)
 
-#lapply(zam_packages, library, character.only=T)
-lapply(zam_packages2, library, character.only=T)
+lapply(zam_packages, library, character.only=T)
+#lapply(zam_packages2, library, character.only=T)
 
 # font_import()
 # loadfonts(device="win")
