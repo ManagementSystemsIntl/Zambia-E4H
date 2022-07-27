@@ -412,18 +412,6 @@ Start <- as.Date(NULL)
 End <- as.Date(NULL)
 
 
-trgt1 <- as.Date("2018-01-01")
-trgt2 <- as.Date("2019-01-01")
-trgt3 <- as.Date("2020-01-01")
-trgt4 <- as.Date("2021-01-01")
-
-# # target2018 <- data.frame(x1= as.Date("2018-10-01"), x2=as.Date("2019-01-01"), y1=.74, y2=.74)
-# # target2019 <- data.frame(x1=as.Date("2019-10-01"), x2=as.Date("2020-01-01"), y1=.79, y2=.79)
-# # target2020 <- data.frame(x1=as.Date("2020-10-01"), x2=as.Date("2021-01-01"), y1=.85, y2=.85)
-# # target2021 <- data.frame(x1=as.Date("2021-10-01"), x2=as.Date("2022-01-01"), y1=.81, y2=.81)
-# # targets <- bind_rows(target2018, target2019, target2020, target2021)
-
-
 pnc_vz <- ggplot(pnc, aes(mnthyr, pncp)) + 
   geom_point(color= usaid_blue, alpha=.6, size=.8) + 
   geom_rect(data=pnctrgts, aes(NULL,NULL,xmin=Start,xmax=End,fill=PNCTargets),
@@ -438,11 +426,11 @@ pnc_vz <- ggplot(pnc, aes(mnthyr, pncp)) +
        y="",
        title=""
   ) + base +
-  annotate(geom = "text", x=trgt1, y = 0.74, family="Gill Sans Mt", colour = "black", label=substitute(paste(bold("National Targets"))), size= 4,  hjust =0, vjust=-9) +
-  annotate(geom = "text", x=trgt1, y = 0.74, family="Gill Sans Mt", colour = "black", label=substitute(paste(bold("74%"))), size= 4,  hjust =-2.5, vjust=-1.8) +
-  annotate(geom = "text", x=trgt1, y = 0.79, family="Gill Sans Mt", colour = "black", label=substitute(paste(bold("79%"))), size= 4,  hjust =-9.5, vjust=-1) +
-  annotate(geom = "text", x=trgt1, y = 0.85, family="Gill Sans Mt", colour = "black", label=substitute(paste(bold("85%"))), size= 4,  hjust =-17.5, vjust=-1) +
-  annotate(geom = "text", x=trgt1, y = 0.9, family="Gill Sans Mt", colour = "black", label=substitute(paste(bold("90%"))), size= 4,  hjust =-25.5, vjust=-1)
+  annotate(geom = "text", x=trgt1, y = 0.74, family="Gill Sans Mt", colour = rich_black, label=substitute(paste(bold("National Targets"))), size= 4,  hjust =0, vjust=-9) +
+  annotate(geom = "text", x=trgt1, y = 0.74, family="Gill Sans Mt", colour = rich_black, label=substitute(paste(bold("74%"))), size= 4,  hjust =-2.5, vjust=-1.8) +
+  annotate(geom = "text", x=trgt1, y = 0.79, family="Gill Sans Mt", colour = rich_black, label=substitute(paste(bold("79%"))), size= 4,  hjust =-9.5, vjust=-1) +
+  annotate(geom = "text", x=trgt1, y = 0.85, family="Gill Sans Mt", colour = rich_black, label=substitute(paste(bold("85%"))), size= 4,  hjust =-17.5, vjust=-1) +
+  annotate(geom = "text", x=trgt1, y = 0.9, family="Gill Sans Mt", colour = rich_black, label=substitute(paste(bold("90%"))), size= 4,  hjust =-25.5, vjust=-1)
 
 
 
@@ -456,28 +444,65 @@ ggsave("viz/Apr-Jun 2022/Reproductive Maternal & Neontal/postnatal care within 4
        width=11)
 
 
-  # theme(plot.title = element_text(size = 14), 
-  #       axis.title.x = element_text(size = 12),
-  #       axis.title.y = element_text(size = 12),
-  #       axis.text = element_text(size = 9),
-  #       legend.title = element_text(size = 12), 
-  #       legend.text = element_text(size = 11)
-  # ) 
-# pnc_vz +  annotate(geom="text", x=as.Date("2018-01-01"), y=.75, colour = usaid_red, label="National Targets", size= 3) +
-#   annotate(geom="text", x=as.Date("01-06-2021", format = "%d-%m-%Y"), y=.1, label="*home deliveries included", size =3, fontface = 'italic')
+#'* POSTNATAL CARE NATIONAL SEPERATED BY USAID SUPPORTED AND NONE*
+names(mat_prov)
+
+pnc_prov <- mat_prov %>%
+  rename(prov = 1,
+         pncr  = 11) %>%
+  select(prov, mnthyr, pncr) %>% 
+  mutate(prov = factor(prov),
+         ip = case_when(prov=="Northern" |
+                          prov =="Central" |
+                          prov =="Luapula" |
+                          prov =="Muchinga" |
+                          prov =="Southern" |
+                          prov =="Eastern" ~ "ip",
+                        TRUE ~ "non-ip"))
+
+levels(pnc_prov$prov)
+
+ipyes <- pnc_prov %>%
+  filter(ip=="ip")
+
+pnc.ipvz <- ggplot(ipyes, aes(x = mnthyr, y = pncr, colour = ip)) +
+  geom_area(alpha=.3, size=.8,color=usaid_blue, fill=light_blue) + 
+  #stat_smooth(method = loess, size = .7, se=FALSE, color=light_blue)  +
+  facet_wrap(~prov) +
+  faceted +
+  scale_y_continuous(limits = c(0,100),
+                     breaks = c(20, 40, 60, 80)) +
+  xlab("") + 
+  ylab("") +
+  ggtitle("USAID-supported provinces") +
+  scale_color_manual(name= "", values = (usaid_palette), labels = c("Supported by FHN, MOMENT and G2G", "Not supported")) +
+  baseX
 
 
-#yearn <- lapply(mat$year, as.numeric)
-# 
-# target2018 <- data.frame(x1= as.Date("2018-10-01"), x2=as.Date("2019-01-01"), y1=.74, y2=.74)
-# target2019 <- data.frame(x1=as.Date("2019-10-01"), x2=as.Date("2020-01-01"), y1=.79, y2=.79)
-# target2020 <- data.frame(x1=as.Date("2020-10-01"), x2=as.Date("2021-01-01"), y1=.85, y2=.85)
-# target2021 <- data.frame(x1=as.Date("2021-10-01"), x2=as.Date("2022-01-01"), y1=.81, y2=.81)
-# targets <- bind_rows(target2018, target2019, target2020, target2021)
+ipno <- pnc_prov %>%
+  filter(ip=="non-ip")
 
-# #targets <- data.frame(x1=c("2018-12-01", "2019-12-01", .., x2 = .., x3=..)
+pnc.ipnonvz <- ggplot(ipno, aes(x = mnthyr, y = pncr, colour = ip)) +
+  geom_area(alpha=.3, size=.8, color=usaid_red, fill=usaid_red) + 
+  #stat_smooth(method = loess, size = .7, se=FALSE, color=usaid_red)  +
+  facet_wrap(~prov) +
+  faceted +
+  scale_y_continuous(limits = c(0,100),
+                     breaks = c(20, 40, 60, 80)) +
+  xlab("") + 
+  ylab("") +
+  ggtitle("Non USAID-supported provinces") +
+  scale_color_manual(name= "", values = (usaid_palette), labels = c("Supported by FHN, MOMENT and G2G", "Not supported")) +
+  baseX
 
+pnc.ipvz 
+pnc.ipnonvz 
 
-  annotate(geom="text", x=as.Date("15-5-2018", format = "%d-%m-%Y"), y=.75, colour = usaid_red, label="National Targets", size= 3) +
-  annotate(geom="text", x=as.Date("01-06-2021", format = "%d-%m-%Y"), y=.1, label="*home deliveries included", size =3, fontface = 'italic')
+pnc.all <- grid.arrange(pnc.ipvz, pnc.ipnonvz, ncol=2)
 
+ggsave("viz/Apr-Jun 2022/Reproductive Maternal & Neontal/postnatal care within 48 by province faceted area ns.png",
+       plot=pnc.all,
+       device="png",
+       type="cairo",
+       height=7,
+       width=12)
