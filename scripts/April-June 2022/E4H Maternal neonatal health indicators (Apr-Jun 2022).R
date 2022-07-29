@@ -648,44 +648,295 @@ ggsave("viz/Apr-Jun 2022/Reproductive Maternal & Neontal/Province fresh & macera
        height=7,
        width=13)
 
-#'*MATERNAL DEATHS NATIONAL*
-names(mat)
-mmr <- mat %>%
-  rename(fmmr = 16,
-         dmf = 13,
-         mdc = 22
-  ) 
-mmr <- gather(mmr, key = mmtype , value = deaths, c(fmmr, dmf, mdc)) 
 
-mmr$mmtypef <- factor(mmr$mmtype, levels = unique(mmr$mmtype))
-levels(mmr$mmtypef)
-view()
-mmr_plt <- ggplot(mmr, aes(x = mnthyr, y = deaths, group = mmtypef, colour = mmtypef)) + 
-  geom_point(alpha=.6, size=.7) + 
-  geom_rect(data=pnctrgts, aes(NULL,NULL,xmin=Start,xmax=End,fill=PNCTargets),
-            ymin=c(.74,.79,.85,.9) ,ymax=c(.75,.80,.86,.91), colour=light_grey, size=0.8, alpha=0.8, lty="solid", fill=usaid_red) +
-  # geom_line(size=.7) +
-  geom_smooth(method = loess, size=.7, se=F) +
+#'*MATERNAL DEATHS NATIONAL*
+mmr <- mat %>%
+  rename(mmfr = 16,
+         mmf = 13,
+         mmc = 22
+  )
+colnames(mat)
+pnctrgts$Start <- as.Date(pnctrgts$Start) 
+pnctrgts$End <- as.Date(pnctrgts$End) 
+Start <- as.Date(NULL)
+End <- as.Date(NULL)
+
+
+mmr_1 <- gather(mmr, key = mmtype , value = deaths, c(mmfr, mmf, mmc))
+mmr_1
+colnames(mmr_1)
+
+mmr_1$mmtypef <- factor(mmr_1$mmtype, levels = unique(mmr_1$mmtype))
+levels(mmr_1$mmtypef)
+
+names(mmr_1)
+colnames(mmr_1)
+
+mmr_plt <- ggplot(mmr_1, aes(x = mnthyr, y = deaths , colour =   mmtype, linetype=mmtype)) + 
+  geom_point(alpha=.5, size=.7) + 
+  geom_rect(data=pnctrgts, mapping=aes(NULL,NULL,xmin=Start,xmax=End,fill=PNCTargets),
+            ymin=c(245,200,150,100) ,ymax=c(247,202,152,102), colour=light_grey, size=0.3, alpha=0.4, lty="solid", fill=usaid_red) +
+  geom_smooth(method = loess, size=.9, se=F) +
   scale_y_continuous(limits = c(0,260),
-                     breaks = c(20,40,60,80,100,120,140,160,180,200, 220, 240),
-                     labels = c("20","40","60","80","100","120","140","160","180","200", "220", "240")) +
+                     breaks = c(20,60,100,140,180,220,260),
+                     labels = c("20","60","100","140","180","220", "260")) +
+  scale_x_date(date_breaks = "4 months", date_labels = "%b %y")+
+  scale_linetype_manual(name="",
+                        labels= c("Community deaths","Health facility deaths", "Maternal mortality facility ratio (per 100,000 live births)"), 
+                                  values=c("solid","solid", "dashed"))+
   xlab("") +
   ylab("") +
-  ggtitle("Maternal deaths: facility numbers and rates have increased since 2020, \nwhile community numbers have decreased") +
+  #ggtitle("Maternal deaths and mortality ratio in facilities have increased since February 2020, \nwhile community deaths numbers have decreased") +
   scale_colour_manual(name = "",
-                      labels= c( "Maternal mortality facility ratio \n(per 10 000 live births)", "Health facility deaths", "Community deaths"),
+                      labels= c("Community deaths","Health facility deaths", "Maternal mortality facility ratio (per 100,000 live births)"),
                       values = c(usaid_blue, medium_grey, usaid_red)) +
-  theme(plot.title = element_text(size = 14), 
-        axis.title.x = element_text(size = 12),
-        axis.title.y = element_text(size = 12),
-        axis.text = element_text(size = 9.5),
-        legend.position = "bottom", 
-        legend.text = element_text(size = 10)) +
-annotate(geom = "text", x=trgt1, y = 0.74, family="Gill Sans Mt", colour = rich_black, label=substitute(paste(bold("National Targets"))), size= 4,  hjust =0, vjust=-9) +
-  annotate(geom = "text", x=trgt1, y = 0.74, family="Gill Sans Mt", colour = rich_black, label=substitute(paste(bold("74%"))), size= 4,  hjust =-2.5, vjust=-1.8) +
-  annotate(geom = "text", x=trgt1, y = 0.79, family="Gill Sans Mt", colour = rich_black, label=substitute(paste(bold("79%"))), size= 4,  hjust =-9.5, vjust=-1) +
-  annotate(geom = "text", x=trgt1, y = 0.85, family="Gill Sans Mt", colour = rich_black, label=substitute(paste(bold("85%"))), size= 4,  hjust =-17.5, vjust=-1) +
-  annotate(geom = "text", x=trgt1, y = 0.9, family="Gill Sans Mt", colour = rich_black, label=substitute(paste(bold("90%"))), size= 4,  hjust =-25.5, vjust=-1)
+  base + 
+  annotate(geom = "text", x=trgt1, y = 250, family="Gill Sans Mt", colour = rich_black, label=substitute(paste(italic("National Targets"))), size= 3.5,  hjust =-.0, vjust=-2) +
+  annotate(geom = "text", x=trgt1, y = 245, family="Gill Sans Mt", colour = rich_black, label=substitute(paste(bold("245"))), size= 3,  hjust =-5.2, vjust=-.8) +
+  annotate(geom = "text", x=trgt1, y = 200, family="Gill Sans Mt", colour = rich_black, label=substitute(paste(bold("200"))), size= 3,  hjust =-19.5, vjust=-1) +
+  annotate(geom = "text", x=trgt1, y = 150, family="Gill Sans Mt", colour = rich_black, label=substitute(paste(bold("150"))), size= 3,  hjust =-30.5, vjust=-1) +
+  annotate(geom = "text", x=trgt1, y = 100, family="Gill Sans Mt", colour = rich_black, label=substitute(paste(bold("100"))), size= 3,  hjust =-45.5, vjust=-1)
 
 
 mmr_plt
+
+ggsave("viz/Apr-Jun 2022/Reproductive Maternal & Neontal/maternal deaths national ns.png",
+       device="png",
+       type="cairo",
+       height=8,
+       width=13)
+
+
+#'*Maternal MORTALITY PROVINCe SEPERATED BY USAID SUPPORTED AND NONE*
+
+names(mat_prov)
+
+mmp_prov <- mat_prov %>%
+  rename(prov = 1,
+         fmmr = 16,
+  ) %>% 
+  select(prov, fmmr, mnthyr) %>% 
+  mutate(prov = factor(prov),
+         ip = case_when(prov=="Northern" |
+                          prov =="Central" |
+                          prov =="Luapula" |
+                          prov =="Muchinga" |
+                          prov =="Southern" |
+                          prov =="Eastern" ~ "ip",
+                        TRUE ~ "non-ip"))
+
+levels(mmp_prov$prov)
+
+spprtd_mm <- mmp_prov %>%
+  filter(ip=="ip")
+
+spprtd_mm_plt <- ggplot(spprtd_mm, aes(x = mnthyr, y = fmmr, colour = ip)) +
+  geom_point(alpha=.6, size=1) + 
+  stat_smooth(method = loess, size = .9, se=FALSE)  +
+  facet_wrap(~prov) +
+  faceted +
+  scale_y_continuous(limits = c(0,500),
+                     breaks = c(100, 200, 300, 400)) +
+  xlab("") + 
+  ylab("") +
+  ggtitle("USAID-supported provinces") +
+  scale_color_manual(name= "", values = usaid_blue, labels = c("Supported by FHN, MOMENT and G2G", "Not supported")) +
+  baseX
+
+non_spprtd_mm <- matd_prov %>%
+  filter(ip=="non-ip")
+
+non_spprtd_mm_plt <- ggplot(non_spprtd_mm, aes(x = mnthyr, y = fmmr, colour = ip)) +
+  geom_point(alpha=.6, size=1) + 
+  stat_smooth(method = loess, size = .9, se=FALSE)  +
+  facet_wrap(~prov) +
+  faceted +
+  scale_y_continuous(limits = c(0,500),
+                     breaks = c(100, 200, 300, 400)) +
+  xlab("") + 
+  ylab("") +
+  ggtitle("Non USAID-supported provinces") +
+  scale_color_manual(name= "", values = usaid_red, labels = c("Supported by FHN, MOMENT and G2G", "Not supported")) +
+  baseX
+
+spprtd_mm_plt
+non_spprtd_mm_plt
+
+mmr.allplt <- grid.arrange(spprtd_mm_plt,non_spprtd_mm_plt, ncol=2)
+
+ggsave("viz/Apr-Jun 2022/Reproductive Maternal & Neontal/Maternal mortality by Provincial faceted ns.png",
+       plot=mmr.allplt,
+       device="png",
+       type="cairo",
+       height=7,
+       width=13)
+
+#'*STILLBIRTH RATE PER 1000 LIVE BIRTH NATIONAL*
+
+names(mat)
+
+mat_smb <- mat  %>%
+  rename( prov = 1,
+          sbr = 15
+  ) %>% 
+  select(prov, mnthyr, sbr) 
+
+pnctrgts$Start <- as.Date(pnctrgts$Start) 
+pnctrgts$End <- as.Date(pnctrgts$End) 
+Start <- as.Date(NULL)
+End <- as.Date(NULL)
+
+# [pivot_longer syntax] ----
+
+  
+  pivot_longer(sbr, names_to= "sbtype", values_to = "sbrate") %>% 
+  mutate(sbtype = factor(sbtype),
+         year=year(mnthyr))
+
+levels(mat_smb1$sbtype)
+mat_smb1
+
+fms_plt <- ggplot(mat_smb1, aes(x = mnthyr, y = sbrate, colour = sbtype)) +
+  geom_point(alpha=.6, size=.8) + 
+  geom_rect(data=pnctrgts, mapping=aes(NULL,NULL,xmin=Start,xmax=End,fill=PNCTargets),
+            ymin=c(10,8,6,4) ,ymax=c(9.8,7.8,5.8,3.8), colour=light_grey, size=0.8, alpha=0.6, lty="solid", fill=usaid_red) +
+  #  geom_line(alpha=.4) +
+  stat_smooth(se=F, size=1, alpha=.8) +
+  scale_y_continuous(limits=c(0,18))+
+  scale_x_date(date_labels="%b %Y",date_breaks="4 months") +
+  labs(x="",
+       y="",
+       #title="The proportion of Fresh stillbirths and Macerated stillbirths has been decreasing since the first quarter of 2022 \n this decrease trend started fourth quarter of 2021",
+       caption= "Stillbirth rates expressed per 1000 total births") +
+  scale_color_manual(name= "",values = c(medium_grey,usaid_blue,usaid_red), labels = c("Stillbirth rate (MSB + FSB)")) +
+  base +
+  annotate(geom = "text", x=trgt1, y = 13, family="Gill Sans Mt", colour = rich_black, label=substitute(paste(italic("Achieved"))), size= 4,  hjust =-20.5, vjust=-2.5) +
+  annotate(geom = "text", x=trgt1, y = 2, family="Gill Sans Mt", colour = rich_black, label=substitute(paste(italic("National Targets"))), size= 4,  hjust =-10.5, vjust=-3.5) +
+  annotate(geom = "text", x=trgt1, y = 10, family="Gill Sans Mt", colour = rich_black, label=substitute(paste(bold("10"))), size= 3,  hjust =-11.2, vjust=-1) +
+  annotate(geom = "text", x=trgt1, y = 8, family="Gill Sans Mt", colour = rich_black, label=substitute(paste(bold("8"))), size= 3,  hjust =-60.5, vjust=-1) +
+  annotate(geom = "text", x=trgt1, y = 6, family="Gill Sans Mt", colour = rich_black, label=substitute(paste(bold("6"))), size= 3,  hjust =-92.5, vjust=-1) +
+  annotate(geom = "text", x=trgt1, y = 4, family="Gill Sans Mt", colour = rich_black, label=substitute(paste(bold("4"))), size= 3,  hjust =-130.5, vjust=-1)
+
+fms_plt
+
+
+ggsave("viz/Apr-Jun 2022/Reproductive Maternal & Neontal/Stillbirth Rate National ns.png",
+       device="png",
+       type="cairo",
+       height=7,
+       width=13)
+
+
+
+#'*NEONATAL AND PERINATAL DEATHS NATIONAL*
+names(mat)
+
+npd <- mat  %>%
+  rename( prov = 1,
+          nd = 26,
+          pd = 27
+  ) %>% 
+  select(prov, mnthyr, nd, pd) 
+
+
+npd1 <- npd %>% 
+  pivot_longer(c(nd, pd), names_to= "sbtype", values_to = "sbrate") %>% 
+  mutate(sbtype = factor(sbtype),
+         year=year(mnthyr))
+
+levels(npd1$sbtype)
+
+
+nt_sprtd <- ggplot(npd1, aes(x = mnthyr, y = sbrate, group = sbtype, colour = sbtype)) +
+  geom_point(alpha=.6, size=.9) + 
+  #  geom_line(alpha=.4) +
+  geom_smooth(se=F, size=.8, alpha=.9) +
+  scale_x_date(date_labels = "%b %y",date_breaks = "4 months") +
+  # scale_y_continuous(limits=c(0,18)) + 
+  # faceted +
+  labs(x="",
+       y="",
+       title="The Perinatal deaths ahve been on the decline for the last two years , \nwhile Neontal deaths has been on the rise since 2018",
+       caption= "Stillbirth rates expressed per 1000 total births") +
+  scale_color_manual(name= "",values = c(usaid_blue,usaid_red), labels = c("Neonatl Deaths","Perinatal Deaths")) +
+  basey
+
+nt_sprtd
+
+ggsave("viz/Apr-Jun 2022/Reproductive Maternal & Neontal/Neonatl and Perinatal deaths ns.png",
+       device="png",
+       type="cairo",
+       height=8,
+       width=13)
+
+
+
+#'* NEONATAL DEATHS COUNTS BY PRVONCE SEPERATED BY USAID SUPPORT AND NON*
+
+
+names(mat_prov)
+
+npd_prov <- mat_prov %>%
+  rename(prov = 1,
+         ndc = 26,
+  ) %>% 
+  select(prov, ndc, mnthyr) %>% 
+  mutate(prov = factor(prov),
+         ip = case_when(prov=="Northern" |
+                          prov =="Central" |
+                          prov =="Luapula" |
+                          prov =="Muchinga" |
+                          prov =="Southern" |
+                          prov =="Eastern" ~ "ip",
+                        TRUE ~ "non-ip"))
+
+levels(npd_prov$prov)
+
+spprtd_ndp <- npd_prov %>%
+  filter(ip=="ip")
+
+
+levels(spprtd_ndp$prov)
+
+spprtd_ndp
+
+nd_spprtd_plt <- ggplot(spprtd_ndp, aes(x = mnthyr, y = ndc, colour = ip)) +
+  geom_point(alpha=.4, size=.9) + 
+  geom_smooth(method = loess, size = 1, se=FALSE)  +
+  facet_wrap(~prov) +
+  faceted +
+  scale_y_continuous(limits = c(0,30)) +
+  xlab("") + 
+  ylab("") +
+  ggtitle("USAID-supported provinces") +
+  scale_color_manual(name= "", values = usaid_blue) +
+  baseX
+nd_spprtd_plt
+
+
+non_spprtd_ndp <- npd_prov %>%
+  filter(ip=="non-ip")
+
+nd_spprtd_plt1 <- ggplot(non_spprtd_ndp, aes(x = mnthyr, y = ndc, colour = ip)) +
+  geom_point(alpha=.4, size=.9) + 
+  geom_smooth(method = loess, size = 1, se=FALSE)  +
+  facet_wrap(~prov) +
+  faceted +
+  scale_y_continuous(limits = c(0,30)) +
+  xlab("") + 
+  ylab("") +
+  ggtitle("USAID-supported provinces") +
+  scale_color_manual(name= "", values = usaid_red, labels = "Neontal Deaths") +
+  basey
+
+nd_spprtd_plt
+nd_spprtd_plt1
+
+nd.allplt <- grid.arrange(nd_spprtd_plt, nd_spprtd_plt1, ncol=2)
+
+ggsave("viz/Apr-Jun 2022/Reproductive Maternal & Neontal/Neonatl and Perinatal deaths by province faceted ns.png",
+       plot = nd.allplt,
+       device="png",
+       type="cairo",
+       height=8,
+       width=13)
