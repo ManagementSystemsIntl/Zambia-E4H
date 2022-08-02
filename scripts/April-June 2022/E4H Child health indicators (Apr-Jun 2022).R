@@ -183,7 +183,7 @@ msle_prov <- chldH_prov %>%
                        breaks = c(.2,.4,.6,.8, 1)) +
     labs(x ="", y="", caption = "Data Source: HMIS") +
     ggtitle("USAID-supported provinces") +
-    scale_color_manual(name= "", values = (usaid_palette), labels = c("Measle under 1", "Measeles under 2")) + basey
+    scale_color_manual(name= "", values = (usaid_palette), labels = c("Measles under 1", "Measles under 2")) + basey
   
   ipNot_fundedprov
   
@@ -238,7 +238,7 @@ msle_prov <- chldH_prov %>%
          width = 12)
   
   
-  #'* BCG SEPERATED BY SUPPORTED AND NON USAID PROVINCES* ----
+  #'* BCG SEPERATED BY SUPPORTED AND NON USAID PROVINCES*
   names(chldH_prov)
   
   bcg_Prov <- chldH_prov %>%
@@ -335,3 +335,318 @@ msle_prov <- chldH_prov %>%
          width = 12)
   
   
+  #'* DPT HIB HEP 1st DOSE Coverage*
+  names(chldH)
+  # view(chldH)
+  dpt_hep <- chldH %>%
+    rename(dpt = 13) %>%
+    
+    mutate(dptp = dpt/100)
+  
+  #'*setting values of dpt 1st dose to 100 for all values >100*
+  dpt_hep1 <- dpt_hep %>% 
+    dplyr::mutate(dpt = ifelse(dpt > 100, 100, dpt)) %>% 
+    dplyr::mutate(dptp = dpt/100)
+  
+  #'*To create legend, gather method for including a legend --*
+  
+  dpt_hep1 <- gather(dpt_hep1, key = subpop , value = rate, c(dpt))
+  dpt_hep1$subpop <- factor(dpt_hep1$subpop, levels = unique(dpt_hep1$subpop)) # transform into factor
+  levels(dpt_hep1$subpop)
+  
+  # view(chldH)
+  
+  ggplot(dpt_hep1, aes(x = mnthyr, y = dptp, colour=usaid_blue )) +
+    geom_point(alpha=.4, size=1.9) + 
+    #geom_line(size=1) +
+    geom_smooth(method = loess, size = .8, se=FALSE) +
+    scale_y_continuous(limits = c(0,1),
+                       labels = percent,
+                       breaks = c(.1,.2,.3,.4,.5,.6,.7,.8,.9, 1)) +
+    scale_x_date(date_labels="%b %Y",date_breaks="4 months") +
+    labs(x="", y="", caption="Data Source: HMIS", title="Proportion of under 1 year infants who received DPT Hib Hep has in the past two years increased,  \nwith a slight decline trend between June 2019 - October 2020") +
+    scale_color_manual(name ="",
+                       values = usaid_blue,
+                       labels = "DPT Hib Hep 1st dose") + baseX
+  
+  ggsave("viz/Apr-Jun 2022/Child Health/DPT Hib Hep 1st dose Vaccines.png",
+         device="png",
+         type="cairo",
+         height = 6.5,
+         width = 12)
+  
+  
+  #'* DPT HIB HEP DOSE SEPERATED BY SUPPORTED AND NON USAID PROVINCES*
+  names(chldH_prov)
+  
+  dpt_Prov <- chldH_prov %>%
+    rename(prov =1,
+           dpt = 13) %>%
+    
+    mutate(dptp = dpt/100) %>%
+    
+    
+    select(prov, mnthyr, dptp) %>% 
+    mutate(prov = factor(prov),
+           ip = case_when(prov=="Northern" |
+                            prov =="Central" |
+                            prov =="Luapula" |
+                            prov =="Muchinga" |
+                            prov =="Southern" |
+                            prov =="Eastern" ~ "ip",
+                          TRUE ~ "non-ip"))
+  
+  table(dpt_Prov$ip, dpt_Prov$prov)
+  frq(dpt_Prov$ip) #sjmisc
+  
+  levels(dpt_Prov$prov)
+  
+  #'*redraw for all USAID-funded provinces*
+  
+  ipfunded_dpt <- dpt_Prov %>%
+    filter(ip =="ip")
+  
+  levels(dpt_Prov$prov)
+  
+  ipfunded_dpt1 <- ipfunded_dpt %>% 
+    gather(key = subpop , value = rate, c(dptp)) %>% 
+    mutate(ip = factor(ip),
+           subpop = factor(subpop))
+  
+  levels(ipfunded_dpt1$ip)
+  levels(ipfunded_dpt1$subpop)
+  
+  spprtd_dptprov <- ggplot(ipfunded_dpt1, aes(x = mnthyr, y = rate, group = subpop, colour = subpop)) +
+    geom_point(alpha=.6, size=.6) + 
+    #geom_area(alpha=.3, size=.8, color=usaid_blue, fill=light_blue) + 
+    #geom_line(size=1) +
+    geom_smooth(method = loess, size = .8, se=FALSE)  +
+    facet_wrap(~prov) +
+    faceted +
+    scale_y_continuous(limits = c(0,1),
+                       labels = percent,
+                       breaks = c(.2,.4,.6,.8, 1)) +
+    labs(x ="", y="", caption = "") +
+    ggtitle("USAID-supported provinces") +
+    scale_color_manual(name= "", values = usaid_blue) + baseX
+  
+  spprtd_dptprov
+  
+  
+  #'*redraw for all Non USAID-funded provinces*
+  
+  nonaid_dpt <- dpt_Prov %>%
+    filter(ip =="non-ip")
+  
+  levels(dpt_Prov$prov)
+  
+  nonaid_dpt1 <- nonaid_dpt %>% 
+    gather(key = subpop , value = rate, c(dptp)) %>% 
+    mutate(ip = factor(ip),
+           subpop = factor(subpop))
+  
+  levels(nonaid_dpt1$ip)
+  levels(nonaid_dpt1$subpop)
+  
+  nonaid_prov <- ggplot(nonaid_dpt1, aes(x = mnthyr, y = rate, group = subpop, colour = subpop)) +
+    #geom_area(alpha=.3, size=.8,color=usaid_red, fill=usaid_red) + 
+    geom_point(alpha=.6, size=.6) + 
+    #geom_line(size=1) +
+    geom_smooth(method = loess, size = .8, se=FALSE)  +
+    facet_wrap(~prov) +
+    faceted +
+    scale_y_continuous(limits = c(0,1),
+                       labels = percent,
+                       breaks = c(.2,.4,.6,.8, 1)) +
+    labs(x ="", y="", caption = "Data Source: HMIS") +
+    ggtitle("Non USAID-supported provinces") +
+    scale_color_manual(name= "", values = usaid_red, labels = c("DPT Hib Heb Under 1")) + baseX
+  
+  nonaid_prov
+  
+  spprtd_dptprov +nonaid_prov + plot_layout(guides = "collect")
+  
+  ggsave("viz/Apr-Jun 2022/Child Health/Province DPT Vaccines faceted smooth ns.png",
+         device="png",
+         type="cairo",
+         height = 7.5,
+         width = 12)
+  
+  
+  #'* FULLY IMMUNIZED Coverage*
+  names(chldH)
+  # view(chldH)
+  fullyimz <- chldH %>%
+    rename(fic = 7) %>%
+    
+    mutate(ficp = fic/100)
+  
+  #'*setting values of dpt 1st dose to 100 for all values >100*
+  fullyimz1 <- fullyimz %>% 
+    dplyr::mutate(fic = ifelse(fic > 100, 100, fic)) %>% 
+    dplyr::mutate(ficp = fic/100)
+  
+  #'*To create legend, gather method for including a legend --*
+  
+  fullyimz1 <- gather(fullyimz1, key = subpop , value = rate, c(fic))
+  fullyimz1$subpop <- factor(fullyimz1$subpop, levels = unique(fullyimz1$subpop)) # transform into factor
+  levels(fullyimz1$subpop)
+  
+  # view(chldH)
+  
+  ggplot(fullyimz1, aes(x = mnthyr, y = ficp, colour=usaid_blue )) +
+    geom_point(alpha=.4, size=1.9) + 
+    #geom_line(size=1) +
+    geom_smooth(method = loess, size = .8, se=FALSE) +
+    scale_y_continuous(limits = c(0,1),
+                       labels = percent,
+                       breaks = c(.1,.2,.3,.4,.5,.6,.7,.8,.9, 1)) +
+    scale_x_date(date_labels="%b %Y",date_breaks="4 months") +
+    labs(x="", y="", caption="Data Source: HMIS", title="Proportion of under 1 year infants that are fully immunized has been steady in the past two years,  \n after undergoing a slight decline end of 2020") +
+    scale_color_manual(name ="",
+                       values = usaid_blue,
+                       labels = "Fully Immunized") + baseX
+  
+  ggsave("viz/Apr-Jun 2022/Child Health/Fully immunised coverage.png",
+         device="png",
+         type="cairo",
+         height = 6.5,
+         width = 12)
+  
+  
+  #'* FULLY IMMUNIZED SEPERATED BY SUPPORTED AND NON USAID PROVINCES*
+  names(chldH_prov)
+  
+  fic_Prov <- chldH_prov %>%
+    rename(prov =1,
+           fic = 7) %>%
+    
+    mutate(ficp = fic/100) %>%
+    
+    
+    select(prov, mnthyr, ficp) %>% 
+    mutate(prov = factor(prov),
+           ip = case_when(prov=="Northern" |
+                            prov =="Central" |
+                            prov =="Luapula" |
+                            prov =="Muchinga" |
+                            prov =="Southern" |
+                            prov =="Eastern" ~ "ip",
+                          TRUE ~ "non-ip"))
+  
+  table(fic_Prov$ip, fic_Prov$prov)
+  frq(fic_Prov$ip) #sjmisc
+  
+  levels(fic_Prov$prov)
+  
+  #'*redraw for all USAID-funded provinces*
+  
+  ipfunded_fic <- fic_Prov %>%
+    filter(ip =="ip")
+  
+  levels(fic_Prov$prov)
+  
+  ipfunded_fic1 <- ipfunded_fic %>% 
+    gather(key = subpop , value = rate, c(ficp)) %>% 
+    mutate(ip = factor(ip),
+           subpop = factor(subpop))
+  
+  levels(ipfunded_fic1$ip)
+  levels(ipfunded_fic1$subpop)
+  
+  spprtd_ficprov <- ggplot(ipfunded_fic1, aes(x = mnthyr, y = rate, group = subpop, colour = subpop)) +
+    geom_point(alpha=.6, size=.6) + 
+    #geom_area(alpha=.3, size=.8, color=usaid_blue, fill=light_blue) + 
+    #geom_line(size=1) +
+    geom_smooth(method = loess, size = .8, se=FALSE)  +
+    facet_wrap(~prov) +
+    faceted +
+    scale_y_continuous(limits = c(0,1),
+                       labels = percent,
+                       breaks = c(.2,.4,.6,.8, 1)) +
+    labs(x ="", y="", caption = "") +
+    ggtitle("USAID-supported provinces") +
+    scale_color_manual(name= "", values = usaid_blue) + baseX
+  
+  spprtd_ficprov
+  
+  
+  #'*redraw for all Non USAID-funded provinces*
+  
+  nonaid_fic <- fic_Prov %>%
+    filter(ip =="non-ip")
+  
+  levels(fic_Prov$prov)
+  
+  nonaid_dpt1 <- nonaid_fic %>% 
+    gather(key = subpop , value = rate, c(ficp)) %>% 
+    mutate(ip = factor(ip),
+           subpop = factor(subpop))
+  
+  levels(nonaid_dpt1$ip)
+  levels(nonaid_dpt1$subpop)
+  
+  nonaid_ficprov <- ggplot(nonaid_dpt1, aes(x = mnthyr, y = rate, group = subpop, colour = subpop)) +
+    #geom_area(alpha=.3, size=.8,color=usaid_red, fill=usaid_red) + 
+    geom_point(alpha=.6, size=.6) + 
+    #geom_line(size=1) +
+    geom_smooth(method = loess, size = .8, se=FALSE)  +
+    facet_wrap(~prov) +
+    faceted +
+    scale_y_continuous(limits = c(0,1),
+                       labels = percent,
+                       breaks = c(.2,.4,.6,.8, 1)) +
+    labs(x ="", y="", caption = "Data Source: HMIS") +
+    ggtitle("Non USAID-supported provinces") +
+    scale_color_manual(name= "", values = usaid_red, labels = c("Fully Immunized Under 1")) + baseX
+  
+  nonaid_ficprov
+  
+  spprtd_ficprov +nonaid_ficprov + plot_layout(guides = "collect")
+  
+  ggsave("viz/Apr-Jun 2022/Child Health/Province Fully Immunized Vaccines faceted smooth ns.png",
+         device="png",
+         type="cairo",
+         height = 7.5,
+         width = 12)
+  
+  
+  #'* % OF CHILDREN RECEIVING Vitamin A*
+  names(chldH)
+  # view(chldH)
+  crv <- chldH %>%
+    rename(crv = 14) %>%
+    
+    mutate(crvp = crv/100)
+  
+  #'*setting values of dpt 1st dose to 100 for all values >100*
+  crv1 <- crv %>% 
+    dplyr::mutate(fic = ifelse(crv > 100, 100, crv)) %>% 
+    dplyr::mutate(crvp = crv/100)
+  
+  #'*To create legend, gather method for including a legend --*
+  
+  crv1 <- gather(crv1, key = subpop , value = rate, c(crv))
+  crv1$subpop <- factor(crv1$subpop, levels = unique(crv1$subpop)) # transform into factor
+  levels(crv1$subpop)
+  
+  # view(chldH)
+  
+  ggplot(crv1, aes(x = mnthyr, y = crvp, colour=usaid_blue )) +
+    geom_point(alpha=.4, size=1.9) + 
+    #geom_line(size=1) +
+    geom_smooth(method = loess, size = .8, se=FALSE) +
+    scale_y_continuous(limits = c(0,1),
+                       labels = percent,
+                       breaks = c(.1,.2,.3,.4,.5,.6,.7,.8,.9, 1)) +
+    scale_x_date(date_labels="%b %Y",date_breaks="4 months") +
+    labs(x="", y="", caption="Data Source: HMIS", title="Proportion of children receiving dose of Vitamin A has generally been low, below 20% since 2018") +
+    scale_color_manual(name ="",
+                       values = usaid_blue,
+                       labels = "Vitamin A") + baseX
+  
+  ggsave("viz/Apr-Jun 2022/Child Health/Vitamin A coverage.png",
+         device="png",
+         type="cairo",
+         height = 6.5,
+         width = 12)
