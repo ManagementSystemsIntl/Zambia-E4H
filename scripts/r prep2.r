@@ -25,7 +25,7 @@ zam_packages <- c("tidyverse", "here", "gifski", "gt","gtsummary","gghighlight",
                   "sysfonts","scales","magrittr","knitr","lubridate","Hmisc","haven","tidyr","reshape2","DescTools","extrafont",
                   "patchwork", "extrafontdb", "ggtext", "geomtextpath","zoo","psych","cowplot","ztable","pheatmap",
                   "RColorBrewer", "data.table", "d3heatmap","hablar", "gganimate", "dygraphs", "gapminder", "hrbrthemes",
-                  "geomtextpath", "patchwork", "gridExtra", "grid")
+                  "geomtextpath", "patchwork", "gridExtra", "grid", "rmarkdown")
 
 
 
@@ -89,7 +89,7 @@ basey <- theme(# plot.title = element_text(size = 12),
   axis.title.y = element_text(size = 11),
   axis.text.x = element_text(size = 9),
   axis.text.y = element_text(size = 9),
-  legend.text = element_text(size = 10),
+  legend.text = element_text(size = 12),
   legend.title=element_blank(),
   legend.position="bottom",
   strip.text=element_text(size=14, family="Gill Sans Mt"),
@@ -120,6 +120,20 @@ non_base <- theme_bw() + theme(panel.grid.minor.x=element_blank(),
                            axis.ticks = element_blank(),
                            # legend.box="horizontal",
                            legend.background = element_rect(fill = "white", color = "black"))
+
+
+basem <- theme(plot.title = element_text(size = 9),
+  plot.caption = element_text(size=10),
+  axis.title.x = element_text(size = 9),
+  axis.title.y = element_text(size = 9),
+  axis.text.x = element_text(size = 8.5),
+  axis.text.y = element_text(size = 9),
+  legend.text = element_text(size = 9),
+  legend.title=element_blank(),
+  legend.position="bottom",
+  strip.text=element_text(size=10, family="Gill Sans Mt"),
+  legend.background = element_rect(fill = "white", color = "black"))
+
 
 
 
