@@ -164,6 +164,17 @@ dark_grey <- "#6C6463"
 medium_grey <- "#8C8985"
 light_grey <- "#CFCDC9"
 
+# ggtext strings
+
+decred <- "<span style='color:#BA0C2F;'>**declining**</span>"
+decblu <- "<span style='color:#002F6C;'>**declining**</span>"
+
+increasblu <- "<span style='color:#002F6C;'>**increasing**</span>"
+increasblu <- "<span style='color:#BA0C2F;'>**increasing**</span>"
+
+
+
+
 usaid_palette <- c(web_blue, usaid_red, light_blue, dark_red, usaid_blue)
 usaid_palette
 

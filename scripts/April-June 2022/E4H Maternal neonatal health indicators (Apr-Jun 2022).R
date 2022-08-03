@@ -531,21 +531,28 @@ mat_smb1 <- mat_smb %>%
 levels(mat_smb1$sbtype)
 mat_smb1
 
-fms_plt <- ggplot(mat_smb1, aes(x = mnthyr, y = sbrate, group = sbtype, colour = sbtype)) +
+fms_plt <- ggplot(mat_smb1, aes(x = mnthyr, y = sbrate/100, group = sbtype, colour = sbtype)) +
   geom_point(alpha=.6, size=.8) + 
   #  geom_line(alpha=.4) +
-  stat_smooth(se=F, size=.8, alpha=.8) +
-  scale_y_continuous(limits=c(0,18)) +
+  stat_smooth(se=T, size=.8, alpha=.8) +
+  scale_y_continuous(limits=c(0,.2),
+                     breaks=seq(0,.2,.02),
+                     labels=percent_format(accuracy=1)) +
   scale_x_date(date_labels="%b %Y",date_breaks="4 months") +
   labs(x="",
        y="",
-       title="The proportion of Fresh stillbirths and Macerated stillbirths has been decreasing since the first quarter of 2022 \n this decrease trend started fourth quarter of 2021",
+       title=paste("Stillbirth rates on a ", declining, "trend since March 2022"),,
+       #title="Stillbirth rates on a <span style='color:#BA0C2F;'>**declining**</span> trend since March 2022",
+       #title=     "The proportion of Fresh stillbirths and Macerated stillbirths has been decreasing since the first quarter of #2022 \n this decrease trend started fourth quarter of 2021",
        caption= "Stillbirth rates expressed per 1000 total births") +
   scale_color_manual(name= "",values = c(medium_grey,usaid_blue,usaid_red), labels = c("Fresh stillbirth rate","Macerated stillbirth rate","Stillbirth rate (MSB + FSB)")) +
-  base
+  base +
+  theme(plot.title.position="plot",
+        plot.title=element_markdown())
 
 fms_plt 
-ggsave("viz/Apr-Jun 2022/Reproductive Maternal & Neontal/fresh & macerated stillbirths ns.png",
+
+ggsave("viz/Apr-Jun 2022/Reproductive Maternal & Neontal/fresh & macerated stillbirths ns ggtext.png",
        device="png",
        type="cairo",
        height=7,
