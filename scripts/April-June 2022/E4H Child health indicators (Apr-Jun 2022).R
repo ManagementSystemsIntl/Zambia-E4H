@@ -872,7 +872,7 @@ msle_prov <- chldH_prov %>%
                        labels = percent,
                        breaks = c(.2,.4,.6,.8, 1)) +
     labs(x ="", y="", caption = "") +
-    ggtitle("USAID-supported provinces") +
+    ggtitle("FH Activity-supported provinces") +
     scale_color_manual(name= "", values = usaid_palette) + baseX
   
   spprtd_brstfdprov
@@ -907,18 +907,18 @@ msle_prov <- chldH_prov %>%
                        labels = percent,
                        breaks = c(.2,.4,.6,.8, 1)) +
     labs(x ="", y="", caption = "Data Source: HMIS") +
-    ggtitle("Non USAID-supported provinces") +
+    ggtitle("Non FH Activity-supported provinces") +
     scale_color_manual(name= "", values = usaid_palette, labels = c("Initiation on breastmilk with one hour of birth", "Infants on EBF at 6 months")) + basey
   
   spprtd_brstfdprov|nonaid_brstfdprov
   
   spprtd_brstfdprov + nonaid_brstfdprov + plot_layout(guides = "collect")
   
-  ggsave("viz/Apr-Jun 2022/Child Health/Province Breastfeeding faceted smooth ns.png",
+  ggsave("viz/Apr-Jun 2022/Child Health/FH Province Breastfeeding faceted smooth ns.png",
          device="png",
          type="cairo",
-         height = 9.5,
-         width = 12)
+         height = 9,
+         width = 13)
   
 
   
