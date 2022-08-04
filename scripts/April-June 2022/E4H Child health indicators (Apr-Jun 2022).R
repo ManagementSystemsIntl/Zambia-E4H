@@ -920,6 +920,4 @@ msle_prov <- chldH_prov %>%
          height = 9,
          width = 13)
   
-
-  
   
