@@ -519,3 +519,111 @@ fam <- fam %>%
          height = 7.5,
          width = 11)
   
+  
+  #'*MODERN FP METHOD: ALL METHODS SHORT & LONG-ACTING METHODS*
+
+    names(fam)
+    # view(fam)
+    iud <- fam %>%
+      select(1, 40:43) %>%
+      na.omit() 
+    
+    iud
+    colnames(iud)
+    iud1 <- iud[, c(1,5, 2, 3, 4)]
+    colnames(iud1)
+    iud1
+    
+    iud1  <- iud1  %>%
+      mutate(month_chr = str_sub(periodname,
+                                 start=1,
+                                 end=nchar(periodname)-5),
+             month = factor(month_chr,
+                            levels=c("January","February","March","April","May","June","July","August","September","October","November","December")),
+             month_code = as.numeric(month), 
+             year = str_sub(periodname, 
+                            start=nchar(periodname)-4,
+                            end=nchar(periodname)),
+             monyr = paste(month_code, year, sep="-"),
+             mnthyr = my(monyr))
+    
+    sum(fam$month_chr!=fam$month) # expecting 0 if vars same
+    
+    view(iud1)
+    iud2 <- iud1 %>%
+    rename(iucd.inserted = 1,
+           implant.inserted = 2,
+           iucd.removed = 3,
+           implant.removed = 4,
+           implant.double = 5
+    ) %>%
+      
+    # iud2 <- iud1 %>% 
+    #   gather(key = subpop , value = rate, c(c(Medroxyprogesterone injection DMPA-IM, <15y, Medroxyprogesterone injection DMPA-IM, (15-19 )y,Medroxyprogesterone injection DMPA-IM, (20-24)y,Medroxyprogesterone injection DMPA-IM, (25+)y)) %>% 
+    #   
+    #   
+      
+      
+      
+      
+      
+      
+    
+    ptm_plt <- ggplot(iud, aes(x=mnthyr, y=value,  color=variable)) +
+      geom_line()
+    ptm_plt
+    
+    # indens1
+    
+    # iud <- iud  %>%
+    #   rename(mnthyr=1,
+    #          med.im = 2,
+    #          med.im1 = 3,
+    #          med.im2 = 4,
+    #          med.im3 = 5) %>%
+    #   
+    #   iud <- gather(iud, key = subpop , value = rate, c(med.im, med.im1, med.im2, med.im3))
+    # iud$subpop <- factor(iud$subpop, levels = unique(iud$subpop)) # transform into factor
+    # levels(iud$subpop)
+    # 
+      
+      # fam_med <- fam_med %>%
+      # gather(key = subpop , value = rate, c(med.im, med.im1, med.im2, med.im3))
+      # 
+      # fam_medplt <- ggplot(fam_med, aes(x = mnthyr, y = rate, group = subpop, colour = subpop)) +
+      # geom_point(alpha=.6, size=1.9) + 
+      # #geom_line(size=1) +
+      # geom_smooth(method = loess, size = .8, se=FALSE) +
+      # scale_y_continuous(labels = comma) +
+      # scale_x_date(date_labels="%b %Y",date_breaks="4 months") +
+      # xlab("") + 
+      # ylab("") +
+      # ggtitle("Proportion of expected pregnancies receiving antenatal care (ANC), 2018-2022") +
+      # scale_color_manual(name ="",
+      #                    values = usaid_palette,
+      #                    labels = c("1st ANC coverage (all trimesters)", "1st ANC Coverage (1st Trimester)", 
+      #                               "1st ANC visits in the 1st trimester: Women <20 yrs",
+      #                               "1st ANC visits in the 1st trimester: Women <20 yrs")) +
+      baseX
+    names(fam_med)
+    fam_medplt
+    
+    # iud <- iud  %>%
+    #   rename(med.im = 40,
+    #          med.im1 = 41,
+    #          med.im2 = 42,
+    #          med.im3 = 43
+    #   ) %>%
+    
+    iudL <- iud %>%
+      pivot_longer(cols=40:43,
+                   names_to="age",
+                   values_to="num") %>%
+      arrange(age) %>%
+      mutate(age_lab = factor(age, labels=c("under 15", "15-19", "20-24","25+"))) 
+    
+    iudL
+    ggplot(iudL, aes(periodname, num, color=age_lab)) + 
+      geom_point(size=3) + 
+      geom_line(size=1)    
+    
