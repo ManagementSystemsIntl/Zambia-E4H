@@ -522,37 +522,24 @@ fam <- fam %>%
   
   #'*MODERN FP METHOD: ALL METHODS SHORT & LONG-ACTING METHODS*
 
+  ###Medroxyprogesterone injection DMPA-IM
+  
     names(fam)
     # view(fam)
     iud <- fam %>%
-      select(1, 40:43) %>%
+      select(40:43,56) %>%
       na.omit() 
     
     iud
     colnames(iud)
-    iud1 <- iud[, c(1,5, 2, 3, 4)]
+    iud1 <- iud[, c(4,1,2,3,5)]
     colnames(iud1)
     iud1
     
-    iud1  <- iud1  %>%
-      mutate(month_chr = str_sub(periodname,
-                                 start=1,
-                                 end=nchar(periodname)-5),
-             month = factor(month_chr,
-                            levels=c("January","February","March","April","May","June","July","August","September","October","November","December")),
-             month_code = as.numeric(month), 
-             year = str_sub(periodname, 
-                            start=nchar(periodname)-4,
-                            end=nchar(periodname)),
-             monyr = paste(month_code, year, sep="-"),
-             mnthyr = my(monyr))
+    iud1
     
-    sum(fam$month_chr!=fam$month) # expecting 0 if vars same
-    
-   
-    iud1 
     iud2 <- iud1 %>%
-      select(2,3,4,5,11) %>%
+      select(4,1,2,3,5) %>%
       na.omit()
     names(iud2)
     
@@ -580,3 +567,5 @@ fam <- fam %>%
              height = 5.5,
              width = 9)
     
+      
+      #M##edroxyprogesterone injection DMPA-SC
