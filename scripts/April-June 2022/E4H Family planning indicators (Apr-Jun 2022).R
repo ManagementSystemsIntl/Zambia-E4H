@@ -62,7 +62,7 @@ ch_plt <- ggplot(fam, aes(x=mnthyr, y=wmn.vstd, colour=usaid_blue)) +
   geom_smooth(method = loess, size = .8, se=FALSE) +
   scale_y_continuous(labels=comma) +
   scale_x_date(date_labels="%b %y",date_breaks="4 months") +
-  labs(x="", y="", caption="Data Source: HMIS", title="Number of Women in reproductive age visted by CHA/CBD has declined \nin the last two years, this trend began in October 2020") +
+  labs(x="", y="", caption="Data Source: HMIS", title="Number of Women in reproductive age visted by CHA/CBD has declined \nin the last two years, a trend that started in October 2020") +
   scale_color_manual(name ="",
                      values = usaid_blue,
                      labels ="Women of reproductive age visted by CHA") + 
@@ -72,8 +72,8 @@ ch_plt
 ggsave("viz/Apr-Jun 2022/Family Planning/Women of reproductive age visted by CHA ns.png",
        device="png",
        type="cairo",
-       height = 6.5,
-       width = 11)
+       height = 5.5,
+       width = 9)
 
 #'* WOMEN OF REPRODUCTIVE AGE VISITED BY CHA' SEPERATED BY SUPPORTED AND NON FH-USAID PROVINCES*
 #'
@@ -81,10 +81,11 @@ names(fam_prov)
 
 chav_Prov <- fam_prov %>%
   rename(prov =2,
-         wmn.vstd=3) %>%
+         wmn.vstd=3,
+         wmn.mfp=4) %>%
   
   
-  select(prov, mnthyr, wmn.vstd) %>% 
+  select(prov, mnthyr,wmn.mfp, wmn.vstd) %>% 
   mutate(prov = factor(prov),
          ip = case_when(prov=="Northern" |
                           prov =="Central" |
@@ -105,7 +106,7 @@ ipfunded_chav <- chav_Prov %>%
 levels(ipfunded_chav$prov)
 
 ipfunded_chav1 <- ipfunded_chav %>% 
-  gather(key = subpop , value = rate, c(wmn.vstd)) %>% 
+  gather(key = subpop , value = rate, c(wmn.mfp,wmn.vstd)) %>% 
   mutate(ip = factor(ip),
          subpop = factor(subpop))
 
@@ -125,7 +126,7 @@ chav_fundedprov <- ggplot(ipfunded_chav1, aes(x = mnthyr, y = rate, group = subp
   # scale_x_date(date_labels="%y", date_breaks="1 years") +
   labs(x ="", y="", caption = "Activities being implemented \nby SUNTA in some districts") +
   ggtitle("FH Activity-supported provinces") +
-  scale_color_manual(name= "", values = usaid_blue) + baseX
+  scale_color_manual(name= "", values = usaid_palette) + baseX
 
 chav_fundedprov
 
@@ -138,7 +139,7 @@ ipNot_funded <- chav_Prov %>%
 levels(chav_Prov$prov)
 
 ipNot_funded1 <- ipNot_funded %>% 
-  gather(key = subpop , value = rate, c(wmn.vstd)) %>% 
+  gather(key = subpop , value = rate, c(wmn.mfp,wmn.vstd)) %>% 
   mutate(ip = factor(ip),
          subpop = factor(subpop))
 
@@ -156,15 +157,16 @@ ipNot_fundedprov <- ggplot(ipNot_funded1, aes(x = mnthyr, y = rate, group = subp
                      limits=c(0,6000),
                      breaks = c(0, 1000,2000,3000,4000,5000,6000)) +
   # scale_x_date(date_labels="%Y", date_breaks="2 years") +
-  labs(x ="", y="", caption = "Data Source: HMIS") +
+  labs(x ="", y="", caption = "Data Source: HMIS", plot.caption = element_text(hjust = 0)) +
   ggtitle("Non FH Activity-supported provinces") +
-  scale_color_manual(name= "", values = usaid_red, labels = "Women of reproductive age visted by CHA") + baseX
+  scale_color_manual(name= "", values = usaid_palette, labels = c("Women in reproductive age group on a modern FP method",
+                                                                  "Women of reproductive age visted by CHA")) + basey
 
 ipNot_fundedprov
 
 chav_fundedprov + ipNot_fundedprov + plot_layout(guides = "collect")
 
-ggsave("viz/Apr-Jun 2022/Family Planning/Province Women of reproductive age visted by CHA faceted smooth ns.png",
+ggsave("viz/Apr-Jun 2022/Family Planning/Province visted by CHA & on Modern FP faceted smooth ns.png",
        device="png",
        type="cairo",
        height = 7.5,
@@ -180,8 +182,8 @@ mfp_plt <- ggplot(fam, aes(x=mnthyr, y=wmn.mfp, colour=usaid_blue)) +
   #geom_line(size=1) +
   geom_smooth(method = loess, size = .8, se=FALSE) +
   scale_y_continuous(labels=comma) +
-  # scale_x_date(date_labels="%b %y",date_breaks="4 months") +
-  labs(x="", y="", caption="Data Source: HMIS", title="Women in reproductive age group on a modern FP method \ndeclined in January-March 2022, continuining a trend starting in October 2020") +
+  scale_x_date(date_labels="%b %y",date_breaks="4 months") +
+  labs(x="", y="", caption="Data Source: HMIS", title="The number of WRA on a modern FP method increased in the last quarter, \nbut has been on the decline since October 2020") +
   scale_color_manual(name ="",
                      values = usaid_blue,
                      labels ="Women in reproductive age group on a modern FP method") + 
@@ -191,8 +193,8 @@ mfp_plt
 ggsave("viz/Apr-Jun 2022/Family Planning/Women in reproductive age group on a modern FP method smooth ns.png",
        device="png",
        type="cairo",
-       height = 6.5,
-       width = 12)
+       height = 5.5,
+       width = 9)
 
 
 #'* WOMEN IN REPRODUCTIVE AGE GROUP ON A MDOERN FP VISITED BY CHA*
@@ -293,9 +295,11 @@ ggsave("viz/Apr-Jun 2022/Family Planning/Province Women in reproductive age grou
 
 names(fam)
 fam <- fam %>%
+  rename(wmn.mfp=4,
+         wmn.vstd=3) %>%
   mutate(cvrg_fp = wmn.mfp/wmn.vstd) #%>%
   # relocate(cvrg_fp, .after=wmn.mfp)
-
+colnames(fam)
   crvg_plt <- ggplot(fam, aes(x=mnthyr, y=cvrg_fp, colour=usaid_blue)) + 
   geom_point(alpha=.6, size=1.5) + 
   #geom_line(size=1) +
@@ -304,7 +308,7 @@ fam <- fam %>%
                        labels = percent,
                        breaks = c(.1,.2,.3,.4,.5,.6,.7,.8)) +
   scale_x_date(date_labels="%b %y",date_breaks="4 months") +
-  labs(x="", y="", caption="Data Source: HMIS", title="Coverage of modern family planning adoption after visits by \nCHAs' has been increasing since 2018") +
+  labs(x="", y="", caption="Data Source: HMIS", title="Coverage of modern family planning use among women of reproductive \nage has been increasing since 2018") +
   scale_color_manual(name ="",
                      values = usaid_blue,
                      labels ="Coverage of modern family planning adoption") + 
@@ -339,7 +343,7 @@ fam <- fam %>%
                        labels = percent,
                        breaks = c(.1,.2,.3,.4,.5)) +
     scale_x_date(date_labels="%b %y",date_breaks="4 months") +
-    labs(x="", y="", caption="Data Source: HMIS", title="Number of first-time users of modern FP users was on the rise from 2018 to October 2019, \nbut are declining continuining a trend started in October 2019") +
+    labs(x="", y="", caption="Data Source: HMIS", title="Number of first-time users of modern FP users was on the rise from \n2018 to October 2019, but are declining continuining a trend started in October 2019") +
     scale_color_manual(name ="",
                        values = usaid_blue,
                        labels ="Number of first time modern FP") + 
@@ -349,8 +353,8 @@ fam <- fam %>%
   ggsave("viz/Apr-Jun 2022/Family Planning/Number of first-time users of modern FP method smooth ns.png",
          device="png",
          type="cairo",
-         height=7.5,
-         width=12)
+         height=5.5,
+         width=9)
   
 
   #'*SEPERATED BY FH ACTIVITY SUPPORTED PROVINCES*
@@ -482,8 +486,8 @@ fam <- fam %>%
   ggsave("viz/Apr-Jun 2022/Family Planning/LARCS ns.png",
          device="png",
          type="cairo",
-         height = 7.5,
-         width = 12)
+         height = 5.5,
+         width = 9)
   
   
   #'*PERCENTAGE OF DISCONTINUNING LARC*
@@ -508,7 +512,7 @@ fam <- fam %>%
                        breaks = c(.1,.2,.3,.4,.5)) +
     labs(x="",
          y="", 
-         title="Percentage of clients discontinued LARC has increased and declined \nfrom 2018 to October 2021, Since then they have been increasing") + 
+         title="Percentage of clients discontinuing LARC declined from \n2019 to mid-2021 and has since increased") + 
     baseX
   
   larc.dis.p_plt
@@ -516,9 +520,113 @@ fam <- fam %>%
   ggsave("viz/Apr-Jun 2022/Family Planning/discontinued Long-Acting Reversible ns.png",
          device="png",
          type="cairo",
-         height = 7.5,
-         width = 11)
+         height = 5.5,
+         width = 9)
   
+  #'*BY PROVINCE*
+  names(fam_prov)
+  
+  larc_prov <- fam_prov %>%
+    rename(prov=2,
+           iucd.inserted = 11,
+           implant.inserted = 12,
+           iucd.removed = 8,
+           implant.removed = 9
+    ) %>%
+        
+    mutate(larc.p = (iucd.removed + implant.removed) / (iucd.inserted + implant.inserted)) %>%
+    
+    select(prov, mnthyr, larc.p) %>% 
+
+  
+    mutate(prov = factor(prov),
+           ip = case_when(prov=="Copperbelt" |
+                            prov =="Central" |
+                            prov =="Luapula" |
+                            prov =="Muchinga" |
+                            prov =="Northern" |
+                            prov =="Northwestern" |
+                            prov =="Copperbelt" ~ "ip",
+                          TRUE ~ "non-ip"))
+  
+  table(larc_prov$ip, larc_prov$prov)
+  frq(larc_prov$ip) #sjmisc
+  
+  levels(larc_prov$prov)
+  
+  #'*redraw for all USAID-funded provinces*
+  
+  larc_prov_spprtd <- larc_prov %>%
+    filter(ip =="ip")
+  
+  levels(larc_prov_spprtd$prov)
+  
+  larc_prov_spprtd1 <- larc_prov_spprtd %>% 
+    gather(key = subpop , value = rate, c(larc.p)) %>% 
+    mutate(ip = factor(ip),
+           subpop = factor(subpop))
+  
+  levels(larc_prov_spprtd1$ip)
+  levels(larc_prov_spprtd1$subpop)
+  
+  larc.p_fundedprov <- ggplot(larc_prov_spprtd1, aes(x = mnthyr, y = rate, group = subpop, colour = subpop)) +
+    geom_point(alpha=.6, size=1.5) + 
+    #geom_area(alpha=.3, size=.8, color=usaid_blue, fill=light_blue) + 
+    #geom_line(size=1) +
+    geom_smooth(method = loess, size = .8, se=FALSE)  +
+    facet_wrap(~prov) +
+    faceted +
+    scale_y_continuous(limits = c(0,.9),
+                       labels = percent,
+                       breaks = c(.1,.2,.3,.4,.5,.6,.7,.8,.9)) +
+    labs(x ="", y="", caption = "") +
+    ggtitle("USAID-supported provinces") +
+    scale_color_manual(name= "", values = usaid_blue) + baseX
+  
+  larc.p_fundedprov
+  
+  
+  #'*redraw for all Non USAID-funded provinces*
+  
+  mfpNot_funded_larc <- larc_prov %>%
+    filter(ip =="non-ip")
+  
+  levels(larc_prov$prov)
+  
+  mfpNot_funded_larc1 <- mfpNot_funded_larc %>% 
+    gather(key = subpop , value = rate, c(larc.p)) %>% 
+    mutate(ip = factor(ip),
+           subpop = factor(subpop))
+  
+  levels(mfpNot_funded_larc1$ip)
+  levels(mfpNot_funded_larc1$subpop)
+  
+  larc.p_Notfundedprov <- ggplot(mfpNot_funded_larc1, aes(x = mnthyr, y = rate, group = subpop, colour = subpop)) +
+    geom_point(alpha=.6, size=1.5) + 
+    #geom_area(alpha=.3, size=.8, color=usaid_blue, fill=light_blue) + 
+    #geom_line(size=1) +
+    geom_smooth(method = loess, size = .8, se=FALSE)  +
+    facet_wrap(~prov) +
+    faceted +
+    scale_y_continuous(limits = c(0,.9),
+                       labels = percent,
+                       breaks = c(.1,.2,.3,.4,.5,.6,.7,.8,.9)) +
+    labs(x ="", y="", caption = "") +
+    ggtitle("NON USAID-supported provinces") +
+    scale_color_manual(name= "", values = usaid_blue) + baseX
+  
+  larc.p_Notfundedprov
+  
+  all_Larcp.prov <- larc.p_fundedprov + larc.p_Notfundedprov + plot_layout(guides = "collect")
+  
+  all_Larcp.prov
+  
+  ggsave("viz/Apr-Jun 2022/Family Planning/Province faceted smooth discontinued Long-Acting Reversible ns.png",
+         plot = all_Larcp.prov,
+         device="png",
+         type="cairo",
+         height=7,
+         width=12)
   
   #'*MODERN FP METHOD: ALL METHODS SHORT & LONG-ACTING METHODS*
 
@@ -553,7 +661,7 @@ fam <- fam %>%
       scale_y_continuous(labels=comma) +
       labs(x="",
            y="",
-           title="Medroxyprogesterone injection DMPA-IM has declined \nin the last 3 months of 2022, excpet for under 15yrs") +
+           title="Medroxyprogesterone injection DMPA-IM ultilisation has been constant \nsince May 2021 except for the last quarter") +
       basey + scale_color_manual(name ="",
                          values = usaid_palette,
                          labels = c("under 15yrs", "15-19yrs", "20-24yrs", "abover 25yrs"))
@@ -568,4 +676,48 @@ fam <- fam %>%
              width = 9)
     
       
-      #M##edroxyprogesterone injection DMPA-SC
+      #'*Medroxyprogesterone injection DMPA-SC*
+      
+      names(fam)
+      # view(fam)
+      iucd <- fam %>%
+        select(44:47,56) %>%
+        na.omit() 
+      
+      iucd
+      colnames(iucd)
+      iucd1 <- iucd[, c(4,1,2,3,5)]
+      colnames(iucd1)
+      iucd1
+      
+      iucd1
+      
+      iucd2 <- iucd1 %>%
+        select(4,1,2,3,5) %>%
+        na.omit()
+      names(iud2)
+      
+      
+      iucd3 <- melt(iucd2, id = "mnthyr")
+      
+      medim <- ggplot(iucd3,aes(x=mnthyr, y=value, color=variable))+
+        geom_point(alpha=.6, size=1.4) +
+        geom_smooth(method =loess,se=F, size=1.1, alpha=.8) +
+        scale_x_date(date_labels="%b %y",date_breaks="2 months") +
+        scale_y_continuous(labels=comma) +
+        labs(x="",
+             y="",
+             title="Medroxyprogesterone injection DMPA-SC ultilisation has been steadly increasing,  \nexcept for the 15-19yrs that has been constant since July 2021") +
+        basey + scale_color_manual(name ="",
+                                   values = usaid_palette,
+                                   labels = c("under 15yrs", "15-19yrs", "20-24yrs", "abover 25yrs"))
+      
+      medim
+      
+      
+      ggsave("viz/Apr-Jun 2022/Family Planning/Medroxyprogesterone injection DMPA-SC ns.png",
+             device="png",
+             type="cairo",
+             height = 5.5,
+             width = 9)
+      

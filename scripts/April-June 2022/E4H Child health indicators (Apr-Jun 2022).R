@@ -82,19 +82,19 @@ msles_plt <- ggplot(chldH, aes(x = mnthyr, y = rate, group = subpop, colour = su
   scale_y_continuous(limits = c(0,1),
                      labels = percent,
                      breaks = c(.1,.2,.3,.4,.5,.6,.7,.8,.9, 1)) +
-  scale_x_date(date_labels="%b %y",date_breaks="8 months") +
-  labs(x="", y="", caption="Data Source: HMIS", title="Proportion of infants who received the vaccine \nhas been declining since June 2021,  \nwhilest overall under 2 years trend has been steadly increasing") +
+  scale_x_date(date_labels="%b %y",date_breaks="4 months") +
+  labs(x="", y="", caption="Data Source: HMIS", title="Coverage of the first measles vaccine dose has slightly decreased since June 2021, \nwhile the coverage the 2nd dose has slightly increased") +
   scale_color_manual(name ="",
                      values = usaid_palette,
-                     labels = c("Measle under 1", "Measeles under 2")
+                     labels = c("Measles under 1", "Measles under 2")
   ) + 
   basem
 msles_plt
 ggsave("viz/Apr-Jun 2022/Child Health/Proportion of infacts receiving Measles Vaccines.png",
        device="png",
        type="cairo",
-       height = 6.5,
-       width = 12)
+       height = 5.5,
+       width = 9)
 
 
 #'* MEASLES 1 & 2 SEPERATED BY SUPPORTED AND NON USAID PROVINCES* ----
@@ -150,8 +150,8 @@ msle_prov <- chldH_prov %>%
     scale_y_continuous(limits = c(0,1),
                        labels = percent,
                        breaks = c(.2,.4,.6,.8, 1)) +
-    labs(x ="", y="", caption = "") +
-    ggtitle("USAID-supported provinces") +
+    labs(x ="", y="", caption = "Activities being implemented by \nFHN, MOMENT and G2G mechanisms in all districts") +
+    ggtitle("FH Activity-supported provinces") +
     scale_color_manual(name= "", values = (usaid_palette)) + baseX
   
   ip_fundedprov
@@ -183,7 +183,7 @@ msle_prov <- chldH_prov %>%
                        labels = percent,
                        breaks = c(.2,.4,.6,.8, 1)) +
     labs(x ="", y="", caption = "Data Source: HMIS") +
-    ggtitle("USAID-supported provinces") +
+    ggtitle("Non FH Activity-supported provinces") +
     scale_color_manual(name= "", values = (usaid_palette), labels = c("Measles under 1", "Measles under 2")) + basey
   
   ipNot_fundedprov
@@ -226,19 +226,19 @@ msle_prov <- chldH_prov %>%
     scale_y_continuous(limits = c(0,1),
                        labels = percent,
                        breaks = c(.1,.2,.3,.4,.5,.6,.7,.8,.9, 1)) +
-    scale_x_date(date_labels="%b %y",date_breaks="8 months") +
-    labs(x="", y="", caption="Data Source: HMIS", title="Proportion of infants who received BCG \nunder 1 has been on a decline trend, \nwith slightly steady periods around June 2021 , \nthis decline trend started June 2019") +
+    scale_x_date(date_labels="%b %y",date_breaks="4 months") +
+    labs(x="", y="", caption="Data Source: HMIS", title="The proportion of infants receiving the BCG vaccine \nhas been constant in the last two years, \nafter experiencing a slight decline in late 2019") +
     scale_color_manual(name ="",
                        values = usaid_blue,
-                       labels = "BCG Under 1") + basem
+                       labels = "BCG Under 1") + baseX
   
   
   bcg_plt
   ggsave("viz/Apr-Jun 2022/Child Health/BCG Vaccines.png",
          device="png",
          type="cairo",
-         height = 6.5,
-         width = 12)
+         height = 5.5,
+         width = 10)
   
   
   #'* BCG SEPERATED BY SUPPORTED AND NON USAID PROVINCES*
@@ -291,8 +291,8 @@ msle_prov <- chldH_prov %>%
     scale_y_continuous(limits = c(0,1),
                        labels = percent,
                        breaks = c(.2,.4,.6,.8, 1)) +
-    labs(x ="", y="", caption = "") +
-    ggtitle("USAID-supported provinces") +
+    labs(x ="", y="", caption = "Activities being implemented by \nFHN, MOMENT and G2G mechanisms in all districts") +
+    ggtitle("FH Activity-supported provinces") +
     scale_color_manual(name= "", values = usaid_blue) + baseX
   
   ip_fundedprov
@@ -324,8 +324,8 @@ msle_prov <- chldH_prov %>%
                        labels = percent,
                        breaks = c(.2,.4,.6,.8, 1)) +
     labs(x ="", y="", caption = "Data Source: HMIS") +
-    ggtitle("USAID-supported provinces") +
-    scale_color_manual(name= "", values = usaid_red, labels = c("BCG Under 1")) + baseX
+    ggtitle("FH Activity-supported provinces") +
+    scale_color_manual(name= "", values = usaid_red, labels = c("BCG Under 1")) + baseC
   
   ipNot_fundedprov
   
@@ -366,18 +366,18 @@ msle_prov <- chldH_prov %>%
     scale_y_continuous(limits = c(0,1),
                        labels = percent,
                        breaks = c(.1,.2,.3,.4,.5,.6,.7,.8,.9, 1)) +
-    scale_x_date(date_labels="%b %y",date_breaks="8 months") +
-    labs(x="", y="", caption="Data Source: HMIS", title="Proportion of under 1 year infants who received DPT Hib Hep \nhas in the past two years increased, with a slight \ndecline trend between June 2019 - October 2020") +
+    scale_x_date(date_labels="%b %y",date_breaks="4 months") +
+    labs(x="", y="", caption="Data Source: HMIS", title="The proportion of infants receiving DPT/Hep/Hib has remained constant \nover the last two years") +
     scale_color_manual(name ="",
                        values = usaid_blue,
-                       labels = "DPT Hib Hep 1st dose") + basem
+                       labels = "DPT Hib Hep 1st dose") + baseX
   
   dpt_plt
   ggsave("viz/Apr-Jun 2022/Child Health/DPT Hib Hep 1st dose Vaccines.png",
          device="png",
          type="cairo",
-         height = 6.5,
-         width = 12)
+         height = 5.5,
+         width = 9)
   
   
   #'* DPT HIB HEP DOSE SEPERATED BY SUPPORTED AND NON USAID PROVINCES*
@@ -430,9 +430,9 @@ msle_prov <- chldH_prov %>%
     scale_y_continuous(limits = c(0,1),
                        labels = percent,
                        breaks = c(.2,.4,.6,.8, 1)) +
-    labs(x ="", y="", caption = "") +
-    ggtitle("USAID-supported provinces") +
-    scale_color_manual(name= "", values = usaid_blue) + baseX
+    labs(x ="", y="", caption = "Activities being implemented by \nFHN, MOMENT and G2G mechanisms in all districts") +
+    ggtitle("FH Activity-supported provinces") +
+    scale_color_manual(name= "", values = usaid_blue) + baseC
   
   spprtd_dptprov
   
@@ -463,7 +463,7 @@ msle_prov <- chldH_prov %>%
                        labels = percent,
                        breaks = c(.2,.4,.6,.8, 1)) +
     labs(x ="", y="", caption = "Data Source: HMIS") +
-    ggtitle("Non USAID-supported provinces") +
+    ggtitle("Non FH Activity-supported provinces") +
     scale_color_manual(name= "", values = usaid_red, labels = c("DPT Hib Heb Under 1")) + baseX
   
   nonaid_prov
@@ -505,18 +505,18 @@ msle_prov <- chldH_prov %>%
     scale_y_continuous(limits = c(0,1),
                        labels = percent,
                        breaks = c(.1,.2,.3,.4,.5,.6,.7,.8,.9, 1)) +
-    scale_x_date(date_labels="%b %y",date_breaks="8 months") +
-    labs(x="", y="", caption="Data Source: HMIS", title="Proportion of infants that are fully immunized \nhas been steady in the past two years,  \n after undergoing a slight decline at the end of 2020") +
+    scale_x_date(date_labels="%b %y",date_breaks="4 months") +
+    labs(x="", y="", caption="Data Source: HMIS", title="Proportion of infants that are fully immunized under 1 \nhas been constant in the past two years,  \n after undergoing a slight decline at the end of 2020") +
     scale_color_manual(name ="",
                        values = usaid_blue,
-                       labels = "Fully Immunized") + basem
+                       labels = "Fully Immunized") + baseX
   full_plt
   
   ggsave("viz/Apr-Jun 2022/Child Health/Fully immunised coverage.png",
          device="png",
          type="cairo",
-         height = 6.5,
-         width = 12)
+         height = 5.5,
+         width = 9)
   
   
   #'* FULLY IMMUNIZED SEPERATED BY SUPPORTED AND NON USAID PROVINCES*
@@ -569,9 +569,9 @@ msle_prov <- chldH_prov %>%
     scale_y_continuous(limits = c(0,1),
                        labels = percent,
                        breaks = c(.2,.4,.6,.8, 1)) +
-    labs(x ="", y="", caption = "") +
-    ggtitle("USAID-supported provinces") +
-    scale_color_manual(name= "", values = usaid_blue) + baseX
+    labs(x ="", y="", caption = "Activities being implemented by \nFHN, MOMENT and G2G mechanisms in all district") +
+    ggtitle("FH Activity-supported provinces") +
+    scale_color_manual(name= "", values = usaid_blue) + baseC
   
   spprtd_ficprov
   
@@ -602,7 +602,7 @@ msle_prov <- chldH_prov %>%
                        labels = percent,
                        breaks = c(.2,.4,.6,.8, 1)) +
     labs(x ="", y="", caption = "Data Source: HMIS") +
-    ggtitle("Non USAID-supported provinces") +
+    ggtitle("Non FH Activity-supported provinces") +
     scale_color_manual(name= "", values = usaid_red, labels = c("Fully Immunized Under 1")) + baseX
   
   nonaid_ficprov
@@ -644,18 +644,18 @@ msle_prov <- chldH_prov %>%
     scale_y_continuous(limits = c(0,1),
                        labels = percent,
                        breaks = c(.1,.2,.3,.4,.5,.6,.7,.8,.9, 1)) +
-    scale_x_date(date_labels="%b %y",date_breaks="8 months") +
-    labs(x="", y="", caption="Data Source: HMIS", title="Proportion of infants receiving dose of Vitamin A \nhas generally been low, below 20% since 2018") +
+    scale_x_date(date_labels="%b %y",date_breaks="4 months") +
+    labs(x="", y="", caption="Data Source: HMIS", title="Proportion of infants receiving 1st dose of Vitamin A \nhas generally been low, below 20% since 2018") +
     scale_color_manual(name ="",
                        values = usaid_blue,
-                       labels = "Vitamin A") + basem
+                       labels = "Vitamin A") + baseX
   vitamin_plt
   
   ggsave("viz/Apr-Jun 2022/Child Health/Vitamin A coverage.png",
          device="png",
          type="cairo",
-         height = 6.5,
-         width = 12)
+         height = 5.5,
+         width = 9)
   
   
   #'* VITAMIN A COVERAGE SEPERATED BY SUPPORTED AND NON USAID PROVINCES*
@@ -706,9 +706,9 @@ msle_prov <- chldH_prov %>%
     scale_y_continuous(limits = c(0,1),
                        labels = percent,
                        breaks = c(.2,.4,.6,.8, 1)) +
-    labs(x ="", y="", caption = "") +
-    ggtitle("USAID-supported provinces") +
-    scale_color_manual(name= "", values = usaid_blue) + baseX
+    labs(x ="", y="", caption = "Activities being implemented \nby SUNTA in some districts") +
+    ggtitle("Non FH Activity-supported provinces") +
+    scale_color_manual(name= "", values = usaid_blue) + baseC
   
   spprtd_crvprov
   
@@ -739,7 +739,7 @@ msle_prov <- chldH_prov %>%
                        labels = percent,
                        breaks = c(.2,.4,.6,.8, 1)) +
     labs(x ="", y="", caption = "Data Source: HMIS") +
-    ggtitle("Non USAID-supported provinces") +
+    ggtitle("Non FH Activity-supported provinces") +
     scale_color_manual(name= "", values = usaid_red, labels = c("Fully Immunized Under 1")) + baseX
   
   nonaid_crvprov
@@ -755,7 +755,7 @@ msle_prov <- chldH_prov %>%
   
   
   #################'*Immunizations Trends*
-  pger_summary <- (msles_plt | bcg_plt)/(dpt_plt | vitamin_plt)|full_plt
+  pger_summary <- (msles_plt | bcg_plt)/(dpt_plt | vitamin_plt)
   pger_summary
   ggsave("viz/Apr-Jun 2022/Child Health/Immunization SUmmary ns.png",
          plot=pger_summary,
@@ -804,15 +804,15 @@ msle_prov <- chldH_prov %>%
                        values = usaid_palette,
                        labels = c("Initiation on breastmilk with one hour of birth", "Infants on EBF at 6 months")
     ) + 
-    base
+    basey
   
   brstfeeding_plt
   
   ggsave("viz/Apr-Jun 2022/Child Health/National EBF ns.png",
          device="png",
          type="cairo",
-         height = 8.5,
-         width = 15)
+         height = 5.5,
+         width = 9.5)
   
   
   

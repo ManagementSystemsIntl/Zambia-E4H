@@ -73,17 +73,30 @@ baseX <- theme(plot.title = element_text(size = 15),
   plot.caption = element_text(size=12),
   axis.title.x = element_text(size = 10),
   axis.title.y = element_text(size = 10),
-  axis.text.x = element_text(size = 13, family="Gill Sans Mt", face="bold"),
+  axis.text.x = element_text(size = 9, family="Gill Sans Mt", face="bold"),
   axis.text.y = element_text(size = 12, family="Gill Sans Mt", face="bold"),
   legend.text = element_text(size = 11),
   legend.title=element_blank(),
   legend.position="none",
-  strip.text=element_text(size=13, family="Gill Sans Mt"),
-)
+  strip.text=element_text(size=13, family="Gill Sans Mt"))
+
+
+baseC <- theme(plot.title = element_text(size = 15),
+               plot.caption = element_text(size=12, hjust=0),
+               axis.title.x = element_text(size = 10),
+               axis.title.y = element_text(size = 10),
+               axis.text.x = element_text(size = 9, family="Gill Sans Mt", face="bold"),
+               axis.text.y = element_text(size = 12, family="Gill Sans Mt", face="bold"),
+               legend.text = element_text(size = 11),
+               legend.title=element_blank(),
+               legend.position="none",
+               strip.text=element_text(size=13, family="Gill Sans Mt"))
 
 
 
-basey <- theme(# plot.title = element_text(size = 12),
+
+
+basey <- theme(plot.title = element_text(size = 15),
   plot.caption = element_text(size=10),
   axis.title.x = element_text(size = 10),
   axis.title.y = element_text(size = 11),
@@ -122,11 +135,11 @@ non_base <- theme_bw() + theme(panel.grid.minor.x=element_blank(),
                            legend.background = element_rect(fill = "white", color = "black"))
 
 
-basem <- theme(plot.title = element_text(size = 9),
+basem <- theme(plot.title = element_text(size = 15),
   plot.caption = element_text(size=10),
   axis.title.x = element_text(size = 9),
   axis.title.y = element_text(size = 9),
-  axis.text.x = element_text(size = 8.5),
+  axis.text.x = element_text(size = 9),
   axis.text.y = element_text(size = 9),
   legend.text = element_text(size = 9),
   legend.title=element_blank(),
