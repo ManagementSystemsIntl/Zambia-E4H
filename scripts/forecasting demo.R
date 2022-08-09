@@ -61,7 +61,7 @@ ggplot(out.arim.dat, aes(mnthyr, rate)) +
               data=out.arim.dat[1:55,],
               color="dodgerblue2") +
   scale_x_date(labels=date_format("%b-%y"),
-               breaks=date_breaks("6 months")) +
+               breaks=date_breaks("4 months")) +
   geom_point(data=filter(out.arim.dat, forecast==1),
              color="darkgoldenrod2",
              size=1,
@@ -90,14 +90,13 @@ ggplot(out.arim.dat, aes(mnthyr, rate)) +
                      labels=percent_format(accuracy=1)) +
   labs(x="",
        y="",
-       title="ANC Coverage 1st Trimester\nwith six-month forecast")
+       title="ANC Coverage 1st Trimester with six-month forecast")
 
 
 ggsave("viz/Apr-Jun 2022/Reproductive Maternal & Neontal/ANC Coverage 1st Trimester, with six-month forecast.png",
        device="png",
        type="cairo",
-       height=4,
-       width=7)
-
+       height=5.5,
+       width=9)
 
 

@@ -477,7 +477,7 @@ colnames(fam)
                        limits=c(0, 40000),
                        breaks = c(5000, 10000, 15000, 20000, 25000, 30000, 35000, 40000)) +
     labs(x="",
-         y="", 
+         y="",
          title="Number of clients accessing LARCs (implants and IUDs) has increased \nsince 2018, though variance has also increased in the last two years") + 
     baseX
   
@@ -579,8 +579,8 @@ colnames(fam)
     scale_y_continuous(limits = c(0,.9),
                        labels = percent,
                        breaks = c(.1,.2,.3,.4,.5,.6,.7,.8,.9)) +
-    labs(x ="", y="", caption = "") +
-    ggtitle("USAID-supported provinces") +
+    labs(x ="", y="", caption = "Activities being implemented by SUN TA") +
+    ggtitle("FH Activity-supported provinces") +
     scale_color_manual(name= "", values = usaid_blue) + baseX
   
   larc.p_fundedprov
@@ -612,7 +612,7 @@ colnames(fam)
                        labels = percent,
                        breaks = c(.1,.2,.3,.4,.5,.6,.7,.8,.9)) +
     labs(x ="", y="", caption = "") +
-    ggtitle("NON USAID-supported provinces") +
+    ggtitle("NON FH Activity-supported provinces") +
     scale_color_manual(name= "", values = usaid_blue) + baseX
   
   larc.p_Notfundedprov
@@ -707,7 +707,7 @@ colnames(fam)
         scale_y_continuous(labels=comma) +
         labs(x="",
              y="",
-             title="Medroxyprogesterone injection DMPA-SC ultilisation has been steadly increasing,  \nexcept for the 15-19yrs that has been constant since July 2021") +
+             title="DMPA-SC utilization has increased steadily in the last quarter, \nexcept among women aged 15-19 years, \nwhose utilization has been constant since July 2021") +
         basey + scale_color_manual(name ="",
                                    values = usaid_palette,
                                    labels = c("under 15yrs", "15-19yrs", "20-24yrs", "abover 25yrs"))
