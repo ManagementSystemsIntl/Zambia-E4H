@@ -96,7 +96,7 @@ baseC <- theme(plot.title = element_text(size = 15),
 
 
 
-basey <- theme(plot.title = element_text(size = 15),
+basey <- theme(plot.title = element_text(size = 16),
   plot.caption = element_text(size=10),
   axis.title.x = element_text(size = 10),
   axis.title.y = element_text(size = 11),
