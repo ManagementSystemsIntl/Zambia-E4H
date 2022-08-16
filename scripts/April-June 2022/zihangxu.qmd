@@ -71,28 +71,29 @@ tsdiag(arima213)
 autoplot(forecast(arima213,h=3))
 plot(anc1ptrue_ts)
 backtest(arima213,anc1ptrue_ts,orig=52)
-# anc1p_forecast <- data.frame(forecast(anc1p_arim, h=3)) %>%
-#   mutate(mnthyr=ymd(c("2022-04-01","2022-05-01","2022-06-01")),
-#          forecast=1) %>%
-#   select(mnthyr, 
-#          rate=1,
-#          lower=4,
-#          upper=5,
-#          forecast)
+
+anc1p_forecast <- data.frame(forecast(arima213, h=3)) %>%
+  mutate(mnthyr=ymd(c("2022-04-01","2022-05-01","2022-06-01")),
+         forecast=1) %>%
+  select(mnthyr,
+         rate=1,
+         lower=4,
+         upper=5,
+         forecast)
 #here the forecast is the diff like Yt-Y(t-1)
 
-# ggplot(anc1p, aes(mnthyr, rate)) + 
-#   geom_point(color="dodgerblue") + 
-#   stat_smooth() + 
-#   geom_point(data=anc1p_forecast, aes(y=rate), color="darkgoldenrod2") +
-#   stat_smooth(data=anc1p_forecast, aes(y=rate), color="darkgoldenrod2",fill="darkgoldenrod2") +
-#   geom_ribbon(data=anc1p_forecast, aes(ymin=lower, ymax=upper),
-#               fill="darkgoldenrod2",
-#               alpha=.2) +
-#   scale_y_continuous(limits=c(0,.5),
-#                      labels=percent_format(accuracy=1))
+ggplot(anc1p, aes(mnthyr, rate)) +
+  geom_point(color="dodgerblue") +
+  stat_smooth() +
+  geom_point(data=anc1p_forecast, aes(y=rate), color="darkgoldenrod2") +
+  stat_smooth(data=anc1p_forecast, aes(y=rate), color="darkgoldenrod2",fill="darkgoldenrod2") +
+  geom_ribbon(data=anc1p_forecast, aes(ymin=lower, ymax=upper),
+              fill="darkgoldenrod2",
+              alpha=.2) +
+  scale_y_continuous(limits=c(0,.5),
+                     labels=percent_format(accuracy=1))
 
-# plot(forecast(anc1p_arim, h=3))
+
 ```
 
 #try the arima(3,1,0) model
@@ -104,25 +105,26 @@ autoplot(forecast(ar3,h=3))
 plot(anc1ptrue_ts)
 backtest(ar3,anc1ptrue_ts,orig=52)
 
-# ar3_forecast <- data.frame(predict(ar3,n.ahead=3)$pred) %>%
-#   mutate(mnthyr=ymd(c("2022-04-01","2022-05-01","2022-06-01")),
-#          forecast=1) %>%
-#   select(mnthyr, 
-#          rate=1,
-#          lower=4,
-#          upper=5,
-#          forecast)
-# 
-# ggplot(anc1p, aes(mnthyr, rate)) + 
-#   geom_point(color="dodgerblue") + 
-#   stat_smooth() + 
-#   geom_point(data=anc1p_forecast, aes(y=rate), color="darkgoldenrod2") +
-#   stat_smooth(data=anc1p_forecast, aes(y=rate), color="darkgoldenrod2",fill="darkgoldenrod2") +
-#   geom_ribbon(data=anc1p_forecast, aes(ymin=lower, ymax=upper),
-#               fill="darkgoldenrod2",
-#               alpha=.2) +
-#   scale_y_continuous(limits=c(0,.5),
-#                      labels=percent_format(accuracy=1))
+ar3_forecast <- data.frame(forecast(ar3,h=3)) %>%
+  mutate(mnthyr=ymd(c("2022-04-01","2022-05-01","2022-06-01")),
+         forecast=1) %>%
+  select(mnthyr,
+         rate=1,
+         lower=4,
+         upper=5,
+         forecast)
+
+ggplot(anc1p, aes(mnthyr, rate)) +
+  geom_point(color="dodgerblue") +
+  stat_smooth() +
+  geom_point(data=ar3_forecast, aes(y=rate), color="darkgoldenrod2") +
+  stat_smooth(data=ar3_forecast, aes(y=rate), color="darkgoldenrod2",fill="darkgoldenrod2") +
+  geom_ribbon(data=ar3_forecast, aes(ymin=lower, ymax=upper),
+              fill="darkgoldenrod2",
+              alpha=.2) +
+  scale_y_continuous(limits=c(0,.5),
+                     labels=percent_format(accuracy=1))
+
 
 
 ```
@@ -135,6 +137,26 @@ autoplot(forecast(ma3,h=3))
 plot(anc1ptrue_ts)
 backtest(ma3,anc1ptrue_ts,orig=52)
 
+ma3_forecast <- data.frame(forecast(ma3,h=3)) %>%
+  mutate(mnthyr=ymd(c("2022-04-01","2022-05-01","2022-06-01")),
+         forecast=1) %>%
+  select(mnthyr,
+         rate=1,
+         lower=4,
+         upper=5,
+         forecast)
+
+ggplot(anc1p, aes(mnthyr, rate)) +
+  geom_point(color="dodgerblue") +
+  stat_smooth() +
+  geom_point(data=ma3_forecast, aes(y=rate), color="darkgoldenrod2") +
+  stat_smooth(data=ma3_forecast, aes(y=rate), color="darkgoldenrod2",fill="darkgoldenrod2") +
+  geom_ribbon(data=ma3_forecast, aes(ymin=lower, ymax=upper),
+              fill="darkgoldenrod2",
+              alpha=.2) +
+  scale_y_continuous(limits=c(0,.5),
+                     labels=percent_format(accuracy=1))
+
 ```
 #try arima(0,1,4)
 
@@ -146,6 +168,26 @@ autoplot(forecast(ma4,h=3))
 plot(anc1ptrue_ts)
 backtest(ma4,anc1ptrue_ts,orig=52)
 
+ma4_forecast <- data.frame(forecast(ma4,h=3)) %>%
+  mutate(mnthyr=ymd(c("2022-04-01","2022-05-01","2022-06-01")),
+         forecast=1) %>%
+  select(mnthyr,
+         rate=1,
+         lower=4,
+         upper=5,
+         forecast)
+
+ggplot(anc1p, aes(mnthyr, rate)) +
+  geom_point(color="dodgerblue") +
+  stat_smooth() +
+  geom_point(data=ma4_forecast, aes(y=rate), color="darkgoldenrod2") +
+  stat_smooth(data=ma4_forecast, aes(y=rate), color="darkgoldenrod2",fill="darkgoldenrod2") +
+  geom_ribbon(data=ma4_forecast, aes(ymin=lower, ymax=upper),
+              fill="darkgoldenrod2",
+              alpha=.2) +
+  scale_y_continuous(limits=c(0,.5),
+                     labels=percent_format(accuracy=1))
+
 ```
 #arima(0,1,4) with 0 coefficients for some ma parameters
 ```{r}
@@ -155,5 +197,25 @@ tsdiag(ma4_1)#check the diagnostics, seems good
 autoplot(forecast(ma4_1,h=3))
 plot(anc1ptrue_ts)
 backtest(ma4_1,anc1ptrue_ts,orig=52)
+
+ma4_1_forecast <- data.frame(forecast(ma4_1,h=3)) %>%
+  mutate(mnthyr=ymd(c("2022-04-01","2022-05-01","2022-06-01")),
+         forecast=1) %>%
+  select(mnthyr,
+         rate=1,
+         lower=4,
+         upper=5,
+         forecast)
+
+ggplot(anc1p, aes(mnthyr, rate)) +
+  geom_point(color="dodgerblue") +
+  stat_smooth() +
+  geom_point(data=ma4_1_forecast, aes(y=rate), color="darkgoldenrod2") +
+  stat_smooth(data=ma4_1_forecast, aes(y=rate), color="darkgoldenrod2",fill="darkgoldenrod2") +
+  geom_ribbon(data=ma4_1_forecast, aes(ymin=lower, ymax=upper),
+              fill="darkgoldenrod2",
+              alpha=.2) +
+  scale_y_continuous(limits=c(0,.5),
+                     labels=percent_format(accuracy=1))
 
 ```
