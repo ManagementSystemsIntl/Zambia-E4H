@@ -293,7 +293,7 @@ ggsave("viz/Apr-Jun 2022/Family Planning/Province Women in reproductive age grou
 
 #'*COVERAGE OF MODERN FAMILY PLANNING ADOPTION*
 
-names(fam)
+
 fam <- fam %>%
   rename(wmn.mfp=4,
          wmn.vstd=3) %>%
@@ -320,7 +320,30 @@ colnames(fam)
        type="cairo",
        height = 6.5,
        width = 11)
+  #'*COVERAGE OF MODERN FAMILY PLANNING ADOPTION bY PROVINCE*
   
+  names(fam_prov)
+  names(fam_prov)
+  fam_prov <- fam_prov %>%
+    rename(prov=2,
+           wmn.mfp=4,
+           wmn.vstd=3) %>%
+    mutate(cvrg_fp = wmn.mfp/wmn.vstd)
+    ggplot(fam_prov, aes(x=mnthyr, y=cvrg_fp)) + 
+    geom_point(size=.5, alpha=.5) + 
+    stat_smooth(se=F, size=.8, alpha=.6) +
+      labs(x ="", y="", caption = "Data Source: HMIS") +labs(x ="", y="", caption = "Data Source: HMIS") +
+      ggtitle("Provincial Coverage of modern family planning ultilization, 2018-2022") +
+    facet_wrap(~prov, ncol=4) +
+    faceted +
+    scale_color_manual(values=usaid_blue) + basey
+  
+    ggsave("viz/Apr-Jun 2022/Family Planning/Coverage faceted.png",
+           device="png",
+           type="cairo",
+           height = 6.5,
+           width = 11)
+    
 
   #'*NUMBER OF FIRST TIME USERS OF MODERN CONTRACEPTION*
   
