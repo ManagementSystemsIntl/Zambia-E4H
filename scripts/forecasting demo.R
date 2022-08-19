@@ -10,14 +10,31 @@ library(zoo)
 
 anc1p <- mat %>%
   filter(subpop=="anc1p") %>%
-  select(mnthyr, rate, subpop)
+  select(mnthyr, rate, subpop) 
+
+anc1p_pred <- anc1p %>%
+  slice(-(52:54))
+
+anc1p_ts <- ts(anc1p_pred$rate)
+anc1p_arim <- auto.arima(anc1p_ts)
+
+anc1p_forecast <- data.frame(forecast(anc1p_arim, h=3)) %>%
+  mutate(mnthyr=ymd(c("2022-04-01","2022-05-01","2022-06-01")),
+         forecast=1) %>%
+  select(mnthyr, 
+         rate=1,
+         lower=4,
+         upper=5,
+         forecast)
 
 str(anc1p)
+
+anc1p_forecast
 
 ?ts
 
 out <- ts(anc1p$rate)
-
+out
 str(out)
 
 plot(out)
@@ -27,6 +44,7 @@ pacf(out)
 
 out.arim <- auto.arima(out)
 summary(out.arim)
+
 
 out.arim.pred <- data.frame(forecast(out.arim, h=6)) %>%
   mutate(mnthyr=ymd(c("2022-07-01","2022-08-01","2022-09-01", "2022-10-01","2022-11-01","2022-12-01")),
@@ -41,6 +59,19 @@ out.arim.pred
 
 str(out.arim.pred)
 
+out.arim.pred2 <- data.frame(forecast(out.arim, h=3)) %>%
+  mutate(mnthyr=ymd(c("2022-04-01","2022-05-01","2022-06-01")),
+         forecast=1) %>%
+  select(mnthyr, 
+         rate=1,
+         lower=4,
+         upper=5,
+         forecast)
+
+out.arim.pred
+out.arim.pred2
+
+
 
 out.arim.dat <- anc1p %>%
   select(-3) %>%
@@ -50,6 +81,18 @@ out.arim.dat <- anc1p %>%
   bind_rows(out.arim.pred)
 
 tail(out.arim.dat)
+
+
+ggplot(anc1p, aes(mnthyr, rate)) + 
+  geom_point(color="dodgerblue") + 
+  stat_smooth() + 
+  geom_point(data=anc1p_forecast, aes(y=rate), color="darkgoldenrod2") +
+  stat_smooth(data=anc1p_forecast, aes(y=rate), color="darkgoldenrod2",fill="darkgoldenrod2") +
+  geom_ribbon(data=anc1p_forecast, aes(ymin=lower, ymax=upper),
+              fill="darkgoldenrod2",
+              alpha=.2) +
+  scale_y_continuous(limits=c(0,.5),
+                     labels=percent_format(accuracy=1))
 
 
 ggplot(out.arim.dat, aes(mnthyr, rate)) + 
