@@ -256,6 +256,65 @@ ggplot(anc1p, aes(mnthyr, rate)) +
   scale_y_continuous(limits=c(0,.5),
                      labels=percent_format(accuracy=1))
 
+#forecast 6
+out.arim014=Arima(anc1ptrue_ts,order=c(0,1,4))
+tsdiag(out.arim014)
+checkresiduals(out.arim014)
+
+out.arim014.pred <- data.frame(forecast(out.arim014, h=6)) %>%
+  mutate(mnthyr=ymd(c("2022-07-01","2022-08-01","2022-09-01", "2022-10-01","2022-11-01","2022-12-01")),
+         forecast=1) %>%
+  select(mnthyr, 
+         rate=1,
+         lower=4,
+         upper=5,
+         forecast)
+out.arim.dat <- anc1p %>%
+  select(-3) %>%
+  mutate(lower=NA,
+         upper=NA,
+         forecast=0) %>%
+  bind_rows(out.arim014.pred)
+ggplot(out.arim.dat, aes(mnthyr, rate)) + 
+  geom_point(data=out.arim.dat[1:54,], 
+             color="dodgerblue2",
+             size=1,
+             alpha=.8) + 
+  stat_smooth(#data=filter(out.arim.dat, forecast==0),
+              data=out.arim.dat[1:55,],
+              color="dodgerblue2") +
+  scale_x_date(labels=date_format("%b-%y"),
+               breaks=date_breaks("4 months")) +
+  geom_point(data=filter(out.arim.dat, forecast==1),
+             color="darkgoldenrod2",
+             size=1,
+             alpha=.8) +
+  stat_smooth(data=filter(out.arim.dat, forecast==1),
+              color="darkgoldenrod2",
+              method="lm",
+              se=F,
+              fill="darkgoldenrod2",
+              alpha=.2,
+              size=.8) +
+  # stat_smooth(data=filter(out.arim.dat, forecast==1),
+  #             aes(y=lower),
+  #             color="darkgoldenrod2",
+  #             linetype="dotdash",
+  #             size=1.2) + 
+  # stat_smooth(data=filter(out.arim.dat, forecast==1),
+  #             aes(y=upper),
+  #             color="darkgoldenrod2",
+  #             linetype="dotdash",
+  #             size=1.2) + 
+  geom_ribbon(aes(ymin=lower, ymax=upper),
+              fill="darkgoldenrod2",
+              alpha=.2) +
+  scale_y_continuous(limits=c(0,.5),
+                     labels=percent_format(accuracy=1)) +
+  labs(x="",
+       y="",
+       title="ANC Coverage 1st Trimester with six-month forecast")
+
 ```
 #arima(0,1,4) with 0 coefficients for some ma parameters
 ```{r}
@@ -318,6 +377,65 @@ ggplot(anc1p, aes(mnthyr, rate)) +
               alpha=.2) +
   scale_y_continuous(limits=c(0,.5),
                      labels=percent_format(accuracy=1))
+#forecast 6
+out.arim414=Arima(anc1ptrue_ts,order=c(4,1,4))
+tsdiag(out.arim414)
+checkresiduals(out.arim414)
+
+out.arim414.pred <- data.frame(forecast(out.arim414, h=6)) %>%
+  mutate(mnthyr=ymd(c("2022-07-01","2022-08-01","2022-09-01", "2022-10-01","2022-11-01","2022-12-01")),
+         forecast=1) %>%
+  select(mnthyr, 
+         rate=1,
+         lower=4,
+         upper=5,
+         forecast)
+out.arim.dat <- anc1p %>%
+  select(-3) %>%
+  mutate(lower=NA,
+         upper=NA,
+         forecast=0) %>%
+  bind_rows(out.arim414.pred)
+ggplot(out.arim.dat, aes(mnthyr, rate)) + 
+  geom_point(data=out.arim.dat[1:54,], 
+             color="dodgerblue2",
+             size=1,
+             alpha=.8) + 
+  stat_smooth(#data=filter(out.arim.dat, forecast==0),
+              data=out.arim.dat[1:55,],
+              color="dodgerblue2") +
+  scale_x_date(labels=date_format("%b-%y"),
+               breaks=date_breaks("4 months")) +
+  geom_point(data=filter(out.arim.dat, forecast==1),
+             color="darkgoldenrod2",
+             size=1,
+             alpha=.8) +
+  stat_smooth(data=filter(out.arim.dat, forecast==1),
+              color="darkgoldenrod2",
+              method="lm",
+              se=F,
+              fill="darkgoldenrod2",
+              alpha=.2,
+              size=.8) +
+  # stat_smooth(data=filter(out.arim.dat, forecast==1),
+  #             aes(y=lower),
+  #             color="darkgoldenrod2",
+  #             linetype="dotdash",
+  #             size=1.2) + 
+  # stat_smooth(data=filter(out.arim.dat, forecast==1),
+  #             aes(y=upper),
+  #             color="darkgoldenrod2",
+  #             linetype="dotdash",
+  #             size=1.2) + 
+  geom_ribbon(aes(ymin=lower, ymax=upper),
+              fill="darkgoldenrod2",
+              alpha=.2) +
+  scale_y_continuous(limits=c(0,.5),
+                     labels=percent_format(accuracy=1)) +
+  labs(x="",
+       y="",
+       title="ANC Coverage 1st Trimester with six-month forecast")
+
 ```
 #try d=2
 ```{r}
