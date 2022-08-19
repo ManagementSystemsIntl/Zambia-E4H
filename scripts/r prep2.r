@@ -25,7 +25,7 @@ zam_packages <- c("tidyverse", "here", "gifski", "gt","gtsummary","gghighlight",
                   "sysfonts","scales","magrittr","knitr","lubridate","Hmisc","haven","tidyr","reshape2","DescTools","extrafont",
                   "patchwork", "extrafontdb", "ggtext", "geomtextpath","zoo","psych","cowplot","ztable","pheatmap",
                   "RColorBrewer", "data.table", "d3heatmap","hablar", "gganimate", "dygraphs", "gapminder", "hrbrthemes",
-                  "geomtextpath", "patchwork", "gridExtra", "grid", "rmarkdown")
+                  "geomtextpath", "patchwork", "gridExtra", "grid", "rmarkdown", "forecast", "backtest", "quantmod", "tseries")
 
 
 
@@ -100,8 +100,8 @@ basey <- theme(plot.title = element_text(size = 16),
   plot.caption = element_text(size=10),
   axis.title.x = element_text(size = 10),
   axis.title.y = element_text(size = 11),
-  axis.text.x = element_text(size = 9),
-  axis.text.y = element_text(size = 9),
+  axis.text.x = element_text(size = 8),
+  axis.text.y = element_text(size = 8),
   legend.text = element_text(size = 12),
   legend.title=element_blank(),
   legend.position="bottom",

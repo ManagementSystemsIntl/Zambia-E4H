@@ -293,7 +293,7 @@ ggsave("viz/Apr-Jun 2022/Family Planning/Province Women in reproductive age grou
 
 #'*COVERAGE OF MODERN FAMILY PLANNING ADOPTION*
 
-names(fam)
+
 fam <- fam %>%
   rename(wmn.mfp=4,
          wmn.vstd=3) %>%
@@ -320,7 +320,33 @@ colnames(fam)
        type="cairo",
        height = 6.5,
        width = 11)
+  #'*COVERAGE OF MODERN FAMILY PLANNING ADOPTION bY PROVINCE*
   
+  names(fam_prov)
+  names(fam_prov)
+  fam_prov <- fam_prov %>%
+    rename(prov=2,
+           wmn.mfp=4,
+           wmn.vstd=3) %>%
+    mutate(cvrg_fp = wmn.mfp/wmn.vstd)
+    ggplot(fam_prov, aes(x=mnthyr, y=cvrg_fp)) + 
+    geom_point(size=.5, alpha=.5, colour=usaid_blue) + 
+    stat_smooth(se=F, size=.8, alpha=.6, colour=usaid_blue) +
+      scale_y_continuous(limits = c(0,1),
+                         labels = percent,
+                         breaks = c(.2,.4,.6,.8,1)) +
+      labs(x ="", y="", caption = "Data Source: HMIS") +labs(x ="", y="", caption = "Data Source: HMIS") +
+      ggtitle("Provincial Coverage of modern family planning ultilization, 2018-2022") +
+    facet_wrap(~prov, ncol=4) +
+    faceted +
+    scale_color_manual(values=usaid_blue) + basey
+  
+    ggsave("viz/Apr-Jun 2022/Family Planning/Coverage faceted.png",
+           device="png",
+           type="cairo",
+           height = 6.5,
+           width = 11)
+    
 
   #'*NUMBER OF FIRST TIME USERS OF MODERN CONTRACEPTION*
   
@@ -647,7 +673,7 @@ colnames(fam)
     iud1
     
     iud2 <- iud1 %>%
-      select(4,1,2,3,5) %>%
+      select(5,3,2,1,4) %>%
       na.omit()
     names(iud2)
     
@@ -663,13 +689,12 @@ colnames(fam)
            y="",
            title="Medroxyprogesterone injection DMPA-IM ultilisation has been constant \nsince May 2021 except for the last quarter") +
       basey + scale_color_manual(name ="",
-                         values = usaid_palette,
-                         labels = c("under 15yrs", "15-19yrs", "20-24yrs", "abover 25yrs"))
-    
+                                 values =c(light_blue,light_grey,usaid_blue, usaid_red),
+                                 labels = c("20-24yrs","15-19yrs","under 15yrs","abover 25yrs"))
       medim
       
       
-      ggsave("viz/Apr-Jun 2022/Family Planning/Medroxyprogesterone injection DMPA-IM ns.png",
+      ggsave("viz/Apr-Jun 2022/Family Planning/UPDATED Medroxyprogesterone injection DMPA-IM ns.png",
              device="png",
              type="cairo",
              height = 5.5,
@@ -693,13 +718,12 @@ colnames(fam)
       iucd1
       
       iucd2 <- iucd1 %>%
-        select(4,1,2,3,5) %>%
+        select(5,3,2,1,4) %>%
         na.omit()
       names(iud2)
       
       
       iucd3 <- melt(iucd2, id = "mnthyr")
-      
       medim <- ggplot(iucd3,aes(x=mnthyr, y=value, color=variable))+
         geom_point(alpha=.6, size=1.4) +
         geom_smooth(method =loess,se=F, size=1.1, alpha=.8) +
@@ -709,13 +733,13 @@ colnames(fam)
              y="",
              title="DMPA-SC utilization has increased steadily in the last quarter, \nexcept among women aged 15-19 years, \nwhose utilization has been constant since July 2021") +
         basey + scale_color_manual(name ="",
-                                   values = usaid_palette,
-                                   labels = c("under 15yrs", "15-19yrs", "20-24yrs", "abover 25yrs"))
+                                   values =c(light_blue,light_grey,usaid_blue, usaid_red),
+                                   labels = c("20-24yrs","15-19yrs","under 15yrs","abover 25yrs"))
       
       medim
       
       
-      ggsave("viz/Apr-Jun 2022/Family Planning/Medroxyprogesterone injection DMPA-SC ns.png",
+      ggsave("viz/Apr-Jun 2022/Family Planning/UPDATED Medroxyprogesterone injection DMPA-SC ns.png",
              device="png",
              type="cairo",
              height = 5.5,

@@ -125,7 +125,6 @@ fam_prov_mnth <- fam_prov_mnth %>%
 
 ggplot(fam_prov_mnth, aes(mnthyr, cha_visit, color=sunta)) + 
   geom_point(size=.5, alpha=.5) + 
-#  geom_line() +
   stat_smooth(se=F, size=.8, alpha=.6) +
   facet_wrap(~province, ncol=4) +
   faceted +

@@ -226,15 +226,15 @@ msle_prov <- chldH_prov %>%
     geom_point(alpha=.6, size=.6) + 
     # geom_area(alpha=.3, size=.8, color=usaid_red, fill=usaid_red) + 
     #geom_line(size=1) +
-    geom_smooth(method = loess, size = .8, se=FALSE)  +
+    geom_smooth(method = loess, size = .8, se=T)  +
     facet_wrap(~prov) +
     faceted +
     scale_y_continuous(limits = c(0,1),
                        labels = percent,
                        breaks = c(.2,.4,.6,.8, 1)) +
-    labs(x ="", y="", caption = "Activities being implemented by \nFHN, MOMENT and G2G mechanisms in all districts") +
+    labs(x ="", y="", caption = "Activities being implemented by \nFHN, MOMENT and G2G mechanisms \nin all districts") +
     ggtitle("FH Activity-supported provinces") +
-    scale_color_manual(name= "", values = (usaid_palette)) + baseX
+    scale_color_manual(name= "", values = (usaid_palette)) + baseC
   
   ip_fundedprov
   
@@ -258,7 +258,7 @@ msle_prov <- chldH_prov %>%
     #geom_area(alpha=.3, size=.8,color=usaid_blue, fill=light_blue) + 
     geom_point(alpha=.6, size=.6) + 
     #geom_line(size=1) +
-    geom_smooth(method = loess, size = .8, se=FALSE)  +
+    geom_smooth(method = loess, size = .8, se=T)  +
     facet_wrap(~prov) +
     faceted +
     scale_y_continuous(limits = c(0,1),
@@ -578,9 +578,16 @@ msle_prov <- chldH_prov %>%
   fullyimz1$subpop <- factor(fullyimz1$subpop, levels = unique(fullyimz1$subpop)) # transform into factor
   levels(fullyimz1$subpop)
   
+  pnctrgts$Start <- as.Date(pnctrgts$Start) 
+  pnctrgts$End <- as.Date(pnctrgts$End) 
+  Start <- as.Date(NULL)
+  End <- as.Date(NULL)
+  
   # view(chldH)
   
   full_plt <- ggplot(fullyimz1, aes(x = mnthyr, y = ficp, colour=usaid_blue )) +
+    geom_rect(data=pnctrgts, aes(NULL,NULL,xmin=Start,xmax=End,fill=PNCTargets),
+              ymin=c(.79,.85,.90,.96) ,ymax=c(.80,.86,.91,.97), colour=light_grey, size=0.8, alpha=0.8, lty="solid", fill=usaid_red) +
     geom_point(alpha=.4, size=1.9) + 
     #geom_line(size=1) +
     geom_smooth(method = loess, size = .8, se=FALSE) +
@@ -588,10 +595,16 @@ msle_prov <- chldH_prov %>%
                        labels = percent,
                        breaks = c(.1,.2,.3,.4,.5,.6,.7,.8,.9, 1)) +
     scale_x_date(date_labels="%b %y",date_breaks="4 months") +
-    labs(x="", y="", caption="Data Source: HMIS", title="Proportion of infants that are fully immunized under 1 \nhas been constant in the past two years,  \n after undergoing a slight decline at the end of 2020") +
+    labs(x="", y="", caption="Data Source: HMIS", title="The proportion of infants that are fully immunized has been constant in the \nlast two years, after undergoing a slight decline in late 2020") +
     scale_color_manual(name ="",
                        values = usaid_blue,
-                       labels = "Fully Immunized") + baseX
+                       labels = "Fully Immunized") + basey +
+    annotate(geom = "text", x=trgt1, y = 0.79, family="Gill Sans Mt", colour = usaid_red, label=substitute("National Targets"), size= 4,  hjust =0, vjust=-4.5) +
+    annotate(geom = "text", x=trgt1, y = 0.79, family="Gill Sans Mt", colour = rich_black, label=substitute(paste(bold("79%"))), size= 4,  hjust =-2.5, vjust=-.2) +
+    annotate(geom = "text", x=trgt1, y = 0.85, family="Gill Sans Mt", colour = rich_black, label=substitute(paste(bold("85%"))), size= 4,  hjust =-9.5, vjust=-1) +
+    annotate(geom = "text", x=trgt1, y = 0.90, family="Gill Sans Mt", colour = rich_black, label=substitute(paste(bold("90%"))), size= 4,  hjust =-15.5, vjust=-1) +
+    annotate(geom = "text", x=trgt1, y = 0.96, family="Gill Sans Mt", colour = rich_black, label=substitute(paste(bold("96%"))), size= 4,  hjust =-22, vjust=-1)
+  
   full_plt
   
   ggsave("viz/Apr-Jun 2022/Child Health/Fully immunised coverage.png",
@@ -870,9 +883,16 @@ msle_prov <- chldH_prov %>%
   breastfeed$subpop <- factor(breastfeed$subpop, levels = unique(breastfeed$subpop)) # transform into factor
   levels(breastfeed$subpop)
   
+  pnctrgts$Start <- as.Date(pnctrgts$Start) 
+  pnctrgts$End <- as.Date(pnctrgts$End) 
+  Start <- as.Date(NULL)
+  End <- as.Date(NULL)
+  colnames(breastfeed)
   # view(chldH)
   
   brstfeeding_plt <- ggplot(breastfeed, aes(x = mnthyr, y = rate, group = subpop, colour = subpop)) +
+    # geom_rect(data=pnctrgts, aes(NULL,NULL,xmin=Start,xmax=End,fill=PNCTargets),
+    #           ymin=c(.79,.85,.90,.96) ,ymax=c(.80,.86,.91,.97), colour=light_grey, size=0.8, alpha=0.8, lty="solid", fill=usaid_red) +
     #geom_area(alpha=.3, size=.8,color=usaid_blue, fill=light_blue) +
     geom_point(alpha=.6, size=1.5) + 
     #geom_line(size=1) +
@@ -881,12 +901,18 @@ msle_prov <- chldH_prov %>%
                        labels = percent,
                        breaks = c(.1,.2,.3,.4,.5,.6,.7,.8,.9, 1)) +
     scale_x_date(date_labels="%b %y",date_breaks="4 months") +
-    labs(x="", y="", caption="Data Source: HMIS", title="Proportion of early breastfeeding for infants breastfed within one hour of birth, \nand at 6 months has steadly been increasing with 90% and 70% respectively as of June 2022") +
+    labs(x="", y="", caption="Data Source: HMIS", title="Proportion of infants breastfed within 1 hour of birth has slightly increased \nin the last years, reaching 90% in June 2022") +
     scale_color_manual(name ="",
                        values = usaid_palette,
-                       labels = c("Initiation on breastmilk with one hour of birth", "Infants on EBF at 6 months")
-    ) + 
-    basey
+                       labels = c("Initiation on breastmilk with one hour of birth", "Infants on EBF at 6 months")) + basey
+#     basey +
+#     annotate(geom = "text", x=trgt1, y = 0.79, family="Gill Sans Mt", colour = usaid_red, label=substitute("Targets Breastfeeding within 1 hour
+# of birth"), size= 4,  hjust =0, vjust=-4.5) +
+#     annotate(geom = "text", x=trgt1, y = 0.79, family="Gill Sans Mt", colour = rich_black, label=substitute(paste(bold("79%"))), size= 4,  hjust =-2.5, vjust=-.2) +
+#     annotate(geom = "text", x=trgt1, y = 0.85, family="Gill Sans Mt", colour = rich_black, label=substitute(paste(bold("85%"))), size= 4,  hjust =-9.5, vjust=-1) +
+#     annotate(geom = "text", x=trgt1, y = 0.90, family="Gill Sans Mt", colour = rich_black, label=substitute(paste(bold("90%"))), size= 4,  hjust =-15.5, vjust=-1) +
+#     annotate(geom = "text", x=trgt1, y = 0.96, family="Gill Sans Mt", colour = rich_black, label=substitute(paste(bold("96%"))), size= 4,  hjust =-22, vjust=-1)
+#   
   
   brstfeeding_plt
   
