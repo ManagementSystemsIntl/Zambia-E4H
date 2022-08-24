@@ -62,77 +62,127 @@ sum(mal_prov$month_chr!=mal_prov$month)
 
 
 #'*Provincial Rainfall*
-rnf <- read_xlsx("data/Malaria/Provincial rainfall.xlsx")
-colnames(rnf)
+rnf_malprov <- read_xlsx("data/Malaria/Provincial rainfall.xlsx")
+names(rnf_malprov)
 
-rnf1<- rnf %>%
-  group_by(Month, Year, Province) %>%
-  summarise(sm.rainfall=sum(Rainfall),
-            avg.rainfall=(mean(Rainfall))) %>%
-  mutate(date = my(paste(Month, Year, sep="-")))
+# rnf1<- rnf %>%
+#   group_by(Month, Year, Province) %>%
+#   summarise(sm.rainfall=sum(Rainfall),
+#             avg.rainfall=(mean(Rainfall))) %>%
+#   mutate(date = my(paste(Month, Year, sep="-")))
 
-mal_prov
-names(mal_prov)
-mal_provfil <- mal_prov %>%
-  select(2:3, 28) %>%
-  na.omit()
-mal_provfil
-
-colnames(write_xlsx(rnf1,"data/avr.rainfall.xlsx"))
-view(mal_provfil)
-colnames(rnf1)
-view(rnf1)
-
-write_xlsx(rnf1,"data/avr.rainfall.xlsx")
-write_xlsx(mal_provfil,"data/cases.xlsx")
-
-
-?bind_rows
-comb_rainMalProv <- bind_cols(rnf1,mal_provfil)
-colnames(comb_rainMalProv)
-view(comb_rainMalProv)
-
-names(comb_rainMalProv)
-
-combined_dat <- comb_rainMalProv %>%
-select(3,5,8,9) %>%
-  na.omit()
-combined_dat
-names(combined_dat)
-
-write_xlsx(combined_dat,"data/combined_dat.xlsx")
-
-combined_dat <- combined_dat %>%
-  rename(mnth=6,
-         prov =3,
-         avg.rainfall=4,
-         mal.cases=5) %>%
+rnf_malprov <- rnf_malprov %>%
+  rename(prov = 1,
+         mal.cases = 2,
+         mnthyr = 3,
+         rainfall = 4) %>%
   
-  select(mnth, prov,avg.rainfall, mal.cases) %>%
+  mutate(rainfallr = rainfall*250) %>% 
+  
+  select(prov, mal.cases, mnthyr, rainfallr) %>% 
+  mutate(prov = factor(prov),
+         ip = case_when(prov=="Northern" |
+                          prov =="Central" |
+                          prov =="Muchinga" |
+                          prov =="Southern" |
+                          prov =="Copperbelt" |
+                          prov =="Lusaka" |
+                          prov =="Western" |
+                          prov =="Muchinga" |
+                          prov == "Northwestern"|
+                          prov =="Eastern" ~ "ip",
+                        TRUE ~ "non-ip"))
 
-ipfunded_chav1 <- ipfunded_chav %>% 
-  gather(key = subpop , value = rate, c(wmn.mfp,wmn.vstd)) %>% 
+table(rnf_malprov$ip, rnf_malprov$prov)
+frq(rnf_malprov$ip) #sjmisc
+
+levels(rnf_malprov$prov)
+
+rnf_malprov1 <- rnf_malprov %>% 
+ 
+  gather(key = subpop , value = rate, c(mal.cases, rainfallr)) %>% 
+  
   mutate(ip = factor(ip),
          subpop = factor(subpop))
 
+levels(rnf_malprov1$ip)
+levels(rnf_malprov1$subpop)
 
+ggplot(rnf_malprov1, aes(x = mnthyr, y = rate, group = subpop, colour = subpop)) +
+  #geom_point(alpha=.6, size=.4) + 
+  geom_smooth(method = loess, size = .6, se=F)  +
+  scale_y_continuous(labels=comma,
+                     limits=c(0,150000),
+                     breaks = c(0,50000,100000,150000),
+                     sec.axis=sec_axis(trans = ~ .*0.003, name = "Rainfall (mm)")) +
+  labs(x ="", y="Confirmed Malaria Cases",
+       caption = "Data Source: \nWFP - Rainfall \nHMIS - Malaria Cases") +
+  facet_wrap(~prov) +faceted + basey +
+  scale_color_manual(name= "", values = usaid_palette, labels = c("Confirmed Malaria Cases",
+                                                                  "Rainfall(mm)")) +
+  plot_layout(guides = "collect")
 
-ggplot(rnf1, aes(x=date, y=avg.rainfall)) + 
-  geom_point(size=.5, alpha=.5, colour=usaid_blue) + 
-  stat_smooth(se=F, size=.8, alpha=.6, colour=usaid_blue) +
-  scale_y_continuous(limits = c(0,80),
-                     breaks = c(20,40,60,80)) +
-  scale_x_date(date_labels="%Y",date_breaks="1 year")+
-  labs(x ="", y="mm", caption = "Data Source: WFP") +labs(x ="", y="", caption = "Data Source: WFP") +
-  ggtitle("Provincial Rainfall, 2018-2022") +
-  facet_wrap(~Province) +
-  faceted +
-  scale_color_manual(values=usaid_blue) + basey
-
-
-ggsave("viz/Malaria/PMI April June 2022/Provincial Rainfall.png",
+  ggsave("viz/Malaria/PMI April June 2022/Provincial Malaria and Rainfall No smooth.png",
        device="png",
        type="cairo",
-       height = 6.5,
+       height = 8.5,
        width = 15)
+  
+  rnf_malprov
+  
+  library("ggpubr")
+  ggscatter(rnf_malprov,x = mnthyr, y = rate, group = subpop, colour = subpop, 
+            add = "reg.line", conf.int = TRUE, 
+   
+                   cor.coef = TRUE, cor.method = "pearson")
+  
+  
+  
+  
+  
+  
 
+#'*IRS COVERAGE*
+  irs_ins <- read_xls("data/Malaria/Insecticidetype_malariacases.xls")
+  colnames(irs_ins) 
+  
+  irs_ins1 <- irs_ins %>%
+  rename(mnthyr = 1,
+         pop = 2,
+         insct = 3,
+         mal.cases = 4)
+  
+  irs_ins1
+  irs_ins1$mnthyr <- as.Date(irs_ins1$mnthyr)
+  irs_ins1
+  
+  # 
+  # irs_ins2 <- irs_ins1 %>% 
+  #   
+  #   gather(key = subpop , value = rate, c(pop,mal.cases))
+  # 
+  # irs_ins2
+  # ggplot(irs_ins2, aes(x = mnthyr, y = rate, group = subpop, colour = subpop)) +
+  #   geom_point(alpha=.6, size=.4) + 
+  #   geom_smooth(method = loess, size = .6, se=F)
+    # scale_y_continuous(labels=comma,
+    #                    limits=c(0,150000),
+    #                    breaks = c(0,50000,100000,150000),
+    #                    sec.axis=sec_axis(trans = ~ .*0.003, name = "Rainfall (mm)"))
+    # 
+    # 
+  
+  id_plt <- ggplot(irs_ins1) + 
+    geom_bar(aes(x=mnthyr, y=Pop, fill=insct), stat="identity", position = "dodge") +
+    scale_fill_manual(values=c("Actelic"="#002F6C","Fludora"="#F5B041", "Sumishield"="#BA0C2F", "Malaria Cases"="#6C6463")) +
+    geom_smooth(aes(x=mnthyr, y=mal.cases/120, fill="Malaria Cases") ,color="#6C6463", size=1, se=F) + 
+    geom_point(aes(x=mnthyr, y=mal.cases/1200), stat="identity",color="#6C6463",size=3) +
+    scale_x_date(date_labels="%Y",date_breaks="1 year", limits = NULL)+
+    scale_y_continuous(labels=comma, sec.axis = sec_axis(trans = ~ .*1200, labels=comma, name = "Malaria cases"))+
+    labs(fill="Legend:", title="Malaria Cases and Insecticide Types Used Over Time - Nchelenge",
+         x=" Period",
+         y="Coverage(%)") + base
+ 
+  id_plt
+  
+  
