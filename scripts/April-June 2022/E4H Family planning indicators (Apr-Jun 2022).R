@@ -30,6 +30,20 @@ pnctrgts <- read_xls("data/Jan- Jun 2022/PNC Targets.xls")
 Start <- as.Date(NULL)
 End <- as.Date(NULL)
 
+mdrn22 <- read_xls("data/Jan- Jun 2022/modernFP 2022 data.xls")
+mdrn22  <- mdrn22  %>%
+  mutate(month_chr = str_sub(periodname,
+                             start=1,
+                             end=nchar(periodname)-5),
+         month = factor(month_chr,
+                        levels=c("January","February","March","April","May","June","July","August","September","October","November","December")),
+         month_code = as.numeric(month), 
+         year = str_sub(periodname, 
+                        start=nchar(periodname)-4,
+                        end=nchar(periodname)),
+         monyr = paste(month_code, year, sep="-"),
+         mnthyr = my(monyr))
+
 
 famq <- read_xls("data/Jan- Jun 2022/Family Planning Data_National Level(Quarterly).xls")
 fam_prov <- read_xls("data/Jan- Jun 2022/Family Planning Data_Provincial Level(Monthly).xls")
@@ -369,14 +383,14 @@ colnames(fam)
                        labels = percent,
                        breaks = c(.1,.2,.3,.4,.5)) +
     scale_x_date(date_labels="%b %y",date_breaks="4 months") +
-    labs(x="", y="", caption="Data Source: HMIS", title="Number of first-time users of modern FP users was on the rise from \n2018 to October 2019, but are declining continuining a trend started in October 2019") +
+    labs(x="", y="", caption="Data Source: HMIS", title="Percentage of first-time users of modern FP users was on the rise from \n2018 to October 2019, and has slightly declined since then") +
     scale_color_manual(name ="",
                        values = usaid_blue,
                        labels ="Number of first time modern FP") + 
     baseX
   
   nwFP_plt
-  ggsave("viz/Apr-Jun 2022/Family Planning/Number of first-time users of modern FP method smooth ns.png",
+  ggsave("viz/Apr-Jun 2022/Family Planning/Percentage of first-time users of modern FP method smooth ns.png",
          device="png",
          type="cairo",
          height=5.5,
@@ -744,4 +758,98 @@ colnames(fam)
              type="cairo",
              height = 5.5,
              width = 9)
+      
+#'*Modern FPS*
+
+      names(mdrn22)
+      mdrn2 <- mdrn22 %>%
+        select(2:5,19) %>%
+        na.omit()
+      
+      names(mdrn2)
+      
+      mdrn <- melt(mdrn2, id = "mnthyr")
+      
+      mdrn1<- mdrn %>%
+        group_by(variable)
+      
+      mdrn1
+      
+      medim <- ggplot(mdrn1,aes(x=mnthyr, y=value, fill=variable)) +
+        geom_bar(stat = "identity", position = "dodge", coluor=c(light_blue, usaid_red, usaid_blue, usaid_red)) +
+        scale_fill_manual(name ="",
+                           values =c(zamOrange, light_blue,usaid_red,usaid_blue)) +
+        scale_y_continuous(labels=comma) + basey +
+        labs(fill="Legend:", 
+             caption="Data Source: HMIS", 
+             title="Number of women ultilizing CopperT IUCD has been high and increasing.",
+             x="",
+             y="Number of IUCD Inserted")
+      
+      medim
+      ggsave("viz/Apr-Jun 2022/Family Planning/Copper.png",
+             device="png",
+             type="cairo",
+             height = 6.5,
+             width = 13)
+      
+      
+      
+      names(mdrn22)
+      mdrn2 <- mdrn22 %>%
+        select(6:9,19) %>%
+        na.omit()
+      
+      names(mdrn2)
+      
+      mdrn <- melt(mdrn2, id = "mnthyr")
+      
+      mdrn1<- mdrn %>%
+        group_by(variable)
+      
+      mdrn1
+      
+      medim1 <- ggplot(mdrn1,aes(x=mnthyr, y=value, fill=variable)) +
+        geom_bar(stat = "identity", position = "dodge", coluor=c(light_blue, usaid_red, usaid_blue, usaid_red)) +
+        scale_fill_manual(name ="",
+                          values =c(zamOrange, light_blue,usaid_red,usaid_blue)) +
+        scale_y_continuous(labels=comma) + basey +
+        labs(fill="Legend:", 
+             caption="Data Source: HMIS", 
+             title="Number of women inserting Jabelle and implanon implants between Jan-Jun 2022 \n has remained above 5,000 monthly.",
+             x="",
+             y="Number of IUCD Inserted")
+      
+      medim1
+      
+      
+      
+      names(mdrn22)
+      mdrn2 <- mdrn22 %>%
+        select(10:13,19) %>%
+        na.omit()
+      
+      names(mdrn2)
+      
+      mdrn <- melt(mdrn2, id = "mnthyr")
+      
+      mdrn2<- mdrn %>%
+        group_by(variable)
+      
+      mdrn2
+      
+      medim2 <- ggplot(mdrn2,aes(x=mnthyr, y=value, fill=variable)) +
+        geom_bar(stat = "identity", position = "dodge", coluor=c(light_blue, usaid_red, usaid_blue, usaid_red)) +
+        scale_fill_manual(name ="",
+                          values =c(zamOrange, light_blue,usaid_red,usaid_blue)) +
+        scale_y_continuous(labels=comma) + basey +
+        labs(fill="Legend:", 
+             caption="Data Source: HMIS", 
+             title="Number of women using Medroxyprogesterone DMPA IM & DMPA SC ",
+             x="",
+             y="Number of IUCD Inserted")
+      medim2
+      
+      medim + medim1 + medim2  +  plot_layout(ncol = 2) 
+      wrap_plots(D = medim, C = medim1, B = medim2, design = layout)
       
