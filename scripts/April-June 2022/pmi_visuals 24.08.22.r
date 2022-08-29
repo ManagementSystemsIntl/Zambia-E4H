@@ -2,7 +2,7 @@
 
 
 #source("C:/Users/NyimbiliShida/Documents/MSI/GIS & Visuals/R Data/Scripts/r prep.R")
-source("scripts/r prep.r")
+source("scripts/r prep2.r")
 
 
 rnf <- read_xlsx("C:/Users/NyimbiliShida/Documents/MSI/GIS & Visuals/R Data/Data PMI/Provincial rainfall.xlsx")
@@ -304,7 +304,7 @@ ggsave("C:/Users/NyimbiliShida/Documents/MSI/GIS & Visuals/R Data/Visuals Export
 
 
 ##indoor resting density
-source("scripts/r prep.r")
+source("scripts/r prep2.r")
 insecty <- read_xls("C:/Users/NyimbiliShida/Documents/MSI/GIS & Visuals/R Data/Data PMI/Insecticidetype_malariacases.xls")
 
 
@@ -376,23 +376,23 @@ indens1 <- indens[order(indens$mnth), ]
 indens1
 
 
-id_plt <- ggplot(indens1, aes(x=mnth, y=funestus, fill = Site)) +
+id_plt <- ggplot(indens1, aes(x=mnth, y=gambiae, fill = Site)) +
   geom_bar(stat="identity", position = "dodge") + 
-  geom_line( aes(x=mnth, y=Rainfall/1, fill="Rainfall"), width=0.4, colour="orange", alpha=0.9, size=0.9) +
-  geom_point(indens1, mapping=aes(x=mnth, y=Rainfall/1), width=0.4, fill="orange",color="orange", alpha=0.9, size=1.5) +
-  scale_y_continuous(sec.axis = sec_axis(trans = ~ .*1, labels=comma, name = "Rainfall(mm)"))+
-  scale_x_date(date_labels="%b %Y",date_breaks="3 months", limits = NULL) + 
-  scale_fill_manual(values=c("#A7C6ED","orange","#BA0C2F")) +
-  labs(fill="Legend:", title="Indoor Resting Density An.funestus s.I",
-       x=" Period",
-       y="Indoor density (No of vectors per house per night)") + base
+  #geom_smooth( aes(x=mnth, y=Rainfall, fill="Rainfall"), method=loess, width=0.4, colour="orange", alpha=0.9, size=0.9, se=F) +
+  #geom_point(indens1, mapping=aes(x=mnth, y=Rainfall/1), width=0.4, fill="orange",color="orange", alpha=0.9, size=1.5) +
+  #scale_y_continuous(sec.axis = sec_axis(trans = ~ .*1, labels=comma, name = "Rainfall(mm)"))+
+  scale_x_date(date_labels="%b %y",date_breaks="3 months") + 
+  scale_fill_manual(values=c("orange",light_blue,"#BA0C2F")) +
+  labs(fill="Legend:", caption="Data Source: \n Vector Link - Data only available starting from 2019",title="The Indoor Resting Density An.gambiae S.I pattern \n has been very low since June 2019, expect for the perod August 2020 - June 2021 at both sites",
+       x="",
+       y="No. of vectors per house per night") + base
 
 id_plt
 
-ggsave("C:/Users/NyimbiliShida/Documents/MSI/GIS & Visuals/R Data/Visuals Exports/resting density an An.funestus.png",
+ggsave("C:/Users/NyimbiliShida/Documents/MSI/GIS & Visuals/R Data/Visuals Exports/24.08.22/resting density an An.gambiae.png",
        device="png",
        type="cairo",
-       height = 7,
+       height = 6,
        width = 12)
 
 
@@ -712,18 +712,20 @@ htplt <-pheatmap(ht,
                  treeheight_col=0,  
                  cutree_rows = 3,
                  cluster_cols=FALSE,
-                 #main ="Nchelenge leads in Malaria Deaths",
-                 axis.title=element_text(size=12, family="Gill Sans Mt"),
-                 axis.text=element_text(size=12, family="Gill Sans Mt"),
+                 main ="In 2020, Nchelenge had the highest number of malaria deaths, followed by Mansa",
+                 plot.title = element_text(size = 15, family="Gill Sans Mt"),
+                 axis.title=element_text(size=14, family="Gill Sans Mt"),
+                 axis.text=element_text(size=14, family="Gill Sans Mt"),
                  axis.ticks = element_blank(),
-                 color = colorRampPalette(brewer.pal(8,"Reds"))(400))
+                 caption="Data Source: HMIS",
+                 color = colorRampPalette(brewer.pal(8,"Blues"))(400))
 
-ggsave("C:/Users/NyimbiliShida/Documents/MSI/GIS & Visuals/R Data/Visuals Exports/heatmap Malaria Deaths1.png",
+ggsave("C:/Users/NyimbiliShida/Documents/MSI/GIS & Visuals/R Data/Visuals Exports/24.08.22/2heatmap Malaria Deaths1.png",
        plot = htplt,
        device="png",
        type="cairo",
-       height=8,
-       width=13)
+       height=5.5,
+       width=10)
 
 
 ggsave("viz/Malaria/heatmap Malaria Deaths.png",
@@ -732,6 +734,61 @@ ggsave("viz/Malaria/heatmap Malaria Deaths.png",
        type="cairo",
        height=6,
        width=13)
+
+
+#'*FACETED MALARIA Deaths BY DSITRICT*
+dist.deaths <- read_xlsx("C:/Users/NyimbiliShida/Documents/MSI/GIS & Visuals/R Data/Data PMI/deaths_facets.xlsx")
+dist.deaths  <- dist.deaths  %>%
+  mutate(month_chr = str_sub(periodname,
+                             start=1,
+                             end=nchar(periodname)-5),
+         month = factor(month_chr,
+                        levels=c("January","February","March","April","May","June","July","August","September","October","November","December")),
+         month_code = as.numeric(month), 
+         year = str_sub(periodname, 
+                        start=nchar(periodname)-4,
+                        end=nchar(periodname)),
+         monyr = paste(month_code, year, sep="-"),
+         mnthyr = my(monyr))
+
+sum(dist.deaths$month_chr!=dist.deaths$month) # expecting 0 if vars same
+
+dist.deaths$periodname <- as.Date(dist.deaths$periodname)
+
+dist.deaths
+
+names(dist.deaths)
+dist.deaths1 <- dist.deaths %>%
+  select(2, 3,9) %>%
+  na.omit()
+
+dist.deaths1
+
+dist.deaths2 <- dist.deaths1 %>%
+  rename(dst=1,
+         dths=2,
+         mth=3) %>%
+  na.omit()
+
+
+ggplot(dist.deaths2, aes(mth,dths, colour=usaid_blue)) + 
+  geom_smooth(method = loess, size = .8, se=FALSE) +
+  geom_point(size=.5) +
+  #geom_line(alpha=.6, size=.6, colour=usaid_blue) + 
+  facet_wrap(~dst) + 
+  faceted +
+  scale_x_date(date_labels="%Y", date_breaks = "1 year") +
+  scale_y_continuous(limits = c(0,50),
+                     breaks = c(0, 12, 26, 38, 50)) +
+  labs(x ="", y="", caption = "Data Source: HMIS", title="In the past two years, the number of Malaria deaths in Nchelenge \n has increased starting in 2019 and declined at beginning of 2021")  +
+  scale_colour_manual(name ="",
+                     values = usaid_blue) + baseC
+
+ggsave("C:/Users/NyimbiliShida/Documents/MSI/GIS & Visuals/R Data/Visuals Exports/24.08.22/deaths faceted.png",
+       device="png",
+       type="cairo",
+       height=8,
+       width=16)
 
 
 
@@ -1185,7 +1242,7 @@ pmi_4 <- ggplot(dat5, aes(x=Year, y=value, fill = variable)) +
   geom_vline(xintercept = c(as.POSIXct("2019-10-01"), as.POSIXct("2020-10-01")),
              color=c("#EF7D00","#EF7D00"),
              lty=c("1343", "1343") ,
-             size=c(1,1), 
+             size=c(1,1),
              alpha=1) + 
   #annotate("text", x = as.POSIXct("2019-10-01"), y = 0, label = substitute(paste(bold('ITNS Mass Dist. Campaigns:2019-10'))), size=3, angle=90, hjust =-0.8, vjust=-2) +
   #annotate("text", x = as.POSIXct("2020-10-01"), y = 0, label = substitute(paste(bold('ITNS Mass Dist. Campaigns:2020-10'))), size=3, angle=90, hjust =-0.7, vjust=2)+

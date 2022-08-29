@@ -82,6 +82,7 @@ baseX <- theme(plot.title = element_text(size = 15),
   strip.text=element_text(size=13, family="Gill Sans Mt"))
 
 
+
 baseC <- theme(plot.title = element_text(size = 15),
                plot.caption = element_text(size=12, hjust=0),
                axis.title.x = element_text(size = 10),
