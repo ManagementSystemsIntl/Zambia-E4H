@@ -2,6 +2,122 @@
 
 source("scripts/r prep2.r")
 
+#'*Provincial Rainfall and Malaria Confirmed Cases*
+rnf_malprov <- read_xlsx("data/Malaria/Provincial rainfall.xlsx")
+names(rnf_malprov)
+rnf_malprov
+
+# rnf1<- rnf %>%
+#   group_by(Month, Year, Province) %>%
+#   summarise(sm.rainfall=sum(Rainfall),
+#             avg.rainfall=(mean(Rainfall))) %>%
+#   mutate(date = my(paste(Month, Year, sep="-")))
+
+rnf_malprov <- rnf_malprov %>%
+  rename(prov = 1,
+         mal.cases = 2,
+         mnthyr = 3,
+         rainfall = 4) %>%
+  
+  # mutate(rainfallr = rainfall*250) %>% 
+  
+  select(prov, mal.cases, mnthyr, rainfall) %>% 
+  mutate(prov = factor(prov),
+         ip = case_when(prov=="Northern" |
+                          prov =="Central" |
+                          prov =="Muchinga" |
+                          prov =="Southern" |
+                          prov =="Copperbelt" |
+                          prov =="Lusaka" |
+                          prov =="Western" |
+                          prov =="Muchinga" |
+                          prov == "Northwestern"|
+                          prov =="Eastern" ~ "ip",
+                        TRUE ~ "non-ip"))
+
+rnf_malprov
+
+table(rnf_malprov$ip, rnf_malprov$prov)
+frq(rnf_malprov$ip) #sjmisc
+
+
+rnf_malprov
+
+levels(rnf_malprov$prov)
+
+# rnf_malprov1 <- rnf_malprov %>% 
+#   
+#   gather(key = subpop , value = rate, c(mal.cases, rainfallr)) %>% 
+#   
+  mutate(ip = factor(ip),
+         subpop = factor(subpop))
+
+levels(rnf_malprov1$ip)
+# levels(rnf_malprov1$subpop)
+
+rnf_malprov
+scalefactor <- max(rnf_malprov$mal.cases) / max(rnf_malprov$rainfall)
+
+# ggplot(rnf_malprov1, aes(x = mnthyr, y = rate, group = subpop, colour = subpop)) +
+ggplot(rnf_malprov,aes(x = mnthyr))+
+  #geom_line(alpha=.6, size=.4) +
+  # geom_point(alpha=.6, size=.4) + 
+  # stat_smooth(method = "loess", size = .6, se=F) +
+  geom_smooth(aes(y=mal.cases, colour="mal.cases"), method="lm", size = .4, se=F) +
+  #geom_point(aes(y=mal.cases, colour="mal.cases"),alpha=.6, size=.2, colour=usaid_red) +
+  geom_smooth(aes(y=rainfall*scalefactor, colour="rainfall"), method="lm", size = .6, se=F) +
+  #geom_point(aes(y=rainfall*scalefactor, colour="rainfall"),alpha=.6, size=.4) +
+  scale_y_continuous(name ="Confirmed Malaria Cases", labels=comma,
+                     limits=c(0,150000),
+                     breaks = c(0,50000,100000,150000),
+                     sec.axis=sec_axis(trans = ~./scalefactor, name = "Rainfall (mm)")) +
+  labs(x ="", y="",
+       caption = "Data Source: \nWFP - Rainfall \nHMIS - Malaria Cases",
+       title="Linear trends for Provincial confirmed Malaria cases \n and amount of rainfall received per month, 2014-2022") +
+  facet_wrap(~prov) + faceted +
+  theme(axis.line.y.right = element_line(color = usaid_blue),
+        axis.ticks.y.right = element_line(color = usaid_blue),
+        axis.text.y.right = element_text(color = usaid_blue),
+        axis.title.y.right = element_text(color = usaid_blue)) +
+  basey +
+  scale_colour_manual(values = c("mal.cases"=usaid_red,"rainfall"=usaid_blue),labels = c("Confirmed Malaria Cases", "Rainfall")) +
+  plot_layout(guides = "collect")
+
+# rnf2 <- ggplot(rnf_malprov,aes(x = mnthyr))+
+#   #geom_line(alpha=.6, size=.4) +
+#   # geom_point(alpha=.6, size=.4) + 
+#   # stat_smooth(method = "loess", size = .6, se=F) +
+#   geom_smooth(aes(y=mal.cases, colour="mal.cases"), method="loess", size = .4, se=F) +
+#   #geom_point(aes(y=mal.cases, colour="mal.cases"),alpha=.6, size=.2, colour=usaid_red) +
+#   geom_smooth(aes(y=rainfall*scalefactor, colour="rainfall"), method="loess", size = .6, se=F) +
+#   #geom_point(aes(y=rainfall*scalefactor, colour="rainfall"),alpha=.6, size=.4) +
+#   scale_y_continuous(name ="Confirmed Malaria Cases", labels=comma,
+#                      limits=c(0,150000),
+#                      breaks = c(0,50000,100000,150000),
+#                      sec.axis=sec_axis(trans = ~./scalefactor, name = "Rainfall (mm)")) +
+#   labs(x ="", y="",
+#        caption = "Data Source: \nWFP - Rainfall \nHMIS - Malaria Cases",
+#        title="Statistical trends for Provincial confirmed Malaria cases \n and amount of rainfall received per month, 2014-2022") +
+#   facet_wrap(~prov) + faceted +
+#   theme(axis.line.y.right = element_line(color = usaid_blue),
+#         axis.ticks.y.right = element_line(color = usaid_blue),
+#         axis.text.y.right = element_text(color = usaid_blue),
+#         axis.title.y.right = element_text(color = usaid_blue)) +
+#   baseC +
+#   scale_colour_manual(values = c("mal.cases"=usaid_red,"rainfall"=usaid_blue),labels = c("Confirmed Malaria Cases", "Rainfall")) +
+#   plot_layout(guides = "collect")
+# 
+# plot_grid(rnf1, rnf2, nrows = 1, ncol = 2) + plot_layout(guides = "collect")
+ 
+
+ggsave("C:/Users/NyimbiliShida/Documents/MSI/GIS & Visuals/R Data/Visuals Exports/24.08.22/Provincial Malaria and Rainfall Linear.png",
+       device="png",
+       type="cairo",
+       height = 8.5,
+       width = 15)
+
+
+
 #'*Malaria 2022 and rainfall*
 
 ip <- read_xls("C:/Users/NyimbiliShida/Documents/MSI/GIS & Visuals/R Data/Data PMI/rainfallmalariatoday.xls")
@@ -505,7 +621,7 @@ svr <- ggplot(svrNch3) +
   annotate("text", x = dt2, y = 0, label = substitute(paste(bold('ITNS Mass Dist.Campaigns: Dec'))), size=4, angle=90, hjust =-1, vjust=-0.5, color="#198a00ff")
   
 
-#Campaigns
+
 dt <- as.Date("2017-10-01")
 dt1 <- as.Date("2018-10-01")
 dt2 <- as.Date("2020-12-01")
@@ -516,33 +632,7 @@ ggsave("C:/Users/NyimbiliShida/Documents/MSI/GIS & Visuals/R Data/Visuals Export
          type="cairo",
          height=7.6,
          width=14)
-#Campaigns
-dt <- as.Date("2017-10-01")
-dt1 <- as.Date("2018-10-01")
-dt2 <- as.Date("2020-12-01")
 
-# malsv <- ggplot(svrNch3, aes(x=mth, y=rate, fill = subpop)) +
-#   geom_area(alpha=.7, position = position_dodge())+
-#   scale_fill_manual(values=c("#A7C6ED","#C2113A")) +
-#   scale_y_continuous(labels=comma) +
-#   scale_x_date(date_labels="%b %y",date_breaks="4 month", limits = NULL) +
-#   labs(fill="Legend:", title="Severe Malaria and Deaths",
-#        x="",
-#        y="Cases") +
-#   base +
-  geom_vline(xintercept = c(dt, dt1, dt2) ,color=c("#EF7D00","#198a00ff", "#198a00ff") ,lty=c("solid","dotted", "dotted") ,size=c(2,1,1), alpha=1)+
-  annotate("text", x = dt, y = 0, label = substitute(paste(bold('Integrated community case management: Oct'))), size=4, angle=90, hjust =-0.3, vjust=-1, color="#EF7D00")+
-  annotate("text", x = dt1, y = 0, label = substitute(paste(bold('ITNS Mass Dist.Campaigns: Oct'))), size=4, angle=90, hjust =-1, vjust=-0.7, color="#198a00ff")+
-  annotate("text", x = dt2, y = 0, label = substitute(paste(bold('ITNS Mass Dist.Campaigns: Dec'))), size=4, angle=90, hjust =-1, vjust=-0.5, color="#198a00ff")
-
-
-malsv
-
-ggsave("C:/Users/NyimbiliShida/Documents/MSI/GIS & Visuals/R Data/Visuals Exports/Severe & Death Cases.png",
-       device="png",
-       type="cairo",
-       height=7,
-       width=13)
 
 
 ##Malaria Cases -5 & 5+
@@ -634,6 +724,20 @@ ggsave("C:/Users/NyimbiliShida/Documents/MSI/GIS & Visuals/R Data/Visuals Export
 
 #'*Malaria Incidence Nchelenge*
 source("scripts/r prep2.r")
+Mal.mnt.Nch <- read_xls("C:/Users/NyimbiliShida/Documents/MSI/GIS & Visuals/R Data/Data PMI/Nchelenge(monthly)_2014-2022.xls")
+Mal.mnt.Nch  <- Mal.mnt.Nch  %>%
+  mutate(month_chr = str_sub(periodname,
+                             start=1,
+                             end=nchar(periodname)-5),
+         month = factor(month_chr,
+                        levels=c("January","February","March","April","May","June","July","August","September","October","November","December")),
+         month_code = as.numeric(month), 
+         year = str_sub(periodname, 
+                        start=nchar(periodname)-4,
+                        end=nchar(periodname)),
+         monyr = paste(month_code, year, sep="-"),
+         mnthyr = my(monyr))
+iccm <- read_xls("C:/Users/NyimbiliShida/Documents/MSI/GIS & Visuals/R Data/Data PMI/iccm.xls")
 ani <- read_xls("C:/Users/NyimbiliShida/Documents/MSI/GIS & Visuals/R Data/Data PMI/insecticideinc.xls")
 malin <- read_xls("C:/Users/NyimbiliShida/Documents/MSI/GIS & Visuals/R Data/Data PMI/Malariaincidence.xls")
 
@@ -667,14 +771,35 @@ cm11 <- as.Date("2021-10-01")
 Start <- as.Date(NULL)
 End <- as.Date(NULL)
 
+iccm$start <- as.Date(iccm$start) 
+iccm$end <- as.Date(iccm$end)
+
+start <- as.Date(NULL)
+end <- as.Date(NULL)
+
+Mal.mnt.Nch1 <- Mal.mnt.Nch %>% select(3, 15, 23, 29)
+Mal.mnt.Nch1
+
+names(Mal.mnt.Nch1)
+Mal.mnt.Nch2 <- Mal.mnt.Nch1 %>%
+  rename(mal.case=1,
+         mal.clnc=2,
+         rnfl=3,
+         mnthy=4)
+
+colnames(Mal.mnt.Nch2)
 
 malin %>% 
   convert(int(Incidence_all_ages, Incidence_rate_under5, Incidence_rate_above5))
+
+malin
 
 inc <- ggplot(malin,aes(x=year))+
   # geom_line(aes(y=Incidence_rate_under5, color="Incidence rate under5"), size=1)+
   # geom_point(aes(y=Incidence_rate_under5, color="Incidence rate under5"), size=3)+
   geom_smooth(aes(y=Incidence_all_ages), method=loess,color="#CFCDC9", size=1, alpha=1, se=F)+
+  # geom_line(data=Mal.mnt.Nch2, aes(y=rnfl/0.004), method = loess,color=light_blue, alpha=0.9, size=1, se=F) +
+  # geom_point(data=Mal.mnt.Nch2, aes(y=rnfl/0.004), method = loess,color=light_blue, alpha=9, size=3, se=F)+
   #geom_point(aes(y=Incidence_all_ages, color="Incidence all ages"), size=3)+
   # geom_line(aes(y=Incidence_rate_above5, color="Incidence rate above5"), size=1)+
   # geom_point(aes(y=Incidence_rate_above5, color="Incidence rate above5"), size=3)+
@@ -684,6 +809,7 @@ inc <- ggplot(malin,aes(x=year))+
             ymin=0,ymax=25000, size=0.6, fill=zamOrange, alpha=0.2, lty="twodash") +
   geom_vline(xintercept = c(cm2, cm3,cm4,cm5),color=c("#198a00ff","#198a00ff",zamOrange,"#198a00ff"),
              lty=c("solid", "solid","solid", "solid") ,size=3, alpha=0.5) +
+  scale_y_continuous(labels=comma,sec.axis = sec_axis(trans = ~ .*0.004, labels=comma, name = "Rainfall(mm)"))+
   scale_x_date(date_labels="%b %Y",date_breaks="6 months")+
   labs(fill="Legend", caption="Data Source: HMIS, Vector Link, WFP- Rainfall",title = "Malaria Incidence Rates & All Interventions" , x="Months", y="Rate(%)") +
   scale_fill_manual(values = c("Actelic Insecticide"="#002A6C", "Fludora Insecticide"=rich_black, 
@@ -816,23 +942,23 @@ dist.deaths2 <- dist.deaths1 %>%
 
 
 ggplot(dist.deaths2, aes(mth,dths, colour=usaid_blue)) + 
-  geom_smooth(method = loess, size = .8, se=FALSE) +
-  geom_point(size=.5) +
+  geom_smooth(method = loess, size = .6, se=FALSE) +
+  geom_point(size=.2) +
   #geom_line(alpha=.6, size=.6, colour=usaid_blue) + 
   facet_wrap(~dst) + 
   faceted +
   scale_x_date(date_labels="%Y", date_breaks = "1 year") +
   scale_y_continuous(limits = c(0,50),
                      breaks = c(0, 12, 26, 38, 50)) +
-  labs(x ="", y="", caption = "Data Source: HMIS", title="In the past two years, the number of Malaria deaths in Nchelenge \n has increased starting in 2019 and declined at beginning of 2021")  +
+  labs(x ="", y="", caption = "Data Source: HMIS", title="In the past two years, the number of Malaria deaths in Nchelenge has increased starting in 2019 \n and declined at beginning of 2021")  +
   scale_colour_manual(name ="",
-                     values = usaid_blue) + baseC
+                     values = usaid_red) + baseC
 
 ggsave("C:/Users/NyimbiliShida/Documents/MSI/GIS & Visuals/R Data/Visuals Exports/24.08.22/deaths faceted.png",
        device="png",
        type="cairo",
        height=8,
-       width=16)
+       width=18)
 
 
 
@@ -960,7 +1086,7 @@ ggsave("C:/Users/NyimbiliShida/Documents/MSI/GIS & Visuals/R Data/Visuals Export
 
 ##########'*Malaria Nchelenge Monthly trend line 2014-2021*
 source("scripts/r prep2.r")
-
+iccm <- read_xls("C:/Users/NyimbiliShida/Documents/MSI/GIS & Visuals/R Data/Data PMI/iccm.xls")
 Mal.mnt.Nch <- read_xls("C:/Users/NyimbiliShida/Documents/MSI/GIS & Visuals/R Data/Data PMI/Nchelenge(monthly)_2014-2022.xls")
 Mal.mnt.Nch  <- Mal.mnt.Nch  %>%
   mutate(month_chr = str_sub(periodname,
@@ -994,7 +1120,7 @@ ani1 <- ani[order(ani$End), ]
 cm <- as.Date("2014-10-01")
 cm1 <- as.Date("2020-10-01")
 cm2 <- as.Date("2017-10-01")
-cm3 <- as.Date("2020-12-01")
+cm3 <- as.Date("2014-11-01")
 cm4 <- as.Date("2017-11-01")
 cm5 <- as.Date("2016-04-01")
 cm6 <- as.Date("2015-10-01")
@@ -1003,6 +1129,7 @@ cm8 <- as.Date("2017-09-01")
 cm9 <- as.Date("2018-09-01")
 cm10 <- as.Date("2019-09-01")
 cm11 <- as.Date("2021-10-01")
+cm12 <- as.Date("2020-11-01")
 
 Start <- as.Date(NULL)
 End <- as.Date(NULL)
@@ -1039,14 +1166,14 @@ ggplot(Mal.mnt.Nch2,aes(x=mnthy))+
   geom_area(aes(y=mal.clnc, fill="mal.clnc"), alpha=0.3, color=usaid_blue)+
   geom_line(aes(y=rnfl/0.004), method = loess,color=light_blue, alpha=0.9, size=1, se=F) +
   geom_point(aes(y=rnfl/0.004), method = loess,color=light_blue, alpha=9, size=3, se=F)+
-  geom_vline(xintercept = c(cm2, cm3,cm4,cm5),color=c("#198a00ff","#198a00ff", zamOrange, "#198a00ff"), lty=c("solid", "solid", "twodash", "solid") ,size=3, alpha=0.5) +
+  geom_vline(xintercept = c(cm2, cm3, cm12, cm4,cm5),color=c("#198a00ff","#198a00ff","#198a00ff", zamOrange, zamGreen), lty=c("solid", "solid", "solid", "twodash", "solid") ,size=3, alpha=0.5) +
   # geom_point(aes(y=Malaria_Confirmed_Cases, color="Malaria_Confirmed_Cases"))+
   scale_x_date(date_labels="%b %y",date_breaks="6 months") +
   scale_y_continuous(labels=comma,sec.axis = sec_axis(trans = ~ .*0.004, labels=comma, name = "Rainfall(mm)"))+
   scale_fill_manual(values = c("Actelic Insecticide"="#002A6C", "Fludora Insecticide"=rich_black, 
                                "Sumishield Insecticide"="#BA0C2F", "Malaria Confirmed Cases"=light_grey, "Malaria Clinical Cases"=medium_grey, "ICCM Campaigns"= zamOrange)) +
   labs(fill="Legend:", caption="Data Source: HMIS, Vector Link, WFP- Rainfall"
-       , title="Nchelenge Monthly Confirmed Malaria Cases including clinical with Campaigns/Intervention",
+       , title="Nchelenge Monthly Confirmed Malaria and Clinical  Cases with all Campaigns, 2014-2022",
        x="",
        y="Confimred Malaria Cases") + base +
   annotate("text", x = cm, y = 0, label = substitute(paste(bold('IRS'))), size=4, color="white", angle=90, hjust =-12, vjust=-0.1) +
@@ -1057,16 +1184,17 @@ ggplot(Mal.mnt.Nch2,aes(x=mnthy))+
   annotate("text", x = cm9, y = 0, label = substitute(paste(bold('IRS'))), size=4, color="white",  angle=90, hjust =-12, vjust=-0.1) +
   annotate("text", x = cm10, y = 0, label = substitute(paste(bold('IRS'))), size=4, color="white", angle=90, hjust =-12, vjust=-0.3) +
   annotate("text", x = cm11, y = 0, label = substitute(paste(bold('IRS'))), size=4, color="white",  angle=90, hjust =-12, vjust=-0.1) +
-  annotate("text", x = cm2, y = 0, label = substitute(paste(bold('ITNS Mass Dist.Campaigns:Oct'))), size=4, angle=90, hjust =-1.1, vjust=-0.15) +
-  annotate("text", x = cm3, y = 0, label = substitute(paste(bold('ITNS Mass Dist.Campaigns: Dec'))), size=4, angle=90, hjust =-1.1, vjust=-0.5)+
-  annotate("text", x = cm4, y = 0, label = substitute(paste(bold('Integrated community case management'))), size=4, angle=90, hjust =-0.8, vjust=1.5) +
-  annotate("text", x = cm5, y = 0, label = substitute(paste(bold('Behaviour Change Communication'))), size=4, angle=90, hjust =-1, vjust=-0.5)+
+  annotate("text", x = cm2, y = 0, label = substitute(paste(bold('ITNS Mass Dist.Campaigns'))), size=4, angle=90, hjust =-2.1, vjust=-0.15) +
+  annotate("text", x = cm12, y = 0, label = substitute(paste(bold('ITNS Mass Dist.Campaigns'))), size=4, angle=90, hjust =-2.1, vjust=-0.15) +
+  annotate("text", x = cm3, y = 0, label = substitute(paste(bold('ITNS Mass Dist.Campaigns'))), size=4, angle=90, hjust =-2.1, vjust=-0.15)+
+  annotate("text", x = cm4, y = 0, label = substitute(paste(bold('ICCM Campaigns'))), size=4, angle=90, hjust =-2, vjust=1.5) +
+  annotate("text", x = cm5, y = 0, label = substitute(paste(bold('Behaviour Change Communication'))), size=4, angle=90, hjust =-1.5, vjust=-0.5)+
   annotate("text", x = cm, y = 0, label = substitute(paste(bold('Rainfall'))), size=5, color="black", angle=360, hjust =-16.3, vjust=-12.7)
 
-ggsave("C:/Users/NyimbiliShida/Documents/MSI/GIS & Visuals/R Data/Visuals Exports/24.08.22/Clinical Nchelenge malaria and campaigns Rainfall Point.png",
+ggsave("C:/Users/NyimbiliShida/Documents/MSI/GIS & Visuals/R Data/Visuals Exports/24.08.22/Both all campaigns.png",
        device="png",
        type="cairo",
-       height=8,
+       height=9,
        width=16)
 
 
@@ -1156,9 +1284,9 @@ all.vc1 <- all.vc1 %>%
 pmi_1 <- ggplot(all.vc1,aes(x=mnthy))+
   geom_area(aes(y=ind.spryd, fill="ind.spryd"), alpha=1, color=light_grey, position=position_dodge())+
   geom_rect(data=ani1, aes(NULL, NULL, xmin=Start, xmax=End, fill=Inserticide),
-            ymin=c(0,0), ymax=c(80, 80), colour="#CFCDC9", size=0.6, alpha=0.4, lty="twodash") +
+            ymin=c(0,0), ymax=c(100, 100), colour="#CFCDC9", size=0.6, alpha=0.4, lty="twodash") +
   geom_area(aes(y=ind.unspryd, fill="ind.unspryd"), alpha=0.5, color=usaid_blue, position=position_dodge())+ 
-  geom_smooth(aes(y=rnfl*1), method = loess,color=light_blue, alpha=0.3, size=1.5, se=F) +
+  geom_line(aes(y=rnfl*1), method = loess,color=light_blue, alpha=0.3, size=1.5, se=F) +
   geom_point(aes(y=rnfl*1), method = loess,color=light_blue, alpha=9, size=3)+
   scale_fill_manual(values=c(zamOrange,light_grey,usaid_blue,light_blue),
                     labels = c("Fludora Insecticide", 
@@ -1167,7 +1295,7 @@ pmi_1 <- ggplot(all.vc1,aes(x=mnthy))+
   scale_x_date(date_breaks="2 months", date_labels="%b %y") +
   scale_y_continuous(labels=comma,sec.axis = sec_axis(trans = ~ .*1, labels=comma, name = "Rainfall(mm)"))+
   labs(fill="Legend:", 
-       caption="Data Source: \n Vector Link-Data only available from 2019-2022 \n WFP-Rainfall", 
+       #caption="Data Source: \n Vector Link-Data only available from 2019-2022 \n WFP-Rainfall", 
        title="Number of bites per person per Night in Sprayed and Unsprayed Areas - Outdoor",
        x="",
        y="human biting rate") + 
@@ -1194,9 +1322,9 @@ all.vc2
 pmi_2 <- ggplot(all.vc2,aes(x=mnthy))+
   geom_area(aes(y=otd.spryd, fill="otd.spryd"), alpha=1, color=light_grey, position=position_dodge())+
   geom_rect(data=ani1, aes(NULL, NULL, xmin=Start, xmax=End, fill=Inserticide),
-            ymin=c(0,0), ymax=c(180, 180), colour="#CFCDC9", size=0.5, alpha=0.4, lty="twodash") +
+            ymin=c(0,0), ymax=c(150, 150), colour="#CFCDC9", size=0.5, alpha=0.4, lty="twodash") +
   geom_area(aes(y=otd.unspryd, fill="otd.unspryd"), alpha=0.5, color=usaid_blue, position=position_dodge())+ 
-  geom_smooth(aes(y=rnfl*1), method = loess,color=light_blue, alpha=0.3, size=1.5, se=F) +
+  geom_line(aes(y=rnfl*1), method = loess,color=light_blue, alpha=0.3, size=1.5, se=F) +
   geom_point(aes(y=rnfl*1), method = loess,color=light_blue, alpha=9, size=3)+
   scale_fill_manual(values=c(zamOrange,light_grey,usaid_blue,light_blue),
                     labels = c("Fludora Insecticide", 
@@ -1205,13 +1333,13 @@ pmi_2 <- ggplot(all.vc2,aes(x=mnthy))+
   scale_x_date(date_breaks="2 months", date_labels="%b %y") +
   scale_y_continuous(labels=comma,sec.axis = sec_axis(trans = ~ .*1, labels=comma, name = "Rainfall(mm)"))+
   labs(fill="Legend:", 
-       caption="Data Source: \n Vector Link-Data only available from 2019-2022 \n WFP-Rainfall", 
+       caption="Data Source: \n Vector Link-Data only available from 2019-2022 \n WFP-Rainfall \n PLEASE NOTE: NO DATA FOR HBR FROM FEB-AUG 2020", 
        #title="Number of bites per person per Night in Sprayed and Unsprayed Areas - Outdoor",
        x="",
        y="human biting rate") + 
   basey +
-  annotate("text", x = cm, y = 0, label = substitute(paste(bold('Indoor Residual Spraying'))), size=5, angle=90, hjust =-1.4, vjust=-1) +
-  annotate("text", x = cm1, y = 0, label = substitute(paste(bold('Indoor Residual Spraying'))), size=5, angle=90, hjust =-1.4, vjust=-0.7)+
+  annotate("text", x = cm, y = 0, label = substitute(paste(bold('Indoor Residual Spraying'))), size=5, angle=90, hjust =-1.2, vjust=-1) +
+  annotate("text", x = cm1, y = 0, label = substitute(paste(bold('Indoor Residual Spraying'))), size=5, angle=90, hjust =-1.2, vjust=-0.7)+
   annotate("text", x = cm1, y = 0, label = substitute(paste(bold('Rainfall'))), size=5, angle=360, hjust =-12.1, vjust=-19.9)
 
 pmi_2
