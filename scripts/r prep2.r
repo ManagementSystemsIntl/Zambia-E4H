@@ -26,7 +26,8 @@ zam_packages <- c("tidyverse", "here", "gifski", "gt","gtsummary","gghighlight",
                   "patchwork", "extrafontdb", "ggtext", "geomtextpath","zoo","psych","cowplot","ztable","pheatmap",
                   "RColorBrewer", "data.table", "d3heatmap","hablar", "gganimate", "dygraphs", "gapminder", "hrbrthemes",
                   "geomtextpath", "patchwork", "gridExtra", "grid", "rmarkdown", "forecast", 
-                  "backtest", "quantmod", "tseries", "writexl", "ggpubr")
+                  "backtest", "quantmod", "tseries", "writexl", "ggpubr", "rcartocolor", "remotes", "geodata",
+                  "shiny", "rgeoboundaries", "nasapower", "leaflet", "ggsflabel", "sf")
 
 
 
@@ -160,14 +161,32 @@ basem <- theme(plot.title = element_text(size = 15),
 #opts <- options(ggplot2.discrete.color = usaid_palette)
 
 theme_set(base)
+# 
+# faceted <- theme_bw() +
+#   theme(panel.grid.minor.x=element_blank(),
+#         panel.grid.minor.y=element_blank(),
+#         plot.title=element_text(face="bold",
+#           size=16, 
+#           hjust=.5, 
+#           family = "Gill Sans Mt"),
+#         plot.subtitle = element_text(size=12, family="Gill Sans Mt"),
+#         plot.caption=element_text(size=12, family="Gill Sans Mt"),
+#         axis.title=element_text(size=12, family="Gill Sans Mt"),
+#         axis.text=element_text(face="bold", size=10, family="Gill Sans Mt"),
+#         legend.text=element_text(size=14, family="Gill Sans Mt"),
+#         #legend.position = "left",
+#         legend.position = c(.55,.99),
+#         legend.justification = c("left", "top"),
+#         legend.box.just = "left",
+#         strip.text=element_text(size=12, family="Gill Sans Mt"))
+
 
 faceted <- theme_bw() +
-  theme(panel.grid.minor.x=element_blank(),
-        panel.grid.minor.y=element_blank(),
+  theme(
         plot.title=element_text(face="bold",
-          size=16, 
-          hjust=.5, 
-          family = "Gill Sans Mt"),
+                                size=16, 
+                                hjust=.5, 
+                                family = "Gill Sans Mt"),
         plot.subtitle = element_text(size=12, family="Gill Sans Mt"),
         plot.caption=element_text(size=12, family="Gill Sans Mt"),
         axis.title=element_text(size=12, family="Gill Sans Mt"),

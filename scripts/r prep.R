@@ -13,20 +13,20 @@
 #               "sysfonts","scales","magrittr","knitr","lubridate","Hmisc","haven","tidyr","reshape2","DescTools","extrafont",
 #               "extrafontdb")
 
-# zam_packages2 <- c("tidyverse", "here", 
-#                    "gt","gtsummary",
-#                    "gghighlight","stringi","DT", "ggthemes","ggridges","viridis",
-#                    "psych","labelled","readxl", "skimr","sjlabelled","sjstats","sjPlot", "sjmisc","readr","ggrepel","openxlsx",
-#                    "sysfonts","scales","magrittr","knitr","lubridate","Hmisc","haven","tidyr","reshape2","DescTools","extrafont",
-#                    "extrafontdb")
+zam_packages2 <- c("tidyverse", "here",
+                   "gt","gtsummary",
+                   "gghighlight","stringi","DT", "ggthemes","ggridges","viridis",
+                   "psych","labelled","readxl", "skimr","sjlabelled","sjstats","sjPlot", "sjmisc","readr","ggrepel","openxlsx",
+                   "sysfonts","scales","magrittr","knitr","lubridate","Hmisc","haven","tidyr","reshape2","DescTools","extrafont",
+                   "extrafontdb")
 
-zam_packages <- c("tidyverse", "here", "gifski", "gt","gtsummary","gghighlight","stringi","DT", "ggthemes","ggridges","viridis",
-                  "psych","labelled","readxl", "skimr","sjlabelled","sjstats","sjPlot", "sjmisc","readr","ggrepel","openxlsx",
-                  "sysfonts","scales","magrittr","knitr","lubridate","Hmisc","haven","tidyr","reshape2","DescTools","extrafont",
-                  "patchwork", "extrafontdb", "ggtext", "geomtextpath","zoo","psych","cowplot","kableExtra","ztable","pheatmap",
-                  "RColorBrewer", "data.table", "d3heatmap","hablar", "gganimate", "PhantomJS", "dygraphs", "gapminder", "hrbrthemes",
-                  "geomtextpath", "patchwork")
-
+# zam_packages <- c("tidyverse", "here", "gifski", "gt","gtsummary","gghighlight","stringi","DT", "ggthemes","ggridges","viridis",
+#                   "psych","labelled","readxl", "skimr","sjlabelled","sjstats","sjPlot", "sjmisc","readr","ggrepel","openxlsx",
+#                   "sysfonts","scales","magrittr","knitr","lubridate","Hmisc","haven","tidyr","reshape2","DescTools","extrafont",
+#                   "patchwork", "extrafontdb", "ggtext", "geomtextpath","zoo","psych","cowplot","kableExtra","ztable","pheatmap",
+#                   "RColorBrewer", "data.table", "d3heatmap","hablar", "gganimate", "PhantomJS", "dygraphs", "gapminder", "hrbrthemes",
+#                   "geomtextpath", "patchwork")
+# 
 
 
 
@@ -229,5 +229,7 @@ vline8 <- 2020-10-01
 # functions ---- 
 
 
-
+library("remotes")
+remotes::install_gitlab("dickoa/rgeoboundaries")
+remotes::install_github("wmgeolab/rgeoboundaries")
 

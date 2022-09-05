@@ -1,6 +1,123 @@
 #Load Packages
-
 source("scripts/r prep2.r")
+
+
+
+#'*Malaria Incidence Maps*
+mal.inc <- read_xls("C:/Users/NyimbiliShida/Documents/MSI/GIS & Visuals/R Data/Data PMI/Nchelenge(monthly)_2014-2022.xls")
+mal.inc  <- mal.inc  %>%
+  mutate(month_chr = str_sub(periodname,
+                             start=1,
+                             end=nchar(periodname)-5),
+         month = factor(month_chr,
+                        levels=c("January","February","March","April","May","June","July","August","September","October","November","December")),
+         month_code = as.numeric(month), 
+         year = str_sub(periodname, 
+                        start=nchar(periodname)-4,
+                        end=nchar(periodname)),
+         monyr = paste(month_code, year, sep="-"),
+         mnthyr = my(monyr))
+
+names(mal.inc)
+
+mal.inc1 <- mal.inc %>%
+  select(2, 8, 27) %>%
+  na.omit()
+
+mal.inc1
+
+mal.inc1 <- mal.inc1 %>%
+  rename(ogunt = 1,
+         mal.incr  = 2,
+         yr=3) %>%
+  mutate(mal.incp=mal.incr/100)
+
+mal.inc1
+
+mal.inc1 <- mal.inc1 %>% 
+  gather(key = subpop , value = rate, c(mal.incp))
+
+mal.inc1
+
+  
+zam.boundary <- geoboundaries(country = "Zambia"
+                     , adm_lvl = 2) %>% 
+  select(shapeName)
+
+zam.boundary
+
+zam.boundary1 <- zam.boundary %>%
+  select(1, 2) %>%
+  na.omit()
+
+zam.boundary1
+
+zam.boundary2 <- filter(zam.boundary1, shapeName == 'Nchelenge')
+
+names(zam.boundary2)
+
+
+# zam.boundary$shapeName <- recode(zam.boundary$shapeName
+#                         , "North Western" = "Northwestern")         #Correcting name so that they match
+
+map_colors <- carto_pal(name = "Burg")
+
+
+mal.inc2 <- mal.inc1 %>%
+  group_by(yr,ogunt, subpop)
+
+  # summarise(value = mean(rate_fix)) %>% 
+  # mutate(target = case_when(as.numeric(year) == 2018 ~ .79
+  #                           , as.numeric(year) == 2019 ~ .86
+  #                           , as.numeric(year) == 2020 ~ .9
+  #                           , as.numeric(year) == 2021 ~ .95))
+
+
+
+mal.inc2 <- left_join(mal.inc2
+                       , zam.boundary2
+                       , by = c("ogunt" = "shapeName")) %>%
+  sf::st_as_sf()
+
+mal.inc2
+
+
+ggplot(mal.inc2, aes(geometry = geometry, fill = rate)) +
+  geom_sf()+
+  #geom_sf_text(aes(label = ogunt), size = 4) +
+  facet_wrap(~yr) +
+  scale_fill_carto_c(name="Proportion of\n Malaria incidence"
+                     , palette = "Burg") +
+  labs(x="Longitude", y="Latitude", caption = "Data Source: HMIS \nNote: 2022 Data runs up to June",
+       title = "Proportions of Malaria Incidence rates all ages by year, 2018-2022"
+       , subtitle = "Darker colors represent a higher proportion of incidence rate") +
+  theme_void() +
+  theme(
+        plot.title = element_text(size = 16, hjust=0.5, family="Gill Sans Mt", face="bold"),
+        plot.subtitle = element_text(size = 12, hjust=0.5),
+        plot.caption = element_text(size=11),
+        axis.title.x = element_text(size = 12, family="Gill Sans Mt", face="bold"),
+        axis.title.y = element_text(size = 12, family="Gill Sans Mt", face="bold"),
+        axis.text.x = element_text(size = 8),
+        axis.text.y = element_text(size = 10),
+        legend.text = element_text(size = 12),
+        legend.title=element_blank(),
+        legend.position="right",
+        strip.text=element_text(size=14, family="Gill Sans Mt"))
+
+##interactive map  
+# zam.boundary2 %>%
+#   leaflet() %>%
+#   addTiles() %>%
+#   addPolygons(label = zam.boundary2$shapeName)
+
+
+ggsave("C:/Users/NyimbiliShida/Documents/MSI/GIS & Visuals/R Data/Visuals Exports/24.08.22/iNcidence rates2.png",
+       device="png",
+       type="cairo",
+       height = 6.5,
+       width = 13)
+
 
 #'*Provincial Rainfall and Malaria Confirmed Cases*
 rnf_malprov <- read_xlsx("data/Malaria/Provincial rainfall.xlsx")
@@ -808,10 +925,10 @@ inc <- ggplot(malin,aes(x=year))+
   geom_rect(data=iccm, aes(NULL, NULL, xmin=start, xmax=end),
             ymin=0,ymax=25000, size=0.6, fill=zamOrange, alpha=0.2, lty="twodash") +
   geom_vline(xintercept = c(cm2, cm3,cm4,cm5),color=c("#198a00ff","#198a00ff",zamOrange,"#198a00ff"),
-             lty=c("solid", "solid","solid", "solid") ,size=3, alpha=0.5) +
+             lty=c("solid", "solid","twodash", "solid") ,size=3, alpha=0.5) +
   scale_y_continuous(labels=comma,sec.axis = sec_axis(trans = ~ .*0.004, labels=comma, name = "Rainfall(mm)"))+
   scale_x_date(date_labels="%b %Y",date_breaks="6 months")+
-  labs(fill="Legend", caption="Data Source: HMIS, Vector Link, WFP- Rainfall",title = "Malaria Incidence Rates & All Interventions" , x="Months", y="Rate(%)") +
+  labs(fill="Legend", caption="Data Source: HMIS, Vector Link, WFP- Rainfall",title = "Malaria Incidence Rates & All Interventions" , x="Months", y="Malaria Incidence Rate(%)") +
   scale_fill_manual(values = c("Actelic Insecticide"="#002A6C", "Fludora Insecticide"=rich_black, 
                                "Sumishield Insecticide"="#BA0C2F", "Incidence all ages"= "#CFCDC9", "ICCM Campaigns"= zamOrange)) +
   # scale_color_manual(values = c("Incidence rate under5"="#BA0C2F", "Incidence all ages"="#205493", 
