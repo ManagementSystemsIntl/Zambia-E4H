@@ -1,7 +1,76 @@
 #Load Packages
 source("scripts/r prep2.r")
 
+#'*St PAULS MISSION SEVERE AND MALRIA DEATHS*
+iccm <- read_xls("C:/Users/NyimbiliShida/Documents/MSI/GIS & Visuals/R Data/Data PMI/iccm.xls")
+st.pauls <- read_xls("C:/Users/NyimbiliShida/Documents/MSI/GIS & Visuals/R Data/Data PMI/stpaulsmission.xls")
+st.pauls  <- st.pauls  %>%
+  mutate(month_chr = str_sub(periodname,
+                             start=1,
+                             end=nchar(periodname)-5),
+         month = factor(month_chr,
+                        levels=c("January","February","March","April","May","June","July","August","September","October","November","December")),
+         month_code = as.numeric(month), 
+         year = str_sub(periodname, 
+                        start=nchar(periodname)-4,
+                        end=nchar(periodname)),
+         monyr = paste(month_code, year, sep="-"),
+         mnthyr = my(monyr))
 
+names(st.pauls)
+
+st.pauls1 <- st.pauls %>%
+  select(2,3,9) %>%
+  na.omit()
+
+st.pauls1
+
+
+st.pauls2 <- st.pauls1 %>%
+  rename(severe = 1,
+         deaths  = 2,
+         mnthyr=3)
+
+st.pauls2
+
+iccm$start <- as.Date(iccm$start) 
+iccm$end <- as.Date(iccm$end)
+
+start <- as.Date(NULL)
+end <- as.Date(NULL)
+
+dt <- as.Date("2017-10-01")
+dt1 <- as.Date("2018-10-01")
+dt2 <- as.Date("2020-12-01")
+dt3 <- as.Date("2014-10-01")
+
+st_plt <- ggplot(st.pauls2) +
+  geom_area(data=st.pauls2, aes(x=mnthyr, y=severe, fill ="severe"), alpha=.3, position = position_dodge()) +
+  geom_area(data=st.pauls2, aes(x=mnthyr, y=deaths, fill ="deaths"), alpha=.9, position = position_dodge()) +
+  geom_rect(data=iccm, aes(NULL, NULL, xmin=start, xmax=end, fill=campaign),
+            ymin=0,ymax=272, size=0.6, alpha=0.2, lty="dotted") +
+  labs(fill="Legend:", title="Severe Malaria and deaths Cases for St Pauls Mission Hospital, 2014-2022",
+       x="",
+       y="Malaria and Deaths Cases", caption = "Data Source: HMIS & PAMO") +
+  scale_y_continuous(breaks = c(0, 68,136,204,272)) +
+  scale_fill_manual(values=c(usaid_red, medium_grey, zamOrange), labels=c("Malaria Death Cases", "ICCM Campaigns","Reported Severe Malaria")) + 
+  scale_x_date( date_labels="%b %y",date_breaks="6 month", limits = NULL) + basey +
+  
+  geom_vline(xintercept = c(dt, dt1, dt2, dt3) ,color=c(light_grey,"#198a00ff", "#198a00ff", zamGreen) ,lty=c("solid","dotted", "dotted", "dotted") ,size=c(2,2,2,2), alpha=1)+
+  annotate("text", x = dt, y = 0, label = substitute(paste(bold('Integrated community case management'))), size=4, angle=90, hjust =-0.3, vjust=-1, color="black")+
+  annotate("text", x = dt1, y = 0, label = substitute(paste(bold('ITNS Mass Dist.Campaigns'))), size=4, angle=90, hjust =-1, vjust=-0.7, color="#198a00ff")+
+  annotate("text", x = dt2, y = 0, label = substitute(paste(bold('ITNS Mass Dist.Campaigns'))), size=4, angle=90, hjust =-1, vjust=-0.5, color="#198a00ff") +
+  annotate("text", x = dt3, y = 0, label = substitute(paste(bold('ITNS Mass Dist.Campaigns'))), size=4, angle=90, hjust =-1, vjust=-0.5, color="#198a00ff")
+
+
+
+st_plt
+
+ggsave("C:/Users/NyimbiliShida/Documents/MSI/GIS & Visuals/R Data/Visuals Exports/24.08.22/stPauls.png",
+       device="png",
+       type="cairo",
+       height = 6.5,
+       width = 13)
 
 #'*Malaria Incidence Maps*
 mal.inc <- read_xls("C:/Users/NyimbiliShida/Documents/MSI/GIS & Visuals/R Data/Data PMI/Nchelenge(monthly)_2014-2022.xls")
@@ -88,18 +157,18 @@ ggplot(mal.inc2, aes(geometry = geometry, fill = rate)) +
   facet_wrap(~yr) +
   scale_fill_carto_c(name="Proportion of\n Malaria incidence"
                      , palette = "Burg") +
-  labs(x="Longitude", y="Latitude", caption = "Data Source: HMIS \nNote: 2022 Data runs up to June",
+  labs(x="", y="", caption = "Data Source: HMIS \nNote: 2022 Data runs up to June",
        title = "Proportions of Malaria Incidence rates all ages by year, 2018-2022"
-       , subtitle = "Darker colors represent a higher proportion of incidence rate") +
+       , subtitle = "Darker colors represent a higher proportion of incidence rate") + #for faceted and xy labels include x="Longitude", y="Latitude", +faceted
   theme_void() +
-  theme(
+  theme(plot.title.position = "plot",
         plot.title = element_text(size = 16, hjust=0.5, family="Gill Sans Mt", face="bold"),
         plot.subtitle = element_text(size = 12, hjust=0.5),
         plot.caption = element_text(size=11),
-        axis.title.x = element_text(size = 12, family="Gill Sans Mt", face="bold"),
-        axis.title.y = element_text(size = 12, family="Gill Sans Mt", face="bold"),
-        axis.text.x = element_text(size = 8),
-        axis.text.y = element_text(size = 10),
+        # axis.title.x = element_text(size = 12, family="Gill Sans Mt", face="bold"),
+        # axis.title.y = element_text(size = 12, family="Gill Sans Mt", face="bold"),
+        # axis.text.x = element_text(size = 8),
+        # axis.text.y = element_text(size = 10),
         legend.text = element_text(size = 12),
         legend.title=element_blank(),
         legend.position="right",
@@ -233,6 +302,75 @@ ggsave("C:/Users/NyimbiliShida/Documents/MSI/GIS & Visuals/R Data/Visuals Export
        height = 8.5,
        width = 15)
 
+#'*Luapula Province*
+rnf_malprov <- read_xlsx("data/Malaria/Provincial rainfall.xlsx")
+names(rnf_malprov)
+rnf_malprov
+
+rnf_malprov$mnthyr <- as.Date(rnf_malprov$mnthyr)
+
+rnf_malprov
+
+
+
+rnf_malprov <- rnf_malprov %>%
+  rename(prov = 1,
+         mal.cases = 2,
+         mnthyr = 3,
+         rainfall = 4)
+
+rnf_malprov
+
+
+rnf_malprov1 <- rnf_malprov %>% 
+  gather(key = subpop , value = rate, c(mal.cases))
+
+rnf_malprov1
+
+
+# rnf_malprov2 <- rnf_malprov1 %>%
+#   select(1, 2) %>%
+#   na.omit()
+
+rnf_malprov1
+
+rnf_malprov2 <- filter(rnf_malprov1, prov  == 'Luapula')
+
+rnf_malprov2
+
+scalefactor <- max(rnf_malprov$mal.cases) / max(rnf_malprov$rainfall)
+
+ggplot(rnf_malprov2, aes(x = mnthyr, y = rate, group = subpop, colour = subpop)) +
+#ggplot(rnf_malprov,aes(x = mnthyr))+
+  #geom_line(alpha=.6, size=.4) +
+  # geom_point(alpha=.6, size=.4) + 
+  stat_smooth(method = "loess", size = 1, se=F) + geom_point(size=1, colour=usaid_red) +
+  #geom_smooth(aes(y=mal.cases, colour="mal.cases"), method="lm", size = .4, se=F) +
+  #geom_point(aes(y=mal.cases, colour="mal.cases"),alpha=.6, size=.2, colour=usaid_red) +
+  geom_smooth(aes(y=rainfall*scalefactor, colour="rainfall"), method=loess, size = 1, se=F) +
+  geom_point(aes(y=rainfall*scalefactor, colour="rainfall"),alpha=.6, size=1) +
+  scale_x_date(date_labels="%Y",date_breaks = "1 year") +
+  scale_y_continuous(name ="Confirmed Malaria Cases", labels=comma,
+                     limits=c(0,150000),
+                     breaks = c(0,50000,100000,150000),
+                     sec.axis=sec_axis(trans = ~./scalefactor, name = "Rainfall (mm)")) +
+  labs(x ="", y="",
+       caption = "Data Source: \nWFP - Rainfall \nHMIS - Malaria Cases",
+       title="Luapula Province confirmed Malaria cases \n and amount of rainfall received per month, 2014-2022") +
+  facet_wrap(~prov) + faceted +
+  theme(axis.line.y.right = element_line(color = usaid_blue),
+        axis.ticks.y.right = element_line(color = usaid_blue),
+        axis.text.y.right = element_text(color = usaid_blue),
+        axis.title.y.right = element_text(color = usaid_blue)) +
+  basey +
+  scale_colour_manual(values = c("mal.cases"=usaid_red,"rainfall"=usaid_blue),labels = c("Confirmed Malaria Cases", "Rainfall")) +
+  plot_layout(guides = "collect")
+
+ggsave("C:/Users/NyimbiliShida/Documents/MSI/GIS & Visuals/R Data/Visuals Exports/24.08.22/Province Luapula.png",
+       device="png",
+       type="cairo",
+       height = 6.5,
+       width = 11)
 
 
 #'*Malaria 2022 and rainfall*
@@ -330,95 +468,67 @@ ggsave("C:/Users/NyimbiliShida/Documents/MSI/GIS & Visuals/R Data/Visuals Export
 
 
 #'*PT ITNS*
-source("scripts/r prep.r")
-library(gganimate)
-ip <- read_xlsx("C:/Users/NyimbiliShida/Documents/MSI/GIS & Visuals/R Data/Data PMI/IPTITNPreg.xlsx")
-ipn <- read_xlsx("C:/Users/NyimbiliShida/Documents/MSI/GIS & Visuals/R Data/Data PMI/IPTITNPreg.xlsx")
+source("scripts/r prep2.r")
 
-# ip <- melt(data = ip, id.vars = c("periodname","IPT_1ANC", "ITN_Preganant_Women","Malaria_In_Pregnancy"), variable.name = "periodname")
-
-ipn1 <- ipn %>% select(1, 5)
-
-ipn1
-
-ip <- melt(ip[c(1, 2, 3, 4)], id="period")
-
-ipn1$period <- as.Date(ipn1$period) 
-ip$period <- as.Date(ip$period)  
-
-ip1 <- ip[order(ip$period), ]
-
-ip1
-ipn1
-###plot area plot
-ot_plt <- ggplot(ip1,aes(x=period, y=value, fill=variable))+
-  geom_bar(alpha=0.8, color="#CFCDC9",position ='dodge', stat = "identity") +
-  geom_smooth(ipn1, mapping=aes(x=period, y=Malaria_In_Pregnancy/4, fill="Malaria In Pregnancy"),method=loess, se=F, size=1, color=rich_black) +
-  #geom_point(ipn1, mapping=aes(x=period, y=Malaria_In_Pregnancy/4), size=2, color="#212721", fill="#212721") +
-  scale_x_date(date_labels="%b %y",date_breaks="3 months") +
-  scale_y_continuous(labels=comma, sec.axis=sec_axis(trans = ~ .*4, name = "Malaria in Pregnancy")) +
-  labs(fill="Legend:", caption= "Data Source: HMIS \n Vector Link - Data is available starting 2018-21", title="Malaria in pregnancy, IPT and ITN provided to pregnant woman at ANC coverage visit - Nchelenge", x="Period", y="IPT Proportions(%)") +
-  scale_fill_manual(values = c("#002A6C","#AEB6BF","#BA0C2F","#EF7D00","#EF7D00")) + base
-
-ot_plt
+ipt.itn <- read_xlsx("C:/Users/NyimbiliShida/Documents/MSI/GIS & Visuals/R Data/Data PMI/IPTITNPreg.xlsx")
+ipt.itn  <- ipt.itn  %>%
+  mutate(month_chr = str_sub(periodname,
+                             start=1,
+                             end=nchar(periodname)-5),
+         month = factor(month_chr,
+                        levels=c("January","February","March","April","May","June","July","August","September","October","November","December")),
+         month_code = as.numeric(month), 
+         year = str_sub(periodname, 
+                        start=nchar(periodname)-4,
+                        end=nchar(periodname)),
+         monyr = paste(month_code, year, sep="-"),
+         mnthyr = my(monyr))
 
 
+names(ipt.itn)
 
-ot_plt
+ipt.itn1 <- ipt.itn %>%
+  select(2, 3, 4, 5,9, 11) %>%
+  na.omit()
 
-ot_plt
+ipt.itn1
+
+ipt.itn2 <- ipt.itn1 %>%
+  rename(iptp1p = 1,
+         iptp3p  = 2,
+         itnp=3,
+         mal.preg=4,
+         yr=5,
+         mth=6)
+
+ipt.itn2
+
+ipt.itn3 <- ipt.itn2 %>% 
+  gather(key = subpop , value = rate, c(iptp1p,iptp3p,itnp))
+
+ipt.itn3
+
+scalefactor <- max(ipt.itn2$itnp) / max(ipt.itn2$mal.preg)
+
+ipt.itn_plt <- ggplot(ipt.itn3,aes(x=mth, y=rate, fill=subpop))+
+  geom_bar(color="#CFCDC9",position ='dodge', stat = "identity") +
+  scale_x_date(date_labels="%b-%y",date_breaks="6 months") + scale_fill_manual(values = c(usaid_palette))
+ipt.itn_plt
+
+ipt.itn_plt + geom_smooth(ipt.itn2,mapping=aes(x=mth, y=mal.preg*scalefactor, fill="mal.preg"), method=loess, size = .6, se=F, colour=zamOrange) +
+  scale_y_continuous(name ="ITNs & IPT Proportions",
+                     sec.axis=sec_axis(trans = ~./scalefactor, name = "Malaria in pregnancy")) +
+  labs(fill="Legend:", caption= "Data Source: HMIS", 
+       title="Malaria in pregnancy, IPT and ITN provided to pregnant woman at 1st ANC coverage visit", 
+       x="", y="ITNs & IPT Proportions") +
+  scale_fill_manual(values = c(usaid_palette),
+                    labels=c("IPTp1", "IPTp3", "ITNs", "Malaria in preganancy")) + basey
+
 ggsave("C:/Users/NyimbiliShida/Documents/MSI/GIS & Visuals/R Data/Visuals Exports/24.08.22/iptitn.png",
        device="png",
        type="cairo",
        height = 7,
-       width = 12)
-
-#plot smooth loess
-
-ot_plt <- ggplot(ip1,aes(x=periodname))+
-  # geom_line(aes(y=IPT_1ANC, color="IPT 1ANC"), size=1) + 
-  geom_point(aes(y=IPT_1ANC, color="IPT 1ANC"), size=3) +
-  geom_smooth(aes(y=IPT_1ANC, color="IPT 1ANC"), method = loess, size = 1.7, se=FALSE) +
-  # geom_line(aes(y=ITN_Preganant_Women, color="ITN Preganant Women"), size=1)+
-  geom_point(aes(y=ITN_Preganant_Women, color="ITN Preganant Women"), size=3)+
-  geom_smooth(aes(y=ITN_Preganant_Women, color="ITN Preganant Women"), method = loess, size = 1.7, se=FALSE) +
-  # geom_line(aes(y=Malaria_In_Pregnancy, color="Malaria In Pregnancy"), size=1)+
-  geom_point(aes(y=Malaria_In_Pregnancy, color="Malaria In Pregnancy"), size=3)+
-  geom_smooth(aes(y=Malaria_In_Pregnancy, color="Malaria In Pregnancy"), method = loess, size = 1.7, se=FALSE) +
-  scale_x_date(date_labels="%b %Y",date_breaks="5 months")+
-  scale_y_continuous(labels=comma) +
-  labs(color="Legend:", title="Malaria in pregnancy, IPT and ITN provided to pregnant woman at ANC coverage visit - Nchelenge", x="Period", y="Count") + 
-  scale_color_manual(values = c("IPT 1ANC"="#002A6C", "ITN Preganant Women"="#AEB6BF", "Malaria In Pregnancy"="#BA0C2F")) + base
-#transition_reveal(periodname) + base
-
-ot_plt
-# animate(ot_plt, height = 800, width =1000)
-# 
-# anim_save("C:/Users/NyimbiliShida/Documents/MSI/GIS & Visuals/R Data/Visuals Exports/iptitn.gif",
-#           device="gif",
-#           type="cairo",
-#           height = 800,
-#           width = 1000)
-# 
-
-ot_plt
-ggsave("C:/Users/NyimbiliShida/Documents/MSI/GIS & Visuals/R Data/Visuals Exports/iptitn.png",
-       device="png",
-       type="cairo",
-       height = 7,
-       width = 12)
-
-ot_plt <- ggplot(ip1) +
-  geom_line(aes(x=periodname, y=IPT_1ANC, fill="IPT 1st AN"), color="#002A6C", position="dodge", size=1, stat='identity')+
-  geom_line(aes(x=periodname, y=ITN_Preganant_Women, fill="ITN Preganant Women"), position="dodge", color= "#CFCDC9", size=1, stat='identity') +
-  geom_line(aes(x=periodname, y=Malaria_In_Pregnancy, fill="Malaria In Pregnancy"), color="#A7C6ED",size=1, stat='identity', position="dodge") +
-  scale_color_manual(values=c("#002A6C", "#CFCDC9", "#A7C6ED"))+
-  scale_x_date(date_labels="%b %Y",date_breaks="4 months")+
-  labs(fill="Legend:", title="RDT confirmed overlayed with Malaria diagnostic positivity rate - Nchelenge",
-       x="Period",
-       y="Diagnostic Positivity(%)") + base
-ot_plt
-
+       width = 13)
 
 
 
@@ -434,15 +544,15 @@ ot1 <- ot[order(ot$Periods), ]
 ot1
 #plot
 ot_plt <- ggplot(ot1, fill=positive) +
-  geom_line(aes(x=Periods, y=Adherence_to_Negative_Test_Results), color="#205493", size=1) + 
-  geom_point(aes(x=Periods, y=Adherence_to_Negative_Test_Results), size=2,  color="#205493") +
-  geom_line(aes(x=Periods, y=Adherence_to_Positive_Test_Results), color="#BA0C2F", size=1) +
-  geom_point(aes(x=Periods, y=Adherence_to_Positive_Test_Results), size=2,  color="#BA0C2F")+
-  geom_line(aes(x=Periods, y=Testing_Prior_to_Treatment_Score), colour="#F5B041",size=1) +
-  geom_point(aes(x=Periods, y=Testing_Prior_to_Treatment_Score), size=2,  color="#F5B041")+
-  geom_line(aes(x=Periods, y=Clinical_Observation_Overall), size=1,  color="#C5E2F7",lty="longdash") +
-  geom_line(aes(x=Periods, y=RDT100_RDT_Observation), size=1, color="orange", lty="longdash") +
-  geom_line(aes(x=Periods, y=Overall_Laboratory_Score), color="#56E78E", size=1.5) + 
+  geom_smooth(aes(x=Periods, y=Adherence_to_Negative_Test_Results),method = 'loess', color="#205493", size=1) + 
+  geom_point(aes(x=Periods, y=Adherence_to_Negative_Test_Results),method = 'loess', size=2,  color="#205493") +
+  geom_smooth(aes(x=Periods, y=Adherence_to_Positive_Test_Results),method = 'loess', color="#BA0C2F", size=1) +
+  geom_point(aes(x=Periods, y=Adherence_to_Positive_Test_Results),method = 'loess', size=2,  color="#BA0C2F")+
+  geom_smooth(aes(x=Periods, y=Testing_Prior_to_Treatment_Score),method = 'loess', colour="#F5B041",size=1) +
+  geom_point(aes(x=Periods, y=Testing_Prior_to_Treatment_Score),method = 'loess', size=2,  color="#F5B041")+
+  geom_smooth(aes(x=Periods, y=Clinical_Observation_Overall),method = 'loess', size=1.5,  color="#C5E2F7",lty="longdash") +
+  geom_smooth(aes(x=Periods, y=RDT100_RDT_Observation),method = 'loess', size=1.5, color="orange", lty="longdash") +
+  geom_smooth(aes(x=Periods, y=Overall_Laboratory_Score),method = 'loess', color="#56E78E", size=1.5) + 
   # scale_color_manual(values=c("#002A6C", "#CFCDC9", "#A7C6ED", "#A7C6ED", "#A7C6ED", "#A7C6ED"))+
   labs(fill="Legend:", title="RDT confirmed overlayed with Malaria diagnostic positivity rate - Nchelenge",
        x="Period",
@@ -572,23 +682,26 @@ indens$mnth <- as.Date(indens$mnth)
 indens1 <- indens[order(indens$mnth), ]
 
 indens1
-mutate()
+scalefactor <- max(indens1$funestus) / max(indens1$Rainfall)
 
-
-id_plt <- ggplot(indens1, aes(x=mnth, y=gambiae, fill = Site)) +
+id_plt <- ggplot(indens1, aes(x=mnth, y=funestus, fill = Site)) +
   geom_bar(stat="identity", position = "dodge") + 
   #geom_smooth( aes(x=mnth, y=Rainfall, fill="Rainfall"), method=loess, width=0.4, colour="orange", alpha=0.9, size=0.9, se=F) +
   #geom_point(indens1, mapping=aes(x=mnth, y=Rainfall/1), width=0.4, fill="orange",color="orange", alpha=0.9, size=1.5) +
   #scale_y_continuous(sec.axis = sec_axis(trans = ~ .*1, labels=comma, name = "Rainfall(mm)"))+
   scale_x_date(date_labels="%b %y",date_breaks="3 months") + 
   scale_fill_manual(values=c("orange",light_blue,"#BA0C2F")) +
-  labs(fill="Legend:", caption="Data Source: \n Vector Link - Data only available starting from 2019",title="The Indoor Resting Density An.gambiae S.I pattern \n has been very low since June 2019, expect for the perod August 2020 - June 2021 at both sites",
+  labs(fill="Legend:", caption="Data Source: \n Vector Link - Data only available starting from 2019",title="The Indoor Resting Density An.funestus S.I \n tends to rise each year from August to October begining 2019",
        x="",
        y="No. of vectors per house per night") + base
 
-id_plt
+id_plt + geom_line( aes(x=mnth, y=Rainfall*scalefactor, fill="Rainfall"), method=loess, width=0.4, colour=light_blue, alpha=0.8, size=0.9, se=F) + 
+  geom_point( aes(x=mnth, y=Rainfall*scalefactor, fill="Rainfall"), colour=light_blue, alpha=0.5, size=2.5)+
+  scale_y_continuous(sec.axis = sec_axis(trans = ~ ./scalefactor, labels=comma, name = "Rainfall(mm)")) +
+  scale_fill_manual(values=c(zamOrange,light_blue,usaid_blue),
+                    labels=c("Manchene-Control Site", "Rainfall", "Shikapande-Intervention"))
 
-ggsave("C:/Users/NyimbiliShida/Documents/MSI/GIS & Visuals/R Data/Visuals Exports/24.08.22/resting density an An.gambiae.png",
+ggsave("C:/Users/NyimbiliShida/Documents/MSI/GIS & Visuals/R Data/Visuals Exports/24.08.22/resting density an An.funestus.png",
        device="png",
        type="cairo",
        height = 6,
@@ -924,8 +1037,8 @@ inc <- ggplot(malin,aes(x=year))+
             ymin=0,ymax=15000, colour="#CFCDC9", size=0.6, alpha=0.6, lty="twodash") +
   geom_rect(data=iccm, aes(NULL, NULL, xmin=start, xmax=end),
             ymin=0,ymax=25000, size=0.6, fill=zamOrange, alpha=0.2, lty="twodash") +
-  geom_vline(xintercept = c(cm2, cm3,cm4,cm5),color=c("#198a00ff","#198a00ff",zamOrange,"#198a00ff"),
-             lty=c("solid", "solid","twodash", "solid") ,size=3, alpha=0.5) +
+  geom_vline(xintercept = c(cm2, cm3,cm5),color=c("#198a00ff","#198a00ff",light_blue),
+             lty=c("solid", "solid", "solid") ,size=3, alpha=0.5) +
   scale_y_continuous(labels=comma,sec.axis = sec_axis(trans = ~ .*0.004, labels=comma, name = "Rainfall(mm)"))+
   scale_x_date(date_labels="%b %Y",date_breaks="6 months")+
   labs(fill="Legend", caption="Data Source: HMIS, Vector Link, WFP- Rainfall",title = "Malaria Incidence Rates & All Interventions" , x="Months", y="Malaria Incidence Rate(%)") +
@@ -936,31 +1049,31 @@ inc <- ggplot(malin,aes(x=year))+
   base +
   # transition_reveal(year)
   # annotate("text", x = cm, y = 0, label = substitute(paste(bold('IRS'))), size=4, color="white", angle=90, hjust =-12, vjust=-0.1) +
-  annotate("text", x = cm1, y = 0, label = substitute(paste(bold('IRS'))), size=4, color="white",  
+  annotate("text", x = cm1, y = 0, label = substitute(paste(bold('IRS'))), size=4, color="black",  
            angle=90, hjust =-12, vjust=-1.4) +
   # annotate("text", x = cm6, y = 0, label = substitute(paste(bold('IRS'))), size=4, color="white",  angle=90, hjust =-12, vjust=-0.1) +
-  annotate("text", x = cm7, y = 0, label = substitute(paste(bold('IRS'))), size=4, color="white",  
+  annotate("text", x = cm7, y = 0, label = substitute(paste(bold('IRS'))), size=4, color="black",  
            angle=90, hjust =-12, vjust=-0.1) +
-  annotate("text", x = cm8, y = 0, label = substitute(paste(bold('IRS'))), size=4, color="white", 
+  annotate("text", x = cm8, y = 0, label = substitute(paste(bold('IRS'))), size=4, color="black", 
            angle=90, hjust =-12, vjust=-0.1) +
-  annotate("text", x = cm9, y = 0, label = substitute(paste(bold('IRS'))), size=4, color="white",  
+  annotate("text", x = cm9, y = 0, label = substitute(paste(bold('IRS'))), size=4, color="black",  
            angle=90, hjust =-12, vjust=-0.1) +
-  annotate("text", x = cm10, y = 0, label = substitute(paste(bold('IRS'))), size=4, color="white", 
+  annotate("text", x = cm10, y = 0, label = substitute(paste(bold('IRS'))), size=4, color="black", 
            angle=90, hjust =-12, vjust=-0.3) +
-  annotate("text", x = cm11, y = 0, label = substitute(paste(bold('IRS'))), size=4, color="white",  
+  annotate("text", x = cm11, y = 0, label = substitute(paste(bold('IRS'))), size=4, color="black",  
            angle=90, hjust =-12, vjust=-0.1) +
-  annotate("text", x = cm2, y = 0, label = substitute(paste(bold('ITNS Mass Dist.Campaigns:Oct'))), size=4, 
+  annotate("text", x = cm2, y = 0, label = substitute(paste(bold('ITNS Mass Dist.Campaigns:Oct'))), size=3.5, 
            angle=90, hjust =-1.1, vjust=-0.25) +
   annotate("text", x = cm3, y = 0, label = substitute(paste(bold('ITNS Mass Dist.Campaigns: Dec'))), size=4, 
-           angle=90, hjust =-1.1, vjust=-0.5)+
-  annotate("text", x = cm4, y = 0, label = substitute(paste(bold('Integrated community case management'))), size=4, 
-           angle=90, hjust =-0.8, vjust=1.5) +
+           angle=90, hjust =-1.1, vjust=1.5)+
+  #annotate("text", x = cm4, y = 0, label = substitute(paste(bold('Integrated community case management'))), size=4, 
+           #angle=90, hjust =-0.8, vjust=1.5) +
   annotate("text", x = cm5, y = 0, label = substitute(paste(bold('Behaviour Change Communication'))), size=4, 
            angle=90, hjust =-1, vjust=-0.5)
 
 
 inc
-ggsave("C:/Users/NyimbiliShida/Documents/MSI/GIS & Visuals/R Data/Visuals Exports/24.08.22/incidence.png",
+ggsave("C:/Users/NyimbiliShida/Documents/MSI/GIS & Visuals/R Data/Visuals Exports/24.08.22/incidenceModified.png",
        plot = inc,
        device="png",
        type="cairo",
@@ -1280,17 +1393,17 @@ ggplot(Mal.mnt.Nch2,aes(x=mnthy))+
   geom_area(aes(y=mal.case, fill="mal.case"), alpha=0.3, color=usaid_blue)+
   geom_rect(data=iccm, aes(NULL, NULL, xmin=start, xmax=end),
             ymin=0,ymax=25000, size=0.6, fill=zamOrange, alpha=0.2, lty="twodash") +
-  geom_area(aes(y=mal.clnc, fill="mal.clnc"), alpha=0.3, color=usaid_blue)+
+  #geom_area(aes(y=mal.clnc, fill="mal.clnc"), alpha=0.3, color=usaid_blue)+
   geom_line(aes(y=rnfl/0.004), method = loess,color=light_blue, alpha=0.9, size=1, se=F) +
   geom_point(aes(y=rnfl/0.004), method = loess,color=light_blue, alpha=9, size=3, se=F)+
-  geom_vline(xintercept = c(cm2, cm3, cm12, cm4,cm5),color=c("#198a00ff","#198a00ff","#198a00ff", zamOrange, zamGreen), lty=c("solid", "solid", "solid", "twodash", "solid") ,size=3, alpha=0.5) +
+  geom_vline(xintercept = c(cm2, cm3, cm12),color=c("#198a00ff","#198a00ff","#198a00ff"), lty=c("solid", "solid", "solid") ,size=3, alpha=0.5) +
   # geom_point(aes(y=Malaria_Confirmed_Cases, color="Malaria_Confirmed_Cases"))+
   scale_x_date(date_labels="%b %y",date_breaks="6 months") +
   scale_y_continuous(labels=comma,sec.axis = sec_axis(trans = ~ .*0.004, labels=comma, name = "Rainfall(mm)"))+
   scale_fill_manual(values = c("Actelic Insecticide"="#002A6C", "Fludora Insecticide"=rich_black, 
-                               "Sumishield Insecticide"="#BA0C2F", "Malaria Confirmed Cases"=light_grey, "Malaria Clinical Cases"=medium_grey, "ICCM Campaigns"= zamOrange)) +
+                               "Sumishield Insecticide"="#BA0C2F", "Malaria Confirmed Cases"=light_grey, "ICCM Campaigns"= zamOrange)) +
   labs(fill="Legend:", caption="Data Source: HMIS, Vector Link, WFP- Rainfall"
-       , title="Nchelenge Monthly Confirmed Malaria and Clinical  Cases with all Campaigns, 2014-2022",
+       , title="Nchelenge Monthly Confirmed Malaria Cases with vector Control Campaigns, 2014-2022",
        x="",
        y="Confimred Malaria Cases") + base +
   annotate("text", x = cm, y = 0, label = substitute(paste(bold('IRS'))), size=4, color="white", angle=90, hjust =-12, vjust=-0.1) +
@@ -1304,11 +1417,11 @@ ggplot(Mal.mnt.Nch2,aes(x=mnthy))+
   annotate("text", x = cm2, y = 0, label = substitute(paste(bold('ITNS Mass Dist.Campaigns'))), size=4, angle=90, hjust =-2.1, vjust=-0.15) +
   annotate("text", x = cm12, y = 0, label = substitute(paste(bold('ITNS Mass Dist.Campaigns'))), size=4, angle=90, hjust =-2.1, vjust=-0.15) +
   annotate("text", x = cm3, y = 0, label = substitute(paste(bold('ITNS Mass Dist.Campaigns'))), size=4, angle=90, hjust =-2.1, vjust=-0.15)+
-  annotate("text", x = cm4, y = 0, label = substitute(paste(bold('ICCM Campaigns'))), size=4, angle=90, hjust =-2, vjust=1.5) +
-  annotate("text", x = cm5, y = 0, label = substitute(paste(bold('Behaviour Change Communication'))), size=4, angle=90, hjust =-1.5, vjust=-0.5)+
+  # annotate("text", x = cm4, y = 0, label = substitute(paste(bold('ICCM Campaigns'))), size=4, angle=90, hjust =-2, vjust=1.5) +
+  # annotate("text", x = cm5, y = 0, label = substitute(paste(bold('Behaviour Change Communication'))), size=4, angle=90, hjust =-1.5, vjust=-0.5)+
   annotate("text", x = cm, y = 0, label = substitute(paste(bold('Rainfall'))), size=5, color="black", angle=360, hjust =-16.3, vjust=-12.7)
 
-ggsave("C:/Users/NyimbiliShida/Documents/MSI/GIS & Visuals/R Data/Visuals Exports/24.08.22/Both all campaigns.png",
+ggsave("C:/Users/NyimbiliShida/Documents/MSI/GIS & Visuals/R Data/Visuals Exports/24.08.22/No clinical Both all campaigns.png",
        device="png",
        type="cairo",
        height=9,
