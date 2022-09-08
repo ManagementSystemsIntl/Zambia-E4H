@@ -5,7 +5,7 @@ remotes::install_github("AllanCameron/geomtextpath", quiet = T)
 library(geomtextpath)
 
 #get data
-dat_immun <- readxl::read_xls("data/Jan-Mar 2022/Child Health Data_National Level(Monthly).xls")
+dat_immun <- readxl::read_xls("data/01-03 2022/Child Health Data_National Level(Monthly).xls")
 
 glimpse(dat_immun)
 
@@ -54,6 +54,7 @@ dat_immun2 <- dat_immun %>%
          , monyr = paste(month_code, year, sep="-")
          , mnthyr = my(monyr)
   )
+
 
 dat_immun2 <- pivot_longer(dat_immun2
                      , names_to = "subpop"
@@ -677,7 +678,7 @@ ggsave("viz/breastfed within 1 hour.png",
 
 ####Mapping immunizations ----
 
-dat_immun_reg <- readxl::read_xls("data/Jan-Mar 2022/Child Health Data_Provincial Level(Quarterly).xls") 
+dat_immun_reg <- readxl::read_xls("data/01-03 2022/Child Health Data_Provincial Level(Quarterly).xls") 
 
 #clean var names
 library(janitor)
@@ -837,7 +838,7 @@ ggplot(filter(immun_geo, subpop == "imm1")
                      , palette = "Sunset")+
   labs(title = "Proportion of infants fully immunized by region, 2018-2022"
        , subtitle = "Darker colors represent a higher proportion of vaccinated infants") +
-  theme_void()+
+  theme_void()+ faceted +
   theme(plot.title.position = "plot"
         , plot.title = element_text(size = 14)
         , legend.title = element_text(size = 12) 
