@@ -2,11 +2,6 @@
 # Family planning indicators
 # April - June 2022
 
-
-
-
-
-
 source("scripts/r prep2.r")
 
 
@@ -350,7 +345,7 @@ colnames(fam)
                          labels = percent,
                          breaks = c(.2,.4,.6,.8,1)) +
       labs(x ="", y="", caption = "Data Source: HMIS") +labs(x ="", y="", caption = "Data Source: HMIS") +
-      ggtitle("Provincial Coverage of modern family planning ultilization, 2018-2022") +
+      ggtitle("Provincial Coverage of modern family planning utilization, 2018-2022") +
     facet_wrap(~prov, ncol=4) +
     faceted +
     scale_color_manual(values=usaid_blue) + basey
@@ -701,7 +696,7 @@ colnames(fam)
       scale_y_continuous(labels=comma) +
       labs(x="",
            y="",
-           title="Medroxyprogesterone injection DMPA-IM ultilisation has been constant \nsince May 2021 except for the last quarter") +
+           title="Medroxyprogesterone injection DMPA-IM utilisation has been constant \nsince May 2021 except for the last quarter") +
       basey + scale_color_manual(name ="",
                                  values =c(light_blue,light_grey,usaid_blue, usaid_red),
                                  labels = c("20-24yrs","15-19yrs","under 15yrs","abover 25yrs"))

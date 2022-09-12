@@ -8,10 +8,10 @@
 #               "plm", "brms", "rstan", "rstanarm","tidybayes","texreg","gt","gtsummary","huxtable","stargazer", "gsynth",
 #               "panelView", "assertr", "pointblank", "validate", "sandwich", "workflowr", "here", "missForest", "ltm")
 
-# zam_packages <- c("tidyverse", "here", "gt","gtsummary","gghighlight","stringi","DT", "ggthemes","ggridges","viridis",
-#               "psych","labelled","readxl", "skimr","sjlabelled","sjstats","sjPlot", "sjmisc","readr","ggrepel","openxlsx",
-#               "sysfonts","scales","magrittr","knitr","lubridate","Hmisc","haven","tidyr","reshape2","DescTools","extrafont",
-#               "extrafontdb")
+zam_packages <- c("tidyverse", "here", "gt","gtsummary","gghighlight","stringi","DT", "ggthemes","ggridges","viridis",
+               "psych","labelled","readxl", "skimr","sjlabelled","sjstats","sjPlot", "sjmisc","readr","ggrepel","openxlsx",
+               "sysfonts","scales","magrittr","knitr","lubridate","Hmisc","haven","tidyr","reshape2","DescTools","extrafont",
+               "extrafontdb")
 
 # zam_packages2 <- c("tidyverse", "here", 
 #                    "gt","gtsummary",
@@ -20,19 +20,19 @@
 #                    "sysfonts","scales","magrittr","knitr","lubridate","Hmisc","haven","tidyr","reshape2","DescTools","extrafont",
 #                    "extrafontdb")
 
-zam_packages <- c("tidyverse", "here", "gifski", "gt","gtsummary","gghighlight","stringi","DT", "ggthemes","ggridges","viridis",
+# zam_packages <- c("tidyverse", "here", "gifski", "gt","gtsummary","gghighlight","stringi","DT", "ggthemes","ggridges","viridis",
                   "psych","labelled","readxl", "skimr","sjlabelled","sjstats","sjPlot", "sjmisc","readr","ggrepel","openxlsx",
                   "sysfonts","scales","magrittr","knitr","lubridate","Hmisc","haven","tidyr","reshape2","DescTools","extrafont",
                   "patchwork", "extrafontdb", "ggtext", "geomtextpath","zoo","psych","cowplot","kableExtra","ztable","pheatmap",
-                  "RColorBrewer", "data.table", "d3heatmap","hablar", "gganimate", "PhantomJS", "dygraphs", "gapminder", "hrbrthemes",
+                  "RColorBrewer", "data.table","hablar", "gganimate", "PhantomJS", "dygraphs", "gapminder", "hrbrthemes",
                   "geomtextpath", "patchwork")
 
-
+# What's the difference between zam_packages and zam_packages2?
 
 
 # lapply(zam_packages, install.packages, character.only=T)
 
-#lapply(zam_packages, library, character.only=T)
+lapply(zam_packages, library, character.only=T)
 lapply(zam_packages2, library, character.only=T)
 
 # font_import()
