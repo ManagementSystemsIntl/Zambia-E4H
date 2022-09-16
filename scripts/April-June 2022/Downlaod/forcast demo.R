@@ -2,11 +2,16 @@ install.packages("tsibbledata", lib = "C:/R/R-4.1.3/library")
 # install.packages("remotes")
 remotes::install_github("tidyverts/fable")
 
+
+source("scripts/r prep2.r")
+
+
 library(fable)
 library(tsibble)
 library(tsibbledata)
 library(lubridate)
 library(dplyr)
+library(ggplot2)
 aus_retail %>%
   filter(
     State %in% c("New South Wales", "Victoria"),
@@ -26,7 +31,7 @@ bricks <- aus_production %>%
   select(Bricks)
 bricks %>% model(MEAN(Bricks))
 
-ggplot(bricks, aes(x=Quarter, y=Bricks)) + geom_line()
+ggplot(bricks, aes(x=Quarter, y=Bricks)) + geom_line() + basey
 
 
 bricks %>% model(MEAN(Bricks))
@@ -34,9 +39,13 @@ bricks %>% model(SNAIVE(Bricks ~ lag("year")))
 bricks
 
 
+#'*Forcast for Beer Production*
 # Set training data from 1992 to 2006
 train <- aus_production %>%
   filter_index("1992 Q1" ~ "2006 Q4")
+
+train
+
 # Fit the models
 beer_fit <- train %>%
   model(
@@ -44,8 +53,12 @@ beer_fit <- train %>%
     `Naïve` = NAIVE(Beer),
     `Seasonal naïve` = SNAIVE(Beer)
   )
+
+beer_fit
+
 # Generate forecasts for 14 quarters
 beer_fc <- beer_fit %>% forecast(h = 14)
+
 # Plot forecasts against actual values
 beer_fc %>%
   autoplot(train, level = NULL) +
@@ -57,10 +70,11 @@ beer_fc %>%
     y = "Megalitres",
     title = "Forecasts for quarterly beer production"
   ) +
-  guides(colour = guide_legend(title = "Forecast"))
+  guides(colour = guide_legend(title = "Forecast:"))
 
 
 
+#'*Forcast*
 # Re-index based on trading days
 google_stock <- gafa_stock %>%
   filter(Symbol == "GOOG", year(Date) >= 2015) %>%
@@ -87,5 +101,5 @@ google_fc %>%
   labs(y = "$US",
        title = "Google daily closing stock prices",
        subtitle = "(Jan 2015 - Jan 2016)") +
-  guides(colour = guide_legend(title = "Forecast"))
+  guides(colour = guide_legend(title = "Forecast"), size=1.5)
 
