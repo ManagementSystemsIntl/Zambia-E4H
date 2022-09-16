@@ -24,10 +24,11 @@ zam_packages <- c("tidyverse", "here", "gifski", "gt","gtsummary","gghighlight",
                   "psych","labelled","readxl", "skimr","sjlabelled","sjstats","sjPlot", "sjmisc","readr","ggrepel","openxlsx",
                   "sysfonts","scales","magrittr","knitr","lubridate","Hmisc","haven","tidyr","reshape2","DescTools","extrafont",
                   "patchwork", "extrafontdb", "ggtext", "geomtextpath","zoo","psych","cowplot","ztable","pheatmap",
-                  "RColorBrewer", "data.table", "d3heatmap","hablar", "gganimate", "dygraphs", "gapminder", "hrbrthemes",
+                  "RColorBrewer", "data.table", "d3heatmap","pheatmap","hablar", "gganimate", "dygraphs", "gapminder", "hrbrthemes",
                   "geomtextpath", "patchwork", "gridExtra", "grid", "rmarkdown", "forecast", 
                   "backtest", "quantmod", "tseries", "writexl", "ggpubr", "rcartocolor", "remotes", "geodata",
-                  "shiny", "rgeoboundaries", "nasapower", "leaflet", "ggsflabel", "sf", "RSelenium", "netstat", "GGally")
+                  "shiny", "rgeoboundaries", "nasapower", 
+                  "leaflet", "ggsflabel", "sf", "RSelenium", "netstat", "GGally", "calendR")
 
 
 
