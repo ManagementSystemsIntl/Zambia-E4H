@@ -1,6 +1,6 @@
 install.packages("tsibbledata", lib = "C:/R/R-4.1.3/library")
 # install.packages("remotes")
-remotes::install_github("tidyverts/fable")
+remotes::install_github("tidyverts/fable"),
 
 
 source("scripts/r prep2.r")
