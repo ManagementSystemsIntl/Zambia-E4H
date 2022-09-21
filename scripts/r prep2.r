@@ -28,7 +28,8 @@ zam_packages <- c("tidyverse", "here", "gifski", "gt","gtsummary","gghighlight",
                   "geomtextpath", "patchwork", "gridExtra", "grid", "rmarkdown", "forecast", 
                   "backtest", "quantmod", "tseries", "writexl", "ggpubr", "rcartocolor", "remotes", "geodata",
                   "shiny", "rgeoboundaries", "nasapower", 
-                  "leaflet", "ggsflabel", "sf", "RSelenium", "netstat", "GGally", "calendR", "areaplot")
+                  "leaflet", "ggsflabel", "sf", "RSelenium", "netstat", "GGally", "calendR", "areaplot", "hexbin",
+                  "webshot", "oceanis")
 
 
 
