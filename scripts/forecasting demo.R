@@ -143,3 +143,80 @@ ggsave("viz/Apr-Jun 2022/Reproductive Maternal & Neontal/ANC Coverage 1st Trimes
        width=9)
 
 
+
+
+rain <- read_excel("data/Malaria/Updated Nchelenge(monthly)_2014-2022.xls")
+
+rain
+
+rn <- rain %>%
+  select(1,3,23) %>%
+  rlang::set_names(nm=c("period","cases","rain")) %>%
+  as.data.frame() %>%
+  mutate(period = my(period),
+         log_cases=log(cases),
+         log_rain=log(rain),
+         rain_chng=rain - lag(rain),
+         cases_chng = cases-lag(cases),
+         log_cases_chng = log_cases-lag(log_cases),
+         log_rain_chng=log_rain - lag(log_rain))
+
+head(rn)
+str(rn)
+?set_names
+
+ggplot(rn, aes(period)) + 
+  geom_point(aes(y=log_cases)) + 
+  geom_point(aes(y=rain)) +
+  geom_line(aes(y=rain))
+
+l1 <- lm(log_cases ~ rain,
+         data=rn)
+summary(l1)
+
+l2 <- lm(cases_chng ~ rain_chng,
+         data=rn)
+
+summary(l2)
+
+
+ggplot(rn, aes(rain_chng, cases_chng)) + 
+  geom_point() +
+  stat_smooth(method="lm")
+
+ggplot(rn, aes(period)) + 
+  geom_point(aes(y=rain_chng),
+             color="dodgerblue2") +
+#  geom_point(aes(y=cases_chng),
+#             color="firebrick2") +
+  geom_line(aes(y=rain_chng),
+            color="dodgerblue2")  
+#  geom_line(aes(y=cases_chng),
+#            color="firebrick2")
+
+
+ggplot(rn, aes(period)) + 
+#  geom_point(aes(y=log_rain_chng),
+#             color="dodgerblue2") +
+#  geom_point(aes(y=log_cases_chng),
+#               color="firebrick2") +
+  geom_line(aes(y=log_rain_chng),
+            color="dodgerblue2") +  
+  geom_line(aes(y=log_cases_chng),
+            color="firebrick2")
+
+l3 <- lm(log_cases_chng ~ log_rain_chng,
+         data=rn)
+
+library(psych)
+describe(rn)
+
+
+
+
+
+
+
+
+
+
