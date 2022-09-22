@@ -24,9 +24,12 @@ zam_packages <- c("tidyverse", "here", "gifski", "gt","gtsummary","gghighlight",
                   "psych","labelled","readxl", "skimr","sjlabelled","sjstats","sjPlot", "sjmisc","readr","ggrepel","openxlsx",
                   "sysfonts","scales","magrittr","knitr","lubridate","Hmisc","haven","tidyr","reshape2","DescTools","extrafont",
                   "patchwork", "extrafontdb", "ggtext", "geomtextpath","zoo","psych","cowplot","ztable","pheatmap",
-                  "RColorBrewer", "data.table", "d3heatmap","hablar", "gganimate", "dygraphs", "gapminder", "hrbrthemes",
+                  "RColorBrewer", "data.table", "d3heatmap","pheatmap","hablar", "gganimate", "dygraphs", "gapminder", "hrbrthemes",
                   "geomtextpath", "patchwork", "gridExtra", "grid", "rmarkdown", "forecast", 
-                  "backtest", "quantmod", "tseries", "writexl", "ggpubr")
+                  "backtest", "quantmod", "tseries", "writexl", "ggpubr", "rcartocolor", "remotes", "geodata",
+                  "shiny", "rgeoboundaries", "nasapower", 
+                  "leaflet", "ggsflabel", "sf", "RSelenium", "netstat", "GGally", "calendR", "areaplot", "hexbin",
+                  "webshot", "oceanis")
 
 
 
@@ -82,6 +85,7 @@ baseX <- theme(plot.title = element_text(size = 15),
   strip.text=element_text(size=13, family="Gill Sans Mt"))
 
 
+
 baseC <- theme(plot.title = element_text(size = 15),
                plot.caption = element_text(size=12, hjust=0),
                axis.title.x = element_text(size = 10),
@@ -99,8 +103,8 @@ baseC <- theme(plot.title = element_text(size = 15),
 
 basey <- theme(plot.title = element_text(size = 16),
   plot.caption = element_text(size=10),
-  axis.title.x = element_text(size = 10, family="Gill Sans Mt", face="bold"),
-  axis.title.y = element_text(size = 11, family="Gill Sans Mt", face="bold"),
+  axis.title.x = element_text(size = 12, family="Gill Sans Mt", face="bold"),
+  axis.title.y = element_text(size = 12, family="Gill Sans Mt", face="bold"),
   axis.text.x = element_text(size = 10),
   axis.text.y = element_text(size = 10),
   legend.text = element_text(size = 12),
@@ -159,14 +163,32 @@ basem <- theme(plot.title = element_text(size = 15),
 #opts <- options(ggplot2.discrete.color = usaid_palette)
 
 theme_set(base)
+# 
+# faceted <- theme_bw() +
+#   theme(panel.grid.minor.x=element_blank(),
+#         panel.grid.minor.y=element_blank(),
+#         plot.title=element_text(face="bold",
+#           size=16, 
+#           hjust=.5, 
+#           family = "Gill Sans Mt"),
+#         plot.subtitle = element_text(size=12, family="Gill Sans Mt"),
+#         plot.caption=element_text(size=12, family="Gill Sans Mt"),
+#         axis.title=element_text(size=12, family="Gill Sans Mt"),
+#         axis.text=element_text(face="bold", size=10, family="Gill Sans Mt"),
+#         legend.text=element_text(size=14, family="Gill Sans Mt"),
+#         #legend.position = "left",
+#         legend.position = c(.55,.99),
+#         legend.justification = c("left", "top"),
+#         legend.box.just = "left",
+#         strip.text=element_text(size=12, family="Gill Sans Mt"))
+
 
 faceted <- theme_bw() +
-  theme(panel.grid.minor.x=element_blank(),
-        panel.grid.minor.y=element_blank(),
+  theme(
         plot.title=element_text(face="bold",
-          size=16, 
-          hjust=.5, 
-          family = "Gill Sans Mt"),
+                                size=16, 
+                                hjust=.5, 
+                                family = "Gill Sans Mt"),
         plot.subtitle = element_text(size=12, family="Gill Sans Mt"),
         plot.caption=element_text(size=12, family="Gill Sans Mt"),
         axis.title=element_text(size=12, family="Gill Sans Mt"),
