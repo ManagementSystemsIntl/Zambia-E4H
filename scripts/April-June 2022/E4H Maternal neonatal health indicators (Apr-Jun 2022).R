@@ -70,12 +70,12 @@ mat <- gather(mat, key = subpop , value = rate, c(anccp, anc1p,anc1u20p))
 mat$subpop <- factor(mat$subpop, levels = unique(mat$subpop)) # transform into factor
 levels(mat$subpop)
 
-view(mat)
+#view(mat)
 
 ggplot(mat, aes(x = mnthyr, y = rate, group = subpop, colour = subpop)) +
   geom_point(alpha=.6, size=1.9) + 
-  geom_line(size=1) +
-  #geom_smooth(method = loess, size = .8, se=FALSE) +
+  #geom_line(size=1) +
+  geom_smooth(method = loess, size = .8, se=FALSE) +
   scale_y_continuous(limits = c(0,1),
                      labels = percent,
                      breaks = c(.1,.2,.3,.4,.5,.6,.7,.8,.9, 1)) +
