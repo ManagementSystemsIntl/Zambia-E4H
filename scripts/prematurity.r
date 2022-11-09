@@ -132,5 +132,85 @@ ggplot(prema.rate3, aes(x = period, y = rate, group = subRt, colour = subRt)) +
 ggsave("viz/prematurity/prematurity_rate.png",
        device="png",
        type="cairo",
-       height = 6.5,
+       height = 5.5,
        width = 12)
+
+
+#'*Perinatal deaths, Fresh Still & Macerated Stillbirths*
+pr.mr.st <- read_xlsx("data/prematurity/perinatal & stillbirths.xlsx")
+
+pr.mr.st
+
+pr.mr.st$Month <- as.Date(pr.mr.st$Month)
+
+pr.mr.st
+
+
+pr.mr.st2 <- pr.mr.st %>%
+  rename(mth =1,
+         peri.deaths=2,
+         peri.Rt=3,
+         frsh.stlbrth.Rt=4,
+         mcrtd.brth.Rt=5)
+
+pr.mr.st2
+
+#'*Perinatal deaths*
+perinatal.deaths <- pr.mr.st2 %>%
+  select(1,2)
+
+perinatal.deaths
+
+perinatal.deaths <- perinatal.deaths %>% 
+  gather(key = subRt , value = rate, c(peri.deaths))
+
+perinatal.deaths
+
+ggplot(perinatal.deaths, aes(x = mth, y = rate, group = subRt, colour = subRt)) +
+  geom_point(alpha=.6, size=1.9) + 
+  #geom_line(size=1) +
+  geom_smooth(method = loess, size = .8, se=FALSE) +
+  # scale_y_continuous(limits = c(0,1),
+  #                    labels = percent,
+  #                    breaks = c(.1,.2,.3,.4,.5,.6,.7,.8,.9, 1)) +
+  scale_x_date(date_labels="%b %y",date_breaks="3 months") +
+  xlab("") + 
+  ylab("Deaths") +
+  ggtitle("Perinatal deaths ,Jan 2019 - Oct 2022") +
+  scale_color_manual(name ="",
+                     values = usaid_red) + 
+  basey
+
+ggsave("viz/prematurity/perinatal deaths.png",
+       device="png",
+       type="cairo",
+       height = 5.5,
+       width = 11)
+
+#'*Still births*
+pr.mr.st2
+frsh.stillmacerbirth <- pr.mr.st2 %>%
+  select(1,4,5)
+
+frsh.stillmacerbirth
+
+
+frsh.stillmacerbirth <- frsh.stillmacerbirth %>% 
+  gather(key = subRt , value = rate, c(mcrtd.brth.Rt,frsh.stlbrth.Rt))
+
+ggplot(frsh.stillmacerbirth, aes(x = mth, y = rate, group = subRt, fill = subRt)) +
+  geom_area(alpha=0.2, position = position_dodge()) +
+  scale_y_continuous(limits = c(0,8),
+                     breaks = c(0,2,4,6,8)) +
+  xlab("") + 
+  ylab("Rate") +
+  ggtitle("Fresh stillbirth and Macerated stillbirth per 1000 live births ,Jan 2019 - Oct 2022") +
+  scale_x_date(date_labels="%b %y",date_breaks="3 months") +
+  scale_fill_manual(name ="",
+                     values = c(usaid_red,usaid_blue),labels = c("Fresh Stillbirth", "Macerated Stillbirth")) + base
+
+ggsave("viz/prematurity/stillbirths.png",
+       device="png",
+       type="cairo",
+       height = 5.0,
+       width = 10)
