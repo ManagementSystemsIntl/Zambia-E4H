@@ -29,7 +29,7 @@ zam_packages <- c("tidyverse", "here", "gifski", "gt","gtsummary","gghighlight",
                   "backtest", "quantmod", "tseries", "writexl", "ggpubr", "rcartocolor", "remotes", "geodata",
                   "shiny", "rgeoboundaries", "nasapower", 
                   "leaflet", "ggsflabel", "sf", "RSelenium", "netstat", "GGally", "calendR", "areaplot", "hexbin",
-                  "webshot", "oceanis")
+                  "webshot", "oceanis","writexl")
 
 
 
