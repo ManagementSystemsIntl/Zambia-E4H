@@ -187,7 +187,7 @@ ggsave("viz/prematurity/perinatal deaths.png",
        height = 5.5,
        width = 11)
 
-#'*Still births*
+#'*Stillbirths*
 pr.mr.st2
 frsh.stillmacerbirth <- pr.mr.st2 %>%
   select(1,4,5)
