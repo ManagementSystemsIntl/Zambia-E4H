@@ -214,3 +214,74 @@ ggsave("viz/prematurity/stillbirths.png",
        type="cairo",
        height = 5.0,
        width = 10)
+
+
+#'*Causes Perinatal Deaths*
+cod <- read_xlsx("data/prematurity/Perinatal Deaths.xlsx")
+
+# cod$causes <- as.Date(cod$causes)
+
+cod
+cod <- melt(cod[c(1, 2, 3, 4, 5, 6, 7)], id = 'causes')
+
+cod
+
+cod1 <- ggplot(cod, aes(x=causes, y=value, fill=variable), alpha=0.6)+ 
+  geom_bar(alpha=.7,stat="identity", position="dodge") +
+  scale_fill_manual(values=c( usaid_palette6)) +
+  scale_y_continuous(labels=comma) +
+  labs(fill="Legend:", title="Causes of Perinatal Deaths, 2017-2022",
+       x="",
+       y="Number of cases") + base
+
+cod1
+ggsave("viz/prematurity/causes.png",
+       device="png",
+       type="cairo",
+       height = 6.0,
+       width = 13)
+
+#'*Perinatal Deaths by death*
+peri.dth.prv <- read_xlsx("data/prematurity/perinatal deaths by province.xlsx")
+peri.dth.prv  <- peri.dth.prv  %>%
+  mutate(month_chr = str_sub(periodname,
+                             start=1,
+                             end=nchar(periodname)-5),
+         month = factor(month_chr,
+                        levels=c("January","February","March","April","May","June","July","August","September","October","November","December")),
+         month_code = as.numeric(month), 
+         year = str_sub(periodname, 
+                        start=nchar(periodname)-4,
+                        end=nchar(periodname)),
+         monyr = paste(month_code, year, sep="-"),
+         mnthyr = my(monyr))
+
+peri.dth.prv
+colnames(peri.dth.prv)
+
+peri.dth.prv1 <- peri.dth.prv %>%
+  select(2,3,9)
+
+peri.dth.prv1
+
+peri.dth.prv2 <- peri.dth.prv1 %>%
+  rename(prov=2,
+         mnth=3)
+
+peri.dth.prv2
+
+pd <- ggplot(peri.dth.prv2, aes(x=mnth, y=Deaths), alpha=0.5)+ 
+  geom_smooth(method=loess, color=usaid_red, size=0.7,se=F) + 
+  geom_point(color=usaid_red) + faceted +
+  facet_wrap(~prov) + ##scales="free_y" tom allow for independ y axis variables
+  scale_x_date(date_labels="%b",date_breaks="1 month") + 
+  labs(fill="Legend:", title="Perinatal Deaths by Province, 2022",
+       x="",
+       y="Number of Deaths")
+pd
+
+ggsave("viz/prematurity/perinatal deaths.png",
+       device="png",
+       type="cairo",
+       height = 6.0,
+       width = 13)
