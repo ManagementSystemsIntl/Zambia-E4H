@@ -26,10 +26,10 @@ zam_packages <- c("tidyverse", "here", "gifski", "gt","gtsummary","gghighlight",
                   "patchwork", "extrafontdb", "ggtext", "geomtextpath","zoo","psych","cowplot","ztable","pheatmap",
                   "RColorBrewer", "data.table", "d3heatmap","pheatmap","hablar", "gganimate", "dygraphs", "gapminder", "hrbrthemes",
                   "geomtextpath", "patchwork", "gridExtra", "grid", "rmarkdown", "forecast", 
-                  "backtest", "quantmod", "tseries", "writexl", "ggpubr", "rcartocolor", "remotes", "geodata",
+                  "backtest", "quantmod", "tseries", "writexl", "ggplot2", "ggpubr", "rcartocolor", "remotes", "geodata",
                   "shiny", "rgeoboundaries", "nasapower", 
                   "leaflet", "ggsflabel", "sf", "RSelenium", "netstat", "GGally", "calendR", "areaplot", "hexbin",
-                  "webshot", "oceanis","writexl")
+                  "webshot", "oceanis","writexl", "gt", "bigD","formattable", "reactablefmtr", "scales", "rsconnect", "ggplot2")
 
 
 

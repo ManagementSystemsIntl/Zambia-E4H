@@ -1,6 +1,16 @@
 
 source("scripts/r prep2.r")
 
+install.packages("here")
+devtools::install_github("thomasp85/patchwork")
+
+remotes::install_gitlab("dickoa/rgeoboundaries")
+
+install.packages("easypackages")
+
+
+
+
 perinatal.mort <- read_xlsx("data/prematurity/perinatal mortality rate.xlsx")
 perinatal.mort  <- perinatal.mort  %>%
   mutate(year = str_sub(period,
