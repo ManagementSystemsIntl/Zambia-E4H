@@ -34,10 +34,22 @@ zam_packages <- c("tidyverse", "here", "gifski", "gt","gtsummary","gghighlight",
                   "viridis", "labelled","readxl", "skimr","sjlabelled","sjstats","sjPlot", "sjmisc","readr","ggrepel","openxlsx",
                   "scales","magrittr","knitr","lubridate","Hmisc","haven","tidyr","reshape2","DescTools","extrafont",
                   "patchwork", "extrafontdb", "ggtext", "geomtextpath","zoo","psych","cowplot","ztable","pheatmap",
+<<<<<<< HEAD
                   "RColorBrewer", "data.table", "hablar", "gganimate", "dygraphs", "gapminder", "hrbrthemes",
                   "geomtextpath", "patchwork", "gridExtra", "grid", "rmarkdown", "forecast", 
                   "backtest", "quantmod", "tseries", "writexl", "ggpubr", "rcartocolor", "remotes", "geodata",
                   "shiny",  "nasapower", "leaflet", "sf", "RSelenium", "netstat")
+# =======
+#                   "RColorBrewer", "data.table", "d3heatmap","pheatmap","hablar", "gganimate", "dygraphs", "gapminder", "hrbrthemes",
+#                   "geomtextpath", "patchwork", "gridExtra", "grid", "rmarkdown", "forecast", 
+#                   "backtest", "quantmod", "tseries", "writexl", "ggpubr", "rcartocolor", "remotes", "geodata",
+#                   "shiny", "rgeoboundaries", "nasapower", 
+#                   "leaflet", "ggsflabel", "sf", "RSelenium", "netstat", "GGally", "calendR", "areaplot", "hexbin",
+#                   "webshot", "oceanis")
+
+
+
+>>>>>>> 5d58b2188eab8751ccd40f7c2ee6a48fe920438d
 
 # lapply(zam_packages, install.packages, character.only=T)
 
@@ -102,10 +114,6 @@ baseC <- theme(plot.title = element_text(size = 15),
                legend.position="none",
                strip.text=element_text(size=13, family="Gill Sans Mt"))
 
-
-
-
-
 basey <- theme(plot.title = element_text(size = 16),
   plot.caption = element_text(size=10),
   axis.title.x = element_text(size = 12, family="Gill Sans Mt", face="bold"),
@@ -117,9 +125,6 @@ basey <- theme(plot.title = element_text(size = 16),
   legend.position="bottom",
   strip.text=element_text(size=14, family="Gill Sans Mt"),
   legend.background = element_rect(fill = "white", color = "black"))
-
-
-
 
 non_base <- theme_bw() + theme(panel.grid.minor.x=element_blank(),
                            panel.grid.minor.y=element_blank(),
@@ -156,12 +161,6 @@ basem <- theme(plot.title = element_text(size = 15),
   legend.position="bottom",
   strip.text=element_text(size=10, family="Gill Sans Mt"),
   legend.background = element_rect(fill = "white", color = "black"))
-
-
-
-
-
-
 
 #scale_color_discrete <- usaid_palette
 
@@ -205,6 +204,29 @@ faceted <- theme_bw() +
         legend.box.just = "left",
         strip.text=element_text(size=12, family="Gill Sans Mt"))
 
+# create a function for our MSI color scheme
+msi <- function(){
+  require(extrafont)
+  require(extrafontdb)
+  require(ggplot2)
+  list(
+    ggplot2::theme(legend.position = "top"
+                   , legend.background = ggplot2::element_blank()
+                   , legend.title = ggplot2::element_blank()
+                   , legend.key = ggplot2::element_blank()
+                   , axis.ticks = ggplot2::element_blank()
+                   , axis.line = ggplot2::element_blank()
+                   , panel.grid.minor = ggplot2::element_blank()
+                   , panel.grid.major.x = ggplot2::element_line(color = "#CFCDC9")
+                   , panel.grid.major.y = ggplot2::element_blank()
+                   , panel.background = ggplot2::element_blank()
+                   , text=element_text(size = 28, family = "Source Sans Pro", color = "#6C6463")
+#                  , strip.background = ggplot2::element_rect(col = "white")
+    )
+    , ggplot2::scale_fill_manual(values = rep(c("#AC84B4","#5482AB", "#009CA6","#133469", "#9E0000"), 2))
+    , ggplot2::scale_color_manual(values = rep(c("#AC84B4","#5482AB", "#009CA6","#133469", "#9E0000"),2))
+  )
+}
 
 # USAID colors
 

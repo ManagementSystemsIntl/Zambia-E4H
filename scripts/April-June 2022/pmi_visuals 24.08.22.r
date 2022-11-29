@@ -33,6 +33,11 @@ st.pauls2 <- st.pauls1 %>%
 
 st.pauls2
 
+
+ggpairs(st.pauls2, columns = 1:2)
+
+
+
 iccm$start <- as.Date(iccm$start) 
 iccm$end <- as.Date(iccm$end)
 
@@ -124,6 +129,7 @@ zam.boundary1
 zam.boundary2 <- filter(zam.boundary1, shapeName == 'Nchelenge')
 
 names(zam.boundary2)
+zam.boundary2
 
 
 # zam.boundary$shapeName <- recode(zam.boundary$shapeName
@@ -242,6 +248,19 @@ levels(rnf_malprov1$ip)
 # levels(rnf_malprov1$subpop)
 
 rnf_malprov
+
+st.pauls7 <- rnf_malprov %>%
+  select(1,2,4) %>%
+  na.omit()
+
+st.pauls7
+ggcorr(st.pauls7[,-1], method = c("pairwise", "pearson")) 
+
+# ggpairs(rnf_malprov, columns = c(2,4), aes(color=prov, alpha=0.5)) + 
+#   scale_x_continuous(labels=comma) +
+# scale_color_manual(values=c(usaid_palette6, zamGreen, light_blue, light_grey, zamOrange))
+
+
 scalefactor <- max(rnf_malprov$mal.cases) / max(rnf_malprov$rainfall)
 
 # ggplot(rnf_malprov1, aes(x = mnthyr, y = rate, group = subpop, colour = subpop)) +
@@ -534,8 +553,12 @@ ggsave("C:/Users/NyimbiliShida/Documents/MSI/GIS & Visuals/R Data/Visuals Export
 
 
 ###OTTS
+
+library(readxl)
+library(tidyverse)
 ot <- read_xls("C:/Users/NyimbiliShida/Documents/MSI/GIS & Visuals/R Data/Data PMI/OTSS_ALL.xls")
 
+ot
 
 ot$Periods <- as.Date(ot$Periods)  
 
@@ -669,11 +692,12 @@ ggsave("C:/Users/NyimbiliShida/Documents/MSI/GIS & Visuals/R Data/Visuals Export
 
 
 #'*indoor resting density*
+libra
 indens <- read_xls("C:/Users/NyimbiliShida/Documents/MSI/GIS & Visuals/R Data/Data PMI/inddensity.xls")
 
 indens
 
-indens <- melt(data = indens, id.vars = c("mnth","gambia", "Site","funestus", "Rainfall"), variable.name = "mnth")
+indens <- melt(data = indens, id.vars = c("mnth","gambiae", "Site","funestus", "Rainfall"), variable.name = "mnth")
 
 indens
 
@@ -753,7 +777,7 @@ iptm <- read_xls("C:/Users/NyimbiliShida/Documents/MSI/GIS & Visuals/R Data/Data
 
 iptm
 
-iptm_data$period <- as.Date(as.character(iptm$period), format = "%Y")      #Date type in R is always a combination of year, month and day (not necessarily in this order). You cannot have a Date type with only the year
+iptm$period <- as.Date(as.character(iptm$period), format = "%Y")      #Date type in R is always a combination of year, month and day (not necessarily in this order). You cannot have a Date type with only the year
 
 class(period)
 
@@ -761,8 +785,12 @@ sapply(iptm_data, mode)
 
 str(iptm_data)
 
-iptm_long <- melt(iptm_data, id = "period")
-gfg_plot <- ggplot(iptm_long,aes(x = period,y = value, color = variable)) +  geom_line(size=1, alpha=0.5) + geom_point(size=3)+
+iptm_long <- melt(iptm, id = "period")
+
+iptm_long
+
+
+gfg_plot <- ggplot(iptm_long,aes(x = period,y = value, fill = variable)) +  geom_line(size=1, alpha=0.5) + geom_point(size=3)+
   #scale_x_continuous(date_breaks(width="4 months")) +
   scale_color_manual(values=c("#002A6C","#C2113A", "#EF7D00"))+
   scale_y_continuous(labels=comma) +

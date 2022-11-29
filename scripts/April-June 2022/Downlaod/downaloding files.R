@@ -33,7 +33,7 @@ remDr$goBack()
 # remDr$goForward)
 
 # search for an item
-search_box <- remDr$findElement(using = 'id', 'gh-ac')
+search_box <- remDr$findElement(using = 'id', 'i0116')
 search_box$sendKeysToElement(list('Camera', key = 'enter'))
 
 # scroll to the end of the webpage
@@ -97,9 +97,32 @@ remDr <- rs_driver_object$client
 remDr$open()
 
 #navigate to website
-remDr$navigate('https://learning.ulster.ac.uk/?new_loc=%2Fultra%2Fcourses%2F_297097_1%2Fcl%2Foutline')
+remDr$navigate('https://learning.ulster.ac.uk/webapps/blackboard/content/listContent.jsp?course_id=_297097_1&content_id=_4954803_1')
+
+login_object <- remDr$findElement(using = 'link text', 'Login using SSO')$clickElement()
+
+remDr$findElement(using = 'id', 'i0116')$sendKeysToElement(list("nyimbili-s@ulster.ac.uk", key="enter"))
+remDr$findElement(using = 'id', 'i0118')$sendKeysToElement(list("KueEH2K$fuZeCySh", key="enter"))
+
+#Approve on the Phone
+
+Then
+
+#click yes
+
+remDr$findElement(using = 'id', 'idSIButton9')$clickElement()
+
+remDr$findElement(using = 'link text', 'School of Geog & Env Sci - GIS Masters Project (EGM701) Support Area')$clickElement()
+<a href="/webapps/blackboard/content/listContent.jsp?course_id=_297097_1&amp;content_id=_4954803_1"><span style="color:#00CC99;">LIBRARY OF EXAMPLES</span></a>
 
 
+
+
+remDr$goBack()
+remDr$goForward()
+
+
+search_box
 # access the client object
 remDr <- rs_driver_object$client
 

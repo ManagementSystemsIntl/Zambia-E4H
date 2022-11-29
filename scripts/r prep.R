@@ -50,8 +50,13 @@ zam_packages2 <- c("tidyverse", "here",
 
 # lapply(zam_packages, install.packages, character.only=T)
 
+<<<<<<< HEAD
 lapply(zam_packages, library, character.only=T)
 lapply(zam_packages2, library, character.only=T)
+=======
+#lapply(zam_packages, library, character.only=T)
+lapply(zam_packages, library, character.only=T)
+>>>>>>> 5d58b2188eab8751ccd40f7c2ee6a48fe920438d
 
 # font_import()
 # loadfonts(device="win")
