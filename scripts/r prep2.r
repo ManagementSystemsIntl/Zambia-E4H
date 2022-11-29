@@ -37,6 +37,7 @@ zam_packages <- c("tidyverse", "here", "gifski", "gt","gtsummary","gghighlight",
 <<<<<<< HEAD
                   "RColorBrewer", "data.table", "hablar", "gganimate", "dygraphs", "gapminder", "hrbrthemes",
                   "geomtextpath", "patchwork", "gridExtra", "grid", "rmarkdown", "forecast", 
+<<<<<<< HEAD
                   "backtest", "quantmod", "tseries", "writexl", "ggpubr", "rcartocolor", "remotes", "geodata",
                   "shiny",  "nasapower", "leaflet", "sf", "RSelenium", "netstat")
 # =======
@@ -46,6 +47,12 @@ zam_packages <- c("tidyverse", "here", "gifski", "gt","gtsummary","gghighlight",
 #                   "shiny", "rgeoboundaries", "nasapower", 
 #                   "leaflet", "ggsflabel", "sf", "RSelenium", "netstat", "GGally", "calendR", "areaplot", "hexbin",
 #                   "webshot", "oceanis")
+=======
+                  "backtest", "quantmod", "tseries", "writexl", "ggplot2", "ggpubr", "rcartocolor", "remotes", "geodata",
+                  "shiny", "rgeoboundaries", "nasapower", 
+                  "leaflet", "ggsflabel", "sf", "RSelenium", "netstat", "GGally", "calendR", "areaplot", "hexbin",
+                  "webshot", "oceanis","writexl", "gt", "bigD","formattable", "reactablefmtr", "scales", "rsconnect", "ggplot2")
+>>>>>>> 31a0332dda1baa43f3c6a7543ef66984bac84e19
 
 
 
@@ -75,15 +82,15 @@ base <- theme_bw() + theme(panel.grid.minor.x=element_blank(),
                            plot.subtitle = element_text(size=13, family="Gill Sans Mt"),
                            plot.caption=element_text(size=13, family="Gill Sans Mt"),
                            axis.title=element_text(size=14, family="Gill Sans Mt"),
-                           axis.text=element_text(size=13, family="Gill Sans Mt"),
+                           axis.text=element_text(size=10, family="Gill Sans Mt"),
                            axis.text.x = element_text(size = 10, family="Gill Sans Mt", face="bold"),
                            axis.text.y = element_text(size = 10, family="Gill Sans Mt", face="bold"),
-                           legend.text=element_text(size=13, family="Gill Sans Mt"),
-                           legend.position = "bottom",
-                           # legend.position = c(.73,.99),
-                           # legend.justification = c("left", "top"),
-                           # legend.box.just = "left",
-                           strip.text=element_text(size=13, family="Gill Sans Mt"),
+                           legend.text=element_text(size=10, family="Gill Sans Mt"),
+                           #legend.position = "bottom",
+                           legend.position = c(.80,.99),
+                           legend.justification = c("left", "top"),
+                           legend.box.just = "left",
+                           strip.text=element_text(size=10, family="Gill Sans Mt"),
                            panel.border=element_blank(),
                            axis.ticks = element_blank(),
                            legend.box="horizontal",
@@ -91,12 +98,13 @@ base <- theme_bw() + theme(panel.grid.minor.x=element_blank(),
 
 
 baseX <- theme(plot.title = element_text(size = 15),
-  plot.caption = element_text(size=12),
-  axis.title.x = element_text(size = 10),
-  axis.title.y = element_text(size = 10),
-  axis.text.x = element_text(size = 9, family="Gill Sans Mt", face="bold"),
-  axis.text.y = element_text(size = 12, family="Gill Sans Mt", face="bold"),
-  legend.text = element_text(size = 11),
+  plot.subtitle = element_text(size=13, family="Gill Sans Mt"),
+  plot.caption=element_text(size=13, family="Gill Sans Mt"),
+  axis.title=element_text(size=14, family="Gill Sans Mt"),
+  axis.text=element_text(size=13, family="Gill Sans Mt",face="bold"),
+  axis.text.x = element_text(size = 10, family="Gill Sans Mt", face="bold"),
+  axis.text.y = element_text(size = 10, family="Gill Sans Mt", face="bold"),
+  legend.text=element_text(size=13, family="Gill Sans Mt"),
   legend.title=element_blank(),
   legend.position="none",
   strip.text=element_text(size=13, family="Gill Sans Mt"))
@@ -122,7 +130,7 @@ basey <- theme(plot.title = element_text(size = 16),
   axis.text.y = element_text(size = 10),
   legend.text = element_text(size = 12),
   legend.title=element_blank(),
-  legend.position="bottom",
+  legend.position="none",
   strip.text=element_text(size=14, family="Gill Sans Mt"),
   legend.background = element_rect(fill = "white", color = "black"))
 
