@@ -11,9 +11,9 @@
 zam_packages <- c("tidyverse", "here", "gt","gtsummary","gghighlight","stringi","DT", "ggthemes","ggridges","viridis",
                "psych","labelled","readxl", "skimr","sjlabelled","sjstats","sjPlot", "sjmisc","readr","ggrepel","openxlsx",
                "sysfonts","scales","magrittr","knitr","lubridate","Hmisc","haven","tidyr","reshape2","DescTools","extrafont",
-               "extrafontdb")
+               "extrafontdb", "rgeoboundaries", "zoo")
 
-<<<<<<< HEAD
+
 # zam_packages2 <- c("tidyverse", "here", 
 #                    "gt","gtsummary",
 #                    "gghighlight","stringi","DT", "ggthemes","ggridges","viridis",
@@ -22,14 +22,14 @@ zam_packages <- c("tidyverse", "here", "gt","gtsummary","gghighlight","stringi",
 #                    "extrafontdb")
 
 # zam_packages <- c("tidyverse", "here", "gifski", "gt","gtsummary","gghighlight","stringi","DT", "ggthemes","ggridges","viridis",
-                  "psych","labelled","readxl", "skimr","sjlabelled","sjstats","sjPlot", "sjmisc","readr","ggrepel","openxlsx",
-                  "sysfonts","scales","magrittr","knitr","lubridate","Hmisc","haven","tidyr","reshape2","DescTools","extrafont",
-                  "patchwork", "extrafontdb", "ggtext", "geomtextpath","zoo","psych","cowplot","kableExtra","ztable","pheatmap",
-                  "RColorBrewer", "data.table","hablar", "gganimate", "PhantomJS", "dygraphs", "gapminder", "hrbrthemes",
-                  "geomtextpath", "patchwork")
+# "psych","labelled","readxl", "skimr","sjlabelled","sjstats","sjPlot", "sjmisc","readr","ggrepel","openxlsx",
+# "sysfonts","scales","magrittr","knitr","lubridate","Hmisc","haven","tidyr","reshape2","DescTools","extrafont",
+# "patchwork", "extrafontdb", "ggtext", "geomtextpath","zoo","psych","cowplot","kableExtra","ztable","pheatmap",
+# "RColorBrewer", "data.table","hablar", "gganimate", "PhantomJS", "dygraphs", "gapminder", "hrbrthemes",
+# "geomtextpath", "patchwork", "rlang")
 
 # What's the difference between zam_packages and zam_packages2?
-=======
+
 zam_packages2 <- c("tidyverse", "here",
                    "gt","gtsummary",
                    "gghighlight","stringi","DT", "ggthemes","ggridges","viridis",
@@ -45,18 +45,18 @@ zam_packages2 <- c("tidyverse", "here",
 #                   "geomtextpath", "patchwork")
 # 
 
->>>>>>> 0f887da8235743069c187745ef7a1b21b3a5b6ff
 
 
 # lapply(zam_packages, install.packages, character.only=T)
 
-<<<<<<< HEAD
+
 lapply(zam_packages, library, character.only=T)
 lapply(zam_packages2, library, character.only=T)
-=======
+
+
 #lapply(zam_packages, library, character.only=T)
-lapply(zam_packages, library, character.only=T)
->>>>>>> 5d58b2188eab8751ccd40f7c2ee6a48fe920438d
+#lapply(zam_packages, library, character.only=T)
+
 
 # font_import()
 # loadfonts(device="win")
@@ -142,6 +142,7 @@ usaid_palette6 <- c(web_blue
                     , dark_red
                     , usaid_blue
                     , medium_grey)
+
 scale_colour_discrete <- function(...) scale_colour_manual(..., values = usaid_palette)
 
 # palette(usaid_palette)
@@ -234,15 +235,15 @@ qkey <- data.frame(q_num=1:17,
                    year=c(rep(2018:2021, each=4), 2022))
 
 #Malaria Campaigns
-vline1 <- 2016
-vline2 <- 2017
-vline3 <- 2018
-vline4 <- 2020
-
-vline5 <- "2022-04-01"
-vline6 <- 2017-10-01
-vline7 <- 2018-10-01
-vline8 <- 2020-10-01
+# vline1 <- 2016
+# vline2 <- 2017
+# vline3 <- 2018
+# vline4 <- 2020
+# 
+# vline5 <- "2022-04-01"
+# vline6 <- 2017-10-01
+# vline7 <- 2018-10-01
+# vline8 <- 2020-10-01
 
 # above_5yrs <-"#205493"
 # under_5yrs <-"#BA0C2F"
@@ -252,7 +253,7 @@ vline8 <- 2020-10-01
 # functions ---- 
 
 
-library("remotes")
-remotes::install_gitlab("dickoa/rgeoboundaries")
-remotes::install_github("wmgeolab/rgeoboundaries")
+#library("remotes")
+#remotes::install_gitlab("dickoa/rgeoboundaries")
+#remotes::install_github("wmgeolab/rgeoboundaries")
 
