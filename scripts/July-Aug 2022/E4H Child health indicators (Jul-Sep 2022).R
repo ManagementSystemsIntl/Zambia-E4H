@@ -62,7 +62,7 @@ sum(dat$month_chr!=dat$month) # expecting 0 if vars same
 map_df(dat, class)
 
 cl <- data.frame(lapply(dat, class)) %>%
-  .[1,] %>%
+  slice(1) %>%
   t()
 
 cl
@@ -112,10 +112,95 @@ str(dat)
 
 # view(chldH)
 
-ggplot(dat, aes(mnthyr, ancc1)) +
+frq(dat$mnthyr)
+
+meas <- dat %>%
+  filter(mnthyr>as.POSIXlt("2021-09-01")) %>%
+  filter(mnthyr<as.POSIXlt("2022-10-01")) %>%
+  select(mnthyr, measles1p, measles2p) %>%
+  pivot_longer(2:3,
+               names_to="var",
+               values_to="perc") %>%
+  slice(1:24)
+
+frq(meas$mnthyr)
+str(meas)
+
+
+  # color 
+
+ggplot(meas, aes(as.Date(mnthyr), perc, color=var)) +
+  geom_line() +
+  stat_smooth(method="lm", se=F) +
+  geom_point() + 
+#  geom_label(aes(label=paste(round(perc*100,0), "%", sep="")),
+#             show.legend=F) +
+  scale_x_date(date_breaks = "2 months",
+               date_labels="%b-%y") +
+  scale_y_continuous(labels=percent,
+                     limits=c(.4,1.12),
+                     breaks=seq(.4,1,.1),
+                     sec.axis = dup_axis()) +
+  theme(legend.title=element_blank(),
+        axis.title.y.right=element_text(angle=0, vjust=.5),
+        axis.title.y.left=element_blank()) +
+#        axis.title.x=element_text(margin=margin())) +
+#        legend.position="right") +
+  scale_color_manual(values=usaid_palette[1:2],
+                     labels=c("Measles coverage, 1st dose", 
+                              "Measles coverage, 2nd dose")) +
+  labs(x="\nOct 2021 - Sep 2022",
+       y="Coverage\nrate",
+       title="Measles coverage rates on a declining trend")
+
+ggsave("viz/Jul-Sep 2022/Measles coverage (Oct 2021 - Sep 2022) no label.png",
+       height=5.2,
+       width=7)
+
+
+# facet 
+
+ggplot(meas, aes(as.Date(mnthyr), perc, color=var)) +
+  geom_line() +
+  stat_smooth(method="lm", se=F) +
+  geom_point() + 
+  geom_label(aes(label=paste(round(perc*100,0), "%", sep="")),
+             show.legend=F) +
+  scale_x_date(date_breaks = "2 months",
+               date_labels="%b-%y") +
+  scale_y_continuous(labels=percent,
+                     limits=c(.4,1.12),
+                     breaks=seq(.4,1,.1)) +
+  theme(legend.title=element_blank(),
+        axis.title.y=element_text(angle=0, vjust=.5)) +
+  #        axis.title.x=element_text(margin=margin())) +
+  #        legend.position="right") +
+  scale_color_manual(values=usaid_palette[1:2],
+                     labels=c("Measles coverage, 1st dose", 
+                              "Measles coverage, 2nd dose")) +
+  labs(x="\nOct 2021 - Sep 2022",
+       y="Coverage\nrate",
+       title="Measles coverage rate on a declining trend") +
+  facet_wrap(~var, ncol=1, scales="free") +
+  faceted
+
+ggsave("viz/Jul-Sep 2022/Measles coverage (Oct 2021 - Sep 2022) facet.png",
+       height=4,
+       width=7)
+
+
+
+str(dat2)
+
+ggplot(dat2, aes(as.Date(mnthyr), measles1p)) +
   geom_point() + 
   geom_line() +
-  stat_smooth()
+  scale_x_date(date_breaks = "1 month",
+               date_labels="%b-%y") +
+  scale_y_continuous(labels=percent,
+                     limits=c(.5,1.12),
+                     breaks=seq(.5,1,.1)) +
+  stat_smooth(method="lm", se=F)
 
 measQrt <- dat %>%
   group_by(year) %>%
