@@ -63,6 +63,9 @@ lapply(zam_packages2, library, character.only=T)
 # windwsFonts()
 
 
+describe <- psych::describe
+
+
 # formatting ---- 
 
 #font_add_google("Open Sans", "sans-serif")
@@ -74,7 +77,7 @@ options(digits=4, scipen=8)
 base <- theme_bw() + theme(panel.grid.minor.x=element_blank(),
                            panel.grid.minor.y=element_blank(),
                            plot.title=element_text(face="bold",
-                             size=16, 
+                             size=16.5, 
                              hjust=.5, 
                              family = "Gill Sans Mt"),
                            plot.subtitle = element_text(size=14, family="Gill Sans Mt"),
@@ -105,7 +108,7 @@ faceted <- theme_bw() +
   theme(panel.grid.minor.x=element_blank(),
         panel.grid.minor.y=element_blank(),
         plot.title=element_text(face="bold",
-          size=16, 
+          size=16.5, 
           hjust=.5, 
           family = "Gill Sans Mt"),
         plot.subtitle = element_text(size=14, family="Gill Sans Mt"),
@@ -133,14 +136,14 @@ dark_grey <- "#6C6463"
 medium_grey <- "#8C8985"
 light_grey <- "#CFCDC9"
 
-usaid_palette <- c(web_blue, usaid_red, light_blue, dark_red, usaid_blue)
+usaid_palette <- c(usaid_blue, usaid_red, light_blue, dark_red, web_blue)
 usaid_palette
 
-usaid_palette6 <- c(web_blue
+usaid_palette6 <- c(usaid_blue
                     , usaid_red
                     , light_blue
                     , dark_red
-                    , usaid_blue
+                    , web_blue
                     , medium_grey)
 
 scale_colour_discrete <- function(...) scale_colour_manual(..., values = usaid_palette)

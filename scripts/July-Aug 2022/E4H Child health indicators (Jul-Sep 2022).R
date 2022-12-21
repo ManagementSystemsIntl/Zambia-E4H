@@ -42,13 +42,23 @@ dat  <- dat  %>%
          measles1p = measles1/100, # measles
          measles2p = measles2/100,
          ancc1 = ifelse(measles1p > 1, 1, measles1p),
-         ancc2 = ifelse(measles2p > 1, 1, measles2p)) # set measles1 and measles2 to 100 for all values >100
-
+         ancc2 = ifelse(measles2p > 1, 1, measles2p), # set measles1 and measles2 to 100 for all values >100
+         vitAp = ifelse(vitAsupp>100, 1, vitAsupp/100),
+         dewormp = ifelse(deworm>100, 1, deworm/100))
+         
 str(dat)
 
-varlabs2 <- c("Month","Month","Month","Year","Month-Year","Year-Month-Day","Quarter","Measles under 1","Measles under 2", "Measles under 1 recoded","Measles under 2 recoded")
+varlabs2 <- c("Month","Month","Month","Year","Month-Year","Year-Month-Day","Quarter",
+              "Measles under 1","Measles under 2", "Measles under 1 recoded","Measles under 2 recoded", "Vitamin A truncated",
+              "Deworming rate truncated")
 
 datNames <- data.frame(names(dat))
+
+cl <- data.frame(lapply(dat, class)) %>%
+  slice(1) %>%
+  t()
+
+#cl
 
 datDict <- data.frame(var=names(dat),
                       varlab = c(varlabs, varlabs2)) %>%
@@ -59,13 +69,13 @@ datDict <- data.frame(var=names(dat),
 
 sum(dat$month_chr!=dat$month) # expecting 0 if vars same
 
-map_df(dat, class)
+ann <- dat %>%
+  filter(mnthyr>as.POSIXlt("2021-09-01")) %>%
+  filter(mnthyr<as.POSIXlt("2022-10-01")) %>%
+  slice(1:12)
 
-cl <- data.frame(lapply(dat, class)) %>%
-  slice(1) %>%
-  t()
+frq(ann$mnthyr)
 
-cl
 
 
 pnctrgts <- read_xls("data/Jan- Jun 2022/PNC Targets.xls")
@@ -98,7 +108,369 @@ sum(chldH_prov$month_chr!=chldH_prov$month) # expecting 0 if vars same
 
 
 
-  # IMMUNIZATION
+# maternal deaths ---- 
+
+ggplot(ann, aes(as.Date(mnthyr), maternal_dth)) +
+  geom_line(color=usaid_blue) +
+  stat_smooth(method="lm", se=F, color=usaid_blue) +
+  geom_point() + 
+  geom_label(aes(label=maternal_dth),
+               show.legend=F,
+             color=usaid_blue) +
+  scale_x_date(date_breaks = "2 months",
+               date_labels="%b-%y") +
+  scale_y_continuous(limits=c(0, 70),
+                     breaks=seq(0,70,10),
+                     sec.axis = dup_axis()) +
+  theme(legend.title=element_blank(),
+        axis.title.y.right=element_text(angle=0, vjust=.5),
+        axis.title.y.left=element_blank()) +
+  labs(x="\nOct 2021 - Sep 2022",
+       y="Maternal\ndeaths",
+       title="Maternal deaths on a declining trend")
+
+ggsave("viz/Jul-Sep 2022/Child health/Maternal deaths (Oct 2021 - Sep 2022).png",
+       height=5.2,
+       width=7)
+
+
+# institutional deliveries ---- 
+
+ggplot(ann, aes(as.Date(mnthyr), inst_deliv)) +
+  geom_line(color=usaid_blue) +
+  stat_smooth(method="lm", se=F, color=usaid_blue) +
+  geom_point() + 
+#  geom_label(aes(label=round(inst_deliv, -3)),
+#             show.legend=F,
+#             color=usaid_blue) +
+  scale_x_date(date_breaks = "2 months",
+               date_labels="%b-%y") +
+  scale_y_continuous(limits=c(4e4, 6e4),
+                     breaks=seq(4e4,6e4,5e3),
+                     labels=comma,
+                     sec.axis = dup_axis()) +
+  theme(legend.title=element_blank(),
+        axis.title.y.right=element_text(angle=0, vjust=.5),
+        axis.title.y.left=element_blank()) +
+  labs(x="\nOct 2021 - Sep 2022",
+       y="Institutional\ndeliveries",
+       title="Institutional deliveries on a increasing trend")
+
+ggsave("viz/Jul-Sep 2022/Child health/Institutional deliveries (Oct 2021 - Sep 2022).png",
+       height=5.2,
+       width=7)
+
+# Post natal care within 48 hours
+
+ggplot(ann, aes(as.Date(mnthyr), pnc/100)) +
+  geom_line(color=usaid_blue, size=.4) +
+  stat_smooth(method="lm", se=F, color=usaid_blue) +
+  geom_point() + 
+  geom_label(aes(label=paste(round(pnc, 0), "%", sep="")),
+             show.legend=F,
+             color=usaid_blue) +
+  scale_x_date(date_breaks = "2 months",
+               date_labels="%b-%y") +
+  scale_y_continuous(limits=c(.45,.65),
+                     breaks=seq(.45,.65,.05),
+                     labels=percent,
+                     sec.axis = dup_axis()) +
+  theme(legend.title=element_blank(),
+        axis.title.y.right=element_text(angle=0, vjust=.5),
+        axis.title.y.left=element_blank()) +
+  labs(x="\nOct 2021 - Sep 2022",
+       y="\n\n\n\nPostnatal\ncare within\n48 hours",
+       title="Postnatal care within 48 hours on an increasing trend")
+
+ggsave("viz/Jul-Sep 2022/Child health/Postnatal care (Oct 2021 - Sep 2022).png",
+       height=5.2,
+       width=7)
+
+
+
+# Neonatal deaths ---- 
+
+names(ann)
+desc(ann$neon_dth)
+
+ggplot(ann, aes(as.Date(mnthyr), neon_dth)) +
+  geom_line(color=usaid_blue, size=.4) +
+  stat_smooth(method="lm", se=F, color=usaid_blue) +
+  geom_point() + 
+  geom_label(aes(label=round(neon_dth, 0)),
+             show.legend=F,
+             color=usaid_blue) +
+  scale_x_date(date_breaks = "2 months",
+               date_labels="%b-%y") 
++
+  scale_y_continuous(limits=c(0, 300),
+                     breaks=seq(0,300,50),
+                     labels=comma,
+                     sec.axis = dup_axis()) +
+  theme(legend.title=element_blank(),
+        axis.title.y.right=element_text(angle=0, vjust=.5),
+        axis.title.y.left=element_blank()) +
+  labs(x="\nOct 2021 - Sep 2022",
+       y="\n\n\n\nPostnatal\ncare within\n48 hours",
+       title="Postnatal care within 48 hours on an increasing trend")
+
+ggsave("viz/Jul-Sep 2022/Child health/Postnatal care (Oct 2021 - Sep 2022).png",
+       height=5.2,
+       width=7)
+
+# Immunized under 1 ---- 
+
+ggplot(ann, aes(as.Date(mnthyr), imm1/100)) +
+  geom_line(color=usaid_blue, size=.4) +
+  stat_smooth(method="lm", se=F, color=usaid_blue) +
+  geom_point() + 
+  geom_label(aes(label=paste(round(imm1, 0), "%", sep="")),
+             show.legend=F,
+             color=usaid_blue) +
+  scale_x_date(date_breaks = "2 months",
+               date_labels="%b-%y") +
+  scale_y_continuous(limits=c(.6,1.1),
+                     breaks=seq(.6,1,.05),
+                     labels=percent,
+                     sec.axis = dup_axis()) +
+  theme(legend.title=element_blank(),
+        axis.title.y.right=element_text(angle=0, vjust=.5),
+        axis.title.y.left=element_blank()) +
+  labs(x="\nOct 2021 - Sep 2022",
+       y="\n\n\n\nImmunization\ncoverage\nunder 1",
+       title="Immunization coverage under 1 on a decreasing trend")
+
+ggsave("viz/Jul-Sep 2022/Child health/Immunization under 1 (Oct 2021 - Sep 2022).png",
+       height=5.2,
+       width=7)
+
+# Immunization under 2 ---- 
+
+ggplot(ann, aes(as.Date(mnthyr), imm2/100)) +
+  geom_line(color=usaid_blue, size=.4) +
+  stat_smooth(method="lm", se=F, color=usaid_blue) +
+  geom_point() + 
+  geom_label(aes(label=paste(round(imm2, 0), "%", sep="")),
+             show.legend=F,
+             color=usaid_blue) +
+  scale_x_date(date_breaks = "2 months",
+               date_labels="%b-%y") +
+  scale_y_continuous(limits=c(.4,1),
+                     breaks=seq(.4,1,.05),
+                     labels=percent,
+                     sec.axis = dup_axis()) +
+  theme(legend.title=element_blank(),
+        axis.title.y.right=element_text(angle=0, vjust=.5),
+        axis.title.y.left=element_blank()) +
+  labs(x="\nOct 2021 - Sep 2022",
+       y="\n\n\n\nImmunization\ncoverage\nunder 2",
+       title="Immunization coverage under 2 on a decreasing trend")
+
+ggsave("viz/Jul-Sep 2022/Child health/Immunization under 2 (Oct 2021 - Sep 2022).png",
+       height=5.2,
+       width=7)
+
+# Family planning attendance ---- 
+
+ggplot(ann, aes(as.Date(mnthyr), fpvisits)) +
+  geom_line(color=usaid_blue, size=.4) +
+  stat_smooth(method="lm", se=F, color=usaid_blue) +
+  geom_point() + 
+#  geom_label(aes(label=round(fpvisits, 0)),
+#             show.legend=F,
+#             color=usaid_blue) +
+  scale_x_date(date_breaks = "2 months",
+               date_labels="%b-%y") +
+  scale_y_continuous(limits=c(2e5, 4e5),
+                     breaks=seq(2e5, 4e5, 5e4),
+                     labels=comma,
+                     sec.axis = dup_axis()) +
+  theme(legend.title=element_blank(),
+        axis.title.y.right=element_text(angle=0, vjust=.5),
+        axis.title.y.left=element_blank()) +
+  labs(x="\nOct 2021 - Sep 2022",
+       y="\n\n\n\nFamily\nplanning\nvisits",
+       title="Family planning visits on an increasing trend")
+
+ggsave("viz/Jul-Sep 2022/Child health/Family planning visits (Oct 2021 - Sep 2022).png",
+       height=5.2,
+       width=7)
+
+# BCG coverage ---- 
+library(psych)
+str(ann)
+psych::describe(ann$bcg1)
+
+ggplot(ann, aes(as.Date(mnthyr), bcg1/100)) +
+  geom_line(color=usaid_blue, size=.4) +
+  stat_smooth(method="lm", se=F, color=usaid_blue) +
+  geom_point() + 
+  geom_label(aes(label=paste(round(bcg1, 0), "%", sep="")),
+             show.legend=F,
+             color=usaid_blue) +
+  scale_x_date(date_breaks = "2 months",
+               date_labels="%b-%y") +
+  scale_y_continuous(limits=c(.7,1.05),
+                     breaks=seq(.7,1,.05),
+                     labels=percent,
+                     sec.axis = dup_axis()) +
+  theme(legend.title=element_blank(),
+        axis.title.y.right=element_text(angle=0, vjust=.5),
+        axis.title.y.left=element_blank()) +
+  labs(x="\nOct 2021 - Sep 2022",
+       y="\n\n\n\nBCG\ncoverage",
+       title="BCG coverage on a flat trend")
+
+ggsave("viz/Jul-Sep 2022/Child health/BCG coverage (Oct 2021 - Sep 2022).png",
+       height=5.2,
+       width=7)
+
+
+
+
+
+  # Shida
+
+
+#'* BCG Immunization*
+names(chldH)
+# view(chldH)
+bcgImz <- chldH %>%
+  rename(bcg = 10) %>%
+  
+  mutate(bcgp = bcg/100)
+
+#'*set msles1p & msles2p to 100 for all values >100*
+bcgImz1 <- bcgImz %>% 
+  dplyr::mutate(bcg = ifelse(bcg > 100, 100, bcg)) %>% 
+  dplyr::mutate(bcgp = bcg/100)
+
+#'*To create legend, gather method for including a legend --*
+
+bcgImz1 <- gather(bcgImz1, key = subpop , value = rate, c(bcg))
+bcgImz1$subpop <- factor(bcgImz1$subpop, levels = unique(bcgImz1$subpop)) # transform into factor
+levels(bcgImz1$subpop)
+
+# view(chldH)
+
+bcg_plt <- ggplot(bcgImz1, aes(x = mnthyr, y = bcgp, colour=usaid_blue )) +
+  geom_point(alpha=.4, size=.6) + 
+  #geom_line(size=1) +
+  geom_smooth(method = loess, size = .8, se=FALSE) +
+  scale_y_continuous(limits = c(0,1),
+                     labels = percent,
+                     breaks = c(.1,.2,.3,.4,.5,.6,.7,.8,.9, 1)) +
+  scale_x_date(date_labels="%b %y",date_breaks="4 months") +
+  labs(x="", y="", caption="Data Source: HMIS", title="The proportion of infants receiving the BCG vaccine \nhas been constant in the last two years, \nafter experiencing a slight decline in late 2019") +
+  scale_color_manual(name ="",
+                     values = usaid_blue,
+                     labels = "BCG Under 1") + baseX
+
+
+bcg_plt
+ggsave("viz/Apr-Jun 2022/Child Health/BCG Vaccines.png",
+       device="png",
+       type="cairo",
+       height = 5.5,
+       width = 10)
+
+
+#'* BCG SEPERATED BY SUPPORTED AND NON USAID PROVINCES*
+names(chldH_prov)
+
+bcg_Prov <- chldH_prov %>%
+  rename(prov =1,
+         bcg = 10) %>%
+  
+  mutate(bcgP = bcg/100) %>%
+  
+  
+  select(prov, mnthyr, bcgP) %>% 
+  mutate(prov = factor(prov),
+         ip = case_when(prov=="Northern" |
+                          prov =="Central" |
+                          prov =="Luapula" |
+                          prov =="Muchinga" |
+                          prov =="Southern" |
+                          prov =="Eastern" ~ "ip",
+                        TRUE ~ "non-ip"))
+
+table(bcg_Prov$ip, bcg_Prov$prov)
+frq(bcg_Prov$ip) #sjmisc
+
+levels(bcg_Prov$prov)
+
+#'*redraw for all USAID-funded provinces*
+
+ipfunded <- bcg_Prov %>%
+  filter(ip =="ip")
+
+levels(bcg_Prov$prov)
+
+ipfunded1 <- ipfunded %>% 
+  gather(key = subpop , value = rate, c(bcgP)) %>% 
+  mutate(ip = factor(ip),
+         subpop = factor(subpop))
+
+levels(ipfunded1$ip)
+levels(ipfunded1$subpop)
+
+ip_fundedprov <- ggplot(ipfunded1, aes(x = mnthyr, y = rate, group = subpop, colour = subpop)) +
+  geom_point(alpha=.6, size=.6) + 
+  #geom_area(alpha=.3, size=.8, color=usaid_blue, fill=light_blue) + 
+  #geom_line(size=1) +
+  geom_smooth(method = loess, size = .8, se=FALSE)  +
+  facet_wrap(~prov) +
+  faceted +
+  scale_y_continuous(limits = c(0,1),
+                     labels = percent,
+                     breaks = c(.2,.4,.6,.8, 1)) +
+  labs(x ="", y="", caption = "Activities being implemented by \nFHN, MOMENT and G2G mechanisms in all districts") +
+  ggtitle("FH Activity-supported provinces") +
+  scale_color_manual(name= "", values = usaid_blue) + baseX
+
+ip_fundedprov
+
+
+#'*redraw for all Non USAID-funded provinces*
+
+ipNot_funded <- bcg_Prov %>%
+  filter(ip =="non-ip")
+
+levels(bcg_Prov$prov)
+
+ipNot_funded1 <- ipNot_funded %>% 
+  gather(key = subpop , value = rate, c(bcgP)) %>% 
+  mutate(ip = factor(ip),
+         subpop = factor(subpop))
+
+levels(ipNot_funded1$ip)
+levels(ipNot_funded1$subpop)
+
+ipNot_fundedprov <- ggplot(ipNot_funded1, aes(x = mnthyr, y = rate, group = subpop, colour = subpop)) +
+  #geom_area(alpha=.3, size=.8,color=usaid_red, fill=usaid_red) + 
+  geom_point(alpha=.6, size=.6) + 
+  #geom_line(size=1) +
+  geom_smooth(method = loess, size = .8, se=FALSE)  +
+  facet_wrap(~prov) +
+  faceted +
+  scale_y_continuous(limits = c(0,1),
+                     labels = percent,
+                     breaks = c(.2,.4,.6,.8, 1)) +
+  labs(x ="", y="", caption = "Data Source: HMIS") +
+  ggtitle("FH Activity-supported provinces") +
+  scale_color_manual(name= "", values = usaid_red, labels = c("BCG Under 1")) + baseC
+
+ipNot_fundedprov
+
+ip_fundedprov + ipNot_fundedprov + plot_layout(guides = "collect")
+
+ggsave("viz/Apr-Jun 2022/Child Health/Province BCG Vaccines faceted smooth ns.png",
+       device="png",
+       type="cairo",
+       height = 7.5,
+       width = 12)
+
 
 # Measles ---- 
 
@@ -236,7 +608,7 @@ ggsave("viz/Apr-Jun 2022/Child Health/Proportion of infacts receiving Measles Va
        height = 5.5,
        width = 9)
 
-#'* MEASLES 1 & 2 PREDICTION*
+  # MEASLES 1 & 2 PREDICTION
 library(fpp)
 library(forecast)
 library(backtest)
@@ -253,27 +625,33 @@ str(msles2p)
 
 ?ts
 
-out <- ts(msles2p$rate)
+meas2 <- dat %>%
+  mutate(measles2p = ifelse(measles2p>2, 1,measles2p)) %>%
+  select(measles2p) %>%
+  ts()
 
-str(out)
+describe(dat$measles2p)
+meas2
+psych::describe(dat$measles2p)
+str(meas2)
+plot(meas2)
+acf(meas2)
+pacf(meas2)
 
-plot(out)
+meas2.arim <- auto.arima(meas2)
 
-acf(out)
-pacf(out)
+summary(meas2.arim)
 
-out.arim <- auto.arima(out)
-summary(out.arim)
-
-out.arim.pred <- data.frame(forecast(out.arim, h=6)) %>%
-  mutate(mnthyr=ymd(c("2022-07-01","2022-08-01","2022-09-01", "2022-10-01","2022-11-01","2022-12-01")),
-         forecast=1) %>%
+meas2.arim.pred <- data.frame(forecast(meas2.arim, h=6)) %>%
+  mutate(mnthyr=ymd(c("2022-10-01","2022-11-01","2022-12-01", "2023-01-01","2023-02-01","2023-03-01")),
+         forecast=1) 
+%>%
   select(mnthyr, 
          rate=1,
          lower=4,
          upper=5,
          forecast)
-out.arim.pred
+meas2.arim.pred
 
 str(out.arim.pred)
 
@@ -419,145 +797,35 @@ msle_prov <- chldH_prov %>%
          width = 12)
   
   
+# DPT 1st dose under 1 ---- 
   
-  #'* BCG Immunization*
-  names(chldH)
-  # view(chldH)
-  bcgImz <- chldH %>%
-    rename(bcg = 10) %>%
+describe(ann$dptfirst1)
+
+ggplot(ann, aes(as.Date(mnthyr), dptfirst1/100)) +
+    geom_line(color=usaid_blue, size=.4) +
+    stat_smooth(method="lm", se=F, color=usaid_blue) +
+    geom_point() + 
+    geom_label(aes(label=paste(round(dptfirst1, 0), "%", sep="")),
+               show.legend=F,
+               color=usaid_blue) +
+    scale_x_date(date_breaks = "2 months",
+                 date_labels="%b-%y") +
+    scale_y_continuous(limits=c(.8,1.13),
+                       breaks=seq(.8,1,.05),
+                       labels=percent,
+                       sec.axis = dup_axis()) +
+    theme(legend.title=element_blank(),
+          axis.title.y.right=element_text(angle=0, vjust=.5),
+          axis.title.y.left=element_blank()) +
+    labs(x="\nOct 2021 - Sep 2022",
+         y="\n\n\n\nDPT\ncoverage",
+         title="DPT first dose under 1 on a decreasing trend")
+  
+ggsave("viz/Jul-Sep 2022/Child health/DPT first dose under 1 (Oct 2021 - Sep 2022).png",
+         height=5.2,
+         width=7)
+  
     
-    mutate(bcgp = bcg/100)
-  
-  #'*set msles1p & msles2p to 100 for all values >100*
-  bcgImz1 <- bcgImz %>% 
-    dplyr::mutate(bcg = ifelse(bcg > 100, 100, bcg)) %>% 
-    dplyr::mutate(bcgp = bcg/100)
-  
-  #'*To create legend, gather method for including a legend --*
-  
-  bcgImz1 <- gather(bcgImz1, key = subpop , value = rate, c(bcg))
-  bcgImz1$subpop <- factor(bcgImz1$subpop, levels = unique(bcgImz1$subpop)) # transform into factor
-  levels(bcgImz1$subpop)
-  
-  # view(chldH)
-  
-  bcg_plt <- ggplot(bcgImz1, aes(x = mnthyr, y = bcgp, colour=usaid_blue )) +
-    geom_point(alpha=.4, size=.6) + 
-    #geom_line(size=1) +
-    geom_smooth(method = loess, size = .8, se=FALSE) +
-    scale_y_continuous(limits = c(0,1),
-                       labels = percent,
-                       breaks = c(.1,.2,.3,.4,.5,.6,.7,.8,.9, 1)) +
-    scale_x_date(date_labels="%b %y",date_breaks="4 months") +
-    labs(x="", y="", caption="Data Source: HMIS", title="The proportion of infants receiving the BCG vaccine \nhas been constant in the last two years, \nafter experiencing a slight decline in late 2019") +
-    scale_color_manual(name ="",
-                       values = usaid_blue,
-                       labels = "BCG Under 1") + baseX
-  
-  
-  bcg_plt
-  ggsave("viz/Apr-Jun 2022/Child Health/BCG Vaccines.png",
-         device="png",
-         type="cairo",
-         height = 5.5,
-         width = 10)
-  
-  
-  #'* BCG SEPERATED BY SUPPORTED AND NON USAID PROVINCES*
-  names(chldH_prov)
-  
-  bcg_Prov <- chldH_prov %>%
-    rename(prov =1,
-           bcg = 10) %>%
-    
-    mutate(bcgP = bcg/100) %>%
-    
-    
-    select(prov, mnthyr, bcgP) %>% 
-    mutate(prov = factor(prov),
-           ip = case_when(prov=="Northern" |
-                            prov =="Central" |
-                            prov =="Luapula" |
-                            prov =="Muchinga" |
-                            prov =="Southern" |
-                            prov =="Eastern" ~ "ip",
-                          TRUE ~ "non-ip"))
-  
-  table(bcg_Prov$ip, bcg_Prov$prov)
-  frq(bcg_Prov$ip) #sjmisc
-  
-  levels(bcg_Prov$prov)
-  
-  #'*redraw for all USAID-funded provinces*
-  
-  ipfunded <- bcg_Prov %>%
-    filter(ip =="ip")
-  
-  levels(bcg_Prov$prov)
-  
-  ipfunded1 <- ipfunded %>% 
-    gather(key = subpop , value = rate, c(bcgP)) %>% 
-    mutate(ip = factor(ip),
-           subpop = factor(subpop))
-  
-  levels(ipfunded1$ip)
-  levels(ipfunded1$subpop)
-  
-  ip_fundedprov <- ggplot(ipfunded1, aes(x = mnthyr, y = rate, group = subpop, colour = subpop)) +
-    geom_point(alpha=.6, size=.6) + 
-    #geom_area(alpha=.3, size=.8, color=usaid_blue, fill=light_blue) + 
-    #geom_line(size=1) +
-    geom_smooth(method = loess, size = .8, se=FALSE)  +
-    facet_wrap(~prov) +
-    faceted +
-    scale_y_continuous(limits = c(0,1),
-                       labels = percent,
-                       breaks = c(.2,.4,.6,.8, 1)) +
-    labs(x ="", y="", caption = "Activities being implemented by \nFHN, MOMENT and G2G mechanisms in all districts") +
-    ggtitle("FH Activity-supported provinces") +
-    scale_color_manual(name= "", values = usaid_blue) + baseX
-  
-  ip_fundedprov
-  
-  
-  #'*redraw for all Non USAID-funded provinces*
-  
-  ipNot_funded <- bcg_Prov %>%
-    filter(ip =="non-ip")
-  
-  levels(bcg_Prov$prov)
-  
-  ipNot_funded1 <- ipNot_funded %>% 
-    gather(key = subpop , value = rate, c(bcgP)) %>% 
-    mutate(ip = factor(ip),
-           subpop = factor(subpop))
-  
-  levels(ipNot_funded1$ip)
-  levels(ipNot_funded1$subpop)
-  
-  ipNot_fundedprov <- ggplot(ipNot_funded1, aes(x = mnthyr, y = rate, group = subpop, colour = subpop)) +
-    #geom_area(alpha=.3, size=.8,color=usaid_red, fill=usaid_red) + 
-    geom_point(alpha=.6, size=.6) + 
-    #geom_line(size=1) +
-    geom_smooth(method = loess, size = .8, se=FALSE)  +
-    facet_wrap(~prov) +
-    faceted +
-    scale_y_continuous(limits = c(0,1),
-                       labels = percent,
-                       breaks = c(.2,.4,.6,.8, 1)) +
-    labs(x ="", y="", caption = "Data Source: HMIS") +
-    ggtitle("FH Activity-supported provinces") +
-    scale_color_manual(name= "", values = usaid_red, labels = c("BCG Under 1")) + baseC
-  
-  ipNot_fundedprov
-  
-  ip_fundedprov + ipNot_fundedprov + plot_layout(guides = "collect")
-  
-  ggsave("viz/Apr-Jun 2022/Child Health/Province BCG Vaccines faceted smooth ns.png",
-         device="png",
-         type="cairo",
-         height = 7.5,
-         width = 12)
   
   
   #'* DPT HIB HEP 1st DOSE Coverage*
@@ -850,6 +1118,38 @@ msle_prov <- chldH_prov %>%
          height = 7.5,
          width = 12)
   
+
+# Vitamin A supplementation ---- 
+
+describe(ann$vitAsupp)
+describe(ann$vitAp)  
+
+ggplot(ann, aes(as.Date(mnthyr), vitAp)) +
+    geom_line(color=usaid_blue, size=.4) +
+    stat_smooth(method="lm", se=F, color=usaid_blue) +
+    geom_point() + 
+    geom_label(aes(label=paste(round(vitAp*100, 0), "%", sep="")),
+               show.legend=F,
+               color=usaid_blue) +
+    scale_x_date(date_breaks = "2 months",
+                 date_labels="%b-%y") +
+    scale_y_continuous(limits=c(0,1),
+                       breaks=seq(0,1,.1),
+                       labels=percent,
+                       sec.axis = dup_axis()) +
+    theme(legend.title=element_blank(),
+          axis.title.y.right=element_text(angle=0, vjust=.5),
+          axis.title.y.left=element_blank()) +
+    labs(x="\nOct 2021 - Sep 2022",
+         y="\n\n\n\nVitamin A\nsupplementation",
+         title="Vitamin A supplementation on a decreasing trend")
+
+ggsave("viz/Jul-Sep 2022/Child health/Vitamin A supplementation truncated (Oct 2021 - Sep 2022).png",
+       height=5.2,
+       width=7)
+  
+  
+  
   
   #'* % OF CHILDREN RECEIVING Vitamin A*
   names(chldH)
@@ -988,8 +1288,216 @@ msle_prov <- chldH_prov %>%
          width = 12)
   
   
+# Deworming rate ---- 
   
-  #################'*Immunizations Trends*
+describe(ann$deworm)
+  
+ggplot(ann, aes(as.Date(mnthyr), dewormp)) +
+  geom_line(color=usaid_blue, size=.4) +
+  stat_smooth(method="lm", se=F, color=usaid_blue) +
+  geom_point() + 
+  geom_label(aes(label=paste(round(dewormp*100, 0), "%", sep="")),
+             show.legend=F,
+             color=usaid_blue) +
+  scale_x_date(date_breaks = "2 months",
+               date_labels="%b-%y") +
+  scale_y_continuous(limits=c(0,1),
+                     breaks=seq(0,1,.1),
+                     labels=percent,
+                     sec.axis = dup_axis()) +
+  theme(legend.title=element_blank(),
+        axis.title.y.right=element_text(angle=0, vjust=.5),
+        axis.title.y.left=element_blank()) +
+  labs(x="\nOct 2021 - Sep 2022",
+       y="\n\n\n\nDeworming\nrate",
+       title="Deworming rate on a decreasing trend")
+  
+ggsave("viz/Jul-Sep 2022/Child health/Deworming rate truncated (Oct 2021 - Sep 2022).png",
+         height=5.2,
+         width=7)
+
+
+# Stunting ---- 
+
+describe(ann$stunting)
+
+ggplot(ann, aes(as.Date(mnthyr), stunting/100)) +
+  geom_line(color=usaid_blue, size=.4) +
+  stat_smooth(method="lm", se=F, color=usaid_blue) +
+  geom_point() + 
+  geom_label(aes(label=paste(round(stunting, 2), "%", sep="")),
+             show.legend=F,
+             color=usaid_blue) +
+  scale_x_date(date_breaks = "2 months",
+               date_labels="%b-%y") +
+  scale_y_continuous(limits=c(0,.01),
+                     breaks=seq(0,.1,.001),
+                     labels=percent_format(accuracy=.1),
+                     sec.axis = dup_axis()) +
+  theme(legend.title=element_blank(),
+        axis.title.y.right=element_text(angle=0, vjust=.5),
+        axis.title.y.left=element_blank()) +
+  labs(x="\nOct 2021 - Sep 2022",
+       y="\n\n\n\nStunting\nrate",
+       title="Stunting rate on a decreasing trend")
+
+ggsave("viz/Jul-Sep 2022/Child health/Stunting rate (Oct 2021 - Sep 2022).png",
+       height=5.2,
+       width=7)
+
+
+# Wasting ---- 
+
+describe(ann$wasting)
+
+ggplot(ann, aes(as.Date(mnthyr), wasting/100)) +
+  geom_line(color=usaid_blue, size=.4) +
+  stat_smooth(method="lm", se=F, color=usaid_blue) +
+  geom_point() + 
+  geom_label(aes(label=paste(round(wasting, 2), "%", sep="")),
+             show.legend=F,
+             color=usaid_blue, 
+             size=3) +
+  scale_x_date(date_breaks = "2 months",
+               date_labels="%b-%y") +
+  scale_y_continuous(limits=c(0,.0111),
+                     breaks=seq(0,.011,.001),
+                     labels=percent_format(accuracy=.1),
+                     sec.axis = dup_axis()) +
+  theme(legend.title=element_blank(),
+        axis.title.y.right=element_text(angle=0, vjust=.5),
+        axis.title.y.left=element_blank()) +
+  labs(x="\nOct 2021 - Sep 2022",
+       y="\n\n\n\nWasting\nrate",
+       title="Wasting rate on a decreasing trend")
+
+ggsave("viz/Jul-Sep 2022/Child health/Wasting rate (Oct 2021 - Sep 2022).png",
+       height=5.2,
+       width=7.1)
+
+
+# Breastfeeding ---- 
+
+  # breastfeeding within one hour
+
+describe(ann$brstfd_1hr)
+
+ggplot(ann, aes(as.Date(mnthyr), brstfd_1hr/100)) +
+  geom_line(color=usaid_blue, size=.4) +
+  stat_smooth(method="lm", se=F, color=usaid_blue) +
+  geom_point() + 
+  geom_label(aes(label=paste(round(brstfd_1hr, 0), "%", sep="")),
+             show.legend=F,
+             color=usaid_blue, 
+             size=3) +
+  scale_x_date(date_breaks = "2 months",
+               date_labels="%b-%y") +
+  scale_y_continuous(limits=c(.75,1),
+                     breaks=seq(.75,1,.05),
+                     labels=percent_format(accuracy=1),
+                     sec.axis = dup_axis()) +
+  theme(legend.title=element_blank(),
+        axis.title.y.right=element_text(angle=0, vjust=.5),
+        axis.title.y.left=element_blank()) +
+  labs(x="\nOct 2021 - Sep 2022",
+       y="\n\n\n\nBreastfeeding\n1 hr",
+       title="Breastfeeding within 1 hour on a flat/increasing trend")
+
+ggsave("viz/Jul-Sep 2022/Child health/Breastfeeding 1 hr (Oct 2021 - Sep 2022).png",
+       height=5.2,
+       width=7.1)
+
+  # breastfeeding within at six months
+
+describe(ann$brstfd_6mnth)
+
+ggplot(ann, aes(as.Date(mnthyr), brstfd_6mnth/100)) +
+  geom_line(color=usaid_blue, size=.4) +
+  stat_smooth(method="lm", se=F, color=usaid_blue) +
+  geom_point() + 
+  geom_label(aes(label=paste(round(brstfd_6mnth, 0), "%", sep="")),
+             show.legend=F,
+             color=usaid_blue, 
+             size=3) +
+  scale_x_date(date_breaks = "2 months",
+               date_labels="%b-%y") +
+  scale_y_continuous(limits=c(.5,.85),
+                     breaks=seq(.5,.85,.05),
+                     labels=percent_format(accuracy=1),
+                     sec.axis = dup_axis()) +
+  theme(legend.title=element_blank(),
+        axis.title.y.right=element_text(angle=0, vjust=.5),
+        axis.title.y.left=element_blank()) +
+  labs(x="\nOct 2021 - Sep 2022",
+       y="\nBreastfeeding\n6 months",
+       title="Breastfeeding at 6 months on an increasing trend")
+
+ggsave("viz/Jul-Sep 2022/Child health/Breastfeeding 6 months (Oct 2021 - Sep 2022).png",
+       height=5.2,
+       width=7.1)
+
+# OPD first attendance ---- 
+
+describe(ann$opdAtt)
+
+ggplot(ann, aes(as.Date(mnthyr), opdAtt)) +
+  geom_line(color=usaid_blue, size=.4) +
+  stat_smooth(method="lm", se=F, color=usaid_blue) +
+  geom_point() + 
+#  geom_label(aes(label=round(opdAtt, -3)),
+#             show.legend=F,
+#             color=usaid_blue, 
+#             size=3) +
+  scale_x_date(date_breaks = "2 months",
+               date_labels="%b-%y") +
+  scale_y_continuous(limits=c(1.25e6, 2.5e6),
+                     breaks=seq(1.25e6, 2.5e6, 2.5e5),
+                     labels=comma,
+                     sec.axis = dup_axis()) +
+  theme(legend.title=element_blank(),
+        axis.title.y.right=element_text(angle=0, vjust=.5),
+        axis.title.y.left=element_blank()) +
+  labs(x="\nOct 2021 - Sep 2022",
+       y="\nOPD\nattendance",
+       title="OPD first attendance on a decreasing trend")
+
+ggsave("viz/Jul-Sep 2022/Child health/OPD attendance (Oct 2021 - Sep 2022).png",
+       height=5.2,
+       width=7.1)
+
+# EBF at 6 months ---- 
+
+describe(ann$ebf)
+
+ggplot(ann, aes(as.Date(mnthyr), ebf/100)) +
+  geom_line(color=usaid_blue, size=.4) +
+  stat_smooth(method="lm", se=F, color=usaid_blue) +
+  geom_point() + 
+  geom_label(aes(label=paste(round(ebf, 0), "%", sep="")),
+             show.legend=F,
+             color=usaid_blue, 
+             size=3) +
+  scale_x_date(date_breaks = "2 months",
+               date_labels="%b-%y") +
+  scale_y_continuous(limits=c(.5,.8),
+                     breaks=seq(.5,.8, .05),
+                     labels=percent,
+                     sec.axis = dup_axis()) +
+  theme(legend.title=element_blank(),
+        axis.title.y.right=element_text(angle=0, vjust=.5),
+        axis.title.y.left=element_blank()) +
+  labs(x="\nOct 2021 - Sep 2022",
+       y="\nEBF\nrate",
+       title="EBF rate on an increasing trend")
+
+ggsave("viz/Jul-Sep 2022/Child health/EBF rate (Oct 2021 - Sep 2022).png",
+       height=5.2,
+       width=7.1)
+
+
+
+  
+  #################'*Immunizations Trends* ---- 
   pger_summary <- (msles_plt | bcg_plt)/(dpt_plt | vitamin_plt)
   pger_summary
   ggsave("viz/Apr-Jun 2022/Child Health/Immunization SUmmary ns.png",
