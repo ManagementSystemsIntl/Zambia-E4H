@@ -11,7 +11,7 @@
 zam_packages <- c("tidyverse", "here", "gt","gtsummary","gghighlight","stringi","DT", "ggthemes","ggridges","viridis",
                "psych","labelled","readxl", "skimr","sjlabelled","sjstats","sjPlot", "sjmisc","readr","ggrepel","openxlsx",
                "sysfonts","scales","magrittr","knitr","lubridate","Hmisc","haven","tidyr","reshape2","DescTools","extrafont",
-               "extrafontdb", "rgeoboundaries", "zoo")
+               "extrafontdb", "rgeoboundaries", "zoo", "tsibble")
 
 
 # zam_packages2 <- c("tidyverse", "here", 
