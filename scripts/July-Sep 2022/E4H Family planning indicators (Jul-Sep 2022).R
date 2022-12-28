@@ -171,6 +171,11 @@ rem
 
 describe(rem$num)
 
+labs <- c("Implants removed", "IUCDs removed")
+names(labs) <- c("impl_rem","iucd_rem")
+
+labs
+
 ggplot(rem, aes(yrqtr, num, color=type)) + 
   geom_point(size=2) + 
   geom_line(size=.4) +
@@ -178,25 +183,23 @@ ggplot(rem, aes(yrqtr, num, color=type)) +
               aes(y=num), 
               method="lm", se=F, alpha=.4) +
   scale_x_yearquarter(date_labels="%Y") +
-  facet_wrap(~type, ncol=1, scales="free_y") + 
-  faceted 
-
-
-  scale_y_continuous(limits=c(700,22021),
-                     breaks=seq(500,22000, 5000),
-                     labels=comma,
-                     sec.axis = dup_axis()) +
+  scale_y_continuous(sec.axis = dup_axis(),
+                     labels=comma) +
+  facet_wrap(~type, ncol=1, 
+             scales="free_y",
+             labeller=labeller(type=labs)) + 
+  faceted  +
+  theme(legend.position="none",
+        axis.text.y.right=element_blank(),
+        axis.ticks.y.right=element_blank(),
+        axis.title.y.left=element_blank(),
+        axis.title.y.right=element_text(angle=0, vjust=.5)) +
   labs(x="\nJan 2018 - Sep 2022",
-       y="Accessing\ncontraceptives",
-       title="FY2022 on a flat/decreasing trend") +
-#  theme(axis.title.y.left=element_text(angle=0, vjust=.5),
-#        axis.title.y.right=element_blank(),
-#        axis.text.y.left=element_blank()) +
+       y="Number\nremoved",
+       title="Implants removed on an increasing trend\nIUCDs removed on a decreasing trend")
 
 
-?facet_wrap
-
-ggsave("viz/Jul-Sep 2022/Family planning/Women accessing contraceptives (Jan 2018 - Sep 2022).png",
+ggsave("viz/Jul-Sep 2022/Family planning/Contraceptives removed (Jan 2018 - Sep 2022).png",
        height=5.3,
        width=7.1)
 
