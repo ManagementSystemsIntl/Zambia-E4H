@@ -77,7 +77,7 @@ options(digits=4, scipen=8)
 base <- theme_bw() + theme(panel.grid.minor.x=element_blank(),
                            panel.grid.minor.y=element_blank(),
                            plot.title=element_text(face="bold",
-                             size=16.5, 
+                             size=14, 
                              hjust=.5, 
                              family = "Gill Sans Mt"),
                            plot.subtitle = element_text(size=14, family="Gill Sans Mt"),

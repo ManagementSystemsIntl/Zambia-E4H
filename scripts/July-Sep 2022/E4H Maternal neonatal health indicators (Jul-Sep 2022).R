@@ -1,9 +1,96 @@
-#'*Zambia E4 Health*
-#'*Maternal neonatal health indicators*
-#'*April - June 2022*
+# Zambia E4 Health
+# Maternal neonatal health indicators
+# Calendar 2022
+
+source("scripts/r prep.r")
+
+matp <- read_excel("data/July-Sep 2022/Reproductive maternal/Reproductive Health monthly prov.xlsx",
+                  sheet="export",
+                  range="A2:U132") %>%
+  mutate(date=mdy(paste(month, "01", year, sep=""))) %>%
+  filter(year==2022)
 
 
-source("scripts/r prep2.r")
+
+labs <- read_excel("data/July-Sep 2022/Child health/Child health monthly prov 2022.xlsx",
+                   sheet="export",
+                   range="A1:P1",
+                   col_names = F) %>%
+  t()
+
+
+
+
+
+# Maternal deaths ---- 
+
+frq(matp$mat_dths)
+
+ggplot(matp, aes(date, mat_dths, color=province)) + 
+  geom_point(size=.8, alpha=.6) + 
+  geom_line(alpha=.4) + 
+  stat_smooth(method="lm", se=F, alpha=.8, size=.6) + 
+  facet_wrap(~province, ncol=5) + 
+  scale_color_viridis_d() +
+  faceted +
+  theme(legend.position="none",
+        axis.title.y.left=element_blank(),
+        axis.title.y.right=element_text(angle=0, vjust=.5)) +
+#        plot.title=element_markdown()) +
+#axis.text.y.left=element_blank(),
+#axis.ticks.y.left=element_blank()) +
+scale_x_date(date_labels="%b") +
+  scale_y_continuous(breaks=seq(0,30,5),
+                     sec.axis = dup_axis()) +
+  labs(x="2022",
+       y="",
+       #y="Coverage\nrate",
+       title="Maternal deaths 
+       Decreasing trend in Central, Copperbelt, Muchinga, Northwestern
+       No trend in Central, Luapula, Lusaka, Western
+       Increasing trend in Eastern, Southern")
+
+ggsave("viz/Jul-Sep 2022/Reproductive maternal/Maternal deaths (2022 by province).png",
+       height=5.3,
+       width=7)
+
+
+
+ggplot(matp, aes(date, mat_dths_audit, color=province)) + 
+  geom_point(size=.8, alpha=.6) + 
+  geom_line(alpha=.4) + 
+  stat_smooth(method="lm", se=F, alpha=.8, size=.6) + 
+  facet_wrap(~province, ncol=5) + 
+  scale_color_viridis_d() +
+  faceted +
+  theme(legend.position="none",
+        axis.title.y.left=element_blank(),
+        axis.title.y.right=element_text(angle=0, vjust=.5)) +
+  #        plot.title=element_markdown()) +
+  #axis.text.y.left=element_blank(),
+  #axis.ticks.y.left=element_blank()) +
+  scale_x_date(date_labels="%b") +
+  scale_y_continuous(breaks=seq(0,30,5),
+                     sec.axis = dup_axis()) +
+  labs(x="2022",
+       y="",
+       #y="Coverage\nrate",
+       title="Maternal deaths, audited 
+       Decreasing trend in Central, Copperbelt, Lusaka, Southern
+       No trend in Luapula, Northern, Northwestern, Western
+       Increasing trend in Eastern, Muchinga")
+
+ggsave("viz/Jul-Sep 2022/Reproductive maternal/Maternal deaths audited (2022 by province).png",
+       height=5.3,
+       width=7)
+
+
+
+
+
+
+
+
 
 mat <- read_xls("data/Jan- Jun 2022/Reproductive Maternal Data_National Level(Monthly).xls")
 mat  <- mat  %>%

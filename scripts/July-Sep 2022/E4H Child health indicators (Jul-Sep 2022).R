@@ -8,12 +8,12 @@ getwd()
 source("scripts/r prep.r")
 
 
-dat <- read_xlsx("data/July-Sep 2022/Child Health (Jan 2018 - Oct 2022).xlsx",
+dat <- read_xlsx("data/July-Sep 2022/Child health/Child Health (Jan 2018 - Oct 2022).xlsx",
                  sheet="export",
                  range='A2:U60') %>%
   as_tibble()
 
-varlabs <- read_xlsx("data/July-Sep 2022/Child Health (Jan 2018 - Oct 2022).xlsx",
+varlabs <- read_xlsx("data/July-Sep 2022/Child health/Child Health (Jan 2018 - Oct 2022).xlsx",
                   sheet="export",
                   range='A1:U1',
                   col_names = F) %>%
@@ -107,6 +107,37 @@ sum(chldH_prov$month_chr!=chldH_prov$month) # expecting 0 if vars same
 
 
 
+chp <- read_excel("data/July-Sep 2022/Child health/Child health monthly prov 2022.xlsx",
+                  sheet="export",
+                  range="A2:P132") %>%
+  mutate(date=mdy(paste(month, "01", year, sep=""))) 
+
+labs <- read_excel("data/July-Sep 2022/Child health/Child health monthly prov 2022.xlsx",
+                   sheet="export",
+                   range="A1:P1",
+                   col_names = F) %>%
+  t()
+
+labs
+
+%>%
+  mutate(date = replace_na(date, "2021-12-01"))
+  
+  mutate(date2=ifelse(is.na(date), "2021-12-01", date))
+
+?replace_na
+
+str(chp)
+frq(chp$date)
+
+chp_21 <- chp %>%
+  filter(year==2021) %>%
+  mutate(date=as.Date("2021-12-01"))
+
+str(chp_21)
+
+chp <- chp %>%
+  filter(year==2022)
 
 # maternal deaths ---- 
 
@@ -244,6 +275,36 @@ ggsave("viz/Jul-Sep 2022/Child health/Immunization under 1 (Oct 2021 - Sep 2022)
        height=5.2,
        width=7)
 
+
+ggplot(chp, aes(date, imm1/100, color=province)) + 
+  geom_point(size=1) + 
+  geom_line() + 
+  stat_smooth(method="lm") + 
+  facet_wrap(~province, ncol=5) + 
+  scale_color_viridis_d() +
+  faceted +
+  theme(legend.position="none",
+        axis.title.y.left=element_blank(),
+        axis.title.y.right=element_text(angle=0, vjust=.5)) +
+        #axis.text.y.left=element_blank(),
+        #axis.ticks.y.left=element_blank()) +
+  scale_x_date(date_labels="%b") +
+  scale_y_continuous(breaks=seq(0,1,.25),
+                     labels=percent,
+                     sec.axis = dup_axis()) +
+  labs(x="2022",
+       y="",
+       #y="Coverage\nrate",
+       title="Under-1 Immunization Rate 
+       Decreasing trend in Eastern, Southern, Northwestern
+       No trend in Central, Copperbelt, Muchinga
+       Increasing trend in Luapula, Lusaka, Northern, Western")
+
+ggsave("viz/Jul-Sep 2022/Child health/Immunization under 1 (2022 by province).png",
+       height=5.3,
+       width=7)
+
+
 # Immunization under 2 ---- 
 
 ggplot(ann, aes(as.Date(mnthyr), imm2/100)) +
@@ -269,6 +330,41 @@ ggplot(ann, aes(as.Date(mnthyr), imm2/100)) +
 ggsave("viz/Jul-Sep 2022/Child health/Immunization under 2 (Oct 2021 - Sep 2022).png",
        height=5.2,
        width=7)
+
+
+ggplot(chp, aes(date, imm2/100, color=province)) + 
+  geom_point(size=.8, alpha=.6) + 
+  geom_line(alpha=.4) + 
+  stat_smooth(method="lm", se=F, alpha=.8) + 
+  facet_wrap(~province, ncol=5) + 
+  scale_color_viridis_d() +
+  faceted +
+  theme(legend.position="none",
+        axis.title.y.left=element_blank(),
+        axis.title.y.right=element_text(angle=0, vjust=.5))
+#        plot.title=element_markdown()) +
+  #axis.text.y.left=element_blank(),
+  #axis.ticks.y.left=element_blank()) +
+  scale_x_date(date_labels="%b") +
+  scale_y_continuous(breaks=seq(0,1,.25),
+                     labels=percent,
+                     sec.axis = dup_axis()) +
+  labs(x="2022",
+       y="",
+       #y="Coverage\nrate",
+       title="Under-2 Immunization Rate 
+       Decreasing trend in Eastern, Northwestern
+       No trend in Copperbelt, Muchinga, Southern
+       Increasing trend in Central, Luapula, Lusaka, Northern, Western")
+
+ggsave("viz/Jul-Sep 2022/Child health/Immunization under 2 (2022 by province).png",
+       height=5.3,
+       width=7)
+
+library(ggtext)
+
+<ion-icon name='arrow-down-outline'></ion-icon> 
+  
 
 # Family planning attendance ---- 
 
