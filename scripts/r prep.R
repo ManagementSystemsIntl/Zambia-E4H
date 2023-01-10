@@ -72,6 +72,7 @@ describe <- psych::describe
 
 options(digits=4, scipen=8)
 #options(digits=8, scipen=9)
+              
 
 # set default
 base <- theme_bw() + theme(panel.grid.minor.x=element_blank(),
@@ -108,14 +109,14 @@ faceted <- theme_bw() +
   theme(panel.grid.minor.x=element_blank(),
         panel.grid.minor.y=element_blank(),
         plot.title=element_text(face="bold",
-          size=16.5, 
+          size=14, 
           hjust=.5, 
           family = "Gill Sans Mt"),
-        plot.subtitle = element_text(size=14, family="Gill Sans Mt"),
+        plot.subtitle = element_text(size=12, family="Gill Sans Mt"),
         plot.caption=element_text(size=12, family="Gill Sans Mt"),
         axis.title=element_text(size=12, family="Gill Sans Mt"),
         axis.text=element_text(face="bold", size=10, family="Gill Sans Mt"),
-        legend.text=element_text(size=14, family="Gill Sans Mt"),
+        legend.text=element_text(size=12, family="Gill Sans Mt"),
         #legend.position = "left",
         legend.position = c(.55,.99),
         legend.justification = c("left", "top"),
