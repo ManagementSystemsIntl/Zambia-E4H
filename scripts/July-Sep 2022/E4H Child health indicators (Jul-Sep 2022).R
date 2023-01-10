@@ -603,7 +603,7 @@ str(dat)
 
 frq(dat$mnthyr)
 
-meas <- dat %>%
+meas <- ch %>%
   filter(mnthyr>as.POSIXlt("2021-09-01")) %>%
   filter(mnthyr<as.POSIXlt("2022-10-01")) %>%
   select(mnthyr, measles1p, measles2p) %>%
@@ -619,11 +619,11 @@ str(meas)
   # color 
 
 ggplot(meas, aes(as.Date(mnthyr), perc, color=var)) +
-  geom_line() +
-  stat_smooth(method="lm", se=F) +
-  geom_point() + 
-#  geom_label(aes(label=paste(round(perc*100,0), "%", sep="")),
-#             show.legend=F) +
+  geom_line(size=.4, alpha=.4) +
+  stat_smooth(method="lm", se=F, alpha=.8) +
+  geom_point(size=.8) + 
+  geom_label(aes(label=paste(round(perc*100,0), "%", sep="")),
+             show.legend=F) +
   scale_x_date(date_breaks = "2 months",
                date_labels="%b-%y") +
   scale_y_continuous(labels=percent,
@@ -636,13 +636,14 @@ ggplot(meas, aes(as.Date(mnthyr), perc, color=var)) +
 #        axis.title.x=element_text(margin=margin())) +
 #        legend.position="right") +
   scale_color_manual(values=usaid_palette[1:2],
-                     labels=c("Measles coverage, 1st dose", 
-                              "Measles coverage, 2nd dose")) +
+                     labels=c("Measles coverage, under-1", 
+                              "Measles coverage, under-2")) +
   labs(x="\nOct 2021 - Sep 2022",
        y="Coverage\nrate",
-       title="Measles coverage rates on a declining trend")
+       title="Measles coverage rates on a declining trend, 
+       but September starts a positive trend")
 
-ggsave("viz/Jul-Sep 2022/Measles coverage (Oct 2021 - Sep 2022) no label.png",
+ggsave("viz/Jul-Sep 2022/Child health/Measles coverage (Oct 2021 - Sep 2022).png",
        height=5.2,
        width=7)
 
@@ -676,6 +677,67 @@ ggplot(meas, aes(as.Date(mnthyr), perc, color=var)) +
 ggsave("viz/Jul-Sep 2022/Measles coverage (Oct 2021 - Sep 2022) facet.png",
        height=4,
        width=7)
+
+
+  # by province
+
+ggplot(chp, aes(date, measles1/100, color=province)) + 
+  geom_point(size=.8) + 
+  geom_line(size=.4, size=.4) + 
+  stat_smooth(method="lm", se=F, alpha=.8) + 
+  facet_wrap(~province, ncol=5) + 
+  scale_color_viridis_d() +
+  faceted +
+  theme(legend.position="none",
+        axis.title.y.left=element_blank(),
+        axis.title.y.right=element_text(angle=0, vjust=.5)) +
+  #axis.text.y.left=element_blank(),
+  #axis.ticks.y.left=element_blank()) +
+  scale_x_date(date_labels="%b") +
+  scale_y_continuous(breaks=seq(0,1,.25),
+                     labels=percent,
+                     sec.axis = dup_axis()) +
+  labs(x="2022",
+       y="",
+       #y="Coverage\nrate",
+       title="Increasing trend in Central, Luapala, Muchinga, Northern, Southern, Western
+       Flat trend in Copperbelt, Eastern, Lusaka, Northwestern",
+       caption="Under-1 Measles Coverage Rate")
+
+ggsave("viz/Jul-Sep 2022/Child health/Measles under 1 (2022 by province).png",
+       height=5.3,
+       width=7)
+
+
+ggplot(chp, aes(date, measles2/100, color=province)) + 
+  geom_point(size=.8) + 
+  geom_line(size=.4, size=.4) + 
+  stat_smooth(method="lm", se=F, alpha=.8) + 
+  facet_wrap(~province, ncol=5) + 
+  scale_color_viridis_d() +
+  faceted +
+  theme(legend.position="none",
+        axis.title.y.left=element_blank(),
+        axis.title.y.right=element_text(angle=0, vjust=.5)) +
+  #axis.text.y.left=element_blank(),
+  #axis.ticks.y.left=element_blank()) +
+  scale_x_date(date_labels="%b") +
+  scale_y_continuous(breaks=seq(0,1,.25),
+                     labels=percent,
+                     sec.axis = dup_axis()) +
+  labs(x="2022",
+       y="",
+       #y="Coverage\nrate",
+       title="Increasing trend in Central, Luapala, Lusaka, Northern, Western
+       Flat trend in Copperbelt, Eastern, Muchinga, Northwestern, Southern",
+       caption="Under-2 Measles Coverage Rate")
+
+ggsave("viz/Jul-Sep 2022/Child health/Measles under 2 (2022 by province).png",
+       height=5.3,
+       width=7)
+
+
+
 
 
 
