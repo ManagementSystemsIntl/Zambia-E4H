@@ -22,7 +22,7 @@ varlabs <- read_xlsx("data/July-Sep 2022/Child health/Child Health (Jan 2018 - O
 varlabs
 
 ?read_xlsx
-str(dat)
+str(ch)
 
 ch[,3:21] <- map_df(ch[,3:21], as.numeric)
 
@@ -64,8 +64,6 @@ chDict <- data.frame(var=names(ch),
                       varlab = c(varlabs, varlabs2)) %>%
   mutate(class=cl) %>%
   remove_rownames(.)
-
-?remove_rownames
 
 sum(ch$month_chr!=ch$month) # expecting 0 if vars same
 
@@ -386,6 +384,7 @@ ggsave("viz/Jul-Sep 2022/Child health/Family planning visits (Oct 2021 - Sep 202
        width=7)
 
 # BCG coverage ---- 
+
 library(psych)
 str(ann)
 psych::describe(ann$bcg1)
@@ -1004,6 +1003,38 @@ ggsave("viz/Jul-Sep 2022/Child health/DPT first dose under 1 (Oct 2021 - Sep 202
          height=5.2,
          width=7)
   
+describe(chp$dptfirst1)
+
+ggplot(chp, aes(date, dptfirst1/100, color=province)) + 
+  geom_point(size=.8) + 
+  geom_line(size=.4, size=.4) + 
+  stat_smooth(method="lm", se=F, alpha=.8) + 
+  facet_wrap(~province, ncol=5) + 
+  scale_color_viridis_d() +
+  faceted +
+  theme(legend.position="none",
+        axis.title.y.left=element_blank(),
+        axis.title.y.right=element_text(angle=0, vjust=.5)) +
+  #axis.text.y.left=element_blank(),
+  #axis.ticks.y.left=element_blank()) +
+  scale_x_date(date_labels="%b") +
+  scale_y_continuous(limits=c(.2,1.41),
+                     breaks=seq(0,1,.25),
+                     labels=percent,
+                     sec.axis = dup_axis()) +
+  labs(x="2022",
+       y="",
+       #y="Coverage\nrate",
+       title="Increasing trend in Central, Muchinga, Northern, Western
+       Flat trend in Copperbelt, Eastern, Luapula, Lusaka, Northwestern, Southern",
+       caption="Under-1 BCG Coverage Rate")
+
+ggsave("viz/Jul-Sep 2022/Child health/DPT (2022 by province).png",
+       height=5.3,
+       width=7)
+
+
+
     
   
   
@@ -1327,7 +1358,40 @@ ggsave("viz/Jul-Sep 2022/Child health/Vitamin A supplementation truncated (Oct 2
        height=5.2,
        width=7)
   
+
+describe(chp$vitAsupp)
   
+ggplot(chp, aes(date, vitAsupp/100, color=province)) + 
+  geom_point(size=.8) + 
+  geom_line(size=.4, size=.4) + 
+  stat_smooth(method="lm", se=F, alpha=.8) + 
+  facet_wrap(~province, ncol=5) + 
+  scale_color_viridis_d() +
+  faceted +
+  theme(legend.position="none",
+        axis.title.y.left=element_blank(),
+        axis.title.y.right=element_text(angle=0, vjust=.5)) +
+  #axis.text.y.left=element_blank(),
+  #axis.ticks.y.left=element_blank()) +
+  scale_x_date(date_labels="%b") +
+  scale_y_continuous(limits=c(0,3.61),
+                     breaks=seq(0,1,.25),
+                     labels=percent,
+                     sec.axis = dup_axis()) +
+  labs(x="2022",
+       y="",
+       #y="Coverage\nrate",
+       title="Increasing trend in all provinces",
+#       Flat trend in Copperbelt, Eastern, Luapula, Lusaka, Northwestern, Southern",
+       caption="Vitamin A supplementation")
+
+ggsave("viz/Jul-Sep 2022/Child health/Vitamin A supplementation (2022 by province).png",
+       height=5.3,
+       width=7)
+
+
+
+
   
   
   #'* % OF CHILDREN RECEIVING Vitamin A*
@@ -1495,6 +1559,37 @@ ggsave("viz/Jul-Sep 2022/Child health/Deworming rate truncated (Oct 2021 - Sep 2
          height=5.2,
          width=7)
 
+describe(chp$deworm)
+
+ggplot(chp, aes(date, deworm/100, color=province)) + 
+  geom_point(size=.8) + 
+  geom_line(size=.4, size=.4) + 
+  stat_smooth(method="lm", se=F, alpha=.8) + 
+  facet_wrap(~province, ncol=5) + 
+  scale_color_viridis_d() +
+  faceted +
+  theme(legend.position="none",
+        axis.title.y.left=element_blank(),
+        axis.title.y.right=element_text(angle=0, vjust=.5)) +
+  #axis.text.y.left=element_blank(),
+  #axis.ticks.y.left=element_blank()) +
+  scale_x_date(date_labels="%b") +
+  scale_y_continuous(limits=c(0,5),
+                     breaks=seq(0,1,.25),
+                     labels=percent,
+                     sec.axis = dup_axis()) +
+  labs(x="2022",
+       y="",
+       #y="Coverage\nrate",
+       title="Increasing trend in all provinces",
+       #       Flat trend in Copperbelt, Eastern, Luapula, Lusaka, Northwestern, Southern",
+       caption="Child deworming rate")
+
+ggsave("viz/Jul-Sep 2022/Child health/Child deworming (2022 by province).png",
+       height=5.3,
+       width=7)
+
+
 
 # Stunting ---- 
 
@@ -1525,6 +1620,40 @@ ggsave("viz/Jul-Sep 2022/Child health/Stunting rate (Oct 2021 - Sep 2022).png",
        width=7)
 
 
+describe(chp$stunting)
+
+ggplot(chp, aes(date, stunting/100, color=province)) + 
+  geom_point(size=.8) + 
+  geom_line(size=.4, size=.4) + 
+  stat_smooth(method="lm", se=F, alpha=.8) + 
+  facet_wrap(~province, ncol=5) + 
+  scale_color_viridis_d() +
+  faceted +
+  theme(legend.position="none",
+        axis.title.y.left=element_blank(),
+        axis.title.y.right=element_text(angle=0, vjust=.5)) +
+  #axis.text.y.left=element_blank(),
+  #axis.ticks.y.left=element_blank()) +
+  scale_x_date(date_labels="%b") +
+  scale_y_continuous(limits=c(0,.015),
+                     breaks=seq(0,.015,.0025),
+                     labels=percent,
+                     sec.axis = dup_axis()) +
+  labs(x="\n2022",
+       y="",
+       #y="Coverage\nrate",
+       title="Increasing trend in Copperbelt
+       Flat trend in Muchinga, Northern, Southern
+       Decreasing trend in Central, Luapula, Lusaka, Northwestern, Western",
+       caption="Stunting rate")
+
+ggsave("viz/Jul-Sep 2022/Child health/Stunting (2022 by province).png",
+       height=5.3,
+       width=7)
+
+
+
+
 # Wasting ---- 
 
 describe(ann$wasting)
@@ -1553,6 +1682,40 @@ ggplot(ann, aes(as.Date(mnthyr), wasting/100)) +
 ggsave("viz/Jul-Sep 2022/Child health/Wasting rate (Oct 2021 - Sep 2022).png",
        height=5.2,
        width=7.1)
+
+
+describe(chp$wasting)
+
+ggplot(chp, aes(date, wasting/100, color=province)) + 
+  geom_point(size=.8) + 
+  geom_line(size=.4, size=.4) + 
+  stat_smooth(method="lm", se=F, alpha=.8) + 
+  facet_wrap(~province, ncol=5) + 
+  scale_color_viridis_d() +
+  faceted +
+  theme(legend.position="none",
+        axis.title.y.left=element_blank(),
+        axis.title.y.right=element_text(angle=0, vjust=.5)) +
+  #axis.text.y.left=element_blank(),
+  #axis.ticks.y.left=element_blank()) +
+  scale_x_date(date_labels="%b") +
+  scale_y_continuous(limits=c(0,.05),
+                     breaks=seq(0,.05,.01),
+                     labels=percent,
+                     sec.axis = dup_axis()) +
+  labs(x="\n2022",
+       y="",
+       #y="Coverage\nrate",
+       title="Increasing trend in Eastern, Luapula, Lusaka
+       Flat trend in Muchinga, Northern
+       Decreasing trend in Central, Copperbelt, Northwestern, Southern, Western",
+       caption="Wasting rate")
+
+ggsave("viz/Jul-Sep 2022/Child health/Wasting (2022 by province).png",
+       height=5.3,
+       width=7)
+
+
 
 
 # Breastfeeding ---- 
@@ -1615,6 +1778,47 @@ ggsave("viz/Jul-Sep 2022/Child health/Breastfeeding 6 months (Oct 2021 - Sep 202
        height=5.2,
        width=7.1)
 
+
+
+describe(chp$brstfd_6mnth)
+
+ggplot(chp, aes(date, brstfd_6mnth/100, color=province)) + 
+  geom_point(size=.8) + 
+  geom_line(size=.4, size=.4) + 
+  stat_smooth(method="lm", se=F, alpha=.8) + 
+  facet_wrap(~province, ncol=5) + 
+  scale_color_viridis_d() +
+  faceted +
+  theme(legend.position="none",
+        axis.title.y.left=element_blank(),
+        axis.title.y.right=element_text(angle=0, vjust=.5)) +
+  #axis.text.y.left=element_blank(),
+  #axis.ticks.y.left=element_blank()) +
+  scale_x_date(date_labels="%b") +
+  scale_y_continuous(limits=c(.2,1),
+                     breaks=seq(.2,1,.2),
+                     labels=percent,
+                     sec.axis = dup_axis()) +
+  labs(x="\n2022",
+       y="",
+       #y="Coverage\nrate",
+       title=#"Increasing trend in Eastern, Luapula, Lusaka
+       "Flat trend in Copperbelt, Lusaka, Northwestern, Muchinga
+       Decreasing trend in Central, Eastern, Luapala, Northern, Southern, Western",
+       caption="Breastfed within six months")
+
+ggsave("viz/Jul-Sep 2022/Child health/Breastfed six months (2022 by province).png",
+       height=5.3,
+       width=7)
+
+
+
+
+
+
+
+
+
 # OPD first attendance ---- 
 
 describe(ann$opdAtt)
@@ -1672,6 +1876,42 @@ ggplot(ann, aes(as.Date(mnthyr), ebf/100)) +
 ggsave("viz/Jul-Sep 2022/Child health/EBF rate (Oct 2021 - Sep 2022).png",
        height=5.2,
        width=7.1)
+
+
+describe(chp$ebf)
+
+ggplot(chp, aes(date, ebf/100, color=province)) + 
+  geom_point(size=.8) + 
+  geom_line(size=.4, size=.4) + 
+  stat_smooth(method="lm", se=F, alpha=.8) + 
+  facet_wrap(~province, ncol=5) + 
+  scale_color_viridis_d() +
+  faceted +
+  theme(legend.position="none",
+        axis.title.y.left=element_blank(),
+        axis.title.y.right=element_text(angle=0, vjust=.5)) +
+  #axis.text.y.left=element_blank(),
+  #axis.ticks.y.left=element_blank()) +
+  scale_x_date(date_labels="%b") +
+  scale_y_continuous(limits=c(.2,1),
+                     breaks=seq(.2,1,.2),
+                     labels=percent,
+                     sec.axis = dup_axis()) +
+  labs(x="\n2022",
+       y="",
+       #y="Coverage\nrate",
+       title=#"Increasing trend in Eastern, Luapula, Lusaka
+         "Flat trend in Copperbelt, Lusaka, Northwestern, Western
+       Decreasing trend in Central, Eastern, Luapala, Muchinga, Northern, Southern",
+       caption="Children on EBF within six months")
+
+ggsave("viz/Jul-Sep 2022/Child health/EBF within six months (2022 by province).png",
+       height=5.3,
+       width=7)
+
+
+
+
 
 
 
