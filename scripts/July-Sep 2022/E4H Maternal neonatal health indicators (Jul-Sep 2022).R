@@ -114,7 +114,7 @@ ggplot(matp, aes(date, anc_1st_und20, color=province)) +
        Decreasing trend in Luapula, Muchinga, Northern, Southern
        No trend in Copperbelt, Eastern, Lusaka, Northwestern, Western
       Increasing trend in Central",
-       caption = "ANC Visits in 1st Trimester Visits Under 20")
+       caption = "ANC Visits 1st Trimester Visits Under 20")
 
 ggsave("viz/Jul-Sep 2022/Reproductive maternal/ANC 1st Trimester U20 (2022 by province).png",
        height=5.3,
