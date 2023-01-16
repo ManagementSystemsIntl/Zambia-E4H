@@ -458,7 +458,7 @@ ggsave("viz/Jul-Sep 2022/Family planning/Screened for HTS Needs.png",
 describe(fp_prov$prop_restart)
 
 
-ggplot(fp_prov, aes(date, prop_restart)) + 
+ggplot(fp_prov, aes(date, prop_restart/100)) + 
   geom_point(size=.8) + 
   geom_line(size=.4, alpha=.4) + 
   stat_smooth(method="lm", se=F, alpha=.8) + 
@@ -471,9 +471,10 @@ ggplot(fp_prov, aes(date, prop_restart)) +
   #axis.text.y.left=element_blank(),
   #axis.ticks.y.left=element_blank()) +
   scale_x_date(date_labels="%b") +
-  scale_y_continuous(breaks=seq(0,60,10),
+  scale_y_continuous(breaks=seq(0,.6,.1),
+                     labels=percent,
                      sec.axis = dup_axis()) +
-  labs(x="2022",
+  labs(x="\n2022",
        y="",
        #y="Coverage\nrate",
        title=#"Proportion of Clients Restarting Family Planning" 
@@ -492,7 +493,7 @@ ggsave("viz/Jul-Sep 2022/Family planning/Proportion Restarting FP.png",
 describe(fp_prov$prop_new_1519)
 
 
-ggplot(fp_prov, aes(date, prop_new_1519)) + 
+ggplot(fp_prov, aes(date, prop_new_1519/100)) + 
   geom_point(size=.8) + 
   geom_line(size=.4, alpha=.4) + 
   stat_smooth(method="lm", se=F, alpha=.8) + 
@@ -505,9 +506,10 @@ ggplot(fp_prov, aes(date, prop_new_1519)) +
   #axis.text.y.left=element_blank(),
   #axis.ticks.y.left=element_blank()) +
   scale_x_date(date_labels="%b") +
-  scale_y_continuous(breaks=seq(0,75,15),
+  scale_y_continuous(breaks=seq(0,.75,.15),
+                     labels=percent,
                      sec.axis = dup_axis()) +
-  labs(x="2022",
+  labs(x="\n2022",
        y="",
        #y="Coverage\nrate",
        title=#"Proportion of New Acceptors (15-19 years old)" 
@@ -527,7 +529,7 @@ ggsave("viz/Jul-Sep 2022/Family planning/Proportion New Acceptors (15-19 years).
 describe(fp_prov$new_accept)
 
 
-ggplot(fp_prov, aes(date, new_accept)) + 
+ggplot(fp_prov, aes(date, new_accept/100)) + 
   geom_point(size=.8) + 
   geom_line(size=.4, alpha=.4) + 
   stat_smooth(method="lm", se=F, alpha=.8) + 
@@ -540,9 +542,10 @@ ggplot(fp_prov, aes(date, new_accept)) +
   #axis.text.y.left=element_blank(),
   #axis.ticks.y.left=element_blank()) +
   scale_x_date(date_labels="%b") +
-  scale_y_continuous(breaks=seq(0,60,10),
+  scale_y_continuous(breaks=seq(0,.60,.10),
+                     labels=percent,
                      sec.axis = dup_axis()) +
-  labs(x="2022",
+  labs(x="\n2022",
        y="",
        #y="Coverage\nrate",
        title=#"Percentage of New Acceptors" 
@@ -589,6 +592,518 @@ ggplot(fp_prov, aes(date, copper_insert_1519)) +
 ggsave("viz/Jul-Sep 2022/Family planning/Copper IUCD Inserted (15-19).png",
        height=5.3,
        width=7)
+
+
+
+#copper_insert_2024
+
+describe(fp_prov$copper_insert_2024)
+
+
+ggplot(fp_prov, aes(date, copper_insert_2024)) + 
+  geom_point(size=.8) + 
+  geom_line(size=.4, alpha=.4) + 
+  stat_smooth(method="lm", se=F, alpha=.8) + 
+  facet_wrap(~prov, ncol=5) + 
+  scale_color_viridis_d() +
+  faceted +
+  theme(legend.position="none",
+        axis.title.y.left=element_blank(),
+        axis.title.y.right=element_text(angle=0, vjust=.5)) +
+  #axis.text.y.left=element_blank(),
+  #axis.ticks.y.left=element_blank()) +
+  scale_x_date(date_labels="%b") +
+  scale_y_continuous(breaks=seq(0,700,100),
+                     sec.axis = dup_axis()) +
+  labs(x="2022",
+       y="",
+       #y="Coverage\nrate",
+       title=#"Copper IUCD Inserted (20-24 years old)" 
+         "No trend in Eastern, Northwestern, Southern, Western
+       Decreasing trend in Central, Copperbelt, Luapula, Lusaka, Muchinga, Northern",
+       caption="Copper IUCD Inserted (20-24 years old)")
+
+ggsave("viz/Jul-Sep 2022/Family planning/Copper IUCD Inserted (20-24).png",
+       height=5.3,
+       width=7)
+
+
+
+#copper_insert_ov25
+
+describe(fp_prov$copper_insert_ov25)
+
+
+ggplot(fp_prov, aes(date, copper_insert_ov25)) + 
+  geom_point(size=.8) + 
+  geom_line(size=.4, alpha=.4) + 
+  stat_smooth(method="lm", se=F, alpha=.8) + 
+  facet_wrap(~prov, ncol=5) + 
+  scale_color_viridis_d() +
+  faceted +
+  theme(legend.position="none",
+        axis.title.y.left=element_blank(),
+        axis.title.y.right=element_text(angle=0, vjust=.5)) +
+  #axis.text.y.left=element_blank(),
+  #axis.ticks.y.left=element_blank()) +
+  scale_x_date(date_labels="%b") +
+  scale_y_continuous(breaks=seq(0,1800,300),
+                     sec.axis = dup_axis()) +
+  labs(x="2022",
+       y="",
+       #y="Coverage\nrate",
+       title=#"Copper IUCD Inserted (Over 25 years old)" 
+         "No trend in Central, Eastern, Lusaka, Northwestern, Southern, Western
+       Decreasing trend in Copperbelt, Luapula, Muchinga, Northern",
+       caption="Copper IUCD Inserted (Over 25 years old)")
+
+ggsave("viz/Jul-Sep 2022/Family planning/Copper IUCD Inserted (Over 25).png",
+       height=5.3,
+       width=7)
+
+
+
+#copper_insert_u15
+
+describe(fp_prov$copper_insert_u15)
+
+
+ggplot(fp_prov, aes(date, copper_insert_u15)) + 
+  geom_point(size=.8) + 
+  geom_line(size=.4, alpha=.4) + 
+  stat_smooth(method="lm", se=F, alpha=.8) + 
+  facet_wrap(~prov, ncol=5) + 
+  scale_color_viridis_d() +
+  faceted +
+  theme(legend.position="none",
+        axis.title.y.left=element_blank(),
+        axis.title.y.right=element_text(angle=0, vjust=.5)) +
+  #axis.text.y.left=element_blank(),
+  #axis.ticks.y.left=element_blank()) +
+  scale_x_date(date_labels="%b") +
+  scale_y_continuous(breaks=seq(0,350,50),
+                     sec.axis = dup_axis()) +
+  labs(x="2022",
+       y="",
+       #y="Coverage\nrate",
+       title=#"Copper IUCD Inserted (Under 15 years old)" 
+         "Increasing trend in Copperbelt
+         No trend in Central, Muchinga, Northern, Northwestern, Southern, Western
+       Decreasing trend in Eastern, Luapula, Lusaka",
+       caption="Copper IUCD Inserted (Under 15 years old) (considering outliers)")
+
+ggsave("viz/Jul-Sep 2022/Family planning/Copper IUCD Inserted (Under 15).png",
+       height=5.3,
+       width=7)
+
+
+#hormone_insert_1519
+
+describe(fp_prov$hormone_insert_1519)
+
+
+ggplot(fp_prov, aes(date, hormone_insert_1519)) + 
+  geom_point(size=.8) + 
+  geom_line(size=.4, alpha=.4) + 
+  stat_smooth(method="lm", se=F, alpha=.8) + 
+  facet_wrap(~prov, ncol=5) + 
+  scale_color_viridis_d() +
+  faceted +
+  theme(legend.position="none",
+        axis.title.y.left=element_blank(),
+        axis.title.y.right=element_text(angle=0, vjust=.5)) +
+  #axis.text.y.left=element_blank(),
+  #axis.ticks.y.left=element_blank()) +
+  scale_x_date(date_labels="%b") +
+  scale_y_continuous(breaks=seq(0,30,5),
+                     sec.axis = dup_axis()) +
+  labs(x="\n2022",
+       y="",
+       #y="Coverage\nrate",
+       title=#"Hormone IUCD Inserted (15-19 years old)" 
+         "Increasing trend in Copperbelt
+         No trend in Eastern, Lusaka, Muchinga, Northern, Northwestern, Western
+       Decreasing trend in Central, Luapula, Southern",
+       caption="Hormone IUCD Inserted (15-19 years old)")
+
+ggsave("viz/Jul-Sep 2022/Family planning/Hormone IUCD Inserted (15-19).png",
+       height=5.3,
+       width=7)
+
+
+
+#hormone_insert_2024
+
+describe(fp_prov$hormone_insert_2024)
+
+
+ggplot(fp_prov, aes(date, hormone_insert_2024)) + 
+  geom_point(size=.8) + 
+  geom_line(size=.4, alpha=.4) + 
+  stat_smooth(method="lm", se=F, alpha=.8) + 
+  facet_wrap(~prov, ncol=5) + 
+  scale_color_viridis_d() +
+  faceted +
+  theme(legend.position="none",
+        axis.title.y.left=element_blank(),
+        axis.title.y.right=element_text(angle=0, vjust=.5)) +
+  #axis.text.y.left=element_blank(),
+  #axis.ticks.y.left=element_blank()) +
+  scale_x_date(date_labels="%b") +
+  scale_y_continuous(breaks=seq(0,125,25),
+                     sec.axis = dup_axis()) +
+  labs(x="\n2022",
+       y="",
+       #y="Coverage\nrate",
+       title=#"Hormone IUCD Inserted (20-24 years old)" 
+         "No trend in Copperbelt, Luapula, Northwestern, Southern, Western
+       Decreasing trend in Central, Eastern, Lusaka, Muchinga, Northern",
+       caption="Hormone IUCD Inserted (20-24 years old) (considering outliers)")
+
+ggsave("viz/Jul-Sep 2022/Family planning/Hormone IUCD Inserted (20-24).png",
+       height=5.3,
+       width=7)
+
+
+
+#hormone_insert_ov25
+
+describe(fp_prov$hormone_insert_ov25)
+
+
+ggplot(fp_prov, aes(date, hormone_insert_ov25)) + 
+  geom_point(size=.8) + 
+  geom_line(size=.4, alpha=.4) + 
+  stat_smooth(method="lm", se=F, alpha=.8) + 
+  facet_wrap(~prov, ncol=5) + 
+  scale_color_viridis_d() +
+  faceted +
+  theme(legend.position="none",
+        axis.title.y.left=element_blank(),
+        axis.title.y.right=element_text(angle=0, vjust=.5)) +
+  #axis.text.y.left=element_blank(),
+  #axis.ticks.y.left=element_blank()) +
+  scale_x_date(date_labels="%b") +
+  scale_y_continuous(breaks=seq(0,275,50),
+                     sec.axis = dup_axis()) +
+  labs(x="\n2022",
+       y="",
+       #y="Coverage\nrate",
+       title=#"Hormone IUCD Inserted (Over 25 years old)" 
+         "No trend in Copperbelt, Eastern, Luapula, Lusaka, Northern, Northwestern, Southern, Western
+       Decreasing trend in Central, Muchinga",
+       caption="Hormone IUCD Inserted (Over 25 years old) (considering outliers)")
+
+ggsave("viz/Jul-Sep 2022/Family planning/Hormone IUCD Inserted (Over 25).png",
+       height=5.3,
+       width=7)
+
+
+
+#hormone_insert_u15
+
+describe(fp_prov$hormone_insert_u15)
+
+
+ggplot(fp_prov, aes(date, hormone_insert_u15)) + 
+  geom_point(size=.8) + 
+  geom_line(size=.4, alpha=.4) + 
+  stat_smooth(method="lm", se=F, alpha=.8) + 
+  facet_wrap(~prov, ncol=5) + 
+  scale_color_viridis_d() +
+  faceted +
+  theme(legend.position="none",
+        axis.title.y.left=element_blank(),
+        axis.title.y.right=element_text(angle=0, vjust=.5)) +
+  #axis.text.y.left=element_blank(),
+  #axis.ticks.y.left=element_blank()) +
+  scale_x_date(date_labels="%b") +
+  scale_y_continuous(breaks=seq(0,43,10),
+                     sec.axis = dup_axis()) +
+  labs(x="\n2022",
+       y="",
+       #y="Coverage\nrate",
+       title=#"Hormone IUCD Inserted (Under 15 years old)" 
+         "Increasing trend in Copperbelt
+         No trend in Central, Eastern, Luapula, Muchinga, Northern, Northwestern, Southern, Western
+       Decreasing trend in Lusaka",
+       caption="Hormone IUCD Inserted (Under 15 years old)")
+
+ggsave("viz/Jul-Sep 2022/Family planning/Hormone IUCD Inserted (Under 15).png",
+       height=5.3,
+       width=7)
+
+
+#implanon_1519
+
+describe(fp_prov$implanon_1519)
+
+
+ggplot(fp_prov, aes(date, implanon_1519)) + 
+  geom_point(size=.8) + 
+  geom_line(size=.4, alpha=.4) + 
+  stat_smooth(method="lm", se=F, alpha=.8) + 
+  facet_wrap(~prov, ncol=5) + 
+  scale_color_viridis_d() +
+  faceted +
+  theme(legend.position="none",
+        axis.title.y.left=element_blank(),
+        axis.title.y.right=element_text(angle=0, vjust=.5)) +
+  #axis.text.y.left=element_blank(),
+  #axis.ticks.y.left=element_blank()) +
+  scale_x_date(date_labels="%b") +
+  scale_y_continuous(breaks=seq(0,425,50),
+                     sec.axis = dup_axis()) +
+  labs(x="\n2022",
+       y="",
+       #y="Coverage\nrate",
+       title=#"Implant Implanon (15-19 years old)" 
+         "Increasing trend in Central, Copperbelt, Eastern, Luapula, Southern
+         No trend in Lusaka, Muchinga, Northern, Northwestern, Western",
+       caption="Implant Implanon (15-19 years old)")
+
+ggsave("viz/Jul-Sep 2022/Family planning/Implant Implanon (15-19).png",
+       height=5.3,
+       width=7)
+
+
+
+#implanon_2024
+
+describe(fp_prov$implanon_2024)
+
+
+ggplot(fp_prov, aes(date, implanon_2024)) + 
+  geom_point(size=.8) + 
+  geom_line(size=.4, alpha=.4) + 
+  stat_smooth(method="lm", se=F, alpha=.8) + 
+  facet_wrap(~prov, ncol=5) + 
+  scale_color_viridis_d() +
+  faceted +
+  theme(legend.position="none",
+        axis.title.y.left=element_blank(),
+        axis.title.y.right=element_text(angle=0, vjust=.5)) +
+  #axis.text.y.left=element_blank(),
+  #axis.ticks.y.left=element_blank()) +
+  scale_x_date(date_labels="%b") +
+  scale_y_continuous(breaks=seq(0,900,150),
+                     sec.axis = dup_axis()) +
+  labs(x="\n2022",
+       y="",
+       #y="Coverage\nrate",
+       title=#"Implant Implanon (20-24 years old)" 
+         "Increasing trend in Central, Eastern, Luapula
+         No trend in Copperbelt, Lusaka, Muchinga, Northern, Northwestern, Southern, Western",
+       caption="Implant Implanon (20-24 years old)")
+
+ggsave("viz/Jul-Sep 2022/Family planning/Implant Implanon (20-24).png",
+       height=5.3,
+       width=7)
+
+
+#implanon_ov25
+
+describe(fp_prov$implanon_ov25)
+
+
+ggplot(fp_prov, aes(date, implanon_ov25)) + 
+  geom_point(size=.8) + 
+  geom_line(size=.4, alpha=.4) + 
+  stat_smooth(method="lm", se=F, alpha=.8) + 
+  facet_wrap(~prov, ncol=5) + 
+  scale_color_viridis_d() +
+  faceted +
+  theme(legend.position="none",
+        axis.title.y.left=element_blank(),
+        axis.title.y.right=element_text(angle=0, vjust=.5)) +
+  #axis.text.y.left=element_blank(),
+  #axis.ticks.y.left=element_blank()) +
+  scale_x_date(date_labels="%b") +
+  scale_y_continuous(breaks=seq(0,1700,250),
+                     sec.axis = dup_axis()) +
+  labs(x="\n2022",
+       y="",
+       #y="Coverage\nrate",
+       title=#"Implant Implanon (Over 25 years old)" 
+         "Increasing trend in Central, Eastern, Lusaka
+         No trend in Muchinga, Northern, Northwestern, Southern, Western
+       Decreasing trend in Copperbelt, Luapula",
+       caption="Implant Implanon (Over 25 years old)")
+
+ggsave("viz/Jul-Sep 2022/Family planning/Implant Implanon (Over 25).png",
+       height=5.3,
+       width=7)
+
+
+#implanon_u15
+
+describe(fp_prov$implanon_u15)
+
+
+ggplot(fp_prov, aes(date, implanon_u15)) + 
+  geom_point(size=.8) + 
+  geom_line(size=.4, alpha=.4) + 
+  stat_smooth(method="lm", se=F, alpha=.8) + 
+  facet_wrap(~prov, ncol=5) + 
+  scale_color_viridis_d() +
+  faceted +
+  theme(legend.position="none",
+        axis.title.y.left=element_blank(),
+        axis.title.y.right=element_text(angle=0, vjust=.5)) +
+  #axis.text.y.left=element_blank(),
+  #axis.ticks.y.left=element_blank()) +
+  scale_x_date(date_labels="%b") +
+  scale_y_continuous(breaks=seq(0,350,50),
+                     sec.axis = dup_axis()) +
+  labs(x="\n2022",
+       y="",
+       #y="Coverage\nrate",
+       title=#"Implant Implanon (Under 15 years old)" 
+         "Increasing trend in Copperbelt
+         No trend in Northern, Northwestern, Southern, Western
+       Decreasing trend in Central, Eastern, Luapula, Lusaka, Muchinga",
+       caption="Implant Implanon (Under 15 years old)")
+
+ggsave("viz/Jul-Sep 2022/Family planning/Implant Implanon (Under 15).png",
+       height=5.3,
+       width=7)
+
+
+#jadelle_1519
+
+describe(fp_prov$jadelle_1519)
+
+
+ggplot(fp_prov, aes(date, jadelle_1519)) + 
+  geom_point(size=.8) + 
+  geom_line(size=.4, alpha=.4) + 
+  stat_smooth(method="lm", se=F, alpha=.8) + 
+  facet_wrap(~prov, ncol=5) + 
+  scale_color_viridis_d() +
+  faceted +
+  theme(legend.position="none",
+        axis.title.y.left=element_blank(),
+        axis.title.y.right=element_text(angle=0, vjust=.5)) +
+  #axis.text.y.left=element_blank(),
+  #axis.ticks.y.left=element_blank()) +
+  scale_x_date(date_labels="%b") +
+  scale_y_continuous(breaks=seq(0,525,75),
+                     sec.axis = dup_axis()) +
+  labs(x="\n2022",
+       y="",
+       #y="Coverage\nrate",
+       title=#"Implant Jadelle (15-19 years old)" 
+         "Increasing trend in Central, Copperbelt, Eastern
+         No trend in Luapula, Lusaka, Northwestern, Southern, Western
+       Decreasing trend in Muchinga, Northern",
+       caption="Implant Jadelle (15-19 years old)")
+
+ggsave("viz/Jul-Sep 2022/Family planning/Implant Jadelle (15-19).png",
+       height=5.3,
+       width=7)
+
+
+#jadelle_2024
+
+describe(fp_prov$jadelle_2024)
+
+
+ggplot(fp_prov, aes(date, jadelle_2024)) + 
+  geom_point(size=.8) + 
+  geom_line(size=.4, alpha=.4) + 
+  stat_smooth(method="lm", se=F, alpha=.8) + 
+  facet_wrap(~prov, ncol=5) + 
+  scale_color_viridis_d() +
+  faceted +
+  theme(legend.position="none",
+        axis.title.y.left=element_blank(),
+        axis.title.y.right=element_text(angle=0, vjust=.5)) +
+  #axis.text.y.left=element_blank(),
+  #axis.ticks.y.left=element_blank()) +
+  scale_x_date(date_labels="%b") +
+  scale_y_continuous(breaks=seq(0,1475,225),
+                     sec.axis = dup_axis()) +
+  labs(x="\n2022",
+       y="",
+       #y="Coverage\nrate",
+       title=#"Implant Jadelle (20-24 years old)" 
+         "Increasing trend in Central
+         No trend in Copperbelt, Eastern, Luapula, Lusaka, Muchinga, Northern, 
+       Northwestern, Southern, Western",
+       caption="Implant Jadelle (20-24 years old)")
+
+ggsave("viz/Jul-Sep 2022/Family planning/Implant Jadelle (20-24).png",
+       height=5.3,
+       width=7)
+
+
+#jadelle_ov25
+
+describe(fp_prov$jadelle_ov25)
+
+
+ggplot(fp_prov, aes(date, jadelle_ov25)) + 
+  geom_point(size=.8) + 
+  geom_line(size=.4, alpha=.4) + 
+  stat_smooth(method="lm", se=F, alpha=.8) + 
+  facet_wrap(~prov, ncol=5) + 
+  scale_color_viridis_d() +
+  faceted +
+  theme(legend.position="none",
+        axis.title.y.left=element_blank(),
+        axis.title.y.right=element_text(angle=0, vjust=.5)) +
+  #axis.text.y.left=element_blank(),
+  #axis.ticks.y.left=element_blank()) +
+  scale_x_date(date_labels="%b") +
+  scale_y_continuous(breaks=seq(0,2600,400),
+                     sec.axis = dup_axis()) +
+  labs(x="\n2022",
+       y="",
+       #y="Coverage\nrate",
+       title=#"Implant Jadelle (Over 25 years old)" 
+         "Increasing trend in Central, Lusaka
+         No trend in Eastern, Luapula, Muchinga, Northern, Northwestern, Southern, Western
+       Decreasing trend in Copperbelt",
+       caption="Implant Jadelle (Over 25 years old)")
+
+ggsave("viz/Jul-Sep 2022/Family planning/Implant Jadelle (Over 25).png",
+       height=5.3,
+       width=7)
+
+
+#jadelle_u15
+
+describe(fp_prov$jadelle_u15)
+
+
+ggplot(fp_prov, aes(date, jadelle_u15)) + 
+  geom_point(size=.8) + 
+  geom_line(size=.4, alpha=.4) + 
+  stat_smooth(method="lm", se=F, alpha=.8) + 
+  facet_wrap(~prov, ncol=5) + 
+  scale_color_viridis_d() +
+  faceted +
+  theme(legend.position="none",
+        axis.title.y.left=element_blank(),
+        axis.title.y.right=element_text(angle=0, vjust=.5)) +
+  #axis.text.y.left=element_blank(),
+  #axis.ticks.y.left=element_blank()) +
+  scale_x_date(date_labels="%b") +
+  scale_y_continuous(breaks=seq(0,700,100),
+                     sec.axis = dup_axis()) +
+  labs(x="\n2022",
+       y="",
+       #y="Coverage\nrate",
+       title=#"Implant Jadelle (Under 15 years old)" 
+         "No trend in Central, Copperbelt, Luapula, Northern, Northwestern, Southern, Western
+       Decreasing trend in Eastern, Lusaka, Muchinga",
+       caption="Implant Jadelle (Under 15 years old) (considering outliers")
+
+ggsave("viz/Jul-Sep 2022/Family planning/Implant Jadelle (Under 15).png",
+       height=5.3,
+       width=7)
+
+
 
 
 
