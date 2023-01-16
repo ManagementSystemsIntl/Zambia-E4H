@@ -15,11 +15,210 @@ matp <- read_excel("data/July-Sep 2022/Reproductive maternal/Reproductive Health
 labs <- read_excel("data/July-Sep 2022/Child health/Child health monthly prov 2022.xlsx",
                    sheet="export",
                    range="A1:P1",
-                   col_names = F) %>%
-  t()
+                   col_names = F)
+
+names(matp)
+
+#ANC Coverage 1st Trimester ----
 
 
+describe(matp$anc_1st)
 
+ggplot(matp, aes(date, anc_1st, color=province)) + 
+  geom_point(size=.8, alpha=.6) + 
+  geom_line(alpha=.4) + 
+  stat_smooth(method="lm", se=F, alpha=.8, size=.6) + 
+  facet_wrap(~province, ncol=5) + 
+  scale_color_viridis_d() +
+  faceted +
+  theme(legend.position="none",
+        axis.title.y.left=element_blank(),
+        axis.title.y.right=element_text(angle=0, vjust=.5)) +
+  #        plot.title=element_markdown()) +
+  #axis.text.y.left=element_blank(),
+  #axis.ticks.y.left=element_blank()) +
+  scale_x_date(date_labels="%b") +
+  scale_y_continuous(breaks=seq(0,60,10),
+                     sec.axis = dup_axis()) +
+  labs(x="2022",
+       y="",
+       #y="Coverage\nrate",
+      title= "
+       Decreasing trend in Eastern, Luapula, Muchinga , Northwestern, Western
+       No trend in Central, Copperbelt, Northern, Southern
+      Increasing trend in Lusaka",
+       caption = "ANC Coverage 1st Trimester")
+
+ggsave("viz/Jul-Sep 2022/Reproductive maternal/ANC Coverage 1st Trimester (2022 by province).png",
+       height=5.3,
+       width=7)
+
+#ANC Coverage All Trimesters ----
+
+describe(matp$anc_all)
+
+ggplot(matp, aes(date, anc_all, color=province)) + 
+  geom_point(size=.8, alpha=.6) + 
+  geom_line(alpha=.4) + 
+  stat_smooth(method="lm", se=F, alpha=.8, size=.6) + 
+  facet_wrap(~province, ncol=5) + 
+  scale_color_viridis_d() +
+  faceted +
+  theme(legend.position="none",
+        axis.title.y.left=element_blank(),
+        axis.title.y.right=element_text(angle=0, vjust=.5)) +
+  #        plot.title=element_markdown()) +
+  #axis.text.y.left=element_blank(),
+  #axis.ticks.y.left=element_blank()) +
+  scale_x_date(date_labels="%b") +
+  scale_y_continuous(breaks=seq(0,150,15),
+                     sec.axis = dup_axis()) +
+  labs(x="2022",
+       y="",
+       #y="Coverage\nrate",
+       title= "
+       Decreasing trend in Eastern, Western, Muchinga, Northwestern
+       No trend in Copperbelt, Luapula, Lusaka, Southern
+      Increasing trend in Central, Northern",
+       caption = "ANC Coverage All Trimesters")
+
+ggsave("viz/Jul-Sep 2022/Reproductive maternal/ANC Coverage All Trimesters (2022 by province).png",
+       height=5.3,
+       width=7)
+
+
+#ANC Visits Under 20 ----
+
+describe(matp$anc_1st_und20)
+
+ggplot(matp, aes(date, anc_1st_und20, color=province)) + 
+  geom_point(size=.8, alpha=.6) + 
+  geom_line(alpha=.4) + 
+  stat_smooth(method="lm", se=F, alpha=.8, size=.6) + 
+  facet_wrap(~province, ncol=5) + 
+  scale_color_viridis_d() +
+  faceted +
+  theme(legend.position="none",
+        axis.title.y.left=element_blank(),
+        axis.title.y.right=element_text(angle=0, vjust=.5)) +
+  #        plot.title=element_markdown()) +
+  #axis.text.y.left=element_blank(),
+  #axis.ticks.y.left=element_blank()) +
+  scale_x_date(date_labels="%b") +
+  scale_y_continuous(breaks=seq(0,60,10),
+                     sec.axis = dup_axis()) +
+  labs(x="2022",
+       y="",
+       #y="Coverage\nrate",
+       title= "
+       Decreasing trend in Luapula, Muchinga, Northern, Southern
+       No trend in Copperbelt, Eastern, Lusaka, Northwestern, Western
+      Increasing trend in Central",
+       caption = "ANC Visits 1st Trimester Visits Under 20")
+
+ggsave("viz/Jul-Sep 2022/Reproductive maternal/ANC 1st Trimester U20 (2022 by province).png",
+       height=5.3,
+       width=7)
+
+# Folic Acid ----
+
+describe(matp$folic)
+
+ggplot(matp, aes(date, folic, color=province)) + 
+  geom_point(size=.8, alpha=.6) + 
+  geom_line(alpha=.4) + 
+  stat_smooth(method="lm", se=F, alpha=.8, size=.6) + 
+  facet_wrap(~province, ncol=5) + 
+  scale_color_viridis_d() +
+  faceted +
+  theme(legend.position="none",
+        axis.title.y.left=element_blank(),
+        axis.title.y.right=element_text(angle=0, vjust=.5)) +
+  #        plot.title=element_markdown()) +
+  #axis.text.y.left=element_blank(),
+  #axis.ticks.y.left=element_blank()) +
+  scale_x_date(date_labels="%b") +
+  scale_y_continuous(breaks=seq(0,90,10),
+                     sec.axis = dup_axis()) +
+  labs(x="2022",
+       y="",
+       #y="Coverage\nrate",
+       title= "
+       Decreasing trend in Central, Copperbelt, Muchinga, Northern,
+       Northwestern
+       No trend in Luapula, Lusaka, Southern
+      Increasing trend in Eastern, Western",
+       caption = "Folic Acid Supplementation During ANC Visits")
+
+ggsave("viz/Jul-Sep 2022/Reproductive maternal/Folic Acid Supplementation During ANC Visits (2022 by province).png",
+       height=5.3,
+       width=7)
+
+#Iron ----
+
+describe(matp$iron)
+
+ggplot(matp, aes(date, iron, color=province)) + 
+  geom_point(size=.8, alpha=.6) + 
+  geom_line(alpha=.4) + 
+  stat_smooth(method="lm", se=F, alpha=.8, size=.6) + 
+  facet_wrap(~province, ncol=5) + 
+  scale_color_viridis_d() +
+  faceted +
+  theme(legend.position="none",
+        axis.title.y.left=element_blank(),
+        axis.title.y.right=element_text(angle=0, vjust=.5)) +
+  #        plot.title=element_markdown()) +
+  #axis.text.y.left=element_blank(),
+  #axis.ticks.y.left=element_blank()) +
+  scale_x_date(date_labels="%b") +
+  scale_y_continuous(breaks=seq(0,90,10),
+                     sec.axis = dup_axis()) +
+  labs(x="2022",
+       y="",
+       #y="Coverage\nrate",
+       title= "
+       Decreasing trend in Copperbelt, Luapula, Muchinga, Northern,
+       Northwestern
+       No trend in Central, Lusaka, Western, Southern
+      Increasing trend in Eastern",
+       caption = "Iron Supplementation During ANC Visits")
+
+ggsave("viz/Jul-Sep 2022/Reproductive maternal/Iron Supplementation During ANC Visits (2022 by province).png",
+       height=5.3,
+       width=7)
+
+#ANC High Risk ----
+
+describe(matp$anc_highrisk)
+
+ggplot(matp, aes(date, anc_highrisk, color=province)) + 
+  geom_point(size=.8, alpha=.6) + 
+  geom_line(alpha=.4) + 
+  stat_smooth(method="lm", se=F, alpha=.8, size=.6) + 
+  facet_wrap(~province, ncol=5) + 
+  scale_color_viridis_d() +
+  faceted +
+  theme(legend.position="none",
+        axis.title.y.left=element_blank(),
+        axis.title.y.right=element_text(angle=0, vjust=.5)) +
+  #        plot.title=element_markdown()) +
+  #axis.text.y.left=element_blank(),
+  #axis.ticks.y.left=element_blank()) +
+  scale_x_date(date_labels="%b") +
+  scale_y_continuous(breaks=seq(0,40,5),
+                     sec.axis = dup_axis()) +
+  labs(x="2022",
+       y="",
+       #y="Coverage\nrate",
+       title= "
+      No trend in Central, Eastern, Muchinga, Southern, Western
+      Increasing trend in Copperbelt, Luapula, Lusaka, Northern, Northwestern",
+       caption = "ANC High Risk Pregnancies")
+
+ggsave("viz/Jul-Sep 2022/Reproductive maternal/High Risk Pregnance at 1st ANC (2022 by province).png",
+       height=5.3,
+       width=7)
 
 
 # Maternal deaths ---- 

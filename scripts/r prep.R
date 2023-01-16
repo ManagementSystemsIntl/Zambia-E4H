@@ -48,6 +48,8 @@ zam_packages2 <- c("tidyverse", "here",
 
 
 # lapply(zam_packages, install.packages, character.only=T)
+#install.packages("tsibble")
+#remotes::install_github("wmgeolab/rgeoboundaries")
 
 
 lapply(zam_packages, library, character.only=T)

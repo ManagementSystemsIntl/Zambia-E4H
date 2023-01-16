@@ -6,7 +6,7 @@
 
 source("scripts/r prep.r")
 
-fp <- read_excel("data/July-Sep 2022/Family Planning (July 2018 - Sep 2022 quarterly).xlsx",
+fp <- read_excel("data/July-Sep 2022/Family planning/Family Planning (July 2018 - Sep 2022 quarterly).xlsx",
                  sheet="export",
                  range="A2:AY21") %>%
   mutate(yrqtr = as.yearqtr(date),
