@@ -1063,7 +1063,8 @@ ggplot(fp_prov, aes(date, jadelle_ov25)) +
        #y="Coverage\nrate",
        title=#"Implant Jadelle (Over 25 years old)" 
          "Increasing trend in Central, Lusaka
-         No trend in Eastern, Luapula, Muchinga, Northern, Northwestern, Southern, Western
+         No trend in Eastern, Luapula, Muchinga, Northern, Northwestern, 
+         Southern, Western
        Decreasing trend in Copperbelt",
        caption="Implant Jadelle (Over 25 years old)")
 
