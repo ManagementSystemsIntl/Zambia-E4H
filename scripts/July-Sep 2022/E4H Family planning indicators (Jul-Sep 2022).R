@@ -1106,6 +1106,253 @@ ggsave("viz/Jul-Sep 2022/Family planning/Implant Jadelle (Under 15).png",
 
 
 
+#im_1519
+
+describe(fp_prov$im_1519)
+
+
+ggplot(fp_prov, aes(date, im_1519)) + 
+  geom_point(size=.8) + 
+  geom_line(size=.4, alpha=.4) + 
+  stat_smooth(method="lm", se=F, alpha=.8) + 
+  facet_wrap(~prov, ncol=5) + 
+  scale_color_viridis_d() +
+  faceted +
+  theme(legend.position="none",
+        axis.title.y.left=element_blank(),
+        axis.title.y.right=element_text(angle=0, vjust=.5)) +
+  #axis.text.y.left=element_blank(),
+  #axis.ticks.y.left=element_blank()) +
+  scale_x_date(date_labels="%b") +
+  scale_y_continuous(breaks=seq(0,4000,800),
+                     sec.axis = dup_axis()) +
+  labs(x="\n2022",
+       y="",
+       #y="Coverage\nrate",
+       title=#"Medroxyprogesterone Injection DMPA-IM (15-19 years old)" 
+         "Increasing trend in Copperbelt, Eastern, Lusaka, Southern, Western
+         No trend in Central, Luapula, Muchinga, Northern, Northwestern",
+       caption="Medroxyprogesterone Injection DMPA-IM (15-19 years old)")
+
+ggsave("viz/Jul-Sep 2022/Family planning/Injection DMPA-IM (15-19).png",
+       height=5.3,
+       width=7)
+
+
+
+#im_2024
+
+describe(fp_prov$im_2024)
+
+
+ggplot(fp_prov, aes(date, im_2024)) + 
+  geom_point(size=.8) + 
+  geom_line(size=.4, alpha=.4) + 
+  stat_smooth(method="lm", se=F, alpha=.8) + 
+  facet_wrap(~prov, ncol=5) + 
+  scale_color_viridis_d() +
+  faceted +
+  theme(legend.position="none",
+        axis.title.y.left=element_blank(),
+        axis.title.y.right=element_text(angle=0, vjust=.5)) +
+  #axis.text.y.left=element_blank(),
+  #axis.ticks.y.left=element_blank()) +
+  scale_x_date(date_labels="%b") +
+  scale_y_continuous(breaks=seq(0,7500,1500),
+                     sec.axis = dup_axis()) +
+  labs(x="\n2022",
+       y="",
+       #y="Coverage\nrate",
+       title=#"Medroxyprogesterone Injection DMPA-IM (20-24 years old)" 
+         "Increasing trend in Central, Eastern, Lusaka, Southern
+         No trend in Luapula, Muchinga, Northern, Northwestern, Western
+       Decreasing trend in Copperbelt",
+       caption="Medroxyprogesterone Injection DMPA-IM (20-24 years old) 
+       (considering outliers)")
+
+ggsave("viz/Jul-Sep 2022/Family planning/Injection DMPA-IM (20-24).png",
+       height=5.3,
+       width=7)
+
+
+
+#im_ov25
+
+describe(fp_prov$im_ov25)
+
+
+ggplot(fp_prov, aes(date, im_ov25)) + 
+  geom_point(size=.8) + 
+  geom_line(size=.4, alpha=.4) + 
+  stat_smooth(method="lm", se=F, alpha=.8) + 
+  facet_wrap(~prov, ncol=5) + 
+  scale_color_viridis_d() +
+  faceted +
+  theme(legend.position="none",
+        axis.title.y.left=element_blank(),
+        axis.title.y.right=element_text(angle=0, vjust=.5)) +
+  #axis.text.y.left=element_blank(),
+  #axis.ticks.y.left=element_blank()) +
+  scale_x_date(date_labels="%b") +
+  scale_y_continuous(breaks=seq(0,13200,3000),
+                     sec.axis = dup_axis()) +
+  labs(x="\n2022",
+       y="",
+       #y="Coverage\nrate",
+       title=#"Medroxyprogesterone Injection DMPA-IM (Over 25 years old)" 
+         "Increasing trend in Central, Eastern, Lusaka, Southern, Western
+         No trend in Copperbelt, Muchinga, Northern, Northwestern
+       Decreasing trend in Luapula",
+       caption="Medroxyprogesterone Injection DMPA-IM (Over 25 years old) 
+       (considering outliers)")
+
+ggsave("viz/Jul-Sep 2022/Family planning/Injection DMPA-IM (Over 25).png",
+       height=5.3,
+       width=7)
+
+
+
+
+#sc_1519
+
+describe(fp_prov$sc_1519)
+
+
+ggplot(fp_prov, aes(date, sc_1519)) + 
+  geom_point(size=.8) + 
+  geom_line(size=.4, alpha=.4) + 
+  stat_smooth(method="lm", se=F, alpha=.8) + 
+  facet_wrap(~prov, ncol=5) + 
+  scale_color_viridis_d() +
+  faceted +
+  theme(legend.position="none",
+        axis.title.y.left=element_blank(),
+        axis.title.y.right=element_text(angle=0, vjust=.5)) +
+  #axis.text.y.left=element_blank(),
+  #axis.ticks.y.left=element_blank()) +
+  scale_x_date(date_labels="%b") +
+  scale_y_continuous(breaks=seq(0,2100,400),
+                     sec.axis = dup_axis()) +
+  labs(x="\n2022",
+       y="",
+       #y="Coverage\nrate",
+       title=#"Medroxyprogesterone Injection DMPA-SC (15-19 years old)" 
+         "Increasing trend in Central, Copperbelt, Eastern, Luapula, 
+         Northwestern, Western
+         No trend in Lusaka, Muchinga, Southern
+       Decreasing trend Northern",
+       caption="Medroxyprogesterone Injection DMPA-SC (15-19 years old)")
+
+ggsave("viz/Jul-Sep 2022/Family planning/Injection DMPA-SC (15-19).png",
+       height=5.3,
+       width=7)
+
+
+
+#sc_2024
+
+describe(fp_prov$sc_2024)
+
+
+ggplot(fp_prov, aes(date, sc_2024)) + 
+  geom_point(size=.8) + 
+  geom_line(size=.4, alpha=.4) + 
+  stat_smooth(method="lm", se=F, alpha=.8) + 
+  facet_wrap(~prov, ncol=5) + 
+  scale_color_viridis_d() +
+  faceted +
+  theme(legend.position="none",
+        axis.title.y.left=element_blank(),
+        axis.title.y.right=element_text(angle=0, vjust=.5)) +
+  #axis.text.y.left=element_blank(),
+  #axis.ticks.y.left=element_blank()) +
+  scale_x_date(date_labels="%b") +
+  scale_y_continuous(breaks=seq(0,4200,700),
+                     sec.axis = dup_axis()) +
+  labs(x="\n2022",
+       y="",
+       #y="Coverage\nrate",
+       title=#"Medroxyprogesterone Injection DMPA-SC (20-24 years old)" 
+         "Increasing trend in Central, Copperbelt, Luapula, Northwestern
+         No trend in Eastern, Lusaka, Muchinga, Western
+       Decreasing trend Northern, Southern",
+       caption="Medroxyprogesterone Injection DMPA-SC (20-24 years old)")
+
+ggsave("viz/Jul-Sep 2022/Family planning/Injection DMPA-SC (20-24).png",
+       height=5.3,
+       width=7)
+
+
+#sc_ov25
+
+describe(fp_prov$sc_ov25)
+
+
+ggplot(fp_prov, aes(date, sc_ov25)) + 
+  geom_point(size=.8) + 
+  geom_line(size=.4, alpha=.4) + 
+  stat_smooth(method="lm", se=F, alpha=.8) + 
+  facet_wrap(~prov, ncol=5) + 
+  scale_color_viridis_d() +
+  faceted +
+  theme(legend.position="none",
+        axis.title.y.left=element_blank(),
+        axis.title.y.right=element_text(angle=0, vjust=.5)) +
+  #axis.text.y.left=element_blank(),
+  #axis.ticks.y.left=element_blank()) +
+  scale_x_date(date_labels="%b") +
+  scale_y_continuous(breaks=seq(0,7200,1600),
+                     sec.axis = dup_axis()) +
+  labs(x="\n2022",
+       y="",
+       #y="Coverage\nrate",
+       title=#"Medroxyprogesterone Injection DMPA-SC (Over 25 years old)" 
+         "Increasing trend in Central, Copperbelt
+         No trend in Eastern, Luapula, Lusaka, Muchinga, Northern, 
+       Northwestern, Southern, Western",
+       caption="Medroxyprogesterone Injection DMPA-SC (Over 25 years old)
+       (considering outliers)")
+
+ggsave("viz/Jul-Sep 2022/Family planning/Injection DMPA-SC (Over 25).png",
+       height=5.3,
+       width=7)
+
+
+#sc_u15
+
+describe(fp_prov$sc_u15)
+
+
+ggplot(fp_prov, aes(date, sc_u15)) + 
+  geom_point(size=.8) + 
+  geom_line(size=.4, alpha=.4) + 
+  stat_smooth(method="lm", se=F, alpha=.8) + 
+  facet_wrap(~prov, ncol=5) + 
+  scale_color_viridis_d() +
+  faceted +
+  theme(legend.position="none",
+        axis.title.y.left=element_blank(),
+        axis.title.y.right=element_text(angle=0, vjust=.5)) +
+  #axis.text.y.left=element_blank(),
+  #axis.ticks.y.left=element_blank()) +
+  scale_x_date(date_labels="%b") +
+  scale_y_continuous(breaks=seq(0,3200,600),
+                     sec.axis = dup_axis()) +
+  labs(x="\n2022",
+       y="",
+       #y="Coverage\nrate",
+       title=#"Medroxyprogesterone Injection DMPA-SC (Under 15 years old)" 
+         "No trend in Copperbelt, Muchinga, Northern, Northwestern, 
+         Southern, Western
+       Decreasing trend Central, Eastern, Luapula, Lusaka",
+       caption="Medroxyprogesterone Injection DMPA-SC (Under 15 years old)
+       (considering outliers)")
+
+ggsave("viz/Jul-Sep 2022/Family planning/Injection DMPA-SC (Under 15).png",
+       height=5.3,
+       width=7)
+
+
 
 
 
