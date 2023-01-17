@@ -791,7 +791,8 @@ ggplot(fp_prov, aes(date, hormone_insert_ov25)) +
        y="",
        #y="Coverage\nrate",
        title=#"Hormone IUCD Inserted (Over 25 years old)" 
-         "No trend in Copperbelt, Eastern, Luapula, Lusaka, Northern, Northwestern, Southern, Western
+         "No trend in Copperbelt, Eastern, Luapula, Lusaka, Northern, 
+         Northwestern, Southern, Western
        Decreasing trend in Central, Muchinga",
        caption="Hormone IUCD Inserted (Over 25 years old) (considering outliers)")
 
