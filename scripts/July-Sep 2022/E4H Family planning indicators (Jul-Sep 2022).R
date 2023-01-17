@@ -586,7 +586,8 @@ ggplot(fp_prov, aes(date, copper_insert_1519)) +
        #y="Coverage\nrate",
        title=#"Copper IUCD Inserted (15-19 years old)" 
          "Increasing trend in Copperbelt
-         No trend in Eastern, Lusaka, Muchinga, Northern, Northwestern, Southern, Western
+         No trend in Eastern, Lusaka, Muchinga, Northern, Northwestern, 
+         Southern, Western
        Decreasing trend in Central, Luapula",
        caption="Copper IUCD Inserted (15-19 years old)")
 
@@ -827,7 +828,8 @@ ggplot(fp_prov, aes(date, hormone_insert_u15)) +
        #y="Coverage\nrate",
        title=#"Hormone IUCD Inserted (Under 15 years old)" 
          "Increasing trend in Copperbelt
-         No trend in Central, Eastern, Luapula, Muchinga, Northern, Northwestern, Southern, Western
+         No trend in Central, Eastern, Luapula, Muchinga, Northern, 
+         Northwestern, Southern, Western
        Decreasing trend in Lusaka",
        caption="Hormone IUCD Inserted (Under 15 years old)")
 
