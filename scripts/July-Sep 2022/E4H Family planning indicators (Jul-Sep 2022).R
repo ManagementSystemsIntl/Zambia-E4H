@@ -1097,7 +1097,7 @@ ggplot(fp_prov, aes(date, jadelle_u15)) +
        title=#"Implant Jadelle (Under 15 years old)" 
          "No trend in Central, Copperbelt, Luapula, Northern, Northwestern, Southern, Western
        Decreasing trend in Eastern, Lusaka, Muchinga",
-       caption="Implant Jadelle (Under 15 years old) (considering outliers")
+       caption="Implant Jadelle (Under 15 years old) (considering outliers)")
 
 ggsave("viz/Jul-Sep 2022/Family planning/Implant Jadelle (Under 15).png",
        height=5.3,
