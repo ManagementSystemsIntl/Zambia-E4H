@@ -894,7 +894,8 @@ ggplot(fp_prov, aes(date, implanon_2024)) +
        #y="Coverage\nrate",
        title=#"Implant Implanon (20-24 years old)" 
          "Increasing trend in Central, Eastern, Luapula
-         No trend in Copperbelt, Lusaka, Muchinga, Northern, Northwestern, Southern, Western",
+         No trend in Copperbelt, Lusaka, Muchinga, Northern, Northwestern, 
+       Southern, Western",
        caption="Implant Implanon (20-24 years old)")
 
 ggsave("viz/Jul-Sep 2022/Family planning/Implant Implanon (20-24).png",
