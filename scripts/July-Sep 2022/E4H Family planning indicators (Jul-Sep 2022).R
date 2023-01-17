@@ -443,7 +443,8 @@ ggplot(fp_prov, aes(date, hts_screen)) +
        #y="Coverage\nrate",
        title=#"Number Screened for HTS Needs" 
          "Increasing trend in Lusaka
-        No trend in Central, Copperbelt, Luapula, Muchinga, Northern, Northwestern, Southern, Western
+        No trend in Central, Copperbelt, Luapula, Muchinga, 
+        Northern, Northwestern, Southern, Western
        Decreasing trend in Eastern",
        caption="Number Screened for HTS Needs")
 
