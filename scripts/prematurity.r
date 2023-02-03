@@ -1,12 +1,12 @@
 
-source("scripts/r prep2.r")
-
-install.packages("here")
-devtools::install_github("thomasp85/patchwork")
-
-remotes::install_gitlab("dickoa/rgeoboundaries")
-
-install.packages("easypackages")
+# source("scripts/r prep2.r")
+# 
+# install.packages("here")
+# devtools::install_github("thomasp85/patchwork")
+# 
+# remotes::install_gitlab("dickoa/rgeoboundaries")
+# 
+# install.packages("easypackages")
 
 
 
