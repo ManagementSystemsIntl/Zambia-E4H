@@ -208,10 +208,39 @@ frsh.stillmacerbirth
 
 
 frsh.stillmacerbirth <- frsh.stillmacerbirth %>% 
-  gather(key = subRt , value = rate, c(mcrtd.brth.Rt,frsh.stlbrth.Rt))
+  gather(key = subRt , value = rate, c(frsh.stlbrth.Rt, mcrtd.brth.Rt))
 
-ggplot(frsh.stillmacerbirth, aes(x = mth, y = rate, group = subRt, fill = subRt)) +
-  geom_area(alpha=0.2, position = position_dodge()) +
+frsh.stillmacerbirth
+
+# pr.mr.st23 <- pr.mr.st %>%
+#   select(1,4,5)
+# 
+# pr.mr.st23
+# 
+# pr.mr.st24 <- melt(pr.mr.st23[c(1, 2, 3)], id = 'Month')
+# 
+# pr.mr.st24
+# 
+# 
+# fmsb <- ggplot(pr.mr.st24, aes(x=Month, y=value , fill=variable), alpha=0.6)+ 
+#   geom_area(position=position_dodge(), color="#CFCDC9") +
+#   geom_area(position = position_dodge()) +
+#   scale_y_continuous(limits = c(0,8),
+#                      breaks = c(0,2,4,6,8)) +
+#   xlab("") + 
+#   ylab("Rate") +
+#   ggtitle("Fresh stillbirth and Macerated stillbirth per 1000 live births ,Jan 2019 - Oct 2022") +
+#   scale_x_date(date_labels="%b %y",date_breaks="3 months") +
+#   scale_fill_manual(name ="",
+#                     values = c(usaid_red,usaid_blue),labels = c("Fresh Stillbirth", "Macerated Stillbirth")) + base
+# 
+# fmsb
+# 
+# fmsb <- ggplot(pr.mr.st, aes(x=period, y=value , fill=variable), alpha=0.6)+
+#   geom_area(position=position_dodge(), color="#CFCDC9")
+
+ggplot(frsh.stillmacerbirth, aes(x = mth, y = rate, group = subRt, fill = subRt), alpha=0.6) +
+  geom_area(alpha=.8, position = position_dodge()) +
   scale_y_continuous(limits = c(0,8),
                      breaks = c(0,2,4,6,8)) +
   xlab("") + 
@@ -219,7 +248,7 @@ ggplot(frsh.stillmacerbirth, aes(x = mth, y = rate, group = subRt, fill = subRt)
   ggtitle("Fresh stillbirth and Macerated stillbirth per 1000 live births ,Jan 2019 - Oct 2022") +
   scale_x_date(date_labels="%b %y",date_breaks="3 months") +
   scale_fill_manual(name ="",
-                     values = c(usaid_red,usaid_blue),labels = c("Fresh Stillbirth", "Macerated Stillbirth")) + base
+                     values = c(usaid_red,usaid_blue),labels = c("Macerated Stillbirth","Fresh Stillbirth")) + base
 
 ggsave("viz/prematurity/stillbirths.png",
        device="png",
