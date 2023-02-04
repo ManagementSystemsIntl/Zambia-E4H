@@ -2,6 +2,8 @@
 source("scripts/r prep2.r")
 
 install.packages("libwgeom")
+
+install.packages("libwgeom", lib = "C:/R/R-4.2.2/library")
 # 
 # install.packages("here")
 # devtools::install_github("thomasp85/patchwork")
