@@ -30,33 +30,33 @@
 
 # YSL note: For below  version, I simply removed "d3heatmap",  "ggsflabel",  "psych" "sysfonts" "rgeoboundaries" from the above, which were causing me errors
 
-zam_packages <- c("tidyverse", "here", "gifski", "gt","gtsummary","gghighlight","stringi","DT", "ggthemes","ggridges",
-                  "viridis", "labelled","readxl", "skimr","sjlabelled","sjstats","sjPlot", "sjmisc","readr","ggrepel","openxlsx",
-                  "scales","magrittr","knitr","lubridate","Hmisc","haven","tidyr","reshape2","DescTools","extrafont",
+zam_packages <- c("tidyverse", "here", "gifski", "gt","gtsummary","gghighlight","stringi","DT", "ggthemes","ggridges","viridis",
+                  "psych","labelled","readxl", "skimr","sjlabelled","sjstats","sjPlot", "sjmisc","readr","ggrepel","openxlsx",
+                  "sysfonts","scales","magrittr","knitr","lubridate","Hmisc","haven","tidyr","reshape2","DescTools","extrafont",
                   "patchwork", "extrafontdb", "ggtext", "geomtextpath","zoo","psych","cowplot","ztable","pheatmap",
-<<<<<<< HEAD
-                  "RColorBrewer", "data.table", "hablar", "gganimate", "dygraphs", "gapminder", "hrbrthemes",
+                  "RColorBrewer", "data.table", "d3heatmap","pheatmap","hablar", "gganimate", "dygraphs", "gapminder", "hrbrthemes",
                   "geomtextpath", "patchwork", "gridExtra", "grid", "rmarkdown", "forecast", 
-<<<<<<< HEAD
                   "backtest", "quantmod", "tseries", "writexl", "ggpubr", "rcartocolor", "remotes", "geodata",
-                  "shiny",  "nasapower", "leaflet", "sf", "RSelenium", "netstat")
-# =======
+                  "shiny", "rgeoboundaries", "nasapower", 
+                  "leaflet", "ggsflabel", "sf", "RSelenium", "netstat", "GGally", "calendR", "areaplot", "hexbin",
+                  "webshot", "oceanis", "SPlit", "gsubfn", "proto","fpp", "mapview", "shinydashboard", "packrat",
+                  "gt", "bigD","formattable", "reactablefmtr", "scales", "caret","predict3d", "ggpmisc", "cowplot", 
+                  "googleway", "ggplot2", "ggrepel", "ggspatial", "libwgeom", "sf", "rnaturalearth", "rnaturalearthdata", "pacman", "vroom")
+
+
 #                   "RColorBrewer", "data.table", "d3heatmap","pheatmap","hablar", "gganimate", "dygraphs", "gapminder", "hrbrthemes",
 #                   "geomtextpath", "patchwork", "gridExtra", "grid", "rmarkdown", "forecast", 
 #                   "backtest", "quantmod", "tseries", "writexl", "ggpubr", "rcartocolor", "remotes", "geodata",
 #                   "shiny", "rgeoboundaries", "nasapower", 
 #                   "leaflet", "ggsflabel", "sf", "RSelenium", "netstat", "GGally", "calendR", "areaplot", "hexbin",
 #                   "webshot", "oceanis")
-=======
-                  "backtest", "quantmod", "tseries", "writexl", "ggplot2", "ggpubr", "rcartocolor", "remotes", "geodata",
-                  "shiny", "rgeoboundaries", "nasapower", 
-                  "leaflet", "ggsflabel", "sf", "RSelenium", "netstat", "GGally", "calendR", "areaplot", "hexbin",
-                  "webshot", "oceanis","writexl", "gt", "bigD","formattable", "reactablefmtr", "scales", "rsconnect", "ggplot2")
->>>>>>> 31a0332dda1baa43f3c6a7543ef66984bac84e19
 
 
+                  # "backtest", "quantmod", "tseries", "writexl", "ggplot2", "ggpubr", "rcartocolor", "remotes", "geodata",
+                  # "shiny", "rgeoboundaries", "nasapower", 
+                  # "leaflet", "ggsflabel", "sf", "RSelenium", "netstat", "GGally", "calendR", "areaplot", "hexbin",
+                  # "webshot", "oceanis","writexl", "gt", "bigD","formattable", "reactablefmtr", "scales", "rsconnect", "ggplot2")
 
->>>>>>> 5d58b2188eab8751ccd40f7c2ee6a48fe920438d
 
 # lapply(zam_packages, install.packages, character.only=T)
 
