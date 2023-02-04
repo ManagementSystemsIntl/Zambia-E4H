@@ -1,5 +1,7 @@
 
-# source("scripts/r prep2.r")
+source("scripts/r prep2.r")
+
+install.packages("libwgeom")
 # 
 # install.packages("here")
 # devtools::install_github("thomasp85/patchwork")
