@@ -1,17 +1,24 @@
 
 source("scripts/r prep2.r")
 
-install.packages("libwgeom")
+# install.packages("libwgeom")
 # 
 # install.packages("here")
-# devtools::install_github("thomasp85/patchwork")
-# 
-# remotes::install_gitlab("dickoa/rgeoboundaries")
-# 
-# install.packages("easypackages")
+devtools::install_github("thomasp85/patchwork")
+remotes::install_gitlab("dickoa/rgeoboundaries")
+# install.packages("remotes")
+remotes::install_gitlab("dickoa/rgeoboundaries")
+remotes::install_github("wmgeolab/rgeoboundaries")
+# install.packages("remotes")
+remotes::install_github("Nowosad/rcartocolor")
 
 
+install.packages("ps")
 
+
+library(rgeoboundaries)
+library(sf)
+library(rcartocolor)
 
 perinatal.mort <- read_xlsx("data/prematurity/perinatal mortality rate.xlsx")
 perinatal.mort  <- perinatal.mort  %>%
