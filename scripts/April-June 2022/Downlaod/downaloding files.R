@@ -1,5 +1,6 @@
 #'*Load packages*
 
+install.packages("tidyverse")
 library(tidyverse)
 library(RSelenium)
 library(netstat)

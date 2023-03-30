@@ -19,7 +19,7 @@ chldH  <- chldH  %>%
          monyr = paste(month_code, year, sep="-"),
          mnthyr = my(monyr))
 
-sum(chldH$month_chr!=chldH$month) # expecting 0 if vars same
+# sum(chldH$month_chr!=chldH$month) # expecting 0 if vars same
 
 pnctrgts <- read_xls("data/Jan- Jun 2022/PNC Targets.xls")
 Start <- as.Date(NULL)
@@ -30,7 +30,16 @@ chldHq <- read_xls("data/Jan- Jun 2022/Child Health Data_National Level(Quarterl
 chldHqp <- read_xls("data/Jan-Mar 2022/Child Health Data_Provincial Level(Quarterly).xls")
 chldH_prov <- read_xls("data/Jan- Jun 2022/Child Health Data_Provincial Level(Monthly).xls")
 names(chldH_prov)
-chldH_prov
+# chldH_provpimpa <- chldH_prov %>%
+#   select(1,2,21)
+# chldH_provpimpa <- chldH_provpimpa %>%
+#   rename(me=1,
+#          you=2,
+#          there=3)
+# 
+# chldH_provpimpa
+# 
+# chldH_provpimpa 
 chldH_prov  <- chldH_prov  %>%
   mutate(month_chr = str_sub(periodname,
                              start=1,

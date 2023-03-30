@@ -71,7 +71,7 @@ ch_plt <- ggplot(fam, aes(x=mnthyr, y=wmn.vstd, colour=usaid_blue)) +
   geom_smooth(method = loess, size = .8, se=FALSE) +
   scale_y_continuous(labels=comma) +
   scale_x_date(date_labels="%b %y",date_breaks="4 months") +
-  labs(x="", y="", caption="Data Source: HMIS", title="Number of Women in reproductive age visted by CHA/CBD has declined \nin the last two years, a trend that started in October 2020") +
+  labs(x="", y="", caption="Data Source: HMIS", title="Number of Women in reproductive age visted by CHA/CBD has declined in the last two years, a trend that started in October 2020") +
   scale_color_manual(name ="",
                      values = usaid_blue,
                      labels ="Women of reproductive age visted by CHA") + 

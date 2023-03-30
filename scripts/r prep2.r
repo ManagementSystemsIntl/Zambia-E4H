@@ -248,6 +248,7 @@ dark_red <- "#651D32"
 dark_grey <- "#6C6463"
 medium_grey <- "#8C8985"
 light_grey <- "#CFCDC9"
+me <- "#5467v"
 
 # ggtext strings
 
