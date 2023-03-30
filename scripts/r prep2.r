@@ -41,7 +41,7 @@ zam_packages <- c("tidyverse", "here", "gifski", "gt","gtsummary","gghighlight",
                   "leaflet", "ggsflabel", "sf", "RSelenium", "netstat", "GGally", "calendR", "areaplot", "hexbin",
                   "webshot", "oceanis", "SPlit", "gsubfn", "proto","fpp", "mapview", "shinydashboard", "packrat",
                   "gt", "bigD","formattable", "reactablefmtr", "scales", "caret","predict3d", "ggpmisc", "cowplot", 
-                  "googleway", "ggplot2", "ggrepel", "ggspatial", "libwgeom", "sf", "rnaturalearth", "rnaturalearthdata", "pacman", "vroom")
+                  "googleway", "ggplot2", "ggrepel", "ggspatial", "sf", "rnaturalearth", "rnaturalearthdata", "pacman", "vroom")
 
 
 #                   "RColorBrewer", "data.table", "d3heatmap","pheatmap","hablar", "gganimate", "dygraphs", "gapminder", "hrbrthemes",
