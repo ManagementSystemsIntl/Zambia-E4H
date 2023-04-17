@@ -345,6 +345,8 @@ ggsave("viz/prematurity/perinatal deaths.png",
 
 
 #'*THE NEW REQUEST SCRIPT ADJUSTMENTS*
+source("scripts/r prep2.r")
+source("scripts/r prep3.r")
 
 perinatal.mort <- read_xlsx("data/prematurity/perinatal mortality rate.xlsx")
 perinatal.mort  <- perinatal.mort  %>%
@@ -591,7 +593,7 @@ ggsave("viz/prematurity/stillbirths.png",
 
 
 #'*Causes Perinatal Deaths*
-cod <- read_xlsx("data/prematurity/Perinatal Deaths.xlsx")
+cod <- read_xlsx("data/prematurity April 2023/Perinatal Deaths and cause by quarter.xlsx")
 
 # cod$causes <- as.Date(cod$causes)
 
