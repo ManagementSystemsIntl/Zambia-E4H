@@ -611,14 +611,14 @@ cod1 <- ggplot(cod, aes(x=causes, y=value, fill=variable), alpha=0.6)+
        y="Number of cases") + base
 
 cod1
-ggsave("viz/prematurity/causes.png",
+ggsave("viz/prematurity Apr 2023/causes.png",
        device="png",
        type="cairo",
        height = 6.0,
        width = 13)
 
-#'*Perinatal Deaths by death*
-peri.dth.prv <- read_xlsx("data/prematurity/perinatal deaths by province.xlsx")
+#'*Perinatal Deaths by Province*
+peri.dth.prv <- read_xlsx("data/prematurity April 2023/perinatal deaths by province by quarter.xlsx")
 peri.dth.prv  <- peri.dth.prv  %>%
   mutate(month_chr = str_sub(periodname,
                              start=1,
