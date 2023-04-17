@@ -439,7 +439,7 @@ ggsave("viz/prematurity Apr 2023/q1 perinatal_mortality_rate.png",
        width = 15)
 
 #'*Prematurity rate*
-prema.rate <- read_xlsx("data/prematurity April 2023/prematurity rate by quarter.xlsx")
+prema.rate <- read_xlsx("data/prematurity April 2023/prematurity rate.xlsx")
 
 prema.rate$period <- as.Date(prema.rate$period)
 
@@ -471,12 +471,12 @@ ggplot(prema.rate3, aes(x = period, y = rate, group = subRt, colour = subRt)) +
   scale_x_date(date_labels="%b %y",date_breaks="4 months") +
   xlab("") + 
   ylab("") +
-  ggtitle("Prematurity Rate , Sept 2017-Oct 2022") +
+  ggtitle("Prematurity Rate , Sept 2017 - Mar 2023") +
   scale_color_manual(name ="",
                      values = usaid_red) + 
   baseX
 
-ggsave("viz/prematurity/prematurity_rate.png",
+ggsave("viz/prematurity Apr 2023/prematurity_rate.png",
        device="png",
        type="cairo",
        height = 5.5,
