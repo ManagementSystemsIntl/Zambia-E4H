@@ -439,7 +439,7 @@ ggsave("viz/prematurity Apr 2023/q1 perinatal_mortality_rate.png",
        width = 15)
 
 #'*Prematurity rate*
-prema.rate <- read_xlsx("data/prematurity/prematurity rate.xlsx")
+prema.rate <- read_xlsx("data/prematurity April 2023/prematurity rate by quarter.xlsx")
 
 prema.rate$period <- as.Date(prema.rate$period)
 
@@ -580,12 +580,12 @@ ggplot(frsh.stillmacerbirth, aes(x = mth, y = rate, group = subRt, fill = subRt)
                      breaks = c(0,2,4,6,8)) +
   xlab("") + 
   ylab("Rate") +
-  ggtitle("Fresh stillbirth and Macerated stillbirth per 1000 live births ,Jan 2019 - Oct 2022") +
+  ggtitle("Fresh stillbirth and Macerated stillbirth per 1000 live births ,Jan 2019 - Mar 2023") +
   scale_x_date(date_labels="%b %y",date_breaks="3 months") +
   scale_fill_manual(name ="",
                     values = c(usaid_red,usaid_blue),labels = c("Macerated Stillbirth","Fresh Stillbirth")) + base
 
-ggsave("viz/prematurity/stillbirths.png",
+ggsave("viz/prematurity Apr 2023/stillbirths.png",
        device="png",
        type="cairo",
        height = 5.0,
