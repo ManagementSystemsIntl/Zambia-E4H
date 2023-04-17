@@ -409,8 +409,8 @@ ggplot(perinatal.mort5, aes(geometry = geometry, fill = rate)) +
   facet_wrap(~yr) +
   scale_fill_carto_c(name="Proportion of\n Mortality Rate"
                      , palette = "Burg") +
-  labs(x="", y="", caption = "Data Source: PDSR",
-       title = "Perinatal Mortality Rate, 2017-2022"
+  labs(x="", y="", caption = "Data Source: PDSR & HMIS",
+       title = "Perinatal Mortality Rate - Quarters 1, 2019-2023"
        , subtitle = "Darker colors represent a higher proportion of mortality rate") + #for faceted and xy labels include x="Longitude", y="Latitude", +faceted
   theme_void() +
   theme(plot.title.position = "plot",
@@ -432,7 +432,7 @@ ggplot(perinatal.mort5, aes(geometry = geometry, fill = rate)) +
 #   addTiles() %>%
 #   addPolygons(label = zam.boundary2$shapeName)
 
-ggsave("viz/prematurity/perinatal_mortality_rate.png",
+ggsave("viz/prematurity Apr 2023/q1 perinatal_mortality_rate.png",
        device="png",
        type="cairo",
        height = 6.5,
