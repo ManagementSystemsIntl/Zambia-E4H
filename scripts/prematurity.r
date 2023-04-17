@@ -348,7 +348,7 @@ ggsave("viz/prematurity/perinatal deaths.png",
 source("scripts/r prep2.r")
 source("scripts/r prep3.r")
 
-perinatal.mort <- read_xlsx("data/prematurity/perinatal mortality rate.xlsx")
+perinatal.mort <- read_xlsx("data/prematurity April 2023/perinatal mortality rate q1s.xlsx")
 perinatal.mort  <- perinatal.mort  %>%
   mutate(year = str_sub(period,
                         start=nchar(period)-4,
@@ -624,7 +624,7 @@ peri.dth.prv  <- peri.dth.prv  %>%
                              start=1,
                              end=nchar(periodname)-5),
          month = factor(month_chr,
-                        levels=c("January","February","March","April","May","June","July","August","September","October","November","December")),
+                        levels=c("January","February","March")),
          month_code = as.numeric(month), 
          year = str_sub(periodname, 
                         start=nchar(periodname)-4,
@@ -651,12 +651,12 @@ pd <- ggplot(peri.dth.prv2, aes(x=mnth, y=Deaths), alpha=0.5)+
   geom_point(color=usaid_red) + faceted +
   facet_wrap(~prov) + ##scales="free_y" tom allow for independ y axis variables
   scale_x_date(date_labels="%b",date_breaks="1 month") + 
-  labs(fill="Legend:", title="Perinatal Deaths by Province, 2022",
+  labs(fill="Legend:", title="Perinatal Deaths by Province - Quarters 1, 2019 - 2023",
        x="",
        y="Number of Deaths")
 pd
 
-ggsave("viz/prematurity/perinatal deaths.png",
+ggsave("viz/prematurity Apr 2023/perinatal deaths.png",
        device="png",
        type="cairo",
        height = 6.0,
