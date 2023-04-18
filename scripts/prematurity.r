@@ -618,7 +618,7 @@ ggsave("viz/prematurity Apr 2023/causes.png",
        width = 13)
 
 #'*Perinatal Deaths by Province*
-peri.dth.prv <- read_xlsx("data/prematurity April 2023/perinatal deaths by province by quarter.xlsx")
+peri.dth.prv <- read_xlsx("data/prematurity April 2023/perinatal deaths by province.xlsx")
 peri.dth.prv  <- peri.dth.prv  %>%
   mutate(month_chr = str_sub(periodname,
                              start=1,
