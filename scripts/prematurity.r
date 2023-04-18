@@ -624,7 +624,7 @@ peri.dth.prv  <- peri.dth.prv  %>%
                              start=1,
                              end=nchar(periodname)-5),
          month = factor(month_chr,
-                        levels=c("January","February","March","April","May","June","July","August","September","October","November","December")),
+                        levels=c("January","February","March")),
          month_code = as.numeric(month), 
          year = str_sub(periodname, 
                         start=nchar(periodname)-4,
@@ -650,13 +650,13 @@ pd <- ggplot(peri.dth.prv2, aes(x=mnth, y=Deaths), alpha=0.5)+
   geom_smooth(method=loess, color=usaid_red, size=0.7,se=F) + 
   geom_point(color=usaid_red) + faceted +
   facet_wrap(~prov) + ##scales="free_y" tom allow for independ y axis variables
-  scale_x_date(date_labels="%b",date_breaks="1 month") + 
+  # scale_x_date(date_labels="%b %y",date_breaks="") + 
   labs(fill="Legend:", title="Perinatal Deaths by Province - Quarters 1, 2019 - 2023",
        x="",
        y="Number of Deaths")
 pd
 
-ggsave("viz/prematurity Apr 2023/perinatal deaths.png",
+ggsave("viz/prematurity Apr 2023/perinatal deaths by prov.png",
        device="png",
        type="cairo",
        height = 6.0,
