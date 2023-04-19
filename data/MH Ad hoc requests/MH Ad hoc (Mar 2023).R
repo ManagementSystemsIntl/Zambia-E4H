@@ -459,3 +459,58 @@ ggsave("C:/Users/PIMPA.SAWULU/Desktop/R project doc_E4H/E4H-Zambia/graphs/Matern
        type="cairo",
        height = 7.5,
        width=14)
+
+
+
+
+#'*---------------FAMILY HEALTH APRIL 2023 REQUEST*'
+source("scripts/r prep2.r")
+source("scripts/r prep3.r")
+
+mtnlAd_prov <- read_xls("data/M and C Health April 2023/Institutional delivery coverage by province.xlsx")
+mtnlAd_prov  <- mtnlAd_prov  %>%
+  mutate(month_chr = str_sub(periodname,
+                             start=1,
+                             end=nchar(periodname)-5),
+         month = factor(month_chr,
+                        levels=c("January","February","March","April","May","June","July","August","September","October","November","December")),
+         month_code = as.numeric(month), 
+         year = str_sub(periodname, 
+                        start=nchar(periodname)-4,
+                        end=nchar(periodname)),
+         monyr = paste(month_code, year, sep="-"),
+         mnthyr = my(monyr))
+
+mtnlAd_prov
+colnames(mtnlAd_prov)
+
+mtnlAd_prov1 <- mtnlAd_prov %>%
+  select(1,2,3)
+mtnlAd_prov1
+mtnlAd_prov2 <- mtnlAd_prov1 %>%
+  rename(prov=1,
+         yr=2,
+         ins.de.cvrg=3) %>%
+  mutate(ins.de.cvrgP = ins.de.cvrg/100)
+mtnlAd_prov2
+
+mtnlAd_prov3 <- mtnlAd_prov2 %>%
+  select(1,2,4)
+mtnlAd_prov3
+
+prov_plt <- ggplot(mtnlAd_prov3, aes(x = yr, y = ins.de.cvrgP)) +
+  geom_point(alpha=.6, size=.8, color=usaid_blue) + 
+  stat_smooth(method = "loess", size = .8, se=FALSE) + facet_wrap(~prov) + faceted +
+  scale_y_continuous(limits = c(0,1),
+                     labels = percent,
+                     breaks = c(.2,.4,.6,.8, 1)) +
+  labs(x ="", y="", caption = "Data Source:HMIS") +
+  ggtitle("Institutional delivery Coverage") +
+  scale_color_manual(name= "", values = usaid_red) + baseX
+
+prov_plt
+ggsave("C:/Users/PIMPA.SAWULU/Desktop/R project doc_E4H/E4H-Zambia/graphs/Province Instituitional delivery coverage.png",
+       device="png",
+       type="cairo",
+       height = 7.5,
+       width = 12)
