@@ -467,8 +467,8 @@ ggsave("C:/Users/PIMPA.SAWULU/Desktop/R project doc_E4H/E4H-Zambia/graphs/Matern
 source("scripts/r prep2.r")
 source("scripts/r prep3.r")
 
-mtnlAd_prov <- read_xls("data/MC Health April 2023/Institutional delivery coverage by province.xlsx")
-mtnlAd_prov  <- mtnlAd_prov  %>%
+inst.del_prov <- read_xls("data/MC Health April 2023/Institutional delivery coverage by province.xlsx")
+inst.del_prov  <- inst.del_prov  %>%
   mutate(month_chr = str_sub(periodname,
                              start=1,
                              end=nchar(periodname)-5),
@@ -481,24 +481,24 @@ mtnlAd_prov  <- mtnlAd_prov  %>%
          monyr = paste(month_code, year, sep="-"),
          mnthyr = my(monyr))
 
-mtnlAd_prov
-colnames(mtnlAd_prov)
+inst.del_prov
+colnames(inst.del_prov)
 
-mtnlAd_prov1 <- mtnlAd_prov %>%
+inst.del_prov1 <- inst.del_prov %>%
   select(1,2,3)
-mtnlAd_prov1
-mtnlAd_prov2 <- mtnlAd_prov1 %>%
+inst.del_prov1
+inst.del_prov2 <- inst.del_prov1 %>%
   rename(prov=1,
          yr=2,
          ins.de.cvrg=3) %>%
   mutate(ins.de.cvrgP = ins.de.cvrg/100)
-mtnlAd_prov2
+inst.del_prov2
 
-mtnlAd_prov3 <- mtnlAd_prov2 %>%
+inst.del_prov3 <- inst.del_prov2 %>%
   select(1,2,4)
-mtnlAd_prov3
+inst.del_prov3
 
-prov_plt <- ggplot(mtnlAd_prov3, aes(x = yr, y = ins.de.cvrgP)) +
+prov_plt <- ggplot(inst.del_prov3, aes(x = yr, y = ins.de.cvrgP)) +
   geom_point(alpha=.6, size=.8, color=usaid_blue) + 
   stat_smooth(method = "loess", size = .8, se=FALSE) + facet_wrap(~prov) + faceted +
   scale_y_continuous(limits = c(0,1),
