@@ -661,5 +661,3 @@ ggsave("viz/prematurity Apr 2023/perinatal deaths by prov.png",
        type="cairo",
        height = 6.0,
        width = 13)
-
-
