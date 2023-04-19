@@ -467,7 +467,7 @@ ggsave("C:/Users/PIMPA.SAWULU/Desktop/R project doc_E4H/E4H-Zambia/graphs/Matern
 source("scripts/r prep2.r")
 source("scripts/r prep3.r")
 
-inst.del_prov <- read_xls("data/MC Health April 2023/Institutional delivery coverage by province.xlsx")
+inst.del_prov <- read_xlsx("data/MC Health April 2023/Institutional delivery coverage by province.xlsx")
 inst.del_prov  <- inst.del_prov  %>%
   mutate(month_chr = str_sub(periodname,
                              start=1,
@@ -498,7 +498,7 @@ inst.del_prov3 <- inst.del_prov2 %>%
   select(1,2,4)
 inst.del_prov3
 
-prov_plt <- ggplot(inst.del_prov3, aes(x = yr, y = ins.de.cvrgP)) +
+indel_plt <- ggplot(inst.del_prov3, aes(x = yr, y = ins.de.cvrgP)) +
   geom_point(alpha=.6, size=.8, color=usaid_blue) + 
   stat_smooth(method = "loess", size = .8, se=FALSE) + facet_wrap(~prov) + faceted +
   scale_y_continuous(limits = c(0,1),
@@ -508,7 +508,7 @@ prov_plt <- ggplot(inst.del_prov3, aes(x = yr, y = ins.de.cvrgP)) +
   ggtitle("Institutional delivery Coverage") +
   scale_color_manual(name= "", values = usaid_red) + baseX
 
-prov_plt
+indel_plt
 ggsave("C:/Users/PIMPA.SAWULU/Desktop/R project doc_E4H/E4H-Zambia/graphs/Province Instituitional delivery coverage.png",
        device="png",
        type="cairo",
