@@ -366,7 +366,7 @@ mmr_plt <- ggplot(mmr_1, aes(x = mnthyr, y = deaths , colour =   mmtype, linetyp
                       values = c(usaid_blue, medium_grey, usaid_red)) +
   base
 mmr_plt
-ggsave("C:/Users/PIMPA.SAWULU/Desktop/R project doc_E4H/E4H-Zambia/graphs/National Maternal Mortality Ratio.png",
+ggsave("C:/Users/PIMPA.SAWULU/Desktop/R project doc_E4H/E4H-Zambia/graphs/National Maternal Mortality Ratio23.png",
        device="png",
        type="cairo",
        height = 7.5,
@@ -467,7 +467,7 @@ ggsave("C:/Users/PIMPA.SAWULU/Desktop/R project doc_E4H/E4H-Zambia/graphs/Matern
 source("scripts/r prep2.r")
 source("scripts/r prep3.r")
 
-inst.del_prov <- read_xlsx("data/MC Health April 2023/Institutional delivery coverage by province.xlsx")
+inst.del_prov <- read_xls("data/MC Health April 2023/Institutional delivery coverage by province.xls")
 inst.del_prov  <- inst.del_prov  %>%
   mutate(month_chr = str_sub(periodname,
                              start=1,
@@ -498,9 +498,13 @@ inst.del_prov3 <- inst.del_prov2 %>%
   select(1,2,4)
 inst.del_prov3
 
-indel_plt <- ggplot(inst.del_prov3, aes(x = yr, y = ins.de.cvrgP)) +
-  geom_point(alpha=.6, size=.8, color=usaid_blue) + 
-  stat_smooth(method = "loess", size = .8, se=FALSE) + facet_wrap(~prov) + faceted +
+
+
+indel_plt <- ggplot(inst.del_prov3, aes(x = mnthyr, y = ins.de.cvrgP)) +
+  geom_smooth(method="loess", color=usaid_blue, size=0.7,se=F) +
+  geom_point(alpha=.6, size=.8, color=usaid_blue) +
+  # stat_smooth(method = "loess", size = .8, se=FALSE) +
+  facet_wrap(~prov) + faceted +
   scale_y_continuous(limits = c(0,1),
                      labels = percent,
                      breaks = c(.2,.4,.6,.8, 1)) +
@@ -508,9 +512,703 @@ indel_plt <- ggplot(inst.del_prov3, aes(x = yr, y = ins.de.cvrgP)) +
   ggtitle("Institutional delivery Coverage") +
   scale_color_manual(name= "", values = usaid_red) + baseX
 
+# indel_plt <- ggplot(inst.del_prov3, aes(x=yr, y=ins.de.cvrgP), alpha=0.5)+ 
+#   geom_smooth(method="loess", color=usaid_red, size=0.7,se=F) + 
+#   stat_smooth(method = "loess", size = .8, se=FALSE) +
+#   geom_point(color=usaid_red) + faceted +
+#   facet_wrap(~prov) + ##scales="free_y" tom allow for independ y axis variables
+#   # scale_x_date(date_labels="%b %y",date_breaks="") + 
+#   labs(fill="Legend:", title="Provincial Institutional delivery Coverage",
+#        x="",
+#        y="", caption = "Data Source:HMIS")
 indel_plt
+
 ggsave("C:/Users/PIMPA.SAWULU/Desktop/R project doc_E4H/E4H-Zambia/graphs/Province Instituitional delivery coverage.png",
        device="png",
        type="cairo",
        height = 7.5,
        width = 12)
+
+
+#'*COVERAGE OF MODERN FAMILY PLANNING ADOPTION*
+
+fam <- read_xls("data/MC Health April 2023/Family Planning National_monthly.xls")
+fam  <- fam  %>%
+  mutate(month_chr = str_sub(periodname,
+                             start=1,
+                             end=nchar(periodname)-5),
+         month = factor(month_chr,
+                        levels=c("January","February","March","April","May","June","July","August","September","October","November","December")),
+         month_code = as.numeric(month), 
+         year = str_sub(periodname, 
+                        start=nchar(periodname)-4,
+                        end=nchar(periodname)),
+         monyr = paste(month_code, year, sep="-"),
+         mnthyr = my(monyr))
+
+sum(fam$month_chr!=fam$month) # expecting 0 if vars same
+
+# pnctrgts <- read_xls("data/Jan- Jun 2022/PNC Targets.xls")
+# Start <- as.Date(NULL)
+# End <- as.Date(NULL)
+
+
+
+fam_prov <- read_xls("data/MC Health April 2023/Family Planning Provincial_monthly.xls")
+names(fam_prov)
+fam_prov
+fam_prov  <- fam_prov  %>%
+  mutate(month_chr = str_sub(periodname,
+                             start=1,
+                             end=nchar(periodname)-5),
+         month = factor(month_chr,
+                        levels=c("January","February","March","April","May","June","July","August","September","October","November","December")),
+         month_code = as.numeric(month), 
+         year = str_sub(periodname, 
+                        start=nchar(periodname)-4,
+                        end=nchar(periodname)),
+         monyr = paste(month_code, year, sep="-"),
+         mnthyr = my(monyr))
+
+sum(fam_prov$month_chr!=fam_prov$month) # expecting 0 if vars same
+
+
+
+#'*______COVERAGE OF MODERN FAMILY PLANNING ADOPTION Redone*
+
+
+fam <- fam %>%
+  rename(wmn.mfp=4,
+         wmn.vstd=3) %>%
+  mutate(cvrg_fp = wmn.mfp/wmn.vstd) #%>%
+# relocate(cvrg_fp, .after=wmn.mfp)
+colnames(fam)
+crvg_plt <- ggplot(fam, aes(x=mnthyr, y=cvrg_fp, colour=usaid_blue)) + 
+  geom_point(alpha=.6, size=1.5) + 
+  #geom_line(size=1) +
+  geom_smooth(method = loess, size = .8, se=FALSE) +
+  scale_y_continuous(limits = c(0,.8),
+                     labels = percent,
+                     breaks = c(.1,.2,.3,.4,.5,.6,.7,.8)) +
+  scale_x_date(date_labels="%b %y",date_breaks="4 months") +
+  labs(x="", y="", caption="Data Source: HMIS", title="Coverage of modern family planning use among women of reproductive \nage has been increasing since 2019") +
+  scale_color_manual(name ="",
+                     values = usaid_blue,
+                     labels ="Coverage of modern family planning adoption") + 
+  baseX
+
+crvg_plt
+ggsave("viz/Apr-Jun 2022/Family Planning/Coverage of modern family planning adoption smooth PS.png",
+       device="png",
+       type="cairo",
+       height = 6.5,
+       width = 11)
+
+
+#'*COVERAGE OF MODERN FAMILY PLANNING ADOPTION BY PROVINCE*
+
+names(fam_prov)
+names(fam_prov)
+fam_prov <- fam_prov %>%
+  rename(prov=2,
+         wmn.mfp=4,
+         wmn.vstd=3) %>%
+  mutate(cvrg_fp = wmn.mfp/wmn.vstd)
+ggplot(fam_prov, aes(x=mnthyr, y=cvrg_fp)) + 
+  geom_point(size=.5, alpha=.5, colour=usaid_blue) + 
+  stat_smooth(se=F, size=.8, alpha=.6, colour=usaid_blue) +
+  scale_y_continuous(limits = c(0,1),
+                     labels = percent,
+                     breaks = c(.2,.4,.6,.8,1)) +
+  labs(x ="", y="", caption = "Data Source: HMIS") +labs(x ="", y="", caption = "Data Source: HMIS") +
+  ggtitle("Provincial Coverage of modern family planning utilization, 2019-2023") +
+  facet_wrap(~prov, ncol=4) +
+  faceted +
+  scale_color_manual(values=usaid_blue) + basey
+
+ggsave("viz/Apr-Jun 2022/Family Planning/Coverage faceted PS.png",
+       device="png",
+       type="cairo",
+       height = 6.5,
+       width = 11)
+
+#'*________1st ANC COVERAGE 1ST TRIMESTER*
+
+anc1_prov <- read_xls("data/MC Health April 2023/1st ANC coverage 1st trimester_Provinciall level monthly.xls")
+names(anc1_prov)
+anc1_prov
+anc1_prov  <- anc1_prov  %>%
+  mutate(month_chr = str_sub(periodname,
+                             start=1,
+                             end=nchar(periodname)-5),
+         month = factor(month_chr,
+                        levels=c("January","February","March","April","May","June","July","August","September","October","November","December")),
+         month_code = as.numeric(month), 
+         year = str_sub(periodname, 
+                        start=nchar(periodname)-4,
+                        end=nchar(periodname)),
+         monyr = paste(month_code, year, sep="-"),
+         mnthyr = my(monyr))
+
+sum(fam_prov$month_chr!=fam_prov$month) # expecting 0 if vars same
+
+
+names(anc1_prov)
+names(anc1_prov)
+anc1_prov <- anc1_prov %>%
+  rename(prov=1,
+         fANC.fTm=3) %>%
+  mutate(fANC.fTmP = fANC.fTm/100)
+ggplot(anc1_prov, aes(x=mnthyr, y=fANC.fTmP)) + 
+  geom_point(size=.5, alpha=.5, colour=usaid_blue) + 
+  stat_smooth(se=F, size=.8, alpha=.6, colour=usaid_blue) +
+  scale_y_continuous(limits = c(0,1),
+                     labels = percent,
+                     breaks = c(.2,.4,.6,.8,1)) +
+  labs(x ="", y="", caption = "Data Source: HMIS") +labs(x ="", y="", caption = "Data Source: HMIS") +
+  ggtitle("Provincial 1st ANC Coverage (1st Trimester), 2019-2023") +
+  facet_wrap(~prov, ncol=4) +
+  faceted +
+  scale_color_manual(values=usaid_blue) + basey
+
+ggsave("viz/Apr-Jun 2022/Family Planning/1st ANC TM1 Coverage faceted PS.png",
+       device="png",
+       type="cairo",
+       height = 6.5,
+       width = 11)
+
+#'*________4th+ TO TOTAL ANC ATTENDANCES*
+
+frthPlusANC_prov <- read_xls("data/MC Health April 2023/4th+ to Total ANC Attendance_provincial level.xls")
+names(frthPlusANC_prov)
+frthPlusANC_prov
+frthPlusANC_prov  <- frthPlusANC_prov  %>%
+  mutate(month_chr = str_sub(periodname,
+                             start=1,
+                             end=nchar(periodname)-5),
+         month = factor(month_chr,
+                        levels=c("January","February","March","April","May","June","July","August","September","October","November","December")),
+         month_code = as.numeric(month), 
+         year = str_sub(periodname, 
+                        start=nchar(periodname)-4,
+                        end=nchar(periodname)),
+         monyr = paste(month_code, year, sep="-"),
+         mnthyr = my(monyr))
+
+sum(fam_prov$month_chr!=fam_prov$month) # expecting 0 if vars same
+
+
+names(frthPlusANC_prov)
+names(frthPlusANC_prov)
+frthPlusANC_prov <- frthPlusANC_prov %>%
+  rename(prov=1,
+         frth.anc=3) %>%
+  mutate(frth.ancP = frth.anc/100)
+ggplot(frthPlusANC_prov, aes(x=mnthyr, y=frth.ancP)) + 
+  geom_point(size=.5, alpha=.5, colour=usaid_blue) + 
+  stat_smooth(se=F, size=.8, alpha=.6, colour=usaid_blue) +
+  scale_y_continuous(limits = c(0,1),
+                     labels = percent,
+                     breaks = c(.2,.4,.6,.8,1)) +
+  labs(x ="", y="", caption = "Data Source: HMIS") +labs(x ="", y="", caption = "Data Source: HMIS") +
+  ggtitle("4th+ to Total ANC attendances, 2019-2023") +
+  facet_wrap(~prov, ncol=4) +
+  faceted +
+  scale_color_manual(values=usaid_blue) + basey
+
+ggsave("viz/Apr-Jun 2022/Family Planning/4th+ to Total ANC attendances faceted PS.png",
+       device="png",
+       type="cairo",
+       height = 6.5,
+       width = 11)
+
+
+#'*________MATERNAL POSTNATAL CARE WITHIN 48HRS*
+
+MatPNC_prov <- read_xls("data/MC Health April 2023/Maternal postnatal care within 48hrs_Provincial level.xls")
+names(MatPNC_prov)
+MatPNC_prov
+MatPNC_prov  <- MatPNC_prov  %>%
+  mutate(month_chr = str_sub(periodname,
+                             start=1,
+                             end=nchar(periodname)-5),
+         month = factor(month_chr,
+                        levels=c("January","February","March","April","May","June","July","August","September","October","November","December")),
+         month_code = as.numeric(month), 
+         year = str_sub(periodname, 
+                        start=nchar(periodname)-4,
+                        end=nchar(periodname)),
+         monyr = paste(month_code, year, sep="-"),
+         mnthyr = my(monyr))
+
+sum(fam_prov$month_chr!=fam_prov$month) # expecting 0 if vars same
+
+
+names(MatPNC_prov)
+names(MatPNC_prov)
+MatPNC_prov <- MatPNC_prov %>%
+  rename(prov=1,
+         MatPNC=3) %>%
+  mutate(MatPNCP = MatPNC/100)
+ggplot(MatPNC_prov, aes(x=mnthyr, y=MatPNCP)) + 
+  geom_point(size=.5, alpha=.5, colour=usaid_blue) + 
+  stat_smooth(se=F, size=.8, alpha=.6, colour=usaid_blue) +
+  scale_y_continuous(limits = c(0,1),
+                     labels = percent,
+                     breaks = c(.2,.4,.6,.8,1)) +
+  labs(x ="", y="", caption = "Data Source: HMIS") +labs(x ="", y="", caption = "Data Source: HMIS") +
+  ggtitle("Maternal Postnatal Care within 48 hours After Delivery, 2019-2023") +
+  facet_wrap(~prov, ncol=4) +
+  faceted +
+  scale_color_manual(values=usaid_blue) + basey
+
+ggsave("viz/Apr-Jun 2022/Family Planning/Maternal Postnatal faceted PS.png",
+       device="png",
+       type="cairo",
+       height = 6.5,
+       width = 11)
+
+
+#'*________INSTITUTIONAL DELIVERY COVERAGE*
+
+InstDel_prov <- read_xls("data/MC Health April 2023/Institutional delivery coverage by province.xls")
+names(InstDel_prov)
+InstDel_prov
+InstDel_prov  <- InstDel_prov  %>%
+  mutate(month_chr = str_sub(periodname,
+                             start=1,
+                             end=nchar(periodname)-5),
+         month = factor(month_chr,
+                        levels=c("January","February","March","April","May","June","July","August","September","October","November","December")),
+         month_code = as.numeric(month), 
+         year = str_sub(periodname, 
+                        start=nchar(periodname)-4,
+                        end=nchar(periodname)),
+         monyr = paste(month_code, year, sep="-"),
+         mnthyr = my(monyr))
+
+sum(fam_prov$month_chr!=fam_prov$month) # expecting 0 if vars same
+
+
+names(InstDel_prov)
+names(InstDel_prov)
+InstDel_prov <- InstDel_prov %>%
+  rename(prov=1,
+         InstDel=3) %>%
+  mutate(InstDelP = InstDel/100)
+ggplot(InstDel_prov, aes(x=mnthyr, y=InstDelP)) + 
+  geom_point(size=.5, alpha=.5, colour=usaid_blue) + 
+  stat_smooth(se=F, size=.8, alpha=.6, colour=usaid_blue) +
+  scale_y_continuous(limits = c(0,1),
+                     labels = percent,
+                     breaks = c(.2,.4,.6,.8,1)) +
+  labs(x ="", y="", caption = "Data Source: HMIS") +labs(x ="", y="", caption = "Data Source: HMIS") +
+  ggtitle("Institutional Delivery Coverage, 2019-2023") +
+  facet_wrap(~prov, ncol=4) +
+  faceted +
+  scale_color_manual(values=usaid_blue) + basey
+
+ggsave("viz/Apr-Jun 2022/Family Planning/Institutional delivery coverage faceted PS.png",
+       device="png",
+       type="cairo",
+       height = 6.5,
+       width = 11)
+
+
+
+#'*Maternal neonatal health indicators*
+#'*April 2023*
+#'*ANC All Trimesters 2019 - 2023*
+
+mat <- read_xls("data/MC Health April 2023/Reproductive Maternal Health_National level monthly.xls")
+mat  <- mat  %>%
+  mutate(month_chr = str_sub(periodname,
+                             start=1,
+                             end=nchar(periodname)-5),
+         month = factor(month_chr,
+                        levels=c("January","February","March","April","May","June","July","August","September","October","November","December")),
+         month_code = as.numeric(month), 
+         year = str_sub(periodname, 
+                        start=nchar(periodname)-4,
+                        end=nchar(periodname)),
+         monyr = paste(month_code, year, sep="-"),
+         mnthyr = my(monyr))
+
+sum(mat$month_chr!=mat$month) # expecting 0 if vars same
+
+# pnctrgts <- read_xls("data/Jan- Jun 2022/PNC Targets.xls")
+# Start <- as.Date(NULL)
+# End <- as.Date(NULL)
+
+
+# matq <- read_xls("data/Jan- Jun 2022/Reproductive Maternal Data_National Level(Quarterly).xls")
+# matqp <- read_xls("data/Jan-Mar 2022/Reproductive Maternal Data_Provincial Level(Quarterly).xls")
+mat_prov <- read_xls("data/MC Health April 2023/Reproductive Maternal Health_Provincial level monthly.xls")
+
+mat_prov
+mat_prov  <- mat_prov  %>%
+  mutate(month_chr = str_sub(periodname,
+                             start=1,
+                             end=nchar(periodname)-5),
+         month = factor(month_chr,
+                        levels=c("January","February","March","April","May","June","July","August","September","October","November","December")),
+         month_code = as.numeric(month), 
+         year = str_sub(periodname, 
+                        start=nchar(periodname)-4,
+                        end=nchar(periodname)),
+         monyr = paste(month_code, year, sep="-"),
+         mnthyr = my(monyr))
+
+sum(mat_prov$month_chr!=mat_prov$month) # expecting 0 if vars same
+
+
+#'*Maternal ---- *
+
+#'* 1. Client: ANC coverage ----*
+
+mat <- mat %>%
+  rename(ancc = 3,
+         anc1 = 4,
+         anc1u20 = 5) %>%
+  mutate(anccp = ancc/100,
+         anc1p = anc1/100,
+         anc1u20p = anc1u20/100)
+
+#'*set anccp to 100 for all values >100*
+mat <- mat %>% 
+  dplyr::mutate(ancc = ifelse(ancc > 100, 100, ancc)) %>% 
+  dplyr::mutate(anccp = ancc/100)
+
+#'*To create legend, gather method for including a legend --*
+
+mat <- gather(mat, key = subpop , value = rate, c(anccp, anc1p,anc1u20p))
+mat$subpop <- factor(mat$subpop, levels = unique(mat$subpop)) # transform into factor
+levels(mat$subpop)
+
+#view(mat)
+
+ggplot(mat, aes(x = mnthyr, y = rate, group = subpop, colour = subpop)) +
+  geom_point(alpha=.6, size=1.5) + 
+  #geom_line(size=1) +
+  geom_smooth(method = loess, size = .8, se=FALSE) +
+  scale_y_continuous(limits = c(0,1),
+                     labels = percent,
+                     breaks = c(.1,.2,.3,.4,.5,.6,.7,.8,.9, 1)) +
+  scale_x_date(date_labels="%b %Y",date_breaks="4 months") +
+  labs(x ="", y="", caption = "Data Source: HMIS") +labs(x ="", y="", caption = "Data Source: HMIS") +
+  # xlab("", caption = "Data Source: HMIS") + 
+  # ylab("") +
+  ggtitle("Proportion of expected pregnancies receiving antenatal care (ANC), 2019-2023") +
+  scale_color_manual(name ="",
+                     values = usaid_palette,
+                     labels = c("1st ANC coverage (all trimesters)", "1st ANC Coverage (1st Trimester)", 
+                                "1st ANC visits in the 1st trimester: Women <20 yrs")
+  ) + 
+  base
+
+ggsave("viz/Apr-Jun 2022/Reproductive Maternal & Neontal/Proportion of expected pregnancies receiving antenatal care PS.png",
+       device="png",
+       type="cairo",
+       height = 6.5,
+       width = 12)
+
+#'*______________________Child Health INDICATORS*
+
+
+chldH <- read_xls("data/MC Health April 2023/Child Heath national level_monthly.xls")
+chldH  <- chldH  %>%
+  mutate(month_chr = str_sub(periodname,
+                             start=1,
+                             end=nchar(periodname)-5),
+         month = factor(month_chr,
+                        levels=c("January","February","March","April","May","June","July","August","September","October","November","December")),
+         month_code = as.numeric(month), 
+         year = str_sub(periodname, 
+                        start=nchar(periodname)-4,
+                        end=nchar(periodname)),
+         monyr = paste(month_code, year, sep="-"),
+         mnthyr = my(monyr))
+
+# sum(chldH$month_chr!=chldH$month) # expecting 0 if vars same
+
+# pnctrgts <- read_xls("data/Jan- Jun 2022/PNC Targets.xls")
+# Start <- as.Date(NULL)
+# End <- as.Date(NULL)
+
+
+# chldHq <- read_xls("data/Jan- Jun 2022/Child Health Data_National Level(Quarterly).xls")
+# chldHqp <- read_xls("data/Jan-Mar 2022/Child Health Data_Provincial Level(Quarterly).xls")
+chldH_prov <- read_xls("data/MC Health April 2023/Child Heath provincial level_monthly.xls")
+names(chldH_prov)
+# chldH_provpimpa <- chldH_prov %>%
+#   select(1,2,21)
+# chldH_provpimpa <- chldH_provpimpa %>%
+#   rename(me=1,
+#          you=2,
+#          there=3)
+# 
+# chldH_provpimpa
+# 
+# chldH_provpimpa 
+chldH_prov  <- chldH_prov  %>%
+  mutate(month_chr = str_sub(periodname,
+                             start=1,
+                             end=nchar(periodname)-5),
+         month = factor(month_chr,
+                        levels=c("January","February","March","April","May","June","July","August","September","October","November","December")),
+         month_code = as.numeric(month), 
+         year = str_sub(periodname, 
+                        start=nchar(periodname)-4,
+                        end=nchar(periodname)),
+         monyr = paste(month_code, year, sep="-"),
+         mnthyr = my(monyr))
+
+sum(chldH_prov$month_chr!=chldH_prov$month) # expecting 0 if vars same
+
+
+
+
+#'*IMMUNIZATION*
+
+#'* MEASLES 1 & 2*
+names(chldH)
+# view(chldH)
+chldH <- chldH %>%
+  rename(msles1 = 11,
+         msles2 = 12
+  ) %>%
+  
+  mutate(msles1p = msles1/100,
+         msles2p = msles2/100)
+
+#'*set msles1p & msles2p to 100 for all values >100*
+chldH <- chldH %>% 
+  dplyr::mutate(ancc = ifelse(msles1 > 100, 100, msles1)) %>% 
+  dplyr::mutate(msles1p = msles1/100)
+
+#'*To create legend, gather method for including a legend --*
+
+chldH <- gather(chldH, key = subpop , value = rate, c(msles1p, msles2p))
+chldH$subpop <- factor(chldH$subpop, levels = unique(chldH$subpop)) # transform into factor
+levels(chldH$subpop)
+
+# view(chldH)
+
+msles_plt <- ggplot(chldH, aes(x = mnthyr, y = rate, group = subpop, colour = subpop)) +
+  geom_point(alpha=.6, size=.6) + 
+  #geom_line(size=1) +
+  geom_smooth(method = loess, size = .8, se=FALSE) +
+  scale_y_continuous(limits = c(0,1),
+                     labels = percent,
+                     breaks = c(.1,.2,.3,.4,.5,.6,.7,.8,.9, 1)) +
+  scale_x_date(date_labels="%b %y",date_breaks="4 months") +
+  labs(x="", y="", caption="Data Source: HMIS", title="Coverage of the first measles vaccine dose has slightly decreased since June 2021, \nwhile the coverage the 2nd dose has slightly increased") +
+  scale_color_manual(name ="",
+                     values = usaid_palette,
+                     labels = c("Measles under 1", "Measles under 2")
+  ) + 
+  basem
+msles_plt
+ggsave("viz/Apr-Jun 2022/Child Health/Proportion of infacts receiving Measles Vaccines 1and2.png",
+       device="png",
+       type="cairo",
+       height = 5.5,
+       width = 9)
+
+
+#'* MEASLES 1 & 2 SEPERATED BY PROVINCES* ----
+names(chldH_prov)
+
+msle_prov <- chldH_prov %>%
+  rename(prov = 1,
+         msles1 = 11,
+         msles2 = 12
+  ) %>%
+  
+  mutate(msles1p = msles1/100,
+         msles2p = msles2/100) %>%
+  
+  #'*set msles1p & msles2p to 100 for all values >100*
+  chldH_prov <- chldH_prov %>% 
+  dplyr::mutate(ancc = ifelse(msles1 > 100, 100, msles1)) %>% 
+  dplyr::mutate(msles1p = msles1/100)
+
+#'*To create legend, gather method for including a legend --*
+
+chldH_prov <- gather(chldH_prov, key = subpop , value = rate, c(msles1p, msles2p))
+chldH_prov$subpop <- factor(chldH_prov$subpop, levels = unique(chldH_prov$subpop)) # transform into factor
+levels(chldH_prov$subpop)
+
+# view(chldH)
+
+mslesProv_plt <- ggplot(chldH_prov, aes(x = mnthyr, y = rate, group = subpop, colour = subpop)) +
+  geom_point(alpha=.6, size=.6) + 
+  #geom_line(size=1) +
+  geom_smooth(method = loess, size = .8, se=FALSE) +
+  facet_wrap(~prov) +
+  faceted +
+  scale_y_continuous(limits = c(0,1),
+                     labels = percent,
+                     breaks = c(.1,.2,.3,.4,.5,.6,.7,.8,.9, 1)) +
+  scale_x_date(date_labels="%b %y",date_breaks="4 months") +
+  labs(x="", y="", caption="Data Source: HMIS", title="Coverage of the first and second measles vaccines") +
+  scale_color_manual(name ="",
+                     values = usaid_palette,
+                     labels = c("Measles under 1", "Measles under 2")
+  ) + 
+  basem
+mslesProv_plt
+
+ggsave("viz/Apr-Jun 2022/Child Health/Provincial Proportion of infants receiving Measles Vaccines faceted PS.png",
+       device="png",
+       type="cairo",
+       height = 6.5,
+       width = 12)
+
+#'*Re-look at the above section*
+
+#'*___________FULLY IMMUNIZED Coverage*
+names(chldH)
+# view(chldH)
+fullyimz <- chldH %>%
+  rename(fic = 7) %>%
+  
+  mutate(ficp = fic/100)
+
+#'*setting values of dpt 1st dose to 100 for all values >100*
+fullyimz1 <- fullyimz %>% 
+  dplyr::mutate(fic = ifelse(fic > 100, 100, fic)) %>% 
+  dplyr::mutate(ficp = fic/100)
+
+#'*To create legend, gather method for including a legend --*
+
+fullyimz1 <- gather(fullyimz1, key = subpop , value = rate, c(fic))
+fullyimz1$subpop <- factor(fullyimz1$subpop, levels = unique(fullyimz1$subpop)) # transform into factor
+levels(fullyimz1$subpop)
+
+full_plt <- ggplot(fullyimz1, aes(x = mnthyr, y = ficp, colour=usaid_blue )) +
+  geom_point(alpha=.4, size=1.9) + 
+  #geom_line(size=1) +
+  geom_smooth(method = loess, size = .8, se=FALSE) +
+  scale_y_continuous(limits = c(0,1),
+                     labels = percent,
+                     breaks = c(.1,.2,.3,.4,.5,.6,.7,.8,.9, 1)) +
+  scale_x_date(date_labels="%b %y",date_breaks="4 months") +
+  labs(x="", y="", caption="Data Source: HMIS", title="The proportion of infants that are fully immunized has been constant in the \npast years, but we are seeing a slight decline begining late 2022") +
+  scale_color_manual(name ="",
+                     values = usaid_blue,
+                     labels = "Fully Immunized") + 
+  basem 
+  
+full_plt
+
+ggsave("viz/Apr-Jun 2022/Child Health/Fully immunised coverage PS23.png",
+       device="png",
+       type="cairo",
+       height = 5.5,
+       width = 9)
+
+
+#'* EBF @6MONTHS & INITIATION ON BREASTMILK WITHIN ONE HOUR OF BIRTH*
+
+names(chldH)
+# view(chldH)
+breastfeed <- chldH %>%
+  rename(brst1hr = 18,
+         ebf = 19
+  ) %>%
+  
+  mutate(brst1hrp = brst1hr/100,
+         ebfp = ebf/100)
+
+#'*set EBF & BREASTFEED 1HOUR to 100 for all values >100*
+breastfeed <- breastfeed %>% 
+  dplyr::mutate(brst1hr = ifelse(brst1hr > 100, 100, brst1hr)) %>% 
+  dplyr::mutate(brst1hrp = brst1hr/100)
+
+#'*To create legend, gather method for including a legend --*
+
+breastfeed <- gather(breastfeed, key = subpop , value = rate, c(brst1hrp, ebfp))
+breastfeed$subpop <- factor(breastfeed$subpop, levels = unique(breastfeed$subpop)) # transform into factor
+levels(breastfeed$subpop)
+
+# pnctrgts$Start <- as.Date(pnctrgts$Start) 
+# pnctrgts$End <- as.Date(pnctrgts$End) 
+# Start <- as.Date(NULL)
+# End <- as.Date(NULL)
+# colnames(breastfeed)
+# view(chldH)
+
+brstfeeding_plt <- ggplot(breastfeed, aes(x = mnthyr, y = rate, group = subpop, colour = subpop)) +
+  # geom_rect(data=pnctrgts, aes(NULL,NULL,xmin=Start,xmax=End,fill=PNCTargets),
+  #           ymin=c(.79,.85,.90,.96) ,ymax=c(.80,.86,.91,.97), colour=light_grey, size=0.8, alpha=0.8, lty="solid", fill=usaid_red) +
+  #geom_area(alpha=.3, size=.8,color=usaid_blue, fill=light_blue) +
+  geom_point(alpha=.6, size=1.5) + 
+  #geom_line(size=1) +
+  geom_smooth(method = loess, size = .8, se=FALSE) +
+  scale_y_continuous(limits = c(0,1),
+                     labels = percent,
+                     breaks = c(.1,.2,.3,.4,.5,.6,.7,.8,.9, 1)) +
+  scale_x_date(date_labels="%b %y",date_breaks="4 months") +
+  labs(x="", y="", caption="Data Source: HMIS", title="Proportion of infants breastfed within 1 hour of birth has slightly increased \nin the last years, reaching 90% in June 2022") +
+  scale_color_manual(name ="",
+                     values = usaid_palette,
+                     labels = c("Initiation on breastmilk with one hour of birth", "Infants on EBF at 6 months")) + basey
+#     basey +
+#     annotate(geom = "text", x=trgt1, y = 0.79, family="Gill Sans Mt", colour = usaid_red, label=substitute("Targets Breastfeeding within 1 hour
+# of birth"), size= 4,  hjust =0, vjust=-4.5) +
+#     annotate(geom = "text", x=trgt1, y = 0.79, family="Gill Sans Mt", colour = rich_black, label=substitute(paste(bold("79%"))), size= 4,  hjust =-2.5, vjust=-.2) +
+#     annotate(geom = "text", x=trgt1, y = 0.85, family="Gill Sans Mt", colour = rich_black, label=substitute(paste(bold("85%"))), size= 4,  hjust =-9.5, vjust=-1) +
+#     annotate(geom = "text", x=trgt1, y = 0.90, family="Gill Sans Mt", colour = rich_black, label=substitute(paste(bold("90%"))), size= 4,  hjust =-15.5, vjust=-1) +
+#     annotate(geom = "text", x=trgt1, y = 0.96, family="Gill Sans Mt", colour = rich_black, label=substitute(paste(bold("96%"))), size= 4,  hjust =-22, vjust=-1)
+#   
+
+brstfeeding_plt
+
+ggsave("viz/Apr-Jun 2022/Child Health/National EBF and 1hr BF PS.png",
+       device="png",
+       type="cairo",
+       height = 5.5,
+       width = 9.5)
+
+
+#'*___________CHILD STUNTING LEVELS*
+names(chldH)
+# view(chldH)
+chldstunt <- chldH %>%
+  rename(csl = 16) %>%
+  
+  mutate(cslp = csl/100)
+
+#'*setting values of stunting to 100 for all values >100*
+chldstunt1 <- chldstunt %>% 
+  dplyr::mutate(csl = ifelse(csl > 100, 100, csl)) %>% 
+  dplyr::mutate(cslp = csl/100)
+
+#'*To create legend, gather method for including a legend --*
+
+chldstunt1 <- gather(chldstunt1, key = subpop , value = rate, c(csl))
+chldstunt1$subpop <- factor(chldstunt1$subpop, levels = unique(chldstunt1$subpop)) # transform into factor
+levels(chldstunt1$subpop)
+
+stunt_plt <- ggplot(chldstunt1, aes(x = mnthyr, y = cslp, colour=usaid_blue )) +
+  geom_point(alpha=.4, size=1.9) + 
+  #geom_line(size=1) +
+  geom_smooth(method = loess, size = .8, se=FALSE) +
+  scale_y_continuous(limits = c(0,1),
+                     labels = percent,
+                     breaks = c(.1,.2,.3,.4,.5,.6,.7,.8,.9, 1)) +
+  scale_x_date(date_labels="%b %y",date_breaks="4 months") +
+  labs(x="", y="", caption="Data Source: HMIS", title="The Stunting Rates in Under 5s at Facility have been below 2%") +
+  scale_color_manual(name ="",
+                     values = usaid_blue,
+                     labels = "Stunting Rates") + 
+  basem 
+stunt_plt
+
+ggsave("viz/Apr-Jun 2022/Child Health/National Stunting Levels PS23.png",
+       device="png",
+       type="cairo",
+       height = 5.5,
+       width = 9)
+
