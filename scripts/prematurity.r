@@ -459,7 +459,7 @@ maternal.mort2 <- maternal.mort1 %>%
 maternal.mort2
 
 maternal.mort3 <- maternal.mort2 %>% 
-  gather(key = subRt , value = rate, c(peri.mr))
+  gather(key = subRt , value = rate, c(mat.mr))
 
 maternal.mort3
 
@@ -468,6 +468,8 @@ zam.boundary <- geoboundaries(country = "Zambia"
   select(shapeName)
 
 zam.boundary
+
+#write_xlsx(zam.boundary,"data/prematurity/province.xlsx")
 
 zam.boundary1 <- zam.boundary %>%
   select(1, 2) %>%
