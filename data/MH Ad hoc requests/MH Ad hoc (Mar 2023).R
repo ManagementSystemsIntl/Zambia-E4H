@@ -933,6 +933,257 @@ ggsave("viz/May 2023 data review/National Institutional delivery coverage.png",
        width = 11)
 
 
+#'*__________CAESAREAN SECTION RATE*
+
+csection_prov <- read_xls("data/May 2023 FHDR/Reproductive Maternal Health_Provincial level monthly.xls")
+names(csection_prov)
+csection_prov
+csection_prov  <- csection_prov  %>%
+  mutate(month_chr = str_sub(periodname,
+                             start=1,
+                             end=nchar(periodname)-5),
+         month = factor(month_chr,
+                        levels=c("January","February","March","April","May","June","July","August","September","October","November","December")),
+         month_code = as.numeric(month), 
+         year = str_sub(periodname, 
+                        start=nchar(periodname)-4,
+                        end=nchar(periodname)),
+         monyr = paste(month_code, year, sep="-"),
+         mnthyr = my(monyr))
+
+
+names(csection_prov)
+csection_prov <- csection_prov %>%
+  rename(prov=1,
+         csectrate=9) %>%
+  mutate(csectrateP = csectrate/100)
+ggplot(csection_prov, aes(x=mnthyr, y=csectrateP)) + 
+  geom_point(size=.5, alpha=.5, colour=usaid_blue) + 
+  stat_smooth(se=F, size=.7, alpha=.6, colour=usaid_blue) +
+  scale_y_continuous(limits = c(0,.6),
+                     labels = percent,
+                     breaks = c(.1,.2,.3,.4,.5,.6)) +
+  labs(x ="", y="", caption = "Data Source: HMIS") +labs(x ="", y="", caption = "Data Source: HMIS") +
+  ggtitle("Caesarean Section Rate (%), 2019 - 2023") +
+  facet_wrap(~prov, ncol=4) +
+  faceted +
+  scale_color_manual(values=usaid_blue) + basey
+
+ggsave("viz/May 2023 data review/Provincial Caesarean Rate.png",
+       device="png",
+       type="cairo",
+       height = 6.5,
+       width = 11)
+
+
+#'*_______Redraw for National Level*
+
+Csect <- read_xls("data/May 2023 FHDR/Reproductive Maternal Health_National level monthly.xls")
+names(Csect)
+Csect
+Csect  <- Csect  %>%
+  mutate(month_chr = str_sub(periodname,
+                             start=1,
+                             end=nchar(periodname)-5),
+         month = factor(month_chr,
+                        levels=c("January","February","March","April","May","June","July","August","September","October","November","December")),
+         month_code = as.numeric(month), 
+         year = str_sub(periodname, 
+                        start=nchar(periodname)-4,
+                        end=nchar(periodname)),
+         monyr = paste(month_code, year, sep="-"),
+         mnthyr = my(monyr))
+
+
+names(Csect)
+Csect <- Csect %>%
+  rename(Csect.rate=9) %>%
+  mutate(Csect.rateP = Csect.rate/100)
+ggplot(Csect, aes(x=mnthyr, y=Csect.rateP)) + 
+  geom_point(size=.5, alpha=.5, colour=usaid_blue) + 
+  stat_smooth(se=F, size=.8, alpha=.6, colour=usaid_blue) +
+  scale_y_continuous(limits = c(0,.6),
+                     labels = percent,
+                     breaks = c(.1,.2,.3,.4,.5,.6)) +
+  labs(x ="", y="", caption = "Data Source: HMIS") +labs(x ="", y="", caption = "Data Source: HMIS") +
+  ggtitle("Caesarean Section Rate at National level has been steadily increasing each year.") +
+  scale_color_manual(values=usaid_blue) + basey
+
+ggsave("viz/May 2023 data review/National CSection rate.png",
+       device="png",
+       type="cairo",
+       height = 6.5,
+       width = 11)
+
+
+#'*__________FOLIC ACID SUPPLEMENTATION (%) DURING ANC VISITS*
+
+folicsup_prov <- read_xls("data/May 2023 FHDR/Reproductive Maternal Health_Provincial level monthly.xls")
+names(folicsup_prov)
+folicsup_prov
+folicsup_prov  <- folicsup_prov  %>%
+  mutate(month_chr = str_sub(periodname,
+                             start=1,
+                             end=nchar(periodname)-5),
+         month = factor(month_chr,
+                        levels=c("January","February","March","April","May","June","July","August","September","October","November","December")),
+         month_code = as.numeric(month), 
+         year = str_sub(periodname, 
+                        start=nchar(periodname)-4,
+                        end=nchar(periodname)),
+         monyr = paste(month_code, year, sep="-"),
+         mnthyr = my(monyr))
+
+
+names(folicsup_prov)
+folicsup_prov <- folicsup_prov %>%
+  rename(prov=1,
+         folic=6) %>%
+  mutate(folicP = folic/100)
+ggplot(folicsup_prov, aes(x=mnthyr, y=folicP)) + 
+  geom_point(size=.5, alpha=.5, colour=usaid_blue) + 
+  stat_smooth(se=F, size=.7, alpha=.6, colour=usaid_blue) +
+  scale_y_continuous(limits = c(0,1),
+                     labels = percent,
+                     breaks = c(.1,.2,.3,.4,.5,.6,.7,.8,.9,1)) +
+  labs(x ="", y="", caption = "Data Source: HMIS") +labs(x ="", y="", caption = "Data Source: HMIS") +
+  ggtitle("Folic Acid Supplementation (%) during ANC Visits shows that there was a dip between 2019 and 2022\n across the provinces except Northern, but shows a general steady increase into 2023.") +
+  facet_wrap(~prov, ncol=4) +
+  faceted +
+  scale_color_manual(values=usaid_blue) + basey
+
+ggsave("viz/May 2023 data review/Folic Acid Supplementation.png",
+       device="png",
+       type="cairo",
+       height = 7,
+       width = 12)
+
+
+#'*_______Redraw for National Level*
+
+folicAcid <- read_xls("data/May 2023 FHDR/Reproductive Maternal Health_National level monthly.xls")
+names(folicAcid)
+folicAcid
+folicAcid  <- folicAcid  %>%
+  mutate(month_chr = str_sub(periodname,
+                             start=1,
+                             end=nchar(periodname)-5),
+         month = factor(month_chr,
+                        levels=c("January","February","March","April","May","June","July","August","September","October","November","December")),
+         month_code = as.numeric(month), 
+         year = str_sub(periodname, 
+                        start=nchar(periodname)-4,
+                        end=nchar(periodname)),
+         monyr = paste(month_code, year, sep="-"),
+         mnthyr = my(monyr))
+
+
+names(folicAcid)
+folicAcid <- folicAcid %>%
+  rename(folicSupp=6) %>%
+  mutate(folicSuppP = folicSupp/100)
+ggplot(folicAcid, aes(x=mnthyr, y=folicSuppP)) + 
+  geom_point(size=.6, alpha=.5, colour=usaid_blue) + 
+  stat_smooth(se=F, size=.8, alpha=.6, colour=usaid_blue) +
+  scale_y_continuous(limits = c(0,1),
+                     labels = percent,
+                     breaks = c(.1,.2,.3,.4,.5,.6,.7,.8,.9,1)) +
+  labs(x ="", y="", caption = "Data Source: HMIS") +labs(x ="", y="", caption = "Data Source: HMIS") +
+  ggtitle("Folic Acid Supplementation (%) during ANC Visits, 2019 - 2023.") +
+  scale_color_manual(values=usaid_blue) + basey
+
+ggsave("viz/May 2023 data review/National Folic Acid Sup.png",
+       device="png",
+       type="cairo",
+       height = 6.5,
+       width = 11)
+
+
+
+#'*__________HIGH RISK PREGNANCIES AT 1st ANC (%)*
+
+highRpreg_prov <- read_xls("data/May 2023 FHDR/Reproductive Maternal Health_Provincial level monthly.xls")
+names(highRpreg_prov)
+highRpreg_prov
+highRpreg_prov  <- highRpreg_prov  %>%
+  mutate(month_chr = str_sub(periodname,
+                             start=1,
+                             end=nchar(periodname)-5),
+         month = factor(month_chr,
+                        levels=c("January","February","March","April","May","June","July","August","September","October","November","December")),
+         month_code = as.numeric(month), 
+         year = str_sub(periodname, 
+                        start=nchar(periodname)-4,
+                        end=nchar(periodname)),
+         monyr = paste(month_code, year, sep="-"),
+         mnthyr = my(monyr))
+
+
+names(highRpreg_prov)
+highRpreg_prov <- highRpreg_prov %>%
+  rename(prov=1,
+         risk.preg=12) %>%
+  mutate(risk.pregP = risk.preg/100)
+ggplot(highRpreg_prov, aes(x=mnthyr, y=risk.pregP)) + 
+  geom_point(size=.5, alpha=.5, colour=usaid_red) + 
+  stat_smooth(se=F, size=.7, alpha=.6, colour=usaid_red) +
+  scale_y_continuous(limits = c(0,.8),
+                     labels = percent,
+                     breaks = c(.1,.2,.3,.4,.5,.6,.7,.8)) +
+  labs(x ="", y="", caption = "Data Source: HMIS") +labs(x ="", y="", caption = "Data Source: HMIS") +
+  ggtitle("High-risk Pregnancies at 1st ANC (%), 2019 - 2023.") +
+  facet_wrap(~prov, ncol=4) +
+  faceted +
+  scale_color_manual(values=usaid_red) + basey
+
+ggsave("viz/May 2023 data review/High Risk pregnancies.png",
+       device="png",
+       type="cairo",
+       height = 7,
+       width = 12)
+
+
+
+#'*_______Redraw for National Level*
+
+highRpreg <- read_xls("data/May 2023 FHDR/Reproductive Maternal Health_National level monthly.xls")
+names(highRpreg)
+highRpreg
+highRpreg  <- highRpreg  %>%
+  mutate(month_chr = str_sub(periodname,
+                             start=1,
+                             end=nchar(periodname)-5),
+         month = factor(month_chr,
+                        levels=c("January","February","March","April","May","June","July","August","September","October","November","December")),
+         month_code = as.numeric(month), 
+         year = str_sub(periodname, 
+                        start=nchar(periodname)-4,
+                        end=nchar(periodname)),
+         monyr = paste(month_code, year, sep="-"),
+         mnthyr = my(monyr))
+
+
+names(highRpreg)
+highRpreg <- highRpreg %>%
+  rename(hr.preg=12) %>%
+  mutate(hr.pregP = hr.preg/100)
+ggplot(highRpreg, aes(x=mnthyr, y=hr.pregP)) + 
+  geom_point(size=.6, alpha=.5, colour=usaid_red) + 
+  stat_smooth(se=F, size=.8, alpha=.6, colour=usaid_red) +
+  scale_y_continuous(limits = c(0,.8),
+                     labels = percent,
+                     breaks = c(.1,.2,.3,.4,.5,.6,.7,.8)) +
+  labs(x ="", y="", caption = "Data Source: HMIS") +labs(x ="", y="", caption = "Data Source: HMIS") +
+  ggtitle("Number of High-Risk pregancies reported at 1st ANC visit\n have been increasing each year and now stand at 15% in 2023.") +
+  scale_color_manual(values=usaid_red) + basey
+
+ggsave("viz/May 2023 data review/National High risk pregnancies.png",
+       device="png",
+       type="cairo",
+       height = 6.5,
+       width = 11)
+
+
 
 
 
