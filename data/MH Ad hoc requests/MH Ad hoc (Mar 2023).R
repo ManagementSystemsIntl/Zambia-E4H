@@ -1485,6 +1485,98 @@ ggsave("viz/May 2023 data review/Fully immunised coverage under 1.png",
        width = 12)
 
 
+#'*______NATIONAL BCG COVERAGE UNDER 1*
+
+names(chldH)
+BCG_coverage <- chldH %>%
+  rename(Natbcg = 10) %>%
+  
+  mutate(Natbcgp = Natbcg/100)
+
+#'*setting values of BCG to 100 for all values >100*
+BCG_coverage <- BCG_coverage %>% 
+  dplyr::mutate(Natbcg = ifelse(Natbcg > 100, 100, Natbcg)) %>% 
+  dplyr::mutate(Natbcgp = Natbcg/100)
+
+#'*To create legend, gather method for including a legend --*
+
+BCG_coverage <- gather(BCG_coverage, key = subpop , value = rate, c(Natbcg))
+BCG_coverage$subpop <- factor(BCG_coverage$subpop, levels = unique(BCG_coverage$subpop)) # transform into factor
+levels(BCG_coverage$subpop)
+
+NatBCG_plt <- ggplot(BCG_coverage, aes(x = mnthyr, y = Natbcgp, colour=usaid_blue )) +
+  geom_point(alpha=.4, size=.7) + 
+  #geom_line(size=1) +
+  geom_smooth(method = loess, size = .8, se=FALSE) +
+  scale_y_continuous(limits = c(0,1),
+                     labels = percent,
+                     breaks = c(.1,.2,.3,.4,.5,.6,.7,.8,.9, 1)) +
+  scale_x_date(date_labels="%b %y",date_breaks="3 months") +
+  labs(x="", y="", caption="Data Source: HMIS", title="The Proportion of infants given BCG Under 1 has been hovering around 85% since January 2021") +
+  scale_color_manual(name ="",
+                     values = usaid_blue,
+                     labels = "BCG Coverage (%) Under 1") + 
+  basem 
+
+NatBCG_plt
+
+ggsave("viz/May 2023 data review/BCG coverage under 1.png",
+       device="png",
+       type="cairo",
+       height = 6.5,
+       width = 12)
+
+
+#'*______NATIONAL DPT FIRST DOSE COVERAGE UNDER 1*
+
+names(chldH)
+DPT_coverage <- chldH %>%
+  rename(Natdptu1 = 13) %>%
+  
+  mutate(Natdptu1p = Natdptu1/100)
+
+#'*setting values of DPT to 100 for all values >100*
+DPT_coverage <- DPT_coverage %>% 
+  dplyr::mutate(Natdptu1 = ifelse(Natdptu1 > 100, 100, Natdptu1)) %>% 
+  dplyr::mutate(Natdptu1p = Natdptu1/100)
+
+#'*To create legend, gather method for including a legend --*
+
+DPT_coverage <- gather(DPT_coverage, key = subpop , value = rate, c(Natdptu1))
+DPT_coverage$subpop <- factor(DPT_coverage$subpop, levels = unique(DPT_coverage$subpop)) # transform into factor
+levels(DPT_coverage$subpop)
+
+DPT_plt <- ggplot(DPT_coverage, aes(x = mnthyr, y = Natdptu1p, colour=usaid_blue )) +
+  geom_point(alpha=.5, size=.7) + 
+  geom_smooth(method = loess, size = .8, se=FALSE) +
+  scale_y_continuous(limits = c(0,1),
+                     labels = percent,
+                     breaks = c(.1,.2,.3,.4,.5,.6,.7,.8,.9, 1)) +
+  scale_x_date(date_labels="%b %y",date_breaks="3 months") +
+  labs(x="", y="", caption="Data Source: HMIS", title="Proportion of infants given DPT 1st Dose Under 1, 2019 - 2023 ") +
+  scale_color_manual(name ="",
+                     values = usaid_blue,
+                     labels = "DPT 1st dose Coverage (%) Under 1") + 
+  basem 
+
+DPT_plt
+
+ggsave("viz/May 2023 data review/DPT 1st dose coverage under 1.png",
+       device="png",
+       type="cairo",
+       height = 6.5,
+       width = 12)
+
+
+
+
+
+
+
+
+
+
+
 #'* EBF @6MONTHS & INITIATION ON BREASTMILK WITHIN ONE HOUR OF BIRTH*
 
 names(chldH)
@@ -1519,14 +1611,14 @@ brstfeeding_plt <- ggplot(breastfeed, aes(x = mnthyr, y = rate, group = subpop, 
   # geom_rect(data=pnctrgts, aes(NULL,NULL,xmin=Start,xmax=End,fill=PNCTargets),
   #           ymin=c(.79,.85,.90,.96) ,ymax=c(.80,.86,.91,.97), colour=light_grey, size=0.8, alpha=0.8, lty="solid", fill=usaid_red) +
   #geom_area(alpha=.3, size=.8,color=usaid_blue, fill=light_blue) +
-  geom_point(alpha=.6, size=1.5) + 
+  geom_point(alpha=.6, size=.7) + 
   #geom_line(size=1) +
   geom_smooth(method = loess, size = .8, se=FALSE) +
   scale_y_continuous(limits = c(0,1),
                      labels = percent,
                      breaks = c(.1,.2,.3,.4,.5,.6,.7,.8,.9, 1)) +
-  scale_x_date(date_labels="%b %y",date_breaks="4 months") +
-  labs(x="", y="", caption="Data Source: HMIS", title="Proportion of infants breastfed within 1 hour of birth has slightly increased \nin the last years, reaching 90% in June 2022") +
+  scale_x_date(date_labels="%b %y",date_breaks="3 months") +
+  labs(x="", y="", caption="Data Source: HMIS", title="Proportion of infants breastfed within 1 hour of birth has been improving and steadily above 85%") +
   scale_color_manual(name ="",
                      values = usaid_palette,
                      labels = c("Initiation on breastmilk within one hour of birth", "Infants on EBF at 6 months")) + basey
@@ -1541,11 +1633,11 @@ brstfeeding_plt <- ggplot(breastfeed, aes(x = mnthyr, y = rate, group = subpop, 
 
 brstfeeding_plt
 
-ggsave("viz/Apr-Jun 2022/Child Health/National EBF and 1hr BF PS.png",
+ggsave("viz/May 2023 data review/National EBF and 1hr BF.png",
        device="png",
        type="cairo",
-       height = 5.5,
-       width = 9.5)
+       height = 6.2,
+       width = 11)
 
 
 #'*___________CHILD STUNTING LEVELS*

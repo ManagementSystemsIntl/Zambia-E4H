@@ -5,7 +5,7 @@ source("scripts/r prep3.r")
 
 #'*________PROPORTION BREASTFED WITHIN AN HOUR PROVINCIAL FACETED*
 
-bfhr_prov <- read_xls("data/MC Health April 2023/Child Heath provincial level_monthly.xls")
+bfhr_prov <- read_xls("data/May 2023 FHDR/Child Heath provincial level_monthly.xls")
 names(bfhr_prov)
 bfhr_prov
 bfhr_prov  <- bfhr_prov  %>%
@@ -52,7 +52,7 @@ bfhr_plt <- ggplot(bfhr_prov, aes(x = mnthyr, y = rate, group = subpop, colour =
                      labels = percent,
                      breaks = c(.2,.4,.6,.8,1)) +
   labs(x ="", y="", caption = "Data Source: HMIS") +labs(x ="", y="", caption = "Data Source: HMIS") +
-  ggtitle("Proportion of Infants Breastfed within 1 hour of birth \nand those on EBF at 6 months, 2019-2023") +
+  ggtitle("Proportion of Infants Breastfed within 1 hour of birth \nand those on EBF at 6 months, 2019 - 2023") +
   facet_wrap(~prov, ncol=4) +
   faceted +
   scale_color_manual(name ="",
@@ -61,7 +61,7 @@ bfhr_plt <- ggplot(bfhr_prov, aes(x = mnthyr, y = rate, group = subpop, colour =
 
 bfhr_plt
 
-ggsave("viz/Apr-Jun 2022/Child Health/Breastfed within 1 hour of birth and EBF faceted PS.png",
+ggsave("viz/May 2023 data review/Breastfed within 1 hour of birth and EBF facets.png",
        device="png",
        type="cairo",
        height = 6.5,
@@ -162,7 +162,7 @@ fulmunized_prov <- fulmunized_prov %>%
          fiu1=7) %>%
   mutate(fiu1P = fiu1/100)
 
-#'*set EBF & BREASTFEED 1HOUR to 100 for all values >100*
+#'*set immunization to 100 for all values >100*
 fulmunized_prov <- fulmunized_prov %>% 
   dplyr::mutate(fiu1 = ifelse(fiu1 > 100, 100, fiu1)) %>% 
   dplyr::mutate(fiu1P = fiu1/100)
@@ -213,6 +213,129 @@ ggsave("viz/May 2023 data review/Fully Imunnized facets PS.png",
        type="cairo",
        height = 6.5,
        width = 12)
+
+
+#'*______BCG COVERAGE UNDER 1*
+
+BCG_prov <- read_xls("data/May 2023 FHDR/Child Heath provincial level_monthly.xls")
+names(BCG_prov)
+BCG_prov
+BCG_prov  <- BCG_prov  %>%
+  mutate(month_chr = str_sub(periodname,
+                             start=1,
+                             end=nchar(periodname)-5),
+         month = factor(month_chr,
+                        levels=c("January","February","March","April","May","June","July","August","September","October","November","December")),
+         month_code = as.numeric(month), 
+         year = str_sub(periodname, 
+                        start=nchar(periodname)-4,
+                        end=nchar(periodname)),
+         monyr = paste(month_code, year, sep="-"),
+         mnthyr = my(monyr))
+
+names(BCG_prov)
+BCG_prov <- BCG_prov %>%
+  rename(prov=1,
+         bcg.coverage=10) %>%
+  mutate(bcg.coverageP = bcg.coverage/100)
+
+#'*set BCG to 100 for all values >100*
+BCG_prov <- BCG_prov %>% 
+  dplyr::mutate(bcg.coverage = ifelse(bcg.coverage > 100, 100, bcg.coverage)) %>% 
+  dplyr::mutate(bcg.coverageP = bcg.coverage/100)
+
+#'*To create legend, gather method for including a legend --*
+
+BCG_prov <- gather(BCG_prov, key = subpop , value = rate, c(bcg.coverage))
+BCG_prov$subpop <- factor(BCG_prov$subpop, levels = unique(BCG_prov$subpop)) # transform into factor
+levels(BCG_prov$subpop)
+
+bcg_plt <- ggplot(BCG_prov, aes(x = mnthyr, y = bcg.coverageP, colour=usaid_blue )) +
+  geom_point(alpha=.4, size=.7) + 
+  #geom_line(size=1) +
+  geom_smooth(method = loess, size = .8, se=FALSE) +
+  scale_y_continuous(limits = c(.2,1),
+                     labels = percent,
+                     breaks = c(.2,.4,.6,.8,1)) +
+  # scale_x_date(date_labels="%b %y",date_breaks="4 months") +
+  labs(x="", y="", caption="Data Source: HMIS", title="BCG Coverage (%) Under 1, 2019 - 2023") +
+  facet_wrap(~prov, ncol=4) +
+  faceted +
+  scale_color_manual(name ="",
+                     values = usaid_blue,
+                     labels = "BCG coverage (%) under 1") + 
+  basem 
+
+bcg_plt
+
+ggsave("viz/May 2023 data review/BCG Under 1 facets.png",
+       device="png",
+       type="cairo",
+       height = 6.5,
+       width = 12)
+
+
+#'*______DPT 1st DOSE COVERAGE UNDER 1*
+
+dpt1_prov <- read_xls("data/May 2023 FHDR/Child Heath provincial level_monthly.xls")
+names(dpt1_prov)
+dpt1_prov
+dpt1_prov  <- dpt1_prov  %>%
+  mutate(month_chr = str_sub(periodname,
+                             start=1,
+                             end=nchar(periodname)-5),
+         month = factor(month_chr,
+                        levels=c("January","February","March","April","May","June","July","August","September","October","November","December")),
+         month_code = as.numeric(month), 
+         year = str_sub(periodname, 
+                        start=nchar(periodname)-4,
+                        end=nchar(periodname)),
+         monyr = paste(month_code, year, sep="-"),
+         mnthyr = my(monyr))
+
+names(dpt1_prov)
+dpt1_prov <- dpt1_prov %>%
+  rename(prov=1,
+         dptu1.coverage=13) %>%
+  mutate(dptu1.coverageP = dptu1.coverage/100)
+
+#'*set DPT 1st dose to 100 for all values >100*
+dpt1_prov <- dpt1_prov %>% 
+  dplyr::mutate(dptu1.coverage = ifelse(dptu1.coverage > 100, 100, dptu1.coverage)) %>% 
+  dplyr::mutate(dptu1.coverageP = dptu1.coverage/100)
+
+#'*To create legend, gather method for including a legend --*
+
+dpt1_prov <- gather(dpt1_prov, key = subpop , value = rate, c(dptu1.coverage))
+dpt1_prov$subpop <- factor(dpt1_prov$subpop, levels = unique(dpt1_prov$subpop)) # transform into factor
+levels(dpt1_prov$subpop)
+
+prov.dpt_plt <- ggplot(dpt1_prov, aes(x = mnthyr, y = dptu1.coverageP, colour=usaid_blue )) +
+  geom_point(alpha=.4, size=.7) + 
+  #geom_line(size=1) +
+  geom_smooth(method = loess, size = .8, se=FALSE) +
+  scale_y_continuous(limits = c(.2,1),
+                     labels = percent,
+                     breaks = c(.2,.4,.6,.8,1)) +
+
+  labs(x="", y="", caption="Data Source: HMIS", title="DPT 1st dose Coverage (%) Under 1, 2019 - 2023") +
+  facet_wrap(~prov, ncol=4) +
+  faceted +
+  scale_color_manual(name ="",
+                     values = usaid_blue,
+                     labels = "DPT 1st dose coverage (%) under 1") + 
+  basem 
+
+prov.dpt_plt
+
+ggsave("viz/May 2023 data review/DPT 1st dose Under 1 facets.png",
+       device="png",
+       type="cairo",
+       height = 6.5,
+       width = 12)
+
+
+
 
 
 #'*_________ANC VISITS - PROVINCIAL*
