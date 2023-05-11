@@ -336,6 +336,129 @@ ggsave("viz/May 2023 data review/DPT 1st dose Under 1 facets.png",
 
 
 
+#'*______VITAMIN A SUPPLEMENT COVERAGE*
+
+vitA_prov <- read_xls("data/May 2023 FHDR/Child Heath provincial level_monthly.xls")
+names(vitA_prov)
+vitA_prov
+vitA_prov  <- vitA_prov  %>%
+  mutate(month_chr = str_sub(periodname,
+                             start=1,
+                             end=nchar(periodname)-5),
+         month = factor(month_chr,
+                        levels=c("January","February","March","April","May","June","July","August","September","October","November","December")),
+         month_code = as.numeric(month), 
+         year = str_sub(periodname, 
+                        start=nchar(periodname)-4,
+                        end=nchar(periodname)),
+         monyr = paste(month_code, year, sep="-"),
+         mnthyr = my(monyr))
+
+names(vitA_prov)
+vitA_prov <- vitA_prov %>%
+  rename(prov=1,
+         vitA.supp=14) %>%
+  mutate(vitA.suppP = vitA.supp/100)
+
+#'*set Vitamin A supplement to 100 for all values >100*
+vitA_prov <- vitA_prov %>% 
+  dplyr::mutate(vitA.supp = ifelse(vitA.supp > 100, 100, vitA.supp)) %>% 
+  dplyr::mutate(vitA.suppP = vitA.supp/100)
+
+#'*To create legend, gather method for including a legend --*
+
+vitA_prov <- gather(vitA_prov, key = subpop , value = rate, c(vitA.supp))
+vitA_prov$subpop <- factor(vitA_prov$subpop, levels = unique(vitA_prov$subpop)) # transform into factor
+levels(vitA_prov$subpop)
+
+vitA_prov_plt <- ggplot(vitA_prov, aes(x = mnthyr, y = vitA.suppP, colour=usaid_blue )) +
+  geom_point(alpha=.4, size=.7) + 
+  #geom_line(size=1) +
+  geom_smooth(method = loess, size = .8, se=FALSE) +
+  scale_y_continuous(limits = c(0,.8),
+                     labels = percent,
+                     breaks = c(.1,.2,.3,.4,.5,.6,.7,.8)) +
+  
+  labs(x="", y="", caption="Data Source: HMIS", title="Vitamin A Supplement Coverage, 2019 - 2023") +
+  facet_wrap(~prov, ncol=4) +
+  faceted +
+  scale_color_manual(name ="",
+                     values = usaid_blue,
+                     labels = "Vitamin A Supplement Coverage") + 
+  basem 
+
+vitA_prov_plt
+
+ggsave("viz/May 2023 data review/Vitamin A supplementation facets.png",
+       device="png",
+       type="cairo",
+       height = 6.5,
+       width = 12)
+
+
+#'*______PROVINCIAL STUNTING RATES in Under 5s*
+
+stunting_prov <- read_xls("data/May 2023 FHDR/Child Heath provincial level_monthly.xls")
+names(stunting_prov)
+stunting_prov
+stunting_prov  <- stunting_prov  %>%
+  mutate(month_chr = str_sub(periodname,
+                             start=1,
+                             end=nchar(periodname)-5),
+         month = factor(month_chr,
+                        levels=c("January","February","March","April","May","June","July","August","September","October","November","December")),
+         month_code = as.numeric(month), 
+         year = str_sub(periodname, 
+                        start=nchar(periodname)-4,
+                        end=nchar(periodname)),
+         monyr = paste(month_code, year, sep="-"),
+         mnthyr = my(monyr))
+
+names(stunting_prov)
+stunting_prov <- stunting_prov %>%
+  rename(prov=1,
+         stunt.rate=16) %>%
+  mutate(stunt.rateP = stunt.rate/100)
+
+#'*set Vitamin A supplement to 100 for all values >100*
+stunting_prov <- stunting_prov %>% 
+  dplyr::mutate(stunt.rate = ifelse(stunt.rate > 100, 100, stunt.rate)) %>% 
+  dplyr::mutate(stunt.rateP = stunt.rate/100)
+
+#'*To create legend, gather method for including a legend --*
+
+stunting_prov <- gather(stunting_prov, key = subpop , value = rate, c(stunt.rate))
+stunting_prov$subpop <- factor(stunting_prov$subpop, levels = unique(stunting_prov$subpop)) # transform into factor
+levels(stunting_prov$subpop)
+
+stunt_prov_plt <- ggplot(stunting_prov, aes(x = mnthyr, y = stunt.rateP, colour=usaid_blue )) +
+  geom_point(alpha=.4, size=.7) + 
+  #geom_line(size=1) +
+  geom_smooth(method = loess, size = .8, se=FALSE) +
+  scale_y_continuous(limits = c(0,.05),
+                     labels = percent,
+                     breaks = c(.01,.02,.03,.04,.05)) +
+  
+  labs(x="", y="", caption="Data Source: HMIS", title="Stunting rate (%) in under 5s at facility, 2019 - 2023") +
+  facet_wrap(~prov, ncol=4) +
+  faceted +
+  scale_color_manual(name ="",
+                     values = usaid_blue,
+                     labels = "Stunting Rates") + 
+  basem 
+
+stunt_prov_plt
+
+ggsave("viz/May 2023 data review/Stunting rates facets.png",
+       device="png",
+       type="cairo",
+       height = 6.5,
+       width = 12)
+
+
+
+
+
 
 
 #'*_________ANC VISITS - PROVINCIAL*

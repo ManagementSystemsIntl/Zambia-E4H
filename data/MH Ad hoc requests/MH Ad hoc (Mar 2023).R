@@ -1569,8 +1569,45 @@ ggsave("viz/May 2023 data review/DPT 1st dose coverage under 1.png",
 
 
 
+#'*______NATIONAL VITAMIN A SUPPLEMENT COVERAGE*
 
+names(chldH)
+NatVitA <- chldH %>%
+  rename(vitSup = 14) %>%
+  
+  mutate(vitSupP = vitSup/100)
 
+#'*setting values of Vitamin A to 100 for all values >100*
+NatVitA <- NatVitA %>% 
+  dplyr::mutate(vitSup = ifelse(vitSup > 100, 100, vitSup)) %>% 
+  dplyr::mutate(vitSupP = vitSup/100)
+
+#'*To create legend, gather method for including a legend --*
+
+NatVitA <- gather(NatVitA, key = subpop , value = rate, c(vitSup))
+NatVitA$subpop <- factor(NatVitA$subpop, levels = unique(NatVitA$subpop)) # transform into factor
+levels(NatVitA$subpop)
+
+NatVitA_plt <- ggplot(NatVitA, aes(x = mnthyr, y = vitSupP, colour=usaid_blue )) +
+  geom_point(alpha=.5, size=.7) + 
+  geom_smooth(method = loess, size = .8, se=FALSE) +
+  scale_y_continuous(limits = c(0,.8),
+                     labels = percent,
+                     breaks = c(.1,.2,.3,.4,.5,.6,.7,.8,.9, 1)) +
+  scale_x_date(date_labels="%b %y",date_breaks="3 months") +
+  labs(x="", y="", caption="Data Source: HMIS", title="The Proportion of infants given Vitamin A supplement (6-11 months semester coverage)\n has been below 30% since 2019.") +
+  scale_color_manual(name ="",
+                     values = usaid_blue,
+                     labels = "Vitamin A supplement coverage (%)") + 
+  basem 
+
+NatVitA_plt
+
+ggsave("viz/May 2023 data review/National Vitamin A supp.png",
+       device="png",
+       type="cairo",
+       height = 6.5,
+       width = 12)
 
 
 
