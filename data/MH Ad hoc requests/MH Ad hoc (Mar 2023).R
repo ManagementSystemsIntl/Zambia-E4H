@@ -1678,8 +1678,8 @@ ggsave("viz/May 2023 data review/National EBF and 1hr BF.png",
 
 
 #'*___________CHILD STUNTING LEVELS*
+
 names(chldH)
-# view(chldH)
 chldstunt <- chldH %>%
   rename(csl = 16) %>%
   
@@ -1697,23 +1697,66 @@ chldstunt1$subpop <- factor(chldstunt1$subpop, levels = unique(chldstunt1$subpop
 levels(chldstunt1$subpop)
 
 stunt_plt <- ggplot(chldstunt1, aes(x = mnthyr, y = cslp, colour=usaid_blue )) +
-  geom_point(alpha=.4, size=1.9) + 
+  geom_point(alpha=.4, size=.7) + 
   #geom_line(size=1) +
   geom_smooth(method = loess, size = .8, se=FALSE) +
-  scale_y_continuous(limits = c(0,1),
+  scale_y_continuous(limits = c(0,.05),
                      labels = percent,
-                     breaks = c(.1,.2,.3,.4,.5,.6,.7,.8,.9, 1)) +
-  scale_x_date(date_labels="%b %y",date_breaks="4 months") +
-  labs(x="", y="", caption="Data Source: HMIS", title="The Stunting Rates in Under 5s at Facility have been below 2%") +
+                     breaks = c(.01,.02,.03,.04,.05)) +
+  scale_x_date(date_labels="%b %y",date_breaks="3 months") +
+  labs(x="", y="", caption="Data Source: HMIS", title="The Stunting Rates in Under 5s at Facility have been below 2% at National level") +
   scale_color_manual(name ="",
                      values = usaid_blue,
                      labels = "Stunting Rates") + 
   basem 
 stunt_plt
 
-ggsave("viz/Apr-Jun 2022/Child Health/National Stunting Levels PS23.png",
+ggsave("viz/May 2023 data review/National Stunting Levels.png",
        device="png",
        type="cairo",
-       height = 5.5,
-       width = 9)
+       height = 6.5,
+       width = 12)
+
+
+#'*___________CHILD DEWORMING RATES*
+
+names(chldH)
+chldDeworming <- chldH %>%
+  rename(chdeworm = 15) %>%
+  
+  mutate(chdewormP = chdeworm/100)
+
+#'*setting values of stunting to 100 for all values >100*
+chldDeworming <- chldDeworming %>% 
+  dplyr::mutate(chdeworm = ifelse(chdeworm > 100, 100, chdeworm)) %>% 
+  dplyr::mutate(chdewormP = chdeworm/100)
+
+#'*To create legend, gather method for including a legend --*
+
+chldDeworming <- gather(chldDeworming, key = subpop , value = rate, c(chdeworm))
+chldDeworming$subpop <- factor(chldDeworming$subpop, levels = unique(chldDeworming$subpop)) # transform into factor
+levels(chldDeworming$subpop)
+
+cd_plt <- ggplot(chldDeworming, aes(x = mnthyr, y = chdewormP, colour=usaid_blue )) +
+  geom_point(alpha=.4, size=.8) + 
+  #geom_line(size=1) +
+  geom_smooth(method = loess, size = .9, se=FALSE) +
+  scale_y_continuous(limits = c(0,.5),
+                     labels = percent,
+                     breaks = c(.1,.2,.3,.4,.5)) +
+  scale_x_date(date_labels="%b %y",date_breaks="3 months") +
+  labs(x="", y="", caption="Data Source: HMIS", title="Child Deworming Rates, 2019 - 2023") +
+  scale_color_manual(name ="",
+                     values = usaid_blue,
+                     labels = "Deworming Rate") + 
+  basem 
+cd_plt
+
+ggsave("viz/May 2023 data review/National Child deworming.png",
+       device="png",
+       type="cairo",
+       height = 6.5,
+       width = 12)
+
+
 
