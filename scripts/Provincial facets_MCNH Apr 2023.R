@@ -71,7 +71,7 @@ ggsave("viz/Apr-Jun 2022/Child Health/Breastfed within 1 hour of birth and EBF f
 
 #'*________1st and 2nd MEASLES VACCINE COVERAGE PROVINCIAL FACETED*
 
-mslsvac_prov <- read_xls("data/MC Health April 2023/Child Heath provincial level_monthly.xls")
+mslsvac_prov <- read_xls("data/May 2023 FHDR/Child Heath provincial level_monthly.xls")
 names(mslsvac_prov)
 mslsvac_prov
 mslsvac_prov  <- mslsvac_prov  %>%
@@ -99,7 +99,7 @@ mslsvac_prov <- mslsvac_prov %>%
   mutate(mslse1P = mslse1/100,
          mslse2P = mslse2/100)
 
-#'*set EBF & BREASTFEED 1HOUR to 100 for all values >100*
+#'*set Measles 1 & Measles 2 to 100 for all values >100*
 mslsvac_prov <- mslsvac_prov %>% 
   dplyr::mutate(mslse1 = ifelse(mslse1 > 100, 100, mslse1)) %>% 
   dplyr::mutate(mslse1P = mslse1/100)
@@ -127,16 +127,16 @@ msles_plt <- ggplot(mslsvac_prov, aes(x = mnthyr, y = rate, group = subpop, colo
 
 msles_plt
 
-ggsave("viz/Apr-Jun 2022/Child Health/1st and 2nd Doses Measles vaccine coverage faceted PS.png",
+ggsave("viz/May 2023 data review/Provincial Measles Vaccines.png",
        device="png",
        type="cairo",
        height = 6.5,
-       width = 11)
+       width = 12)
 
 
 #'*________FULLY IMMUNIZED PROVINCIAL FACETED*
 
-fulmunized_prov <- read_xls("data/MC Health April 2023/Child Heath provincial level_monthly.xls")
+fulmunized_prov <- read_xls("data/May 2023 FHDR/Child Heath provincial level_monthly.xls")
 names(fulmunized_prov)
 fulmunized_prov
 fulmunized_prov  <- fulmunized_prov  %>%
@@ -174,19 +174,19 @@ fulmunized_prov$subpop <- factor(fulmunized_prov$subpop, levels = unique(fulmuni
 levels(fulmunized_prov$subpop)
 
 fulmunized_plt <- ggplot(fulmunized_prov, aes(x = mnthyr, y = fiu1P, colour=usaid_blue )) +
-  geom_point(alpha=.4, size=1.5) + 
+  geom_point(alpha=.4, size=.7) + 
   #geom_line(size=1) +
   geom_smooth(method = loess, size = .8, se=FALSE) +
   scale_y_continuous(limits = c(0,1),
                      labels = percent,
                      breaks = c(.1,.2,.3,.4,.5,.6,.7,.8,.9, 1)) +
   # scale_x_date(date_labels="%b %y",date_breaks="4 months") +
-  labs(x="", y="", caption="Data Source: HMIS", title="Fully Immunized Coverage (%) Under 1 2019 - 2023") +
+  labs(x="", y="", caption="Data Source: HMIS", title="Fully Immunized Coverage (%) Under 1, 2019 - 2023") +
   facet_wrap(~prov, ncol=4) +
   faceted +
   scale_color_manual(name ="",
                      values = usaid_blue,
-                     labels = "Fully Immunized") + 
+                     labels = "Fully Immunized Coverage Under 1") + 
   basem 
 
 fulmunized_plt
@@ -208,10 +208,79 @@ fulmunized_plt
 # 
 # fulmunized_plt
 
-ggsave("viz/Apr-Jun 2022/Child Health/Fully Imunnized faceted PS.png",
+ggsave("viz/May 2023 data review/Fully Imunnized facets PS.png",
        device="png",
        type="cairo",
        height = 6.5,
-       width = 11)
+       width = 12)
 
+
+#'*_________ANC VISITS - PROVINCIAL*
+
+mat_prov <- read_xls("data/May 2023 FHDR/Reproductive Maternal Health_Provincial level monthly.xls")
+
+mat_prov
+mat_prov  <- mat_prov  %>%
+  mutate(month_chr = str_sub(periodname,
+                             start=1,
+                             end=nchar(periodname)-5),
+         month = factor(month_chr,
+                        levels=c("January","February","March","April","May","June","July","August","September","October","November","December")),
+         month_code = as.numeric(month), 
+         year = str_sub(periodname, 
+                        start=nchar(periodname)-4,
+                        end=nchar(periodname)),
+         monyr = paste(month_code, year, sep="-"),
+         mnthyr = my(monyr))
+
+sum(mat_prov$month_chr!=mat_prov$month) # expecting 0 if vars same
+
+
+#'* ___ANC coverage ----*
+
+mat_prov <- mat_prov %>%
+  rename(prov = 1,
+         ancc = 3,
+         anc1 = 4,
+         anc1u20 = 5) %>%
+  mutate(anccp = ancc/100,
+         anc1p = anc1/100,
+         anc1u20p = anc1u20/100)
+
+#'*set anccp to 100 for all values >100*
+mat_prov <- mat_prov %>% 
+  dplyr::mutate(ancc = ifelse(ancc > 100, 100, ancc)) %>% 
+  dplyr::mutate(anccp = ancc/100)
+
+#'*To create legend, gather method for including a legend --*
+
+mat_prov <- gather(mat_prov, key = subpop , value = rate, c(anccp, anc1p,anc1u20p))
+mat_prov$subpop <- factor(mat_prov$subpop, levels = unique(mat_prov$subpop)) # transform into factor
+levels(mat_prov$subpop)
+
+
+ggplot(mat_prov, aes(x = mnthyr, y = rate, group = subpop, colour = subpop)) +
+  geom_point(alpha=.6, size=.6) + 
+  #geom_line(size=1) +
+  geom_smooth(method = loess, size = .8, se=FALSE) +
+  scale_y_continuous(limits = c(0,1),
+                     labels = percent,
+                     breaks = c(.2,.4,.6,.8, 1)) +
+  # scale_x_date(date_labels="%b %Y",date_breaks="4 months") +
+  labs(x ="", y="", caption = "Data Source: HMIS") +labs(x ="", y="", caption = "Data Source: HMIS") +
+  facet_wrap(~prov, ncol=4) +
+  faceted +
+  ggtitle("Proportion of expected pregnancies receiving Antenatal Care (ANC), 2019 - 2023") +
+  scale_color_manual(name ="",
+                     values = usaid_palette,
+                     labels = c("1st ANC coverage (all trimesters)", "1st ANC Coverage (1st Trimester)", 
+                                "1st ANC visits in the 1st trimester: Women <20 yrs")
+  ) + 
+  base
+
+ggsave("viz/May 2023 data review/Provincial ANCs PS.png",
+       device="png",
+       type="cairo",
+       height = 6.5,
+       width = 12)
 

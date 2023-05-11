@@ -1284,10 +1284,14 @@ ggsave("viz/May 2023 data review/National Proportion of expected pregnancies rec
        height = 6.5,
        width = 12)
 
+
+
+
+
 #'*______________________Child Health INDICATORS*
 
 
-chldH <- read_xls("data/MC Health April 2023/Child Heath national level_monthly.xls")
+chldH <- read_xls("data/May 2023 FHDR/Child Heath national level_monthly.xls")
 chldH  <- chldH  %>%
   mutate(month_chr = str_sub(periodname,
                              start=1,
@@ -1310,7 +1314,7 @@ chldH  <- chldH  %>%
 
 # chldHq <- read_xls("data/Jan- Jun 2022/Child Health Data_National Level(Quarterly).xls")
 # chldHqp <- read_xls("data/Jan-Mar 2022/Child Health Data_Provincial Level(Quarterly).xls")
-chldH_prov <- read_xls("data/MC Health April 2023/Child Heath provincial level_monthly.xls")
+chldH_prov <- read_xls("data/May 2023 FHDR/Child Heath provincial level_monthly.xls")
 names(chldH_prov)
 # chldH_provpimpa <- chldH_prov %>%
 #   select(1,2,21)
@@ -1367,25 +1371,25 @@ levels(chldH$subpop)
 # view(chldH)
 
 msles_plt <- ggplot(chldH, aes(x = mnthyr, y = rate, group = subpop, colour = subpop)) +
-  geom_point(alpha=.6, size=.6) + 
+  geom_point(alpha=.5, size=.5) + 
   #geom_line(size=1) +
   geom_smooth(method = loess, size = .8, se=FALSE) +
   scale_y_continuous(limits = c(0,1),
                      labels = percent,
                      breaks = c(.1,.2,.3,.4,.5,.6,.7,.8,.9, 1)) +
-  scale_x_date(date_labels="%b %y",date_breaks="4 months") +
-  labs(x="", y="", caption="Data Source: HMIS", title="Coverage of the first measles vaccine dose has slightly decreased since June 2021, \nwhile the coverage the 2nd dose has slightly increased") +
+  scale_x_date(date_labels="%b %y",date_breaks="3 months") +
+  labs(x="", y="", caption="Data Source: HMIS", title="Coverage of the first and second measles vaccine doses had slightly slumped between January 2019 and July 2020, \nbut has since shown a steady increase / improvement.") +
   scale_color_manual(name ="",
                      values = usaid_palette,
                      labels = c("Measles under 1", "Measles under 2")
   ) + 
   basem
 msles_plt
-ggsave("viz/Apr-Jun 2022/Child Health/Proportion of infacts receiving Measles Vaccines 1and2.png",
+ggsave("viz/May 2023 data review/Proportion of infants receiving Measles Vaccines 1and2.png",
        device="png",
        type="cairo",
-       height = 5.5,
-       width = 9)
+       height = 6.5,
+       width = 12)
 
 
 #'* MEASLES 1 & 2 SEPERATED BY PROVINCES* ----
@@ -1422,8 +1426,8 @@ mslesProv_plt <- ggplot(chldH_prov, aes(x = mnthyr, y = rate, group = subpop, co
   scale_y_continuous(limits = c(0,1),
                      labels = percent,
                      breaks = c(.1,.2,.3,.4,.5,.6,.7,.8,.9, 1)) +
-  scale_x_date(date_labels="%b %y",date_breaks="4 months") +
-  labs(x="", y="", caption="Data Source: HMIS", title="Coverage of the first and second measles vaccines") +
+  scale_x_date(date_labels="%b %y",date_breaks="3 months") +
+  labs(x="", y="", caption="Data Source: HMIS", title="Coverage of the first and second measles vaccines, 2019 - 2023") +
   scale_color_manual(name ="",
                      values = usaid_palette,
                      labels = c("Measles under 1", "Measles under 2")
@@ -1431,7 +1435,7 @@ mslesProv_plt <- ggplot(chldH_prov, aes(x = mnthyr, y = rate, group = subpop, co
   basem
 mslesProv_plt
 
-ggsave("viz/Apr-Jun 2022/Child Health/Provincial Proportion of infants receiving Measles Vaccines faceted PS.png",
+ggsave("viz/May 2023 data review/Provincial Measles Vaccines.png",
        device="png",
        type="cairo",
        height = 6.5,
@@ -1459,26 +1463,26 @@ fullyimz1$subpop <- factor(fullyimz1$subpop, levels = unique(fullyimz1$subpop)) 
 levels(fullyimz1$subpop)
 
 full_plt <- ggplot(fullyimz1, aes(x = mnthyr, y = ficp, colour=usaid_blue )) +
-  geom_point(alpha=.4, size=1.9) + 
+  geom_point(alpha=.4, size=.7) + 
   #geom_line(size=1) +
   geom_smooth(method = loess, size = .8, se=FALSE) +
   scale_y_continuous(limits = c(0,1),
                      labels = percent,
                      breaks = c(.1,.2,.3,.4,.5,.6,.7,.8,.9, 1)) +
-  scale_x_date(date_labels="%b %y",date_breaks="4 months") +
-  labs(x="", y="", caption="Data Source: HMIS", title="The proportion of infants that are fully immunized has been constant in the \npast years, but we are seeing a slight decline begining late 2022") +
+  scale_x_date(date_labels="%b %y",date_breaks="3 months") +
+  labs(x="", y="", caption="Data Source: HMIS", title="The proportion of infants that are fully immunized has been constant in the \npast years, but we are seeing a downward trend begining April 2022") +
   scale_color_manual(name ="",
                      values = usaid_blue,
-                     labels = "Fully Immunized") + 
+                     labels = "Fully Immunized Coverage Under 1") + 
   basem 
   
 full_plt
 
-ggsave("viz/Apr-Jun 2022/Child Health/Fully immunised coverage PS23.png",
+ggsave("viz/May 2023 data review/Fully immunised coverage under 1.png",
        device="png",
        type="cairo",
-       height = 5.5,
-       width = 9)
+       height = 6.5,
+       width = 12)
 
 
 #'* EBF @6MONTHS & INITIATION ON BREASTMILK WITHIN ONE HOUR OF BIRTH*
@@ -1525,7 +1529,7 @@ brstfeeding_plt <- ggplot(breastfeed, aes(x = mnthyr, y = rate, group = subpop, 
   labs(x="", y="", caption="Data Source: HMIS", title="Proportion of infants breastfed within 1 hour of birth has slightly increased \nin the last years, reaching 90% in June 2022") +
   scale_color_manual(name ="",
                      values = usaid_palette,
-                     labels = c("Initiation on breastmilk with one hour of birth", "Infants on EBF at 6 months")) + basey
+                     labels = c("Initiation on breastmilk within one hour of birth", "Infants on EBF at 6 months")) + basey
 #     basey +
 #     annotate(geom = "text", x=trgt1, y = 0.79, family="Gill Sans Mt", colour = usaid_red, label=substitute("Targets Breastfeeding within 1 hour
 # of birth"), size= 4,  hjust =0, vjust=-4.5) +
