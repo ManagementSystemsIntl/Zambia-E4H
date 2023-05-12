@@ -456,8 +456,130 @@ ggsave("viz/May 2023 data review/Stunting rates facets.png",
        width = 12)
 
 
+
+
+
+#'*______PROVINCIAL WASTING RATES in Under 5s*
+
+wasting_prov <- read_xls("data/May 2023 FHDR/Child Heath provincial level_monthly.xls")
+names(wasting_prov)
+wasting_prov
+wasting_prov  <- wasting_prov  %>%
+  mutate(month_chr = str_sub(periodname,
+                             start=1,
+                             end=nchar(periodname)-5),
+         month = factor(month_chr,
+                        levels=c("January","February","March","April","May","June","July","August","September","October","November","December")),
+         month_code = as.numeric(month), 
+         year = str_sub(periodname, 
+                        start=nchar(periodname)-4,
+                        end=nchar(periodname)),
+         monyr = paste(month_code, year, sep="-"),
+         mnthyr = my(monyr))
+
+names(wasting_prov)
+wasting_prov <- wasting_prov %>%
+  rename(prov=1,
+         waste.rate=17) %>%
+  mutate(waste.rateP = waste.rate/100)
+
+#'*set Vitamin A supplement to 100 for all values >100*
+wasting_prov <- wasting_prov %>% 
+  dplyr::mutate(waste.rate = ifelse(waste.rate > 100, 100, waste.rate)) %>% 
+  dplyr::mutate(waste.rateP = waste.rate/100)
+
+#'*To create legend, gather method for including a legend --*
+
+wasting_prov <- gather(wasting_prov, key = subpop , value = rate, c(waste.rate))
+wasting_prov$subpop <- factor(wasting_prov$subpop, levels = unique(wasting_prov$subpop)) # transform into factor
+levels(wasting_prov$subpop)
+
+waste_prov_plt <- ggplot(wasting_prov, aes(x = mnthyr, y = waste.rateP, colour=usaid_blue )) +
+  geom_point(alpha=.4, size=.7) + 
+  #geom_line(size=1) +
+  geom_smooth(method = loess, size = .8, se=FALSE) +
+  scale_y_continuous(limits = c(0,.05),
+                     labels = percent,
+                     breaks = c(.01,.02,.03,.04,.05)) +
+  
+  labs(x="", y="", caption="Data Source: HMIS", title="Wasting rate (%) in under 5s at facility, 2019 - 2023") +
+  facet_wrap(~prov, ncol=4) +
+  faceted +
+  scale_color_manual(name ="",
+                     values = usaid_blue,
+                     labels = "Wasting Rates") + 
+  basem 
+
+waste_prov_plt
+
+ggsave("viz/May 2023 data review/wasting rates facets.png",
+       device="png",
+       type="cairo",
+       height = 6.5,
+       width = 12)
+
+
+
+
+
 #'*______PROVINCIAL CHILD DEWORMING RATES*
 
+deworming_prov <- read_xls("data/May 2023 FHDR/Child Heath provincial level_monthly.xls")
+names(deworming_prov)
+deworming_prov
+deworming_prov  <- deworming_prov  %>%
+  mutate(month_chr = str_sub(periodname,
+                             start=1,
+                             end=nchar(periodname)-5),
+         month = factor(month_chr,
+                        levels=c("January","February","March","April","May","June","July","August","September","October","November","December")),
+         month_code = as.numeric(month), 
+         year = str_sub(periodname, 
+                        start=nchar(periodname)-4,
+                        end=nchar(periodname)),
+         monyr = paste(month_code, year, sep="-"),
+         mnthyr = my(monyr))
+
+names(deworming_prov)
+deworming_prov <- deworming_prov %>%
+  rename(prov=1,
+         deworm.rate=15) %>%
+  mutate(deworm.rateP = deworm.rate/100)
+
+#'*set deworming to 100 for all values >100*
+deworming_prov <- deworming_prov %>% 
+  dplyr::mutate(deworm.rate = ifelse(deworm.rate > 100, 100, deworm.rate)) %>% 
+  dplyr::mutate(deworm.rateP = deworm.rate/100)
+
+#'*To create legend, gather method for including a legend --*
+
+deworming_prov <- gather(deworming_prov, key = subpop , value = rate, c(deworm.rate))
+deworming_prov$subpop <- factor(deworming_prov$subpop, levels = unique(deworming_prov$subpop)) # transform into factor
+levels(deworming_prov$subpop)
+
+dw_prov_plt <- ggplot(deworming_prov, aes(x = mnthyr, y = deworm.rateP, colour=usaid_blue )) +
+  geom_point(alpha=.4, size=.7) + 
+  #geom_line(size=1) +
+  geom_smooth(method = loess, size = .8, se=FALSE) +
+  scale_y_continuous(limits = c(0,.5),
+                     labels = percent,
+                     breaks = c(.1,.2,.3,.4,.5)) +
+  
+  labs(x="", y="", caption="Data Source: HMIS", title="Child Deworming Rate, 2019 - 2023") +
+  facet_wrap(~prov, ncol=4) +
+  faceted +
+  scale_color_manual(name ="",
+                     values = usaid_blue,
+                     labels = "Child Deworming Rate") + 
+  basem 
+
+dw_prov_plt
+
+ggsave("viz/May 2023 data review/Deworming rates facets.png",
+       device="png",
+       type="cairo",
+       height = 6.5,
+       width = 12)
 
 
 

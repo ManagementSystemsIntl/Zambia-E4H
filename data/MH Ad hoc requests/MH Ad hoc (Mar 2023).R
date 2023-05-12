@@ -1718,6 +1718,8 @@ ggsave("viz/May 2023 data review/National Stunting Levels.png",
        width = 12)
 
 
+
+
 #'*___________CHILD DEWORMING RATES*
 
 names(chldH)
@@ -1757,6 +1759,56 @@ ggsave("viz/May 2023 data review/National Child deworming.png",
        type="cairo",
        height = 6.5,
        width = 12)
+
+
+
+
+#'*___________WASTING RATES IN UNDER 5s*
+
+names(chldH)
+chldwaste <- chldH %>%
+  rename(cwr = 17) %>%
+  
+  mutate(cwrp = cwr/100)
+
+#'*setting values of stunting to 100 for all values >100*
+chldwaste1 <- chldwaste %>% 
+  dplyr::mutate(cwr = ifelse(cwr > 100, 100, cwr)) %>% 
+  dplyr::mutate(cwrp = cwr/100)
+
+#'*To create legend, gather method for including a legend --*
+
+chldwaste1 <- gather(chldwaste1, key = subpop , value = rate, c(cwr))
+chldwaste1$subpop <- factor(chldwaste1$subpop, levels = unique(chldwaste1$subpop)) # transform into factor
+levels(chldwaste1$subpop)
+
+waste_plt <- ggplot(chldwaste1, aes(x = mnthyr, y = cwrp, colour=usaid_blue )) +
+  geom_point(alpha=.4, size=.7) + 
+  #geom_line(size=1) +
+  geom_smooth(method = loess, size = .8, se=FALSE) +
+  scale_y_continuous(limits = c(0,.05),
+                     labels = percent,
+                     breaks = c(.01,.02,.03,.04,.05)) +
+  scale_x_date(date_labels="%b %y",date_breaks="3 months") +
+  labs(x="", y="", caption="Data Source: HMIS", title="The Wasting Rates in Under 5s at Facility have been below 1% at National level") +
+  scale_color_manual(name ="",
+                     values = usaid_blue,
+                     labels = "Wasting Rates (%)") + 
+  basem 
+waste_plt
+
+ggsave("viz/May 2023 data review/National wasting rates.png",
+       device="png",
+       type="cairo",
+       height = 6.5,
+       width = 12)
+
+
+
+
+
+
+
 
 
 
