@@ -436,7 +436,7 @@ ggsave("viz/prematurity Apr 2023/q1 perinatal_mortality_rate.png",
        device="png",
        type="cairo",
        height = 6.5,
-       width = 15)
+       width = 12.5)
 
 #'*REDRAW FOR MATERNAL MORTALITY RATE*
 
@@ -478,7 +478,7 @@ zam.boundary1 <- zam.boundary %>%
 zam.boundary1
 
 
-map_colors <- carto_pal(name = "Burg")
+map_colors <- carto_pal(name = "Teal")
 
 
 maternal.mort4 <- maternal.mort3 %>%
@@ -500,9 +500,9 @@ ggplot(maternal.mort5, aes(geometry = geometry, fill = rate)) +
   geom_sf_text(aes(label = prov), size = 3) +
   facet_wrap(~yr) +
   scale_fill_carto_c(name="Proportion of\n Mortality Rate"
-                     , palette = "Burg") +
+                     , palette = "#") +
   labs(x="", y="", caption = "Data Source: HMIS",
-       title = "Maternal Mortality Rates, 2019 - 2023"
+       title = "Maternal Mortality Ratio per 100, 000 Deliveries, 2019 - 2023"
        , subtitle = "Darker colors represent a higher proportion of mortality rate") + #for faceted and xy labels include x="Longitude", y="Latitude", +faceted
   theme_void() +
   theme(plot.title.position = "plot",
@@ -528,7 +528,7 @@ ggsave("viz/prematurity Apr 2023/Maternal_mortality_rate_map.png",
        device="png",
        type="cairo",
        height = 6.5,
-       width = 15)
+       width = 12.5)
 
 
 
@@ -686,8 +686,8 @@ ggplot(frsh.stillmacerbirth, aes(x = mth, y = rate, group = subRt, fill = subRt)
 ggsave("viz/prematurity Apr 2023/stillbirths.png",
        device="png",
        type="cairo",
-       height = 5.0,
-       width = 10)
+       height = 6.5,
+       width = 12)
 
 
 #'*Causes Perinatal Deaths*
