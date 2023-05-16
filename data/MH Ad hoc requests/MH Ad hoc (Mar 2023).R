@@ -532,7 +532,7 @@ ggsave("C:/Users/PIMPA.SAWULU/Desktop/R project doc_E4H/E4H-Zambia/graphs/Provin
 
 #'*COVERAGE OF MODERN FAMILY PLANNING ADOPTION*
 
-fam <- read_xls("data/MC Health April 2023/Family Planning National_monthly.xls")
+fam <- read_xls("data/May 2023 FHDR/Family Planning data_National level monthly.xls")
 fam  <- fam  %>%
   mutate(month_chr = str_sub(periodname,
                              start=1,
@@ -548,13 +548,9 @@ fam  <- fam  %>%
 
 sum(fam$month_chr!=fam$month) # expecting 0 if vars same
 
-# pnctrgts <- read_xls("data/Jan- Jun 2022/PNC Targets.xls")
-# Start <- as.Date(NULL)
-# End <- as.Date(NULL)
 
 
-
-fam_prov <- read_xls("data/MC Health April 2023/Family Planning Provincial_monthly.xls")
+fam_prov <- read_xls("data/May 2023 FHDR/Family Planning data_Provincial level monthly.xls")
 names(fam_prov)
 fam_prov
 fam_prov  <- fam_prov  %>%
@@ -590,15 +586,15 @@ crvg_plt <- ggplot(fam, aes(x=mnthyr, y=cvrg_fp, colour=usaid_blue)) +
   scale_y_continuous(limits = c(0,.8),
                      labels = percent,
                      breaks = c(.1,.2,.3,.4,.5,.6,.7,.8)) +
-  scale_x_date(date_labels="%b %y",date_breaks="4 months") +
-  labs(x="", y="", caption="Data Source: HMIS", title="Coverage of modern family planning use among women of reproductive \nage has been increasing since 2019") +
+  scale_x_date(date_labels="%b %y",date_breaks="3 months") +
+  labs(x="", y="", caption="Data Source: HMIS", title="Coverage of Modern Family Planning use among women of reproductive age has \nbeen on an upward trajectory since 2019 and improved to above 60% by July 2021") +
   scale_color_manual(name ="",
                      values = usaid_blue,
                      labels ="Coverage of modern family planning adoption") + 
   baseX
 
 crvg_plt
-ggsave("viz/Apr-Jun 2022/Family Planning/Coverage of modern family planning adoption smooth PS.png",
+ggsave("viz/May 2023 data review/Coverage of modern family planning adoption.png",
        device="png",
        type="cairo",
        height = 6.5,
@@ -621,16 +617,66 @@ ggplot(fam_prov, aes(x=mnthyr, y=cvrg_fp)) +
                      labels = percent,
                      breaks = c(.2,.4,.6,.8,1)) +
   labs(x ="", y="", caption = "Data Source: HMIS") +labs(x ="", y="", caption = "Data Source: HMIS") +
-  ggtitle("Provincial Coverage of modern family planning utilization, 2019-2023") +
+  ggtitle("Provincial Coverage of Modern Family Planning utilization, 2019 - 2023") +
   facet_wrap(~prov, ncol=4) +
   faceted +
   scale_color_manual(values=usaid_blue) + basey
 
-ggsave("viz/Apr-Jun 2022/Family Planning/Coverage faceted PS.png",
+ggsave("viz/May 2023 data review/FP Coverage faceted.png",
        device="png",
        type="cairo",
        height = 6.5,
        width = 11)
+
+
+
+#'*WOMEN OF REPRODUCTIVE AGE VISITED BY CHA's*
+names(fam)
+fam <- fam %>%
+  rename(wmn.vstd=3)
+
+ch_plt <- ggplot(fam, aes(x=mnthyr, y=wmn.vstd, colour=usaid_blue)) + 
+  geom_point(alpha=.6, size=1.5) + 
+  #geom_line(size=1) +
+  geom_smooth(method = loess, size = .8, se=FALSE) +
+  scale_y_continuous(labels=comma) +
+  scale_x_date(date_labels="%b %y",date_breaks="3 months") +
+  labs(x="", y="", caption="Data Source: HMIS", title="Number of Women in reproductive age visted by CHA/CBV had slumped begining October 2020, \nbut has since shown an improvement starting June 2022.") +
+  scale_color_manual(name ="",
+                     values = usaid_blue,
+                     labels ="Women of Reproductive age visted by CHA") + 
+  basey
+
+ch_plt
+ggsave("viz/May 2023 data review/Women of reproductive age visted by CHA.png",
+       device="png",
+       type="cairo",
+       height = 6.5,
+       width = 11)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 #'*________1st ANC COVERAGE 1ST TRIMESTER*
 
