@@ -718,3 +718,44 @@ ggsave("viz/May 2023 data review/Accessing LARCS Facets.png",
        height = 6.5,
        width = 12)
 
+
+
+
+#'*PERCENTAGE OF DISCONTINUNING LARC*
+names(fam_prov)
+
+larc <- fam_prov %>%
+  rename(iucd.inserted = 11,
+         implant.inserted = 12,
+         iucd.removed = 8,
+         implant.removed = 9
+  ) %>%
+  
+  mutate(larc.dis.p = (iucd.removed + implant.removed) / (iucd.inserted + implant.inserted))
+
+
+larc.dis.p_plt <- ggplot(larc, aes(x=mnthyr, y=larc.dis.p)) + 
+  geom_point(color= usaid_blue, alpha=.6, size=1) + 
+  geom_smooth(method =loess, color= usaid_blue, se=F, size=1.1, alpha=.8) +
+  #scale_x_date(date_labels="%b %y",date_breaks="3 months") +
+  facet_wrap(~prov, ncol=4) +
+  faceted +
+  scale_y_continuous(limits=c(0,.5),
+                     labels=percent,
+                     breaks = c(.1,.2,.3,.4,.5)) +
+  labs(x="",
+       y="",
+       caption="Data Source: HMIS",
+       title="Percentage of clients discontinuing LARC begining mid-2021, show a sharp increase in all \nthe provinces except Luapula and  Western provinces.") + 
+  baseX
+
+larc.dis.p_plt
+
+ggsave("viz/May 2023 data review/Discontinuing LARCS Facets.png",
+       device="png",
+       type="cairo",
+       height = 6.5,
+       width = 11)
+
+
+
