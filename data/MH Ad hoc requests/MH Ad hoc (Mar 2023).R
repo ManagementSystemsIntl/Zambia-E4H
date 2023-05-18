@@ -655,6 +655,191 @@ ggsave("viz/May 2023 data review/Women of reproductive age visted by CHA.png",
        width = 11)
 
 
+#'*CLIENTS ACCESSING LARC*
+
+names(fam)
+
+larc <- fam %>%
+  rename(iucd.inserted = 11,
+         implant.inserted = 12
+  ) %>%
+  
+  mutate(larc.ab = iucd.inserted + 
+           implant.inserted)
+
+lrc_plt <- ggplot(larc, aes(x=mnthyr, y=larc.ab)) + 
+  geom_point(color= usaid_blue, alpha=.6, size=1) + 
+  geom_smooth(method = loess,color= usaid_blue, se=F, size=1.1, alpha=.8) +
+  scale_x_date(date_labels="%b %y",date_breaks="3 months") +
+  scale_y_continuous(labels=comma,
+                     limits=c(0, 40000),
+                     breaks = c(5000, 10000, 15000, 20000, 25000, 30000, 35000, 40000)) +
+  labs(x="",
+       y="",
+       caption="Data Source: HMIS",
+       title="Number of clients accessing LARCs (implants and IUDs) had improved since 2019, \nthough showing a downward trend from October 2021.") + 
+  baseX
+
+lrc_plt
+
+ggsave("viz/May 2023 data review/Accessing LARCS.png",
+       device="png",
+       type="cairo",
+       height = 6.5,
+       width = 11)
+
+
+
+#'*PERCENTAGE OF DISCONTINUNING LARC*
+names(fam)
+
+larc <- fam %>%
+  rename(iucd.inserted = 11,
+         implant.inserted = 12,
+         iucd.removed = 8,
+         implant.removed = 9
+  ) %>%
+  
+  mutate(larc.dis.p = (iucd.removed + implant.removed) / (iucd.inserted + implant.inserted))
+
+
+larc.dis.p_plt <- ggplot(larc, aes(x=mnthyr, y=larc.dis.p)) + 
+  geom_point(color= usaid_blue, alpha=.6, size=1) + 
+  geom_smooth(method =loess, color= usaid_blue, se=F, size=1.1, alpha=.8) +
+  scale_x_date(date_labels="%b %y",date_breaks="3 months") +
+  scale_y_continuous(limits=c(0,.5),
+                     labels=percent,
+                     breaks = c(.1,.2,.3,.4,.5)) +
+  labs(x="",
+       y="",
+       caption="Data Source: HMIS",
+       title="Percentage of clients discontinuing LARC decreased from 2019 to mid-2021, and has since increased.") + 
+  baseX
+
+larc.dis.p_plt
+
+ggsave("viz/May 2023 data review/Discontinuing LARCS.png",
+       device="png",
+       type="cairo",
+       height = 6.5,
+       width = 11)
+
+
+
+
+#'*MODERN FP METHOD: ALL METHODS SHORT & LONG-ACTING METHODS*
+
+###Medroxyprogesterone injection DMPA-IM
+
+names(fam)
+# view(fam)
+iud <- fam %>%
+  select(40:43,56) %>%
+  na.omit() 
+
+iud
+colnames(iud)
+iud1 <- iud[, c(1,2,3,4,5)]
+colnames(iud1)
+iud1
+
+iud1
+
+iud2 <- iud1 %>%
+  select(5,1,2,3,4) %>%
+  na.omit()
+names(iud2)
+
+
+iud3 <- melt(iud2, id = "mnthyr")
+
+medim <- ggplot(iud3,aes(x=mnthyr, y=value, color=variable))+
+  geom_point(alpha=.6, size=1.4) +
+  geom_smooth(method =loess,se=F, size=1.1, alpha=.8) +
+  scale_x_date(date_labels="%b %y",date_breaks="2 months") +
+  scale_y_continuous(labels=comma) +
+  labs(x="",
+       y="",
+       title="Medroxyprogesterone injection DMPA-IM utilisation has been constant \nsince May 2021 except for the last quarter") +
+  basey + scale_color_manual(name ="",
+                             values =c(light_blue,light_grey,usaid_blue, usaid_red),
+                             labels = c("under 15yrs","15-19yrs","20-24yrs","above 25yrs"))
+medim
+
+
+ggsave("viz/May 2023 data review/Medroxyprogesterone injection DMPA-IM.png",
+       device="png",
+       type="cairo",
+       height = 6.5,
+       width = 11)
+
+
+
+
+
+#'*MODERN FP METHOD: ALL METHODS SHORT & LONG-ACTING METHODS*
+
+###Medroxyprogesterone injection DMPA-IM
+
+names(fam)
+# view(fam)
+iud <- fam %>%
+  select(40:43,56) %>%
+  na.omit() 
+
+iud
+colnames(iud)
+iud1 <- iud[, c(1,2,3,4,5)]
+colnames(iud1)
+iud1
+
+iud1
+
+iud2 <- iud1 %>%
+  select(5,1,2,3,4) %>%
+  na.omit()
+names(iud2)
+
+
+iud3 <- melt(iud2, id = "mnthyr")
+
+medim <- ggplot(iud3,aes(x=mnthyr, y=value, fill=variable))+
+  #medim <- ggplot(iud3,aes(x=mnthyr, y=value, color=variable))+
+  #geom_point(alpha=.6, size=1.4) +
+  geom_bar(stat ="identity")
+# geom_smooth(method =loess,se=F, size=1.1, alpha=.8) +
+# scale_x_date(date_labels="%b %y",date_breaks="2 months") +
+#scale_y_continuous(labels=comma) +
+labs(x="",
+     y="",
+     title="Medroxyprogesterone injection DMPA-IM utilisation has been constant \nsince May 2021 except for the last quarter") +
+  basey + scale_color_manual(name ="",
+                             values =c(light_blue,light_grey,usaid_blue, usaid_red),
+                             labels = c("under 15yrs","15-19yrs","20-24yrs","above 25yrs"))
+medim
+
+
+ggsave("viz/May 2023 data review/Medroxyprogesterone injection DMPA-IM.png",
+       device="png",
+       type="cairo",
+       height = 6.5,
+       width = 11)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

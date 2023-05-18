@@ -36,33 +36,23 @@ matprv3 <- matprv1 %>%
 
 matprv3
 
-matprv4 <- gather(matprv3, key = variable , value = rate, c(mr, hrr))
-matprv4$variable <- factor(matprv4$variable, levels = unique(matprv4$variable)) # transform into factor
-levels(matprv4$variable)
-
-matprv4
-
-#write_xlsx(matprv3,"C:/Users/SNyimbili/OneDrive - Right to Care/Documents/RTCZ/matprv3.xlsx")
-
-
-mt_plt <- ggplot(matprv4, aes(x = yr, y = rate, group = variable, colour = variable)) +
-  geom_point(alpha=.9, size=1.3) +
-  stat_smooth(method = "loess", size=.9, se=T) + facet_wrap(~prov) +
+matprv3
+ggplot(matprv3, aes(x=yr, y=mr)) +
+  geom_col(stat="identity", position=position_dodge(), fill=usaid_blue) +
+  geom_line(aes(x = yr, y = hrr*2.2, color=usaid_red)) +
+  # geom_point(aes(aes(x= yr, y= hrr*2.2),color=usaid_red, size=3)) +
+  facet_wrap(~prov) +
   faceted +
-  scale_y_continuous(sec.axis = sec_axis(~ .*0.005, labels = scales::label_percent())) +
-  xlab("") + 
-  ylab("") +
-  ggtitle("Maternal mortality Ratio and reporting rates, 2019-2022") +
+  scale_y_continuous(sec.axis = sec_axis(trans = ~ .*0.0045,name = "Reporting rate", labels = scales::label_percent())) +
+  labs(x="", y="Mortality Ratio", caption="Data Source: HMIS",title="Maternal mortality Ratio and reporting rates, 2019-2022") +
   scale_color_manual(name ="",
-                     values = usaid_palette,
-                     labels = c("Facility Maternal mortality ratio per 100 000 deliveries", "HIA2 Reporting rate (%)")
-  ) + basem
+                     values = usaid_red,
+                     labels = c("HIA2 Reporting rate (%)")) +
+  basem + geom_label(aes( x= yr, y = hrr*2.2,label=hrr), fontface = "bold", hjust=0.9, vjust = 0.8)
 
-mt_plt
-ggsave("Viz/Maternal mortality Ratio and reporting rates.png",
+ggsave("viz/May 2023 data review/Maternal MR and HIA2 RR facets.png",
        device="png",
        type="cairo",
        height = 7.5,
-       width=14)
-
+       width = 14)
 

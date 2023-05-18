@@ -754,6 +754,46 @@ colnames(fam)
              height = 5.5,
              width = 9)
       
+      
+      
+      names(fam)
+      # view(fam)
+      iucd <- fam %>%
+        select(44:47,56) %>%
+        na.omit() 
+      
+      iucd
+      colnames(iucd)
+      iucd1 <- iucd[, c(4,1,2,3,5)]
+      colnames(iucd1)
+      iucd1
+      
+      iucd1
+      
+      iucd2 <- iucd1 %>%
+        select(5,3,2,1,4) %>%
+        na.omit()
+      names(iud2)
+      
+      
+      iucd3 <- melt(iucd2, id = "mnthyr")
+      medim <- ggplot(iucd3,aes(x=mnthyr, y=value, color=variable))+
+        geom_point(alpha=.6, size=1.4) +
+        geom_smooth(method =loess,se=F, size=1.1, alpha=.8) +
+        scale_x_date(date_labels="%b %y",date_breaks="2 months") +
+        scale_y_continuous(labels=comma) +
+        labs(x="",
+             y="",
+             title="DMPA-SC utilization has increased steadily in the last quarter, \nexcept among women aged 15-19 years, \nwhose utilization has been constant since July 2021") +
+        basey + scale_color_manual(name ="",
+                                   values =c(light_blue,light_grey,usaid_blue, usaid_red),
+                                   labels = c("20-24yrs","15-19yrs","under 15yrs","abover 25yrs"))
+      
+      medim
+      
+      
+      
+      
 #'*Modern FPS*
 
       names(mdrn22)
@@ -771,7 +811,7 @@ colnames(fam)
       mdrn1
       
       medim <- ggplot(mdrn1,aes(x=mnthyr, y=value, fill=variable)) +
-        geom_bar(stat = "identity", position = "dodge", coluor=c(light_blue, usaid_red, usaid_blue, usaid_red)) +
+        geom_bar(stat = "identity", position = "dodge", color=c(light_blue, usaid_red, usaid_blue, usaid_red)) +
         scale_fill_manual(name ="",
                            values =c(zamOrange, light_blue,usaid_red,usaid_blue)) +
         scale_y_continuous(labels=comma) + basey +

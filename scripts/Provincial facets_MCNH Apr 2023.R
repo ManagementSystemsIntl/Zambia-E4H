@@ -759,3 +759,96 @@ ggsave("viz/May 2023 data review/Discontinuing LARCS Facets.png",
 
 
 
+mat_prov <- read_xls("data/May 2023 FHDR/Reproductive Maternal Health_Provincial level monthly.xls")
+names(fam_prov)
+fam_prov <- fam_prov %>%
+  rename(wmn.vstd=3)
+
+chavst_plt <- ggplot(fam_prov, aes(x=mnthyr, y=wmn.vstd, colour=usaid_blue)) + 
+  #geom_bar(stat="identity") +
+  geom_point(alpha=.6, size=.7) +
+  geom_smooth(method = loess, size = .8, se=FALSE) +
+  scale_y_continuous(labels=comma) +
+  labs(x="", y="", caption="Data Source: HMIS", title="Number of Women in reproductive age visited by CHA.") +
+  facet_wrap(~prov, ncol=4) +
+  faceted +
+  scale_color_manual(name ="",
+                     values = usaid_blue,
+                     labels ="Women of Reproductive age visited by CHA") +  
+  base
+
+chavst_plt
+ggsave("viz/May 2023 data review/Women of reproductive age visited by CHA.png",
+       device="png",
+       type="cairo",
+       height = 6.5,
+       width = 11)
+
+
+
+#'*_____PROVINCIAL FP METHODS -TYPE DISAGGS*
+
+fpmethod_prov <- read_xls("data/May 2023 FHDR/IUCD_Implant_Injectables_Provincial monthly.xls")
+fpmethod_prov  <- fpmethod_prov  %>%
+  mutate(month_chr = str_sub(periodname,
+                             start=1,
+                             end=nchar(periodname)-5),
+         month = factor(month_chr,
+                        levels=c("January","February","March","April","May","June","July","August","September","October","November","December")),
+         month_code = as.numeric(month), 
+         year = str_sub(periodname, 
+                        start=nchar(periodname)-4,
+                        end=nchar(periodname)),
+         monyr = paste(month_code, year, sep="-"),
+         mnthyr = my(monyr))
+
+sum(fpmethod_prov$month_chr!=fpmethod_prov$month) # expecting 0 if vars same
+
+names(fpmethod_prov)
+fpmethod_prov1 <- fpmethod_prov %>%
+  select(1:5,11) %>%
+  rename(prov=1)
+  #na.omit() 
+
+fpmethod_prov1
+colnames(fpmethod_prov1)
+
+fpmethod_prov1
+
+fpmethod_prov2 <- fpmethod_prov1 %>%
+  select(1,3,4,5,6) %>%
+  na.omit()
+  names(fpmethod_prov2)
+
+#fpmethod_prov3 <- melt(fpmethod_prov2, id = "mnthyr")
+
+method_prov_plt <- ggplot(fpmethod_prov2, aes(x=mnthyr, y=value, color=variable))+
+  geom_point(alpha=.6, size=.6) +
+  geom_smooth(method =loess,se=F, size=.9, alpha=.8) +
+  #scale_x_date(date_labels="%b %y",date_breaks="3 months") +
+  scale_y_continuous(labels=comma) +
+  labs(x="",
+       y="",
+       caption="Data Source: HMIS",
+       title="Family Planning Methods and their usage/consumption, 2019 - 2023") +
+  facet_wrap(~prov, ncol=4) +
+  faceted +
+  basey + scale_color_manual(name ="",
+                             values =c(light_blue,light_grey,usaid_blue),
+                             labels = c("IUCDs","Implants","Injectables"))
+method_prov_plt
+
+
+ggsave("viz/May 2023 data review/Provincial Family planning methods facets.png",
+       device="png",
+       type="cairo",
+       height = 6.5,
+       width = 11)
+
+
+#'*__Relook at the code above!!!*'
+
+
+
+
+
