@@ -777,14 +777,11 @@ ggsave("viz/May 2023 data review/Medroxyprogesterone injection DMPA-IM.png",
 
 
 
-#'*MODERN FP METHOD: ALL METHODS SHORT & LONG-ACTING METHODS*
-
-###Medroxyprogesterone injection DMPA-IM
+#'*_________________MODERN FP METHODS*
 
 names(fam)
-# view(fam)
 iud <- fam %>%
-  select(40:43,56) %>%
+  select(11:12,56) %>%
   na.omit() 
 
 iud
@@ -804,12 +801,7 @@ names(iud2)
 iud3 <- melt(iud2, id = "mnthyr")
 
 medim <- ggplot(iud3,aes(x=mnthyr, y=value, fill=variable))+
-  #medim <- ggplot(iud3,aes(x=mnthyr, y=value, color=variable))+
-  #geom_point(alpha=.6, size=1.4) +
   geom_bar(stat ="identity")
-# geom_smooth(method =loess,se=F, size=1.1, alpha=.8) +
-# scale_x_date(date_labels="%b %y",date_breaks="2 months") +
-#scale_y_continuous(labels=comma) +
 labs(x="",
      y="",
      title="Medroxyprogesterone injection DMPA-IM utilisation has been constant \nsince May 2021 except for the last quarter") +
@@ -827,10 +819,107 @@ ggsave("viz/May 2023 data review/Medroxyprogesterone injection DMPA-IM.png",
 
 
 
+#'*_____NATIONAL FP METHODS -TYPE DISAGGS*
+
+fpmethod <- read_xls("data/May 2023 FHDR/IUCD_Implant_Injectables_National monthly.xls")
+fpmethod  <- fpmethod  %>%
+  mutate(month_chr = str_sub(periodname,
+                             start=1,
+                             end=nchar(periodname)-5),
+         month = factor(month_chr,
+                        levels=c("January","February","March","April","May","June","July","August","September","October","November","December")),
+         month_code = as.numeric(month), 
+         year = str_sub(periodname, 
+                        start=nchar(periodname)-4,
+                        end=nchar(periodname)),
+         monyr = paste(month_code, year, sep="-"),
+         mnthyr = my(monyr))
+
+sum(fpmethod$month_chr!=fpmethod$month) # expecting 0 if vars same
+
+names(fpmethod)
+fpmethod1 <- fpmethod %>%
+  select(2:5,11) %>%
+  na.omit() 
+
+fpmethod1
+colnames(fpmethod1)
+
+fpmethod1
+
+fpmethod2 <- fpmethod1 %>%
+  select(5,2,3,4) %>%
+  na.omit()
+names(fpmethod2)
+
+fpmethod3 <- melt(fpmethod2, id = "mnthyr")
+
+method_plt <- ggplot(fpmethod3, aes(x=mnthyr, y=value, color=variable))+
+  geom_point(alpha=.6, size=1.4) +
+  geom_smooth(method =loess,se=F, size=1.1, alpha=.8) +
+  scale_x_date(date_labels="%b %y",date_breaks="3 months") +
+  scale_y_continuous(labels=comma) +
+  labs(x="",
+       y="",
+       caption="Data Source: HMIS",
+       title="Family Planning Methods and their usage/consumption, 2019 - 2023") +
+  basey + scale_color_manual(name ="",
+                             values =c(light_blue,light_grey,usaid_blue),
+                             labels = c("IUCDs","Implants","Injectables"))
+method_plt
+
+
+ggsave("viz/May 2023 data review/Family planning methods.png",
+       device="png",
+       type="cairo",
+       height = 6.5,
+       width = 11)
 
 
 
+#'*_____NEW FAMILY PLANNING ACCEPTORS*
 
+names(fam)
+newAccpt <- fam %>%
+  select(24:27,56) %>%
+  na.omit() 
+
+newAccpt
+colnames(newAccpt)
+newAccpt1 <- newAccpt[, c(1,2,3,4,5)]
+colnames(newAccpt1)
+newAccpt1
+
+newAccpt1
+
+newAccpt2 <- newAccpt1 %>%
+  select(5,1,2,3,4) %>%
+  na.omit()
+names(newAccpt2)
+
+
+newAccpt3 <- melt(newAccpt2, id = "mnthyr")
+
+Accpt_plt <- ggplot(newAccpt3,aes(x=mnthyr, y=value, color=variable))+
+  geom_point(alpha=.6, size=1.4) +
+  geom_smooth(method =loess,se=F, size=1.1, alpha=.8) +
+  scale_x_date(date_labels="%b %y",date_breaks="2 months") +
+  scale_y_continuous(labels=comma) +
+  labs(x="",
+       y="",
+       caption="Data Source: HMIS",
+       title="Family Planning New Acceptors Starting FP by Age") +
+  basey + scale_color_manual(name ="",
+                             values =c(light_blue,light_grey,usaid_blue, usaid_red),
+                             labels = c("under 15yrs","15-19yrs","20-24yrs","above 25yrs"))
+Accpt_plt
+
+
+ggsave("viz/May 2023 data review/New Acceptors Starting FP(with outliers).png",
+       device="png",
+       type="cairo",
+       height = 6.5,
+       width = 11)
 
 
 

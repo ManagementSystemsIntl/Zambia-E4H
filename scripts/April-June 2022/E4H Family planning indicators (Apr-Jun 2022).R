@@ -851,7 +851,7 @@ colnames(fam)
         scale_y_continuous(labels=comma) + basey +
         labs(fill="Legend:", 
              caption="Data Source: HMIS", 
-             title="Number of women inserting Jabelle and implanon implants between Jan-Jun 2022 \n has remained above 5,000 monthly.",
+             title="Number of women inserting Jadelle and implanon implants between Jan-Jun 2022 \n has remained above 5,000 monthly.",
              x="",
              y="Number of IUCD Inserted")
       

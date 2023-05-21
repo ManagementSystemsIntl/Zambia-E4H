@@ -351,17 +351,73 @@ mmr_plt <- ggplot(mmr_1, aes(x = mnthyr, y = deaths , colour =   mmtype, linetyp
   scale_linetype_manual(name="",
                         labels= ("Maternal mortality facility ratio (per 100,000 live births)"), 
                         values=("solid"))+
-  xlab("") +
-  ylab("") +
-  ggtitle("Maternal deaths and mortality ratio in facilities have increased since 2020, \nwhile community deaths numbers have decreased") +
-  scale_colour_manual(name = "",
-                      labels= "Maternal mortality facility ratio (per 100,000 live births",
-                      values =  usaid_red) +
+  labs(x="", y="", caption="Data Source: HMIS", title="Maternal mortality facility ratio (per 100,000 live births) has been increasing since mid 2020, \nand has hence maintained around 130 since mid 2021.") +
+  scale_color_manual(name ="",
+                     values = usaid_red,
+                     labels ="Coverage of modern family planning adoption") + 
   baseX
+
 mmr_plt
-ggsave("C:/Users/PIMPA.SAWULU/Desktop/R project doc_E4H/E4H-Zambia/graphs/National Maternal Mortality Ratio23.png",
+ggsave("viz/May 2023 data review/National Maternal Mortality Ratio.png",
        device="png",
        type="cairo",
-       height = 7.5,
+       height = 5.5,
+       width = 12)
+
+
+
+#'*Provincial Maternal Mortality Ratio*
+matprv <- read_xls("data/May 2023 FHDR/Reproductive Maternal Health_Provincial level monthly.xls")
+mat  <- mat  %>%
+  mutate(month_chr = str_sub(periodname,
+                             start=1,
+                             end=nchar(periodname)-5),
+         month = factor(month_chr,
+                        levels=c("January","February","March","April","May","June","July","August","September","October","November","December")),
+         month_code = as.numeric(month), 
+         year = str_sub(periodname, 
+                        start=nchar(periodname)-4,
+                        end=nchar(periodname)),
+         monyr = paste(month_code, year, sep="-"),
+         mnthyr = my(monyr))
+
+mmr <- mat %>%
+  rename(mmfr = 16
+  )
+colnames(mat)
+
+mmr_1 <- gather(mmr, key = mmtype , value = deaths, mmfr)
+mmr_1
+colnames(mmr_1)
+
+mmr_1$mmtypef <- factor(mmr_1$mmtype, levels = unique(mmr_1$mmtype))
+levels(mmr_1$mmtypef)
+
+names(mmr_1)
+colnames(mmr_1)
+
+mmr_plt <- ggplot(mmr_1, aes(x = mnthyr, y = deaths , colour =   mmtype, linetype=mmtype)) + 
+  geom_point(alpha=.5, size=.7) + 
+  geom_smooth(method = loess, size=.9, se=F) +
+  facet_wrap(~prov, ncol=4) +
+  faceted +
+  scale_y_continuous(limits = c(0,170),
+                     breaks = c(20,60,100,140,170),
+                     labels = c("20","60","100","140","170")) +
+  scale_x_date(date_breaks = "1 year", date_labels = "%Y")+
+  scale_linetype_manual(name="",
+                        labels= ("Maternal mortality facility ratio (per 100,000 live births)"), 
+                        values=("solid"))+
+  labs(x="", y="", caption="Data Source: HMIS", title="Maternal mortality facility ratio (per 100,000 live births) has been increasing since mid 2020, \nand has hence maintained around 130 since mid 2021.") +
+  scale_color_manual(name ="",
+                     values = usaid_red,
+                     labels ="Coverage of modern family planning adoption") + 
+  baseX
+
+mmr_plt
+ggsave("viz/May 2023 data review/National Maternal Mortality Ratio.png",
+       device="png",
+       type="cairo",
+       height = 5.5,
        width = 12)
 

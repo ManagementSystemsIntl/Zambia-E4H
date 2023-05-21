@@ -848,7 +848,92 @@ ggsave("viz/May 2023 data review/Provincial Family planning methods facets.png",
 
 #'*__Relook at the code above!!!*'
 
+#'*____New Acceptors Starting FP*'
+
+names(fam_prov)
+nfaccpt <- fam_prov %>%
+  select(2,24:27,56) %>%
+  rename(prov=1) %>%
+  na.omit() 
+
+nfaccpt
+colnames(nfaccpt)
+nfaccpt1 <- nfaccpt[, c(1,2,3,4,5,6)]
+colnames(nfaccpt1)
+nfaccpt1
+
+nfaccpt1
+
+nfaccpt2 <- nfaccpt1 %>%
+  select(6,1,2,3,4,5) %>%
+  na.omit()
+names(nfaccpt2)
 
 
+#nfaccpt3 <- melt(nfaccpt2, id = "mnthyr")
+
+plt <- ggplot(nfaccpt2, aes(x=mnthyr, y=value, color=variable))+
+  geom_point(alpha=.6, size=.6) +
+  geom_smooth(method =loess,se=F, size=.9, alpha=.8) +
+  #scale_x_date(date_labels="%b %y",date_breaks="3 months") +
+  scale_y_continuous(labels=comma) +
+  labs(x="",
+       y="",
+       caption="Data Source: HMIS",
+       title="Family Planning New Acceptors (Starting FP), 2019 - 2023") +
+  facet_wrap(~prov, ncol=4) +
+  faceted +
+  basey + scale_color_manual(name ="",
+                             values =c(light_blue,light_grey,usaid_blue),
+                             labels = c("under 15yrs","15-19yrs","20-24yrs","above 25yrs"))
+plt
 
 
+ggsave("viz/May 2023 data review/Provincial Family planning New Acceptors facets.png",
+       device="png",
+       type="cairo",
+       height = 6.5,
+       width = 11)
+
+
+#'*Provincial Maternal Mortality Ratio and Reporting Rates*
+matmorr_prov <- read_xls("data/May 2023 FHDR/Maternal MR and RR_provincial quarterly.xls")
+names(matmorr_prov)
+matmorr_prov1 <- matmorr_prov %>%
+  select(1,2,3,4)
+matmorr_prov1
+matmorr_prov2 <- matmorr_prov1 %>%
+  rename(prov = 1,
+         yr = 2,
+         mr = 4,
+         hrr = 3) %>%
+  mutate(hrrP = hrr/100)
+matmorr_prov2
+
+matmorr_prov3 <- matmorr_prov2 %>%
+  select(1,2,4,5)
+matmorr_prov3
+
+matmorr_prov3 <- gather(matmorr_prov2, key = mmtype , value = deaths, c(mr, hrrP))
+matmorr_prov3
+colnames(matmorr_prov3)
+
+matmorr_prov3
+ggplot(matmorr_prov3, aes(x=yr, y=mr)) +
+  geom_col(stat="identity", position=position_dodge(), fill=usaid_blue) +
+  geom_line(aes(x = yr, y = hrr*2.2, color=usaid_red)) +
+  # geom_point(aes(aes(x= yr, y= hrr*2.2),color=usaid_red, size=3)) +
+  facet_wrap(~prov) +
+  faceted +
+  scale_y_continuous(sec.axis = sec_axis(trans = ~ .*0.0045,name = "Reporting rate", labels = scales::label_percent())) +
+  labs(x="", y="Mortality Ratio", caption="Data Source: HMIS",title="Maternal mortality Ratio and reporting rates, 2019-2023") +
+  scale_color_manual(name ="",
+                     values = usaid_red,
+                     labels = c("HIA2 Reporting rate (%)")) +
+  basem + geom_label(aes( x= yr, y = hrr*2.2,label=hrr), fontface = "bold", hjust=0.9, vjust = 0.8)
+
+ggsave("viz/May 2023 data review/Maternal MR and HIA2 RR facets.png",
+       device="png",
+       type="cairo",
+       height = 6.5,
+       width = 11)
