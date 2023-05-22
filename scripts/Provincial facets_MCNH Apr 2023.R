@@ -897,43 +897,59 @@ ggsave("viz/May 2023 data review/Provincial Family planning New Acceptors facets
 
 
 #'*Provincial Maternal Mortality Ratio and Reporting Rates*
-matmorr_prov <- read_xls("data/May 2023 FHDR/Maternal MR and RR_provincial quarterly.xls")
-names(matmorr_prov)
-matmorr_prov1 <- matmorr_prov %>%
-  select(1,2,3,4)
-matmorr_prov1
-matmorr_prov2 <- matmorr_prov1 %>%
+
+matprv1 <- read_xls("data/May 2023 FHDR/Maternal MR and RR_provincial (2019-2023).xls")
+
+
+matprv  <- matprv1  %>%
+  mutate(month_chr = str_sub(periodname,
+                             start=1,
+                             end=nchar(periodname)-5),
+         month = factor(month_chr,
+                        levels=c("January","February","March","April","May","June","July","August","September","October","November","December")),
+         month_code = as.numeric(month), 
+         year = str_sub(periodname, 
+                        start=nchar(periodname)-4,
+                        end=nchar(periodname)),
+         monyr = paste(month_code, year, sep="-"),
+         mnthyr = my(monyr))
+
+matprv
+
+names(matprv)
+
+
+matprv
+matprv1 <- matprv %>%
+  select(1,3,4,10)
+
+matprv1
+matprv3 <- matprv1 %>%
   rename(prov = 1,
-         yr = 2,
-         mr = 4,
-         hrr = 3) %>%
-  mutate(hrrP = hrr/100)
-matmorr_prov2
+         yr = 4,
+         mr = 2,
+         hrr = 3)
 
-matmorr_prov3 <- matmorr_prov2 %>%
-  select(1,2,4,5)
-matmorr_prov3
 
-matmorr_prov3 <- gather(matmorr_prov2, key = mmtype , value = deaths, c(mr, hrrP))
-matmorr_prov3
-colnames(matmorr_prov3)
+matprv3
+#Bars & lines
 
-matmorr_prov3
-ggplot(matmorr_prov3, aes(x=yr, y=mr)) +
+matprv3
+ggplot(matprv3, aes(x=yr, y=mr)) +
   geom_col(stat="identity", position=position_dodge(), fill=usaid_blue) +
-  geom_line(aes(x = yr, y = hrr*2.2, color=usaid_red)) +
+  geom_line(aes(x = yr, y = hrr*3.34, color=usaid_red)) +
   # geom_point(aes(aes(x= yr, y= hrr*2.2),color=usaid_red, size=3)) +
   facet_wrap(~prov) +
   faceted +
-  scale_y_continuous(sec.axis = sec_axis(trans = ~ .*0.0045,name = "Reporting rate", labels = scales::label_percent())) +
-  labs(x="", y="Mortality Ratio", caption="Data Source: HMIS",title="Maternal mortality Ratio and reporting rates, 2019-2023") +
+  scale_y_continuous(sec.axis = sec_axis(trans = ~ .*0.0030,name = "Reporting rate", labels = scales::label_percent())) +
+  labs(x="", y="Mortality Ratio", caption="Data Source: HMIS",title="Maternal Mortality Ratio and Reporting rates - Quarters 1, 2019-2023") +
   scale_color_manual(name ="",
                      values = usaid_red,
-                     labels = c("HIA2 Reporting rate (%)")) +
-  basem + geom_label(aes( x= yr, y = hrr*2.2,label=hrr), fontface = "bold", hjust=0.9, vjust = 0.8)
+                     labels = c("HIA2 Reporting rate (%)")) + 
+  basem + geom_label(aes( x= yr, y = hrr*3.34,label=hrr), fontface = "bold", hjust=0.6, vjust = 0.7)
 
-ggsave("viz/May 2023 data review/Maternal MR and HIA2 RR facets.png",
+ggsave("viz/May 2023 data review/MMR and HIA2 RR.png",
        device="png",
        type="cairo",
        height = 6.5,
-       width = 11)
+       width=12.5)
