@@ -927,31 +927,6 @@ ggsave("viz/May 2023 data review/New Acceptors Starting FP(with outliers).png",
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 #'*________1st ANC COVERAGE 1ST TRIMESTER*
 
 anc1_prov <- read_xls("data/MC Health April 2023/1st ANC coverage 1st trimester_Provinciall level monthly.xls")
@@ -1420,6 +1395,140 @@ ggsave("viz/May 2023 data review/National Folic Acid Sup.png",
 
 
 
+
+#'* FOLIC ACID AND IRON SUPPLEMENTATION COMPARISON*
+
+mat <- read_xls("data/May 2023 FHDR/Reproductive Maternal Health_National level monthly.xls")
+mat  <- mat  %>%
+  mutate(month_chr = str_sub(periodname,
+                             start=1,
+                             end=nchar(periodname)-5),
+         month = factor(month_chr,
+                        levels=c("January","February","March","April","May","June","July","August","September","October","November","December")),
+         month_code = as.numeric(month), 
+         year = str_sub(periodname, 
+                        start=nchar(periodname)-4,
+                        end=nchar(periodname)),
+         monyr = paste(month_code, year, sep="-"),
+         mnthyr = my(monyr))
+
+sum(mat$month_chr!=mat$month) # expecting 0 if vars same
+
+
+names(mat)
+mat <- mat %>%
+  rename(folicsuppt = 6,
+         ironsuppt = 7
+  ) %>%
+  
+  mutate(folicsupptP = folicsuppt/100,
+         ironsupptP = ironsuppt/100)
+
+#'*set folicsupptP & ironsupptP to 100 for all values >100*
+mat <- mat %>% 
+  dplyr::mutate(folicsuppt = ifelse(folicsuppt > 100, 100, folicsuppt)) %>% 
+  dplyr::mutate(folicsupptP = folicsuppt/100)
+
+#'*To create legend, gather method for including a legend --*
+
+mat <- gather(mat, key = subpop , value = rate, c(folicsupptP, ironsupptP))
+mat$subpop <- factor(mat$subpop, levels = unique(mat$subpop)) # transform into factor
+levels(mat$subpop)
+
+supps_plt <- ggplot(mat, aes(x = mnthyr, y = rate, group = subpop, colour = subpop)) +
+  geom_point(alpha=.5, size=.5) + 
+  #geom_line(size=1) +
+  geom_smooth(method = loess, size = .8, se=FALSE) +
+  scale_y_continuous(limits = c(0,1),
+                     labels = percent,
+                     breaks = c(.1,.2,.3,.4,.5,.6,.7,.8,.9, 1)) +
+  scale_x_date(date_labels="%b %y",date_breaks="3 months") +
+  labs(x="", y="", caption="Data Source: HMIS", title="Coverage of Folic Acid and Iron Supplementation during ANC visits, 2019 - 2023 Q1") +
+  scale_color_manual(name ="",
+                     values = usaid_palette,
+                     labels = c("Folic Acid Supplementation", "Iron Supplementation")
+  ) + 
+  basem
+
+supps_plt
+
+ggsave("viz/May 2023 data review/National Folic and Iron Supplementation.png",
+       device="png",
+       type="cairo",
+       height = 6.5,
+       width = 12)
+
+
+#'*__________Redraw for Provincial Level*
+
+mat_prov <- read_xls("data/May 2023 FHDR/Reproductive Maternal Health_Provincial level monthly.xls")
+mat_prov  <- mat_prov  %>%
+  mutate(month_chr = str_sub(periodname,
+                             start=1,
+                             end=nchar(periodname)-5),
+         month = factor(month_chr,
+                        levels=c("January","February","March","April","May","June","July","August","September","October","November","December")),
+         month_code = as.numeric(month), 
+         year = str_sub(periodname, 
+                        start=nchar(periodname)-4,
+                        end=nchar(periodname)),
+         monyr = paste(month_code, year, sep="-"),
+         mnthyr = my(monyr))
+
+sum(mat_prov$month_chr!=mat_prov$month) # expecting 0 if vars same
+
+
+names(mat_prov)
+mat_prov <- mat_prov %>%
+  rename(prov = 1,
+         folicsuppt = 6,
+         ironsuppt = 7
+  ) %>%
+  
+  mutate(folicsupptP = folicsuppt/100,
+         ironsupptP = ironsuppt/100)
+
+#'*set folicsupptP & ironsupptP to 100 for all values >100*
+mat_prov <- mat_prov %>% 
+  dplyr::mutate(folicsuppt = ifelse(folicsuppt > 100, 100, folicsuppt)) %>% 
+  dplyr::mutate(folicsupptP = folicsuppt/100)
+
+#'*To create legend, gather method for including a legend --*
+
+mat_prov <- gather(mat_prov, key = subpop , value = rate, c(folicsupptP, ironsupptP))
+mat_prov$subpop <- factor(mat_prov$subpop, levels = unique(mat_prov$subpop)) # transform into factor
+levels(mat_prov$subpop)
+
+foli_plt <- ggplot(mat_prov, aes(x = mnthyr, y = rate, group = subpop, colour = subpop)) +
+  geom_point(alpha=.5, size=.5) + 
+  #geom_line(size=1) +
+  geom_smooth(method = loess, size = .8, se=FALSE) +
+  scale_y_continuous(limits = c(0,1),
+                     labels = percent,
+                     breaks = c(.1,.2,.3,.4,.5,.6,.7,.8,.9, 1)) +
+  #scale_x_date(date_labels="%b %y",date_breaks="3 months") +
+  labs(x="", y="", caption="Data Source: HMIS", title="Coverage of Folic Acid and Iron Supplementation during ANC visits, 2019 - 2023 Q1") +
+  facet_wrap(~prov, ncol=4) +
+  faceted +
+  scale_color_manual(name ="",
+                     values = usaid_palette,
+                     labels = c("Folic Acid Supplementation", "Iron Supplementation")
+  ) + 
+  basem
+
+foli_plt
+
+ggsave("viz/May 2023 data review/Folic and Iron Supplementation facets.png",
+       device="png",
+       type="cairo",
+       height = 6.5,
+       width = 12)
+
+
+
+
+
+
 #'*__________HIGH RISK PREGNANCIES AT 1st ANC (%)*
 
 highRpreg_prov <- read_xls("data/May 2023 FHDR/Reproductive Maternal Health_Provincial level monthly.xls")
@@ -1503,6 +1612,64 @@ ggsave("viz/May 2023 data review/National High risk pregnancies.png",
        height = 6.5,
        width = 11)
 
+
+
+#'*________MATERNAL MORTALITY RATIO AND HIA2 REPORTING RATES*
+
+matmr1 <- read_xls("data/May 2023 FHDR/Maternal MR and RR_national (2019-2023).xls")
+
+
+matmr  <- matmr1  %>%
+  mutate(month_chr = str_sub(periodname,
+                             start=1,
+                             end=nchar(periodname)-5),
+         month = factor(month_chr,
+                        levels=c("January","February","March","April","May","June","July","August","September","October","November","December")),
+         month_code = as.numeric(month), 
+         year = str_sub(periodname, 
+                        start=nchar(periodname)-4,
+                        end=nchar(periodname)),
+         monyr = paste(month_code, year, sep="-"),
+         mnthyr = my(monyr))
+
+matmr
+
+names(matmr)
+
+
+matmr
+matmr1 <- matmr %>%
+  select(3,4,10)
+
+matmr1
+matmr2 <- matmr1 %>%
+  rename(mr = 1,
+         hrr = 2,
+         yr = 3)
+
+
+matmr2
+#Bars & lines
+
+matmr2
+ggplot(matmr2, aes(x=yr, y=mr)) +
+  geom_col(stat="identity", position=position_dodge(), fill=usaid_blue) +
+  geom_line(aes(x = yr, y = hrr*3.34, color=usaid_red)) +
+  # geom_point(aes(aes(x= yr, y= hrr*2.2),color=usaid_red, size=3)) +
+  # facet_wrap(~prov) +
+  # faceted +
+  scale_y_continuous(sec.axis = sec_axis(trans = ~ .*0.0030,name = "Reporting rate", labels = scales::label_percent())) +
+  labs(x="", y="Mortality Ratio", caption="Data Source: HMIS",title="Maternal Mortality Ratio and Reporting rates - Quarters 1, 2019-2023") +
+  scale_color_manual(name ="",
+                     values = usaid_red,
+                     labels = c("HIA2 Reporting rate (%)")) + 
+  basem + geom_label(aes( x= yr, y = hrr*3.34,label=hrr), fontface = "bold", hjust=0.6, vjust = 0.7)
+
+ggsave("viz/May 2023 data review/National MMR and HIA2 RR.png",
+       device="png",
+       type="cairo",
+       height = 6.5,
+       width=12.5)
 
 
 
@@ -2122,6 +2289,10 @@ ggsave("viz/May 2023 data review/National wasting rates.png",
        type="cairo",
        height = 6.5,
        width = 12)
+
+
+
+
 
 
 
