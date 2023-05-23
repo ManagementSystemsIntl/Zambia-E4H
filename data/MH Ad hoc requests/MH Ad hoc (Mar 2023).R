@@ -973,6 +973,8 @@ ggsave("viz/Apr-Jun 2022/Family Planning/1st ANC TM1 Coverage faceted PS.png",
        height = 6.5,
        width = 11)
 
+
+
 #'*________4th+ TO TOTAL ANC ATTENDANCES*
 
 frthPlusANC_prov <- read_xls("data/May 2023 FHDR/4th+ to Total ANC Attendance_provincial level.xls")
@@ -1058,6 +1060,136 @@ ggsave("viz/May 2023 data review/National 4th+ to Total ANC attendances.png",
        type="cairo",
        height = 6.5,
        width = 12)
+
+
+#'*ANC COVERAGE AGAINST SYPHILIS SCREENING - NATIONAL LEVEL*
+
+anc.syph <- read_xls("data/May 2023 FHDR/ANC and Syphilis Screening Coverage_National_monthly.xls")
+anc.syph  <- anc.syph  %>%
+  mutate(month_chr = str_sub(periodname,
+                             start=1,
+                             end=nchar(periodname)-5),
+         month = factor(month_chr,
+                        levels=c("January","February","March","April","May","June","July","August","September","October","November","December")),
+         month_code = as.numeric(month), 
+         year = str_sub(periodname, 
+                        start=nchar(periodname)-4,
+                        end=nchar(periodname)),
+         monyr = paste(month_code, year, sep="-"),
+         mnthyr = my(monyr))
+
+sum(anc.syph$month_chr!=anc.syph$month) # expecting 0 if vars same
+
+
+names(anc.syph)
+anc.syph <- anc.syph %>%
+  rename(anccov = 3,
+         syphscrn = 4
+  ) %>%
+  
+  mutate(anccovP = anccov/100,
+         syphscrnP = syphscrn/100)
+
+#'*set anccovP & syphscrnP to 100 for all values >100*
+anc.syph <- anc.syph %>% 
+  dplyr::mutate(anccov = ifelse(anccov > 100, 100, anccov)) %>% 
+  dplyr::mutate(anccovP = anccov/100)
+
+#'*To create legend, gather method for including a legend --*
+
+anc.syph <- gather(anc.syph, key = subpop , value = rate, c(anccovP, syphscrnP))
+anc.syph$subpop <- factor(anc.syph$subpop, levels = unique(anc.syph$subpop)) # transform into factor
+levels(anc.syph$subpop)
+
+syph_plt <- ggplot(anc.syph, aes(x = mnthyr, y = rate, group = subpop, colour = subpop)) +
+  geom_point(alpha=.5, size=.5) + 
+  #geom_line(size=1) +
+  geom_smooth(method = loess, size = .8, se=FALSE) +
+  scale_y_continuous(limits = c(0,1),
+                     labels = percent,
+                     breaks = c(.1,.2,.3,.4,.5,.6,.7,.8,.9, 1)) +
+  scale_x_date(date_labels="%b %y",date_breaks="3 months") +
+  labs(x="", y="", caption="Data Source: HMIS", title="Syphilis Screening rate during 1st ANC visits has been below 50% since October 2019 \nbut seem to improve begining January 2023.") +
+  scale_color_manual(name ="",
+                     values = usaid_palette,
+                     labels = c("1st ANC coverage (all trimesters)", "Syphilis screening rates (%) at 1st ANC")
+  ) + 
+  basem
+
+syph_plt
+
+ggsave("viz/May 2023 data review/National Syphilis and ANC Screening.png",
+       device="png",
+       type="cairo",
+       height = 6.5,
+       width = 12)
+
+
+#'*_______Redraw for Provincial Level*
+
+syphanc_prov <- read_xls("data/May 2023 FHDR/ANC and Syphilis Screening Coverage_Provincial_monthly.xls")
+syphanc_prov  <- syphanc_prov  %>%
+  mutate(month_chr = str_sub(periodname,
+                             start=1,
+                             end=nchar(periodname)-5),
+         month = factor(month_chr,
+                        levels=c("January","February","March","April","May","June","July","August","September","October","November","December")),
+         month_code = as.numeric(month), 
+         year = str_sub(periodname, 
+                        start=nchar(periodname)-4,
+                        end=nchar(periodname)),
+         monyr = paste(month_code, year, sep="-"),
+         mnthyr = my(monyr))
+
+sum(syphanc_prov$month_chr!=syphanc_prov$month) # expecting 0 if vars same
+
+
+names(syphanc_prov)
+syphanc_prov <- syphanc_prov %>%
+  rename(prov = 1,
+         anccov = 3,
+         syph = 4
+  ) %>%
+  
+  mutate(anccovP = anccov/100,
+         syphP = syph/100)
+
+#'*set anccovP & syphP to 100 for all values >100*
+syphanc_prov <- syphanc_prov %>% 
+  dplyr::mutate(anccov = ifelse(anccov > 100, 100, anccov)) %>% 
+  dplyr::mutate(anccovP = anccov/100)
+
+#'*To create legend, gather method for including a legend --*
+
+syphanc_prov <- gather(syphanc_prov, key = subpop , value = rate, c(anccovP, syphP))
+syphanc_prov$subpop <- factor(syphanc_prov$subpop, levels = unique(syphanc_prov$subpop)) # transform into factor
+levels(syphanc_prov$subpop)
+
+syphanc_plt <- ggplot(syphanc_prov, aes(x = mnthyr, y = rate, group = subpop, colour = subpop)) +
+  geom_point(alpha=.5, size=.5) + 
+  #geom_line(size=1) +
+  geom_smooth(method = loess, size = .8, se=FALSE) +
+  scale_y_continuous(limits = c(0,1),
+                     labels = percent,
+                     breaks = c(.1,.2,.3,.4,.5,.6,.7,.8,.9, 1)) +
+  #scale_x_date(date_labels="%b %y",date_breaks="3 months") +
+  labs(x="", y="", caption="Data Source: HMIS", title="Coverage of ANC and Syphilis Screening during ANC visits, 2019 - 2023 Q1") +
+  facet_wrap(~prov, ncol=4) +
+  faceted +
+  scale_color_manual(name ="",
+                     values = usaid_palette,
+                     labels = c("1st ANC coverage (all trimesters)", "Syphilis screening rates (%) at 1st ANC")
+  ) + 
+  basem
+
+syphanc_plt
+
+ggsave("viz/May 2023 data review/Syphilis and ANC Coverage facets.png",
+       device="png",
+       type="cairo",
+       height = 6.5,
+       width = 12)
+
 
 
 
