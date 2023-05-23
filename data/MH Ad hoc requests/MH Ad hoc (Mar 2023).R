@@ -751,7 +751,7 @@ iud2 <- iud1 %>%
 names(iud2)
 
 
-iud3 <- melt(iud2, id = "mnthyr")
+iud3 <- reshape2::melt(iud2, id = "mnthyr")
 
 medim <- ggplot(iud3,aes(x=mnthyr, y=value, color=variable))+
   geom_point(alpha=.6, size=1.4) +
@@ -778,44 +778,45 @@ ggsave("viz/May 2023 data review/Medroxyprogesterone injection DMPA-IM.png",
 
 
 #'*_________________MODERN FP METHODS*
+#'*__The code below is under construction!*
 
-names(fam)
-iud <- fam %>%
-  select(11:12,56) %>%
-  na.omit() 
-
-iud
-colnames(iud)
-iud1 <- iud[, c(1,2,3,4,5)]
-colnames(iud1)
-iud1
-
-iud1
-
-iud2 <- iud1 %>%
-  select(5,1,2,3,4) %>%
-  na.omit()
-names(iud2)
-
-
-iud3 <- melt(iud2, id = "mnthyr")
-
-medim <- ggplot(iud3,aes(x=mnthyr, y=value, fill=variable))+
-  geom_bar(stat ="identity")
-labs(x="",
-     y="",
-     title="Medroxyprogesterone injection DMPA-IM utilisation has been constant \nsince May 2021 except for the last quarter") +
-  basey + scale_color_manual(name ="",
-                             values =c(light_blue,light_grey,usaid_blue, usaid_red),
-                             labels = c("under 15yrs","15-19yrs","20-24yrs","above 25yrs"))
-medim
-
-
-ggsave("viz/May 2023 data review/Medroxyprogesterone injection DMPA-IM.png",
-       device="png",
-       type="cairo",
-       height = 6.5,
-       width = 11)
+# names(fam)
+# iud <- fam %>%
+#   select(11:12,56) %>%
+#   na.omit() 
+# 
+# iud
+# colnames(iud)
+# iud1 <- iud[, c(1,2,3)]
+# colnames(iud1)
+# iud1
+# 
+# iud1
+# 
+# iud2 <- iud1 %>%
+#   select(3,1,2) %>%
+#   na.omit()
+# names(iud2)
+# 
+# 
+# iud3 <- reshape2::melt(iud2, id = "mnthyr")
+# 
+# iud.implant <- ggplot(iud3,aes(x=mnthyr, y=value, fill=variable))+
+#   geom_bar(stat ="identity")
+# labs(x="",
+#      y="",
+#      title="IUCD Inserted and Implants") +
+#   basey + scale_color_manual(name ="",
+#                              values =c(light_blue,light_grey,usaid_blue, usaid_red),
+#                              labels = c("IUCD Inserted","Implant"))
+# iud.implant
+# 
+# 
+# ggsave("viz/May 2023 data review/IUCD and Impants.png",
+#        device="png",
+#        type="cairo",
+#        height = 6.5,
+#        width = 11)
 
 
 
