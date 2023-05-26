@@ -657,10 +657,33 @@ ggsave("viz/May 2023 data review/Provincial ANCs PS.png",
 
 #'*________________________FAMILY PLANNING INDICATORS*
 
+
+fam_prov <- read_xls("data/May 2023 FHDR/Family Planning data_Provincial level monthly.xls")
+names(fam_prov)
+fam_prov
+fam_prov  <- fam_prov  %>%
+  mutate(month_chr = str_sub(periodname,
+                             start=1,
+                             end=nchar(periodname)-5),
+         month = factor(month_chr,
+                        levels=c("January","February","March","April","May","June","July","August","September","October","November","December")),
+         month_code = as.numeric(month), 
+         year = str_sub(periodname, 
+                        start=nchar(periodname)-4,
+                        end=nchar(periodname)),
+         monyr = paste(month_code, year, sep="-"),
+         mnthyr = my(monyr))
+
+sum(fam_prov$month_chr!=fam_prov$month) # expecting 0 if vars same
+
+
+
+
 #'*WOMEN OF REPRODUCTIVE AGE VISITED BY CHA's*
 names(fam_prov)
 fam_prov <- fam_prov %>%
-  rename(wmn.vstd=3)
+  rename(prov=2,
+         wmn.vstd=3)
 
 chavst_plt <- ggplot(fam_prov, aes(x=mnthyr, y=wmn.vstd, colour=usaid_blue)) + 
   #geom_bar(stat="identity") +
@@ -867,10 +890,11 @@ nfaccpt1
 nfaccpt2 <- nfaccpt1 %>%
   select(6,1,2,3,4,5) %>%
   na.omit()
+
 names(nfaccpt2)
 
 
-#nfaccpt3 <- melt(nfaccpt2, id = "mnthyr")
+nfaccpt3 <- reshape2::melt(nfaccpt2, id = "mnthyr")
 
 plt <- ggplot(nfaccpt2, aes(x=mnthyr, y=value, color=variable))+
   geom_point(alpha=.6, size=.6) +
@@ -953,3 +977,79 @@ ggsave("viz/May 2023 data review/MMR and HIA2 RR.png",
        type="cairo",
        height = 6.5,
        width=12.5)
+
+
+
+
+
+#'*_______SYPHILIS AND ANC SCREENING COVERAGE*
+#'*Code under construction!!*
+
+syphanc.nmr_prov <- read_xls("data/May 2023 FHDR/quarterly ANC and Syphilis Screening Coverage_Provincial.xls")
+syphanc.nmr_prov  <- syphanc.nmr_prov  %>%
+  mutate(month_chr = str_sub(periodname,
+                             start=1,
+                             end=nchar(periodname)-5),
+         month = factor(month_chr,
+                        levels=c("January","February","March","April","May","June","July","August","September","October","November","December")),
+         month_code = as.numeric(month), 
+         year = str_sub(periodname, 
+                        start=nchar(periodname)-4,
+                        end=nchar(periodname)),
+         monyr = paste(month_code, year, sep="-"),
+         mnthyr = my(monyr))
+
+sum(syphanc.nmr_prov$month_chr!=syphanc.nmr_prov$month) # expecting 0 if vars same
+
+
+names(syphanc.nmr_prov)
+syphanc.nmr_prov <- syphanc.nmr_prov %>%
+  rename(prov = 1,
+         anccov = 3,
+         syph = 4,
+         nnmr = 5
+  ) %>%
+  
+  mutate(anccovP = anccov/100,
+         syphP = syph/100)
+
+#'*set anccovP & syphP to 100 for all values >100*
+syphanc.nmr_prov <- syphanc.nmr_prov %>% 
+  dplyr::mutate(anccov = ifelse(anccov > 100, 100, anccov)) %>% 
+  dplyr::mutate(anccovP = anccov/100)
+
+#'*To create legend, gather method for including a legend --*
+
+syphanc.nmr_prov <- gather(syphanc.nmr_prov, key = subpop , value = rate, c(anccovP, syphP, nnmr))
+syphanc_prov$subpop <- factor(syphanc.nmr_prov$subpop, levels = unique(syphanc.nmr_prov$subpop)) # transform into factor
+levels(syphanc.nmr_prov$subpop)
+
+syphanc.nnmr_plt <- ggplot(syphanc.nmr_prov, aes(x = mnthyr, y = rate, group = subpop, colour = subpop)) +
+  # #geom_point(alpha=.5, size=.5) + 
+  # #geom_line(size=1) +
+  # geom_smooth(method = loess, size = .8, se=FALSE) +
+  # scale_y_continuous(limits = c(0,1),
+  #                    labels = percent,
+  #                    breaks = c(.1,.2,.3,.4,.5,.6,.7,.8,.9, 1)) +
+  # #scale_x_date(date_labels="%b %y",date_breaks="3 months") +
+  scale_y_continuous(sec.axis = sec_axis(trans = ~ .*0.045,name = "Perinatal Mortality Rate", labels = scales::label_value)) +
+  labs(x="", y="", caption="Data Source: HMIS", title="Coverage of ANC and Syphilis Screening during ANC visits, 2019 - 2023 Q1") +
+  facet_wrap(~prov, ncol=4) +
+  faceted +
+  scale_color_manual(name ="",
+                     values = usaid_palette,
+                     labels = c("1st ANC coverage (all trimesters)", "Syphilis screening rates (%) at 1st ANC", "Perinatal Mortality Rate")
+  ) + 
+  basem
+
+syphanc.nnmr_plt
+
+ggsave("viz/May 2023 data review/Syphilis and ANC Coverage facets.png",
+       device="png",
+       type="cairo",
+       height = 6.5,
+       width = 12)
+
+
+
+
