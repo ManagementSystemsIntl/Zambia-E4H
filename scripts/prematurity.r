@@ -759,3 +759,103 @@ ggsave("viz/prematurity Apr 2023/perinatal deaths by prov.png",
        type="cairo",
        height = 6.0,
        width = 13)
+
+
+
+
+
+#'*Perinatal Deaths by Province by MONTH_May 2023*
+peri.dth.prv <- read_xlsx("data/May 2023 FHDR/perinatal deaths by province_monthly.xlsx")
+peri.dth.prv  <- peri.dth.prv  %>%
+  mutate(month_chr = str_sub(periodname,
+                             start=1,
+                             end=nchar(periodname)-5),
+         month = factor(month_chr,
+                        levels=c("January","February","March","April","May","June","July","August","September","October","November","December")),
+         month_code = as.numeric(month), 
+         year = str_sub(periodname, 
+                        start=nchar(periodname)-4,
+                        end=nchar(periodname)),
+         monyr = paste(month_code, year, sep="-"),
+         mnthyr = my(monyr))
+
+peri.dth.prv
+colnames(peri.dth.prv)
+
+peri.dth.prv1 <- peri.dth.prv %>%
+  select(2,3,9)
+
+peri.dth.prv1
+
+peri.dth.prv2 <- peri.dth.prv1 %>%
+  rename(prov=2,
+         mnth=3)
+
+peri.dth.prv2
+
+pd <- ggplot(peri.dth.prv2, aes(x=mnth, y=Deaths), alpha=0.5)+ 
+  geom_smooth(method="loess", color=usaid_red, size=0.8,se=F) + 
+  geom_point(color=usaid_red, size=0.5) + 
+  faceted +
+  facet_wrap(~prov) + ##scales="free_y" tom allow for independ y axis variables
+  #scale_x_date(date_labels="%b %y",date_breaks="3 months") + 
+  labs(fill="Legend:", title="Perinatal Deaths by Province, 2019 - 2023",
+       x="",
+       y="Number of Deaths",
+       caption = "Data Source: PDSR")
+pd
+
+ggsave("viz/May 2023 data review/perinatal deaths by prov by month.png",
+       device="png",
+       type="cairo",
+       height = 6.5,
+       width = 12)
+
+
+#'*_____________Redraw for National Level*
+
+peri.dth <- read_xlsx("data/May 2023 FHDR/perinatal deaths national_monthly.xlsx")
+peri.dth  <- peri.dth  %>%
+  mutate(month_chr = str_sub(periodname,
+                             start=1,
+                             end=nchar(periodname)-5),
+         month = factor(month_chr,
+                        levels=c("January","February","March","April","May","June","July","August","September","October","November","December")),
+         month_code = as.numeric(month), 
+         year = str_sub(periodname, 
+                        start=nchar(periodname)-4,
+                        end=nchar(periodname)),
+         monyr = paste(month_code, year, sep="-"),
+         mnthyr = my(monyr))
+
+peri.dth
+
+peri.dth1 <- peri.dth %>%
+  select(2,9)
+
+peri.dth1
+
+peri.dth2 <- peri.dth1 %>%
+  rename(neonatal.dth=1)
+
+peri.dth2
+
+nat_pd <- ggplot(peri.dth2, aes(x=mnthyr, y=neonatal.dth, colour=usaid_red)) + 
+  geom_point(alpha=.6, size=.9) + 
+  geom_smooth(method = loess, size = .8, se=FALSE) +
+  scale_y_continuous(labels=comma) +
+  scale_x_date(date_labels="%b %y",date_breaks="3 months") +
+  labs(x="", y="", caption="Data Source: PDSR", title="Number of Perinatal deaths reported, 2019 - 2023.") +
+  scale_color_manual(name ="",
+                     values = usaid_red,
+                     labels ="Perinatal Deaths") + 
+  basey
+
+nat_pd
+ggsave("viz/May 2023 data review/National perinatal deaths 2019-2023.png",
+       device="png",
+       type="cairo",
+       height = 6.5,
+       width = 12)
+
+
