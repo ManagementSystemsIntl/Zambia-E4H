@@ -1064,7 +1064,7 @@ ggsave("viz/Aug 23 FHDR/National 4th+ to Total ANC attendances.png",
 
 #'*ANC COVERAGE AGAINST SYPHILIS SCREENING - NATIONAL LEVEL*
 
-anc.syph <- read_xls("data/May 2023 FHDR/ANC and Syphilis Screening Coverage_National_monthly.xls")
+anc.syph <- read_xls("data/Aug 2023 MHDR/ANC and Syphilis Screening Coverage_National_monthly.xls")
 anc.syph  <- anc.syph  %>%
   mutate(month_chr = str_sub(periodname,
                              start=1,
@@ -1118,7 +1118,7 @@ syph_plt <- ggplot(anc.syph, aes(x = mnthyr, y = rate, group = subpop, colour = 
 
 syph_plt
 
-ggsave("viz/May 2023 data review/National Syphilis and ANC Screening.png",
+ggsave("viz/Aug 23 FHDR/National Syphilis and ANC Screening.png",
        device="png",
        type="cairo",
        height = 6.5,
@@ -1127,7 +1127,7 @@ ggsave("viz/May 2023 data review/National Syphilis and ANC Screening.png",
 
 #'*_______Redraw for Provincial Level*
 
-syphanc_prov <- read_xls("data/May 2023 FHDR/ANC and Syphilis Screening Coverage_Provincial_monthly.xls")
+syphanc_prov <- read_xls("data/Aug 2023 MHDR/ANC and Syphilis Screening Coverage_Provincial_monthly.xls")
 syphanc_prov  <- syphanc_prov  %>%
   mutate(month_chr = str_sub(periodname,
                              start=1,
@@ -1184,7 +1184,7 @@ syphanc_plt <- ggplot(syphanc_prov, aes(x = mnthyr, y = rate, group = subpop, co
 
 syphanc_plt
 
-ggsave("viz/May 2023 data review/Syphilis and ANC Coverage facets.png",
+ggsave("viz/Aug 23 FHDR/Syphilis and ANC Coverage facets.png",
        device="png",
        type="cairo",
        height = 6.5,
@@ -1308,9 +1308,9 @@ ggplot(InstDel_prov, aes(x=mnthyr, y=InstDelP)) +
   stat_smooth(se=F, size=.8, alpha=.6, colour=usaid_blue) +
   scale_y_continuous(limits = c(0,1),
                      labels = percent,
-                     breaks = c(.2,.4,.6,.8,1)) +
+                     breaks = c(.4,.6,.8,1)) +
   labs(x ="", y="", caption = "Data Source: HMIS") +labs(x ="", y="", caption = "Data Source: HMIS") +
-  ggtitle("Institutional Delivery Coverage seems to be doing well in Copperbelt, Eastern and Luapula provinces (above 80%), 2019 - 2023") +
+  ggtitle("Institutional Delivery Coverage seems to be doing well in Copperbelt, Eastern\n and Luapula provinces (above 80%), 2019 - 2023") +
   facet_wrap(~prov, ncol=4) +
   faceted +
   scale_color_manual(values=usaid_blue) + basey
