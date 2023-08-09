@@ -977,7 +977,7 @@ ggsave("viz/Apr-Jun 2022/Family Planning/1st ANC TM1 Coverage faceted PS.png",
 
 #'*________4th+ TO TOTAL ANC ATTENDANCES*
 
-frthPlusANC_prov <- read_xls("data/May 2023 FHDR/4th+ to Total ANC Attendance_provincial level.xls")
+frthPlusANC_prov <- read_xls("data/Aug 2023 MHDR/4th+ to Total ANC Attendance_provincial level.xls")
 names(frthPlusANC_prov)
 frthPlusANC_prov
 frthPlusANC_prov  <- frthPlusANC_prov  %>%
@@ -1005,26 +1005,26 @@ frthPlusANC_prov <- frthPlusANC_prov %>%
 ggplot(frthPlusANC_prov, aes(x=mnthyr, y=frth.ancP)) + 
   geom_point(size=.5, alpha=.5, colour=usaid_blue) + 
   stat_smooth(se=F, size=.8, alpha=.6, colour=usaid_blue) +
-  scale_y_continuous(limits = c(0,1),
+  scale_y_continuous(limits = c(0,.5),
                      labels = percent,
-                     breaks = c(.2,.4,.6,.8,1)) +
+                     breaks = c(.1,.2,.3,.4,.5)) +
   labs(x ="", y="", caption = "Data Source: HMIS") +labs(x ="", y="", caption = "Data Source: HMIS") +
   ggtitle("4th+ to Total ANC attendances, 2019 - 2023") +
   facet_wrap(~prov, ncol=4) +
   faceted +
   scale_color_manual(values=usaid_blue) + basey
 
-ggsave("viz/May 2023 data review/4th+ to Total ANC attendances faceted.png",
+ggsave("viz/Aug 23 FHDR/4th+ to Total ANC attendances faceted.png",
        device="png",
        type="cairo",
-       height = 6.5,
-       width = 11)
+       height = 5.5,
+       width = 9.5)
 
 
 
 #'*_______Redraw for National Level*
 
-frthPlusANC <- read_xls("data/May 2023 FHDR/4th+ to Total ANC Attendance_National level.xls")
+frthPlusANC <- read_xls("data/Aug 2023 MHDR/4th+ to Total ANC Attendance_National level.xls")
 names(frthPlusANC)
 frthPlusANC
 frthPlusANC  <- frthPlusANC  %>%
@@ -1048,14 +1048,14 @@ frthPlusANC <- frthPlusANC %>%
 ggplot(frthPlusANC, aes(x=mnthyr, y=frth.ancP)) + 
   geom_point(size=.7, alpha=.5, colour=usaid_blue) + 
   stat_smooth(se=F, size=.9, alpha=.6, colour=usaid_blue) +
-  scale_y_continuous(limits = c(0,1),
+  scale_y_continuous(limits = c(0,.5),
                      labels = percent,
-                     breaks = c(.2,.4,.6,.8,1)) +
+                     breaks = c(.1,.2,.3,.4,.5,.6)) +
   labs(x ="", y="", caption = "Data Source: HMIS") +labs(x ="", y="", caption = "Data Source: HMIS") +
-  ggtitle("The Trends for the 4th+ to Total ANC attendances has been below 30% but above 20% \nat National Level") +
+  ggtitle("The Trends for the 4th+ to Total ANC attendances has been below 30% but above 20%\n at National Level except for 2023 where it is on a downward trend!") +
   scale_color_manual(values=usaid_blue) + basey
 
-ggsave("viz/May 2023 data review/National 4th+ to Total ANC attendances.png",
+ggsave("viz/Aug 23 FHDR/National 4th+ to Total ANC attendances.png",
        device="png",
        type="cairo",
        height = 6.5,
@@ -1278,7 +1278,7 @@ ggsave("viz/May 2023 data review/National Maternal Postnatal 48hr Care.png",
 
 #'*________INSTITUTIONAL DELIVERY COVERAGE*
 
-InstDel_prov <- read_xls("data/May 2023 FHDR/Reproductive Maternal Health_Provincial level monthly.xls")
+InstDel_prov <- read_xls("data/Aug 2023 MHDR/Reproductive Maternal Health_Provincial level monthly.xls")
 names(InstDel_prov)
 InstDel_prov
 InstDel_prov  <- InstDel_prov  %>%
@@ -1310,12 +1310,12 @@ ggplot(InstDel_prov, aes(x=mnthyr, y=InstDelP)) +
                      labels = percent,
                      breaks = c(.2,.4,.6,.8,1)) +
   labs(x ="", y="", caption = "Data Source: HMIS") +labs(x ="", y="", caption = "Data Source: HMIS") +
-  ggtitle("Institutional Delivery Coverage, 2019 - 2023") +
+  ggtitle("Institutional Delivery Coverage seems to be doing well in Copperbelt, Eastern and Luapula provinces (above 80%), 2019 - 2023") +
   facet_wrap(~prov, ncol=4) +
   faceted +
   scale_color_manual(values=usaid_blue) + basey
 
-ggsave("viz/May 2023 data review/Provincial Institutional delivery coverage.png",
+ggsave("viz/Aug 23 FHDR/Provincial Institutional delivery coverage.png",
        device="png",
        type="cairo",
        height = 6.5,
@@ -1323,7 +1323,7 @@ ggsave("viz/May 2023 data review/Provincial Institutional delivery coverage.png"
 
 #'*_______Redraw for National Level*
 
-InstDel <- read_xls("data/May 2023 FHDR/Reproductive Maternal Health_National level monthly.xls")
+InstDel <- read_xls("data/Aug 2023 MHDR/Reproductive Maternal Health_National level monthly.xls")
 names(InstDel)
 InstDel
 InstDel  <- InstDel  %>%
@@ -1354,14 +1354,14 @@ ggplot(InstDel, aes(x=mnthyr, y=InstDelP)) +
   ggtitle("Institutional Delivery Coverage has been below 80% since mid 2019 at National level.") +
   scale_color_manual(values=usaid_blue) + basey
 
-ggsave("viz/May 2023 data review/National Institutional delivery coverage.png",
+ggsave("viz/Aug 23 FHDR/National Institutional delivery coverage.png",
        device="png",
        type="cairo",
        height = 6.5,
        width = 11)
 
-
-#'*__________CAESAREAN SECTION RATE*
+### Do not visual the below indicator for now.
+###'*__________CAESAREAN SECTION RATE*
 
 csection_prov <- read_xls("data/May 2023 FHDR/Reproductive Maternal Health_Provincial level monthly.xls")
 names(csection_prov)
@@ -1812,7 +1812,7 @@ ggsave("viz/May 2023 data review/National MMR and HIA2 RR.png",
 #'*April 2023*
 #'*ANC All Trimesters 2019 - 2023*
 
-mat <- read_xls("data/May 2023 FHDR/Reproductive Maternal Health_National level monthly.xls")
+mat <- read_xls("data/Aug 2023 MHDR/Reproductive Maternal Health_National level monthly.xls")
 mat  <- mat  %>%
   mutate(month_chr = str_sub(periodname,
                              start=1,
@@ -1835,7 +1835,7 @@ sum(mat$month_chr!=mat$month) # expecting 0 if vars same
 
 # matq <- read_xls("data/Jan- Jun 2022/Reproductive Maternal Data_National Level(Quarterly).xls")
 # matqp <- read_xls("data/Jan-Mar 2022/Reproductive Maternal Data_Provincial Level(Quarterly).xls")
-mat_prov <- read_xls("data/May 2023 FHDR/Reproductive Maternal Health_Provincial level monthly.xls")
+mat_prov <- read_xls("data/Aug 2023 MHDR/Reproductive Maternal Health_Provincial level monthly.xls")
 
 mat_prov
 mat_prov  <- mat_prov  %>%
@@ -1874,7 +1874,7 @@ mat <- mat %>%
 #'*To create legend, gather method for including a legend --*
 
 mat <- gather(mat, key = subpop , value = rate, c(anccp, anc1p,anc1u20p))
-mat$subpop <- factor(mat$subpop, levels = unique(mat$subpop)) # transform into factor
+mat$subpop <- factor(mat$subpop, levels = unique(mat_prov$subpop)) # transform into factor
 levels(mat$subpop)
 
 #view(mat)
@@ -1898,7 +1898,7 @@ ggplot(mat, aes(x = mnthyr, y = rate, group = subpop, colour = subpop)) +
   ) + 
   base
 
-ggsave("viz/May 2023 data review/National Proportion of expected pregnancies receiving antenatal care.png",
+ggsave("viz/Aug 23 FHDR/National Proportion of expected pregnancies receiving antenatal care.png",
        device="png",
        type="cairo",
        height = 6.5,
