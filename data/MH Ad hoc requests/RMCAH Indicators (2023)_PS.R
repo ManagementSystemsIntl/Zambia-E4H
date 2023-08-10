@@ -1482,7 +1482,7 @@ ggplot(folicsup_prov, aes(x=mnthyr, y=folicP)) +
   faceted +
   scale_color_manual(values=usaid_blue) + basey
 
-ggsave("viz/May 2023 data review/Folic Acid Supplementation.png",
+ggsave("viz/Aug 23 FHDR/Folic Acid Supplementation.png",
        device="png",
        type="cairo",
        height = 7,
@@ -1491,7 +1491,7 @@ ggsave("viz/May 2023 data review/Folic Acid Supplementation.png",
 
 #'*_______Redraw for National Level*
 
-folicAcid <- read_xls("data/May 2023 FHDR/Reproductive Maternal Health_National level monthly.xls")
+folicAcid <- read_xls("data/Aug 2023 MHDR/Reproductive Maternal Health_National level monthly.xls")
 names(folicAcid)
 folicAcid
 folicAcid  <- folicAcid  %>%
@@ -1522,7 +1522,7 @@ ggplot(folicAcid, aes(x=mnthyr, y=folicSuppP)) +
   ggtitle("Folic Acid Supplementation (%) during ANC Visits, 2019 - 2023.") +
   scale_color_manual(values=usaid_blue) + basey
 
-ggsave("viz/May 2023 data review/National Folic Acid Sup.png",
+ggsave("viz/Aug 23 FHDR/National Folic Acid Sup.png",
        device="png",
        type="cairo",
        height = 6.5,
@@ -1533,7 +1533,7 @@ ggsave("viz/May 2023 data review/National Folic Acid Sup.png",
 
 #'* FOLIC ACID AND IRON SUPPLEMENTATION COMPARISON*
 
-mat <- read_xls("data/May 2023 FHDR/Reproductive Maternal Health_National level monthly.xls")
+mat <- read_xls("data/Aug 2023 MHDR/Reproductive Maternal Health_National level monthly.xls")
 mat  <- mat  %>%
   mutate(month_chr = str_sub(periodname,
                              start=1,
@@ -1578,7 +1578,7 @@ supps_plt <- ggplot(mat, aes(x = mnthyr, y = rate, group = subpop, colour = subp
                      labels = percent,
                      breaks = c(.1,.2,.3,.4,.5,.6,.7,.8,.9, 1)) +
   scale_x_date(date_labels="%b %y",date_breaks="3 months") +
-  labs(x="", y="", caption="Data Source: HMIS", title="Coverage of Folic Acid and Iron Supplementation during ANC visits, 2019 - 2023 Q1") +
+  labs(x="", y="", caption="Data Source: HMIS", title="Coverage of Folic Acid and Iron Supplementation during ANC visits, 2019 - 2023 Q2") +
   scale_color_manual(name ="",
                      values = usaid_palette,
                      labels = c("Folic Acid Supplementation", "Iron Supplementation")
@@ -1587,7 +1587,7 @@ supps_plt <- ggplot(mat, aes(x = mnthyr, y = rate, group = subpop, colour = subp
 
 supps_plt
 
-ggsave("viz/May 2023 data review/National Folic and Iron Supplementation.png",
+ggsave("viz/Aug 23 FHDR/National Folic and Iron Supplementation.png",
        device="png",
        type="cairo",
        height = 6.5,
@@ -1596,7 +1596,7 @@ ggsave("viz/May 2023 data review/National Folic and Iron Supplementation.png",
 
 #'*__________Redraw for Provincial Level*
 
-mat_prov <- read_xls("data/May 2023 FHDR/Reproductive Maternal Health_Provincial level monthly.xls")
+mat_prov <- read_xls("data/Aug 2023 MHDR/Reproductive Maternal Health_Provincial level monthly.xls")
 mat_prov  <- mat_prov  %>%
   mutate(month_chr = str_sub(periodname,
                              start=1,
@@ -1653,7 +1653,7 @@ foli_plt <- ggplot(mat_prov, aes(x = mnthyr, y = rate, group = subpop, colour = 
 
 foli_plt
 
-ggsave("viz/May 2023 data review/Folic and Iron Supplementation facets.png",
+ggsave("viz/Aug 23 FHDR/Folic and Iron Supplementation facets.png",
        device="png",
        type="cairo",
        height = 6.5,
