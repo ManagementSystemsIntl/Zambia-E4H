@@ -1640,9 +1640,9 @@ foli_plt <- ggplot(mat_prov, aes(x = mnthyr, y = rate, group = subpop, colour = 
   geom_smooth(method = loess, size = .8, se=FALSE) +
   scale_y_continuous(limits = c(0,1),
                      labels = percent,
-                     breaks = c(.1,.2,.3,.4,.5,.6,.7,.8,.9, 1)) +
+                     breaks = c(.2,.4,.6,.8,1)) +
   #scale_x_date(date_labels="%b %y",date_breaks="3 months") +
-  labs(x="", y="", caption="Data Source: HMIS", title="Coverage of Folic Acid and Iron Supplementation during ANC visits, 2019 - 2023 Q1") +
+  labs(x="", y="", caption="Data Source: HMIS", title="Coverage of Folic Acid and Iron Supplementation during ANC visits (2019 - 2023 Q2) \nshows a similar picture across the provinces.") +
   facet_wrap(~prov, ncol=4) +
   faceted +
   scale_color_manual(name ="",
@@ -1666,7 +1666,7 @@ ggsave("viz/Aug 23 FHDR/Folic and Iron Supplementation facets.png",
 
 #'*__________HIGH RISK PREGNANCIES AT 1st ANC (%)*
 
-highRpreg_prov <- read_xls("data/May 2023 FHDR/Reproductive Maternal Health_Provincial level monthly.xls")
+highRpreg_prov <- read_xls("data/Aug 2023 MHDR/Reproductive Maternal Health_Provincial level monthly.xls")
 names(highRpreg_prov)
 highRpreg_prov
 highRpreg_prov  <- highRpreg_prov  %>%
@@ -1695,12 +1695,12 @@ ggplot(highRpreg_prov, aes(x=mnthyr, y=risk.pregP)) +
                      labels = percent,
                      breaks = c(.1,.2,.3,.4,.5,.6,.7,.8)) +
   labs(x ="", y="", caption = "Data Source: HMIS") +labs(x ="", y="", caption = "Data Source: HMIS") +
-  ggtitle("High-risk Pregnancies at 1st ANC (%), 2019 - 2023.") +
+  ggtitle("High-risk Pregnancies at 1st ANC (%), 2019 - 2023 Q2.") +
   facet_wrap(~prov, ncol=4) +
   faceted +
   scale_color_manual(values=usaid_red) + basey
 
-ggsave("viz/May 2023 data review/High Risk pregnancies.png",
+ggsave("viz/Aug 23 FHDR/High Risk pregnancies.png",
        device="png",
        type="cairo",
        height = 7,
@@ -1710,7 +1710,7 @@ ggsave("viz/May 2023 data review/High Risk pregnancies.png",
 
 #'*_______Redraw for National Level*
 
-highRpreg <- read_xls("data/May 2023 FHDR/Reproductive Maternal Health_National level monthly.xls")
+highRpreg <- read_xls("data/Aug 2023 MHDR/Reproductive Maternal Health_National level monthly.xls")
 names(highRpreg)
 highRpreg
 highRpreg  <- highRpreg  %>%
@@ -1741,7 +1741,7 @@ ggplot(highRpreg, aes(x=mnthyr, y=hr.pregP)) +
   ggtitle("Number of High-Risk pregancies reported at 1st ANC visit\n have been increasing each year and now stand at 15% in 2023.") +
   scale_color_manual(values=usaid_red) + basey
 
-ggsave("viz/May 2023 data review/National High risk pregnancies.png",
+ggsave("viz/Aug 23 FHDR/National High risk pregnancies.png",
        device="png",
        type="cairo",
        height = 6.5,

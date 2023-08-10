@@ -646,7 +646,7 @@ ggplot(mat_prov, aes(x = mnthyr, y = rate, group = subpop, colour = subpop)) +
   ) + 
   base
 
-ggsave("viz/May 2023 data review/Provincial ANCs PS.png",
+ggsave("viz/Aug 23 FHDR/Provincial ANCs PS.png",
        device="png",
        type="cairo",
        height = 6.5,
@@ -871,7 +871,7 @@ ggsave("viz/May 2023 data review/Provincial Family planning methods facets.png",
 
 #'*__Relook at the code above!!!*'
 
-#'*____New Acceptors Starting FP*'
+#'*____New Acceptors Starting FP*
 
 names(fam_prov)
 nfaccpt <- fam_prov %>%
