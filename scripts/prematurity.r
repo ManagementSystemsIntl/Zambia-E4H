@@ -524,7 +524,7 @@ ggplot(maternal.mort5, aes(geometry = geometry, fill = rate)) +
 #   addTiles() %>%
 #   addPolygons(label = zam.boundary2$shapeName)
 
-ggsave("viz/prematurity Apr 2023/Maternal_mortality_rate_map.png",
+ggsave("viz/prematurity Apr 2023/Maternal_mortality_rate_map Aug 23.png",
        device="png",
        type="cairo",
        height = 6.5,

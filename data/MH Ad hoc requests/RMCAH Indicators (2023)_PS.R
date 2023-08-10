@@ -1913,7 +1913,7 @@ ggsave("viz/Aug 23 FHDR/National Proportion of expected pregnancies receiving an
 #'*______________________Child Health INDICATORS*
 
 
-chldH <- read_xls("data/May 2023 FHDR/Child Heath national level_monthly.xls")
+chldH <- read_xls("data/Aug 2023 MHDR/Child Heath national level_monthly.xls")
 chldH  <- chldH  %>%
   mutate(month_chr = str_sub(periodname,
                              start=1,
@@ -1936,7 +1936,7 @@ chldH  <- chldH  %>%
 
 # chldHq <- read_xls("data/Jan- Jun 2022/Child Health Data_National Level(Quarterly).xls")
 # chldHqp <- read_xls("data/Jan-Mar 2022/Child Health Data_Provincial Level(Quarterly).xls")
-chldH_prov <- read_xls("data/May 2023 FHDR/Child Heath provincial level_monthly.xls")
+chldH_prov <- read_xls("data/Aug 2023 MHDR/Child Heath provincial level_monthly.xls")
 names(chldH_prov)
 # chldH_provpimpa <- chldH_prov %>%
 #   select(1,2,21)
@@ -2007,7 +2007,7 @@ msles_plt <- ggplot(chldH, aes(x = mnthyr, y = rate, group = subpop, colour = su
   ) + 
   basem
 msles_plt
-ggsave("viz/May 2023 data review/Proportion of infants receiving Measles Vaccines 1and2.png",
+ggsave("viz/Aug 23 FHDR/Proportion of infants receiving Measles Vaccines 1and2.png",
        device="png",
        type="cairo",
        height = 6.5,
@@ -2057,7 +2057,7 @@ mslesProv_plt <- ggplot(chldH_prov, aes(x = mnthyr, y = rate, group = subpop, co
   basem
 mslesProv_plt
 
-ggsave("viz/May 2023 data review/Provincial Measles Vaccines.png",
+ggsave("viz/Aug 23 FHDR/Provincial Measles Vaccines.png",
        device="png",
        type="cairo",
        height = 6.5,
@@ -2100,7 +2100,7 @@ full_plt <- ggplot(fullyimz1, aes(x = mnthyr, y = ficp, colour=usaid_blue )) +
   
 full_plt
 
-ggsave("viz/May 2023 data review/Fully immunised coverage under 1.png",
+ggsave("viz/Aug 23 FHDR/Fully immunised coverage under 1.png",
        device="png",
        type="cairo",
        height = 6.5,
@@ -2142,7 +2142,7 @@ NatBCG_plt <- ggplot(BCG_coverage, aes(x = mnthyr, y = Natbcgp, colour=usaid_blu
 
 NatBCG_plt
 
-ggsave("viz/May 2023 data review/BCG coverage under 1.png",
+ggsave("viz/Aug 23 FHDR/BCG coverage under 1.png",
        device="png",
        type="cairo",
        height = 6.5,
@@ -2183,7 +2183,7 @@ DPT_plt <- ggplot(DPT_coverage, aes(x = mnthyr, y = Natdptu1p, colour=usaid_blue
 
 DPT_plt
 
-ggsave("viz/May 2023 data review/DPT 1st dose coverage under 1.png",
+ggsave("viz/Aug 23 FHDR/DPT 1st dose coverage under 1.png",
        device="png",
        type="cairo",
        height = 6.5,
@@ -2225,7 +2225,7 @@ NatVitA_plt <- ggplot(NatVitA, aes(x = mnthyr, y = vitSupP, colour=usaid_blue ))
 
 NatVitA_plt
 
-ggsave("viz/May 2023 data review/National Vitamin A supp.png",
+ggsave("viz/Aug 23 FHDR/National Vitamin A supp.png",
        device="png",
        type="cairo",
        height = 6.5,
@@ -2292,7 +2292,7 @@ brstfeeding_plt <- ggplot(breastfeed, aes(x = mnthyr, y = rate, group = subpop, 
 
 brstfeeding_plt
 
-ggsave("viz/May 2023 data review/National EBF and 1hr BF.png",
+ggsave("viz/Aug 23 FHDR/National EBF and 1hr BF.png",
        device="png",
        type="cairo",
        height = 6.2,
@@ -2333,7 +2333,7 @@ stunt_plt <- ggplot(chldstunt1, aes(x = mnthyr, y = cslp, colour=usaid_blue )) +
   basem 
 stunt_plt
 
-ggsave("viz/May 2023 data review/National Stunting Levels.png",
+ggsave("viz/Aug 23 FHDR/National Stunting Levels.png",
        device="png",
        type="cairo",
        height = 6.5,
@@ -2376,7 +2376,7 @@ cd_plt <- ggplot(chldDeworming, aes(x = mnthyr, y = chdewormP, colour=usaid_blue
   basem 
 cd_plt
 
-ggsave("viz/May 2023 data review/National Child deworming.png",
+ggsave("viz/Aug 23 FHDR/National Child deworming.png",
        device="png",
        type="cairo",
        height = 6.5,
@@ -2419,7 +2419,7 @@ waste_plt <- ggplot(chldwaste1, aes(x = mnthyr, y = cwrp, colour=usaid_blue )) +
   basem 
 waste_plt
 
-ggsave("viz/May 2023 data review/National wasting rates.png",
+ggsave("viz/Aug 23 FHDR/National wasting rates.png",
        device="png",
        type="cairo",
        height = 6.5,
