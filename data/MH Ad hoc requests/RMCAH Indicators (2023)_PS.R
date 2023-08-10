@@ -1173,7 +1173,7 @@ syphanc_plt <- ggplot(syphanc_prov, aes(x = mnthyr, y = rate, group = subpop, co
                      labels = percent,
                      breaks = c(.1,.2,.3,.4,.5,.6,.7,.8,.9, 1)) +
   #scale_x_date(date_labels="%b %y",date_breaks="3 months") +
-  labs(x="", y="", caption="Data Source: HMIS", title="Coverage of ANC and Syphilis Screening during ANC visits, 2019 - 2023 Q1") +
+  labs(x="", y="", caption="Data Source: HMIS", title="Syphilis Screening during ANC visits seems to be doing okay in all other provinces except for \nMuchinga, Northern, Northwestern, and Western provinces begining mid 2021.") +
   facet_wrap(~prov, ncol=4) +
   faceted +
   scale_color_manual(name ="",
@@ -1196,7 +1196,7 @@ ggsave("viz/Aug 23 FHDR/Syphilis and ANC Coverage facets.png",
 
 #'*________MATERNAL POSTNATAL CARE WITHIN 48HRS*
 
-MatPNC_prov <- read_xls("data/May 2023 FHDR/Reproductive Maternal Health_Provincial level monthly.xls")
+MatPNC_prov <- read_xls("data/Aug 2023 MHDR/Reproductive Maternal Health_Provincial level monthly.xls")
 names(MatPNC_prov)
 MatPNC_prov
 MatPNC_prov  <- MatPNC_prov  %>%
@@ -1224,12 +1224,12 @@ ggplot(MatPNC_prov, aes(x=mnthyr, y=MatPNCP)) +
                      labels = percent,
                      breaks = c(.2,.4,.6,.8,1)) +
   labs(x ="", y="", caption = "Data Source: HMIS") +labs(x ="", y="", caption = "Data Source: HMIS") +
-  ggtitle("Maternal Postnatal Care within 48 hours After Delivery, 2019 - 2023") +
+  ggtitle("Maternal Postnatal Care within 48 hours After Delivery shows \nimprovements across the provinces beginning 2021.") +
   facet_wrap(~prov, ncol=4) +
   faceted +
   scale_color_manual(values=usaid_blue) + basey
 
-ggsave("viz/May 2023 data review/Maternal Postnatal 48 faceted.png",
+ggsave("viz/Aug 23 FHDR/Maternal Postnatal 48 faceted.png",
        device="png",
        type="cairo",
        height = 6.5,
@@ -1238,7 +1238,7 @@ ggsave("viz/May 2023 data review/Maternal Postnatal 48 faceted.png",
 #'*_______Redraw for National Level*
 
 
-MatPNC <- read_xls("data/May 2023 FHDR/Reproductive Maternal Health_National level monthly.xls")
+MatPNC <- read_xls("data/Aug 2023 MHDR/Reproductive Maternal Health_National level monthly.xls")
 names(MatPNC)
 MatPNC
 MatPNC  <- MatPNC  %>%
@@ -1268,7 +1268,7 @@ ggplot(MatPNC, aes(x=mnthyr, y=MatPNCP)) +
   ggtitle("Maternal Postnatal Care within 48 hours After Delivery has been on an upward \ntrajectory since 2019 and now at a record high of above 63% in 2023!") +
   scale_color_manual(values=usaid_blue) + basey
 
-ggsave("viz/May 2023 data review/National Maternal Postnatal 48hr Care.png",
+ggsave("viz/Aug 23 FHDR/National Maternal Postnatal 48hr Care.png",
        device="png",
        type="cairo",
        height = 6.5,
@@ -1363,90 +1363,92 @@ ggsave("viz/Aug 23 FHDR/National Institutional delivery coverage.png",
 ### Do not visual the below indicator for now.
 ###'*__________CAESAREAN SECTION RATE*
 
-csection_prov <- read_xls("data/May 2023 FHDR/Reproductive Maternal Health_Provincial level monthly.xls")
-names(csection_prov)
-csection_prov
-csection_prov  <- csection_prov  %>%
-  mutate(month_chr = str_sub(periodname,
-                             start=1,
-                             end=nchar(periodname)-5),
-         month = factor(month_chr,
-                        levels=c("January","February","March","April","May","June","July","August","September","October","November","December")),
-         month_code = as.numeric(month), 
-         year = str_sub(periodname, 
-                        start=nchar(periodname)-4,
-                        end=nchar(periodname)),
-         monyr = paste(month_code, year, sep="-"),
-         mnthyr = my(monyr))
+#' csection_prov <- read_xls("data/May 2023 FHDR/Reproductive Maternal Health_Provincial level monthly.xls")
+#' names(csection_prov)
+#' csection_prov
+#' csection_prov  <- csection_prov  %>%
+#'   mutate(month_chr = str_sub(periodname,
+#'                              start=1,
+#'                              end=nchar(periodname)-5),
+#'          month = factor(month_chr,
+#'                         levels=c("January","February","March","April","May","June","July","August","September","October","November","December")),
+#'          month_code = as.numeric(month), 
+#'          year = str_sub(periodname, 
+#'                         start=nchar(periodname)-4,
+#'                         end=nchar(periodname)),
+#'          monyr = paste(month_code, year, sep="-"),
+#'          mnthyr = my(monyr))
+#' 
+#' 
+#' names(csection_prov)
+#' csection_prov <- csection_prov %>%
+#'   rename(prov=1,
+#'          csectrate=9) %>%
+#'   mutate(csectrateP = csectrate/100)
+#' ggplot(csection_prov, aes(x=mnthyr, y=csectrateP)) + 
+#'   geom_point(size=.5, alpha=.5, colour=usaid_blue) + 
+#'   stat_smooth(se=F, size=.7, alpha=.6, colour=usaid_blue) +
+#'   scale_y_continuous(limits = c(0,.6),
+#'                      labels = percent,
+#'                      breaks = c(.1,.2,.3,.4,.5,.6)) +
+#'   labs(x ="", y="", caption = "Data Source: HMIS") +labs(x ="", y="", caption = "Data Source: HMIS") +
+#'   ggtitle("Caesarean Section Rate (%), 2019 - 2023") +
+#'   facet_wrap(~prov, ncol=4) +
+#'   faceted +
+#'   scale_color_manual(values=usaid_blue) + basey
+#' 
+#' ggsave("viz/May 2023 data review/Provincial Caesarean Rate.png",
+#'        device="png",
+#'        type="cairo",
+#'        height = 6.5,
+#'        width = 11)
+#' 
+#' 
+#' #'*_______Redraw for National Level*
+#' 
+#' Csect <- read_xls("data/May 2023 FHDR/Reproductive Maternal Health_National level monthly.xls")
+#' names(Csect)
+#' Csect
+#' Csect  <- Csect  %>%
+#'   mutate(month_chr = str_sub(periodname,
+#'                              start=1,
+#'                              end=nchar(periodname)-5),
+#'          month = factor(month_chr,
+#'                         levels=c("January","February","March","April","May","June","July","August","September","October","November","December")),
+#'          month_code = as.numeric(month), 
+#'          year = str_sub(periodname, 
+#'                         start=nchar(periodname)-4,
+#'                         end=nchar(periodname)),
+#'          monyr = paste(month_code, year, sep="-"),
+#'          mnthyr = my(monyr))
+#' 
+#' 
+#' names(Csect)
+#' Csect <- Csect %>%
+#'   rename(Csect.rate=9) %>%
+#'   mutate(Csect.rateP = Csect.rate/100)
+#' ggplot(Csect, aes(x=mnthyr, y=Csect.rateP)) + 
+#'   geom_point(size=.5, alpha=.5, colour=usaid_blue) + 
+#'   stat_smooth(se=F, size=.8, alpha=.6, colour=usaid_blue) +
+#'   scale_y_continuous(limits = c(0,.6),
+#'                      labels = percent,
+#'                      breaks = c(.1,.2,.3,.4,.5,.6)) +
+#'   labs(x ="", y="", caption = "Data Source: HMIS") +labs(x ="", y="", caption = "Data Source: HMIS") +
+#'   ggtitle("Caesarean Section Rate at National level has been steadily increasing each year.") +
+#'   scale_color_manual(values=usaid_blue) + basey
+#' 
+#' ggsave("viz/May 2023 data review/National CSection rate.png",
+#'        device="png",
+#'        type="cairo",
+#'        height = 6.5,
+#'        width = 11)
 
 
-names(csection_prov)
-csection_prov <- csection_prov %>%
-  rename(prov=1,
-         csectrate=9) %>%
-  mutate(csectrateP = csectrate/100)
-ggplot(csection_prov, aes(x=mnthyr, y=csectrateP)) + 
-  geom_point(size=.5, alpha=.5, colour=usaid_blue) + 
-  stat_smooth(se=F, size=.7, alpha=.6, colour=usaid_blue) +
-  scale_y_continuous(limits = c(0,.6),
-                     labels = percent,
-                     breaks = c(.1,.2,.3,.4,.5,.6)) +
-  labs(x ="", y="", caption = "Data Source: HMIS") +labs(x ="", y="", caption = "Data Source: HMIS") +
-  ggtitle("Caesarean Section Rate (%), 2019 - 2023") +
-  facet_wrap(~prov, ncol=4) +
-  faceted +
-  scale_color_manual(values=usaid_blue) + basey
-
-ggsave("viz/May 2023 data review/Provincial Caesarean Rate.png",
-       device="png",
-       type="cairo",
-       height = 6.5,
-       width = 11)
-
-
-#'*_______Redraw for National Level*
-
-Csect <- read_xls("data/May 2023 FHDR/Reproductive Maternal Health_National level monthly.xls")
-names(Csect)
-Csect
-Csect  <- Csect  %>%
-  mutate(month_chr = str_sub(periodname,
-                             start=1,
-                             end=nchar(periodname)-5),
-         month = factor(month_chr,
-                        levels=c("January","February","March","April","May","June","July","August","September","October","November","December")),
-         month_code = as.numeric(month), 
-         year = str_sub(periodname, 
-                        start=nchar(periodname)-4,
-                        end=nchar(periodname)),
-         monyr = paste(month_code, year, sep="-"),
-         mnthyr = my(monyr))
-
-
-names(Csect)
-Csect <- Csect %>%
-  rename(Csect.rate=9) %>%
-  mutate(Csect.rateP = Csect.rate/100)
-ggplot(Csect, aes(x=mnthyr, y=Csect.rateP)) + 
-  geom_point(size=.5, alpha=.5, colour=usaid_blue) + 
-  stat_smooth(se=F, size=.8, alpha=.6, colour=usaid_blue) +
-  scale_y_continuous(limits = c(0,.6),
-                     labels = percent,
-                     breaks = c(.1,.2,.3,.4,.5,.6)) +
-  labs(x ="", y="", caption = "Data Source: HMIS") +labs(x ="", y="", caption = "Data Source: HMIS") +
-  ggtitle("Caesarean Section Rate at National level has been steadily increasing each year.") +
-  scale_color_manual(values=usaid_blue) + basey
-
-ggsave("viz/May 2023 data review/National CSection rate.png",
-       device="png",
-       type="cairo",
-       height = 6.5,
-       width = 11)
 
 
 #'*__________FOLIC ACID SUPPLEMENTATION (%) DURING ANC VISITS*
 
-folicsup_prov <- read_xls("data/May 2023 FHDR/Reproductive Maternal Health_Provincial level monthly.xls")
+folicsup_prov <- read_xls("data/Aug 2023 MHDR/Reproductive Maternal Health_Provincial level monthly.xls")
 names(folicsup_prov)
 folicsup_prov
 folicsup_prov  <- folicsup_prov  %>%
