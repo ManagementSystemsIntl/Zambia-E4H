@@ -312,7 +312,7 @@ ggsave("C:/Users/PIMPA.SAWULU/Desktop/R project doc_E4H/E4H-Zambia/graphs/Provin
 
 
 #'*National Maternal Mortality Ratio*
-mat <- read_xls("data/May 2023 FHDR/Reproductive Maternal Health_National level monthly.xls")
+mat <- read_xls("data/Aug 2023 MHDR/Reproductive Maternal Health_National level monthly.xls")
 mat  <- mat  %>%
   mutate(month_chr = str_sub(periodname,
                              start=1,
@@ -351,14 +351,14 @@ mmr_plt <- ggplot(mmr_1, aes(x = mnthyr, y = deaths , colour =   mmtype, linetyp
   scale_linetype_manual(name="",
                         labels= ("Maternal mortality facility ratio (per 100,000 live births)"), 
                         values=("solid"))+
-  labs(x="", y="", caption="Data Source: HMIS", title="Maternal mortality facility ratio (per 100,000 live births) has been increasing since mid 2020, \nand has hence maintained around 130 since mid 2021.") +
+  labs(x="", y="", caption="Data Source: HMIS", title="Maternal mortality facility ratio (per 100,000 live births) had been increasing since mid 2020, \nand has since shown a downward trend beginning 2022.") +
   scale_color_manual(name ="",
                      values = usaid_red,
                      labels ="Coverage of modern family planning adoption") + 
   baseX
 
 mmr_plt
-ggsave("viz/May 2023 data review/National Maternal Mortality Ratio.png",
+ggsave("viz/Aug 23 FHDR/National Maternal Mortality Ratio.png",
        device="png",
        type="cairo",
        height = 5.5,
@@ -367,7 +367,7 @@ ggsave("viz/May 2023 data review/National Maternal Mortality Ratio.png",
 
 
 #'*Provincial Maternal Mortality Ratio*
-matprv <- read_xls("data/May 2023 FHDR/Reproductive Maternal Health_Provincial level monthly.xls")
+matprv <- read_xls("data/Aug 2023 MHDR/Reproductive Maternal Health_Provincial level monthly.xls")
 mat  <- mat  %>%
   mutate(month_chr = str_sub(periodname,
                              start=1,
@@ -415,7 +415,7 @@ mmr_plt <- ggplot(mmr_1, aes(x = mnthyr, y = deaths , colour =   mmtype, linetyp
   baseX
 
 mmr_plt
-ggsave("viz/May 2023 data review/National Maternal Mortality Ratio.png",
+ggsave("viz/Aug 23 FHDR/National Maternal Mortality Ratio.png",
        device="png",
        type="cairo",
        height = 5.5,
