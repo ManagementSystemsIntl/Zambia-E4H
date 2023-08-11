@@ -2134,7 +2134,7 @@ NatBCG_plt <- ggplot(BCG_coverage, aes(x = mnthyr, y = Natbcgp, colour=usaid_blu
                      labels = percent,
                      breaks = c(.1,.2,.3,.4,.5,.6,.7,.8,.9, 1)) +
   scale_x_date(date_labels="%b %y",date_breaks="3 months") +
-  labs(x="", y="", caption="Data Source: HMIS", title="The Proportion of infants given BCG Under 1 has been hovering around 85% since January 2021") +
+  labs(x="", y="", caption="Data Source: HMIS", title="The Proportion of infants given BCG Under 1 has been hovering around 85% since January 2021 \nwith a minimal improvement in Q2 2023.") +
   scale_color_manual(name ="",
                      values = usaid_blue,
                      labels = "BCG Coverage (%) Under 1") + 
@@ -2175,7 +2175,7 @@ DPT_plt <- ggplot(DPT_coverage, aes(x = mnthyr, y = Natdptu1p, colour=usaid_blue
                      labels = percent,
                      breaks = c(.1,.2,.3,.4,.5,.6,.7,.8,.9, 1)) +
   scale_x_date(date_labels="%b %y",date_breaks="3 months") +
-  labs(x="", y="", caption="Data Source: HMIS", title="Proportion of infants given DPT 1st Dose Under 1, 2019 - 2023 ") +
+  labs(x="", y="", caption="Data Source: HMIS", title="Proportion of infants given DPT 1st Dose Under 1 has been hovering around 88% in the first two quarters of 2023.") +
   scale_color_manual(name ="",
                      values = usaid_blue,
                      labels = "DPT 1st dose Coverage (%) Under 1") + 
