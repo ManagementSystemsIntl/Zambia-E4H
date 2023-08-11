@@ -52,7 +52,7 @@ bfhr_plt <- ggplot(bfhr_prov, aes(x = mnthyr, y = rate, group = subpop, colour =
                      labels = percent,
                      breaks = c(.2,.4,.6,.8,1)) +
   labs(x ="", y="", caption = "Data Source: HMIS") +labs(x ="", y="", caption = "Data Source: HMIS") +
-  ggtitle("Proportion of Infants Breastfed within 1 hour of birth \nand those on EBF at 6 months, 2019 - 2023") +
+  ggtitle("Proportion of Infants Breastfed within 1 hour of birth \nand those on EBF at 6 months, 2019 - 2023 Q2.") +
   facet_wrap(~prov, ncol=4) +
   faceted +
   scale_color_manual(name ="",
@@ -61,7 +61,7 @@ bfhr_plt <- ggplot(bfhr_prov, aes(x = mnthyr, y = rate, group = subpop, colour =
 
 bfhr_plt
 
-ggsave("viz/May 2023 data review/Breastfed within 1 hour of birth and EBF facets.png",
+ggsave("viz/Aug 23 FHDR/Breastfed within 1 hour of birth and EBF facets.png",
        device="png",
        type="cairo",
        height = 6.5,
@@ -375,11 +375,11 @@ vitA_prov_plt <- ggplot(vitA_prov, aes(x = mnthyr, y = vitA.suppP, colour=usaid_
   geom_point(alpha=.4, size=.7) + 
   #geom_line(size=1) +
   geom_smooth(method = loess, size = .8, se=FALSE) +
-  scale_y_continuous(limits = c(0,.8),
+  scale_y_continuous(limits = c(0,.5),
                      labels = percent,
-                     breaks = c(.1,.2,.3,.4,.5,.6,.7,.8)) +
+                     breaks = c(.1,.2,.3,.4,.5)) +
   
-  labs(x="", y="", caption="Data Source: HMIS", title="Vitamin A Supplement Coverage, 2019 - 2023") +
+  labs(x="", y="", caption="Data Source: HMIS", title="The picture on Vitamin A Supplement at provincial level is no different from the national picture of below 30%.") +
   facet_wrap(~prov, ncol=4) +
   faceted +
   scale_color_manual(name ="",
@@ -565,7 +565,7 @@ dw_prov_plt <- ggplot(deworming_prov, aes(x = mnthyr, y = deworm.rateP, colour=u
                      labels = percent,
                      breaks = c(.1,.2,.3,.4,.5)) +
   
-  labs(x="", y="", caption="Data Source: HMIS", title="Child Deworming Rate, 2019 - 2023") +
+  labs(x="", y="", caption="Data Source: HMIS", title="Provincial Child Deworming Rates, 2019 - 2023 Q2.") +
   facet_wrap(~prov, ncol=4) +
   faceted +
   scale_color_manual(name ="",
