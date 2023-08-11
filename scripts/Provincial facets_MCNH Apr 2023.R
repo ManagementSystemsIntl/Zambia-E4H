@@ -181,7 +181,7 @@ fulmunized_plt <- ggplot(fulmunized_prov, aes(x = mnthyr, y = fiu1P, colour=usai
                      labels = percent,
                      breaks = c(.1,.2,.3,.4,.5,.6,.7,.8,.9, 1)) +
   # scale_x_date(date_labels="%b %y",date_breaks="4 months") +
-  labs(x="", y="", caption="Data Source: HMIS", title="Fully Immunized Coverage (%) Under 1, 2019 - 2023") +
+  labs(x="", y="", caption="Data Source: HMIS", title="Fully Immunized Coverage (%) Under 1 has been on a downward trend \nin Central, Eastern, Muchinga, Northerwestern, and Southern provinces since mid 2021.") +
   facet_wrap(~prov, ncol=4) +
   faceted +
   scale_color_manual(name ="",
