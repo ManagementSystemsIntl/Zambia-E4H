@@ -532,7 +532,7 @@ ggsave("C:/Users/PIMPA.SAWULU/Desktop/R project doc_E4H/E4H-Zambia/graphs/Provin
 
 #'*COVERAGE OF MODERN FAMILY PLANNING ADOPTION*
 
-fam <- read_xls("data/May 2023 FHDR/Family Planning data_National level monthly.xls")
+fam <- read_xls("data/Aug 2023 MHDR/Family Planning data_National level monthly.xls")
 fam  <- fam  %>%
   mutate(month_chr = str_sub(periodname,
                              start=1,
@@ -550,7 +550,7 @@ sum(fam$month_chr!=fam$month) # expecting 0 if vars same
 
 
 
-fam_prov <- read_xls("data/May 2023 FHDR/Family Planning data_Provincial level monthly.xls")
+fam_prov <- read_xls("data/Aug 2023 MHDR/Family Planning data_Provincial level monthly.xls")
 names(fam_prov)
 fam_prov
 fam_prov  <- fam_prov  %>%
@@ -587,14 +587,14 @@ crvg_plt <- ggplot(fam, aes(x=mnthyr, y=cvrg_fp, colour=usaid_blue)) +
                      labels = percent,
                      breaks = c(.1,.2,.3,.4,.5,.6,.7,.8)) +
   scale_x_date(date_labels="%b %y",date_breaks="3 months") +
-  labs(x="", y="", caption="Data Source: HMIS", title="Coverage of Modern Family Planning use among women of reproductive age has \nbeen on an upward trajectory since 2019 and improved to above 60% by July 2021") +
+  labs(x="", y="", caption="Data Source: HMIS", title="Coverage of Modern Family Planning use among women of reproductive age 2019 - 2023 Q2.") +
   scale_color_manual(name ="",
                      values = usaid_blue,
                      labels ="Coverage of modern family planning adoption") + 
   baseX
 
 crvg_plt
-ggsave("viz/May 2023 data review/Coverage of modern family planning adoption.png",
+ggsave("viz/Aug 23 FHDR/Coverage of modern family planning adoption.png",
        device="png",
        type="cairo",
        height = 6.5,
@@ -622,7 +622,7 @@ ggplot(fam_prov, aes(x=mnthyr, y=cvrg_fp)) +
   faceted +
   scale_color_manual(values=usaid_blue) + basey
 
-ggsave("viz/May 2023 data review/FP Coverage faceted.png",
+ggsave("viz/Aug 23 FHDR/FP Coverage faceted.png",
        device="png",
        type="cairo",
        height = 6.5,
@@ -641,14 +641,14 @@ ch_plt <- ggplot(fam, aes(x=mnthyr, y=wmn.vstd, colour=usaid_blue)) +
   geom_smooth(method = loess, size = .8, se=FALSE) +
   scale_y_continuous(labels=comma) +
   scale_x_date(date_labels="%b %y",date_breaks="3 months") +
-  labs(x="", y="", caption="Data Source: HMIS", title="Number of Women in reproductive age visted by CHA/CBV had slumped begining October 2020, \nbut has since shown an improvement starting June 2022.") +
+  labs(x="", y="", caption="Data Source: HMIS", title="Number of Women in reproductive age visted by CHA/CBV had slumped begining October 2020, \nbut has an upward trajectory beginning June 2022.") +
   scale_color_manual(name ="",
                      values = usaid_blue,
                      labels ="Women of Reproductive age visted by CHA") + 
   basey
 
 ch_plt
-ggsave("viz/May 2023 data review/Women of reproductive age visted by CHA.png",
+ggsave("viz/Aug 23 FHDR/Women of reproductive age visted by CHA.png",
        device="png",
        type="cairo",
        height = 6.5,
@@ -682,7 +682,7 @@ lrc_plt <- ggplot(larc, aes(x=mnthyr, y=larc.ab)) +
 
 lrc_plt
 
-ggsave("viz/May 2023 data review/Accessing LARCS.png",
+ggsave("viz/Aug 23 FHDR/Accessing LARCS.png",
        device="png",
        type="cairo",
        height = 6.5,
@@ -718,7 +718,7 @@ larc.dis.p_plt <- ggplot(larc, aes(x=mnthyr, y=larc.dis.p)) +
 
 larc.dis.p_plt
 
-ggsave("viz/May 2023 data review/Discontinuing LARCS.png",
+ggsave("viz/Aug 23 FHDR/Discontinuing LARCS.png",
        device="png",
        type="cairo",
        height = 6.5,
@@ -767,7 +767,7 @@ medim <- ggplot(iud3,aes(x=mnthyr, y=value, color=variable))+
 medim
 
 
-ggsave("viz/May 2023 data review/Medroxyprogesterone injection DMPA-IM.png",
+ggsave("viz/Aug 23 FHDR/Medroxyprogesterone injection DMPA-IM.png",
        device="png",
        type="cairo",
        height = 6.5,
@@ -822,7 +822,7 @@ ggsave("viz/May 2023 data review/Medroxyprogesterone injection DMPA-IM.png",
 
 #'*_____NATIONAL FP METHODS -TYPE DISAGGS*
 
-fpmethod <- read_xls("data/May 2023 FHDR/IUCD_Implant_Injectables_National monthly.xls")
+fpmethod <- read_xls("data/Aug 2023 MHDR/IUCD_Implant_Injectables_National monthly.xls")
 fpmethod  <- fpmethod  %>%
   mutate(month_chr = str_sub(periodname,
                              start=1,
@@ -870,7 +870,7 @@ method_plt <- ggplot(fpmethod3, aes(x=mnthyr, y=value, color=variable))+
 method_plt
 
 
-ggsave("viz/May 2023 data review/Family planning methods.png",
+ggsave("viz/Aug 23 FHDR/Family planning methods.png",
        device="png",
        type="cairo",
        height = 6.5,
@@ -916,7 +916,7 @@ Accpt_plt <- ggplot(newAccpt3,aes(x=mnthyr, y=value, color=variable))+
 Accpt_plt
 
 
-ggsave("viz/May 2023 data review/New Acceptors Starting FP(with outliers).png",
+ggsave("viz/Aug 23 FHDR/New Acceptors Starting FP(with outliers).png",
        device="png",
        type="cairo",
        height = 6.5,
@@ -2277,7 +2277,7 @@ brstfeeding_plt <- ggplot(breastfeed, aes(x = mnthyr, y = rate, group = subpop, 
                      labels = percent,
                      breaks = c(.1,.2,.3,.4,.5,.6,.7,.8,.9, 1)) +
   scale_x_date(date_labels="%b %y",date_breaks="3 months") +
-  labs(x="", y="", caption="Data Source: HMIS", title="Proportion of infants breastfed within 1 hour of birth has been improving and steadily above 85%") +
+  labs(x="", y="", caption="Data Source: HMIS", title="Proportion of infants breastfed within 1 hour of birth \nshows a steady pattern with a minimal deep in Q2 of 2023.") +
   scale_color_manual(name ="",
                      values = usaid_palette,
                      labels = c("Initiation on breastmilk within one hour of birth", "Infants on EBF at 6 months")) + basey
@@ -2326,7 +2326,7 @@ stunt_plt <- ggplot(chldstunt1, aes(x = mnthyr, y = cslp, colour=usaid_blue )) +
                      labels = percent,
                      breaks = c(.01,.02,.03,.04,.05)) +
   scale_x_date(date_labels="%b %y",date_breaks="3 months") +
-  labs(x="", y="", caption="Data Source: HMIS", title="The Stunting Rates in Under 5s at Facility have been below 2% at National level") +
+  labs(x="", y="", caption="Data Source: HMIS", title="The Stunting Rates in Under 5s at Facility have been below 2% at National level.") +
   scale_color_manual(name ="",
                      values = usaid_blue,
                      labels = "Stunting Rates") + 
@@ -2412,7 +2412,7 @@ waste_plt <- ggplot(chldwaste1, aes(x = mnthyr, y = cwrp, colour=usaid_blue )) +
                      labels = percent,
                      breaks = c(.01,.02,.03,.04,.05)) +
   scale_x_date(date_labels="%b %y",date_breaks="3 months") +
-  labs(x="", y="", caption="Data Source: HMIS", title="The Wasting Rates in Under 5s at Facility have been below 1% at National level") +
+  labs(x="", y="", caption="Data Source: HMIS", title="The Wasting Rates in Under 5s at Facility have been below 1% at National level.") +
   scale_color_manual(name ="",
                      values = usaid_blue,
                      labels = "Wasting Rates (%)") + 
