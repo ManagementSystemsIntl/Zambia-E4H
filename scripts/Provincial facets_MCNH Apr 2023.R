@@ -678,7 +678,6 @@ sum(fam_prov$month_chr!=fam_prov$month) # expecting 0 if vars same
 
 
 
-
 #'*WOMEN OF REPRODUCTIVE AGE VISITED BY CHA's*
 names(fam_prov)
 fam_prov <- fam_prov %>%
@@ -688,7 +687,7 @@ fam_prov <- fam_prov %>%
 chavst_plt <- ggplot(fam_prov, aes(x=mnthyr, y=wmn.vstd, colour=usaid_blue)) + 
   #geom_bar(stat="identity") +
   geom_point(alpha=.6, size=.7) +
-  geom_smooth(method = loess, size = .8, se=FALSE) +
+  geom_smooth(method = "loess", size = .8, se=FALSE) +
   scale_y_continuous(labels=comma) +
   labs(x="", y="", caption="Data Source: HMIS", title="Number of Women in reproductive age visited by CHA.") +
   facet_wrap(~prov, ncol=4) +

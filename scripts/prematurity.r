@@ -632,7 +632,7 @@ ggsave("viz/prematurity/perinatal deaths.png",
        height = 5.5,
        width = 11)
 
-#'*Stillbirths*
+#'*Stillbirths..................Adjusted for August 2023*
 pr.mr.st2
 frsh.stillmacerbirth <- pr.mr.st2 %>%
   select(1,4,5)
@@ -683,7 +683,7 @@ ggplot(frsh.stillmacerbirth, aes(x = mth, y = rate, group = subRt, fill = subRt)
   scale_fill_manual(name ="",
                     values = c(usaid_red,usaid_blue),labels = c("Macerated Stillbirth","Fresh Stillbirth")) + base
 
-ggsave("viz/prematurity Apr 2023/stillbirths.png",
+ggsave("viz/prematurity Apr 2023/stillbirths Aug 23.png",
        device="png",
        type="cairo",
        height = 6.5,
