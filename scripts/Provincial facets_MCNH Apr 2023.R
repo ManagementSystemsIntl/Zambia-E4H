@@ -439,7 +439,7 @@ stunt_prov_plt <- ggplot(stunting_prov, aes(x = mnthyr, y = stunt.rateP, colour=
                      labels = percent,
                      breaks = c(.01,.02,.03,.04,.05)) +
   
-  labs(x="", y="", caption="Data Source: HMIS", title="Stunting rate (%) in under 5s at facility, 2019 - 2023") +
+  labs(x="", y="", caption="Data Source: HMIS", title="Stunting rate (%) in under 5s at facility seems to be increasing in Muchinga, \nand Northern though below 2% (2019 - 2023 Q2).") +
   facet_wrap(~prov, ncol=4) +
   faceted +
   scale_color_manual(name ="",
@@ -502,7 +502,7 @@ waste_prov_plt <- ggplot(wasting_prov, aes(x = mnthyr, y = waste.rateP, colour=u
                      labels = percent,
                      breaks = c(.01,.02,.03,.04,.05)) +
   
-  labs(x="", y="", caption="Data Source: HMIS", title="Wasting rate (%) in under 5s at facility, 2019 - 2023") +
+  labs(x="", y="", caption="Data Source: HMIS", title="Provincial Wasting rate (%) in under 5s at facility, (2019 - 2023 Q2).") +
   facet_wrap(~prov, ncol=4) +
   faceted +
   scale_color_manual(name ="",
