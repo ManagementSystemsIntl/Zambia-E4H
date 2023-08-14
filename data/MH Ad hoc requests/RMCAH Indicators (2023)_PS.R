@@ -713,7 +713,7 @@ larc.dis.p_plt <- ggplot(larc, aes(x=mnthyr, y=larc.dis.p)) +
   labs(x="",
        y="",
        caption="Data Source: HMIS",
-       title="Percentage of clients discontinuing LARC decreased from 2019 to mid-2021, and has since increased.") + 
+       title="Percentage of clients discontinuing LARC decreased from 2019 to mid-2021, \nand has since increased to around 30%.") + 
   baseX
 
 larc.dis.p_plt
@@ -863,7 +863,7 @@ method_plt <- ggplot(fpmethod3, aes(x=mnthyr, y=value, color=variable))+
   labs(x="",
        y="",
        caption="Data Source: HMIS",
-       title="Family Planning Methods and their usage/consumption, 2019 - 2023") +
+       title="Family Planning Methods and their usage/consumption, (2019 - 2023 Q2) \nshows that injectables are the most used.") +
   basey + scale_color_manual(name ="",
                              values =c(light_blue,light_grey,usaid_blue),
                              labels = c("IUCDs","Implants","Injectables"))
@@ -909,7 +909,7 @@ Accpt_plt <- ggplot(newAccpt3,aes(x=mnthyr, y=value, color=variable))+
   labs(x="",
        y="",
        caption="Data Source: HMIS",
-       title="Family Planning New Acceptors Starting FP by Age") +
+       title="Family Planning New Acceptors Starting FP disaggregated by Age.") +
   basey + scale_color_manual(name ="",
                              values =c(light_blue,light_grey,usaid_blue, usaid_red),
                              labels = c("under 15yrs","15-19yrs","20-24yrs","above 25yrs"))
@@ -1888,11 +1888,11 @@ ggplot(mat, aes(x = mnthyr, y = rate, group = subpop, colour = subpop)) +
   scale_y_continuous(limits = c(0,1),
                      labels = percent,
                      breaks = c(.1,.2,.3,.4,.5,.6,.7,.8,.9, 1)) +
-  scale_x_date(date_labels="%b %Y",date_breaks="3 months") +
+  scale_x_date(date_labels="%b %y",date_breaks="3 months") +
   labs(x ="", y="", caption = "Data Source: HMIS") +labs(x ="", y="", caption = "Data Source: HMIS") +
   # xlab("", caption = "Data Source: HMIS") + 
   # ylab("") +
-  ggtitle("Proportion of expected pregnancies receiving Antenatal Care (ANC), 2019 - 2023") +
+  ggtitle("Proportion of expected pregnancies receiving Antenatal Care (ANC), 2019 - 2023 Q2.") +
   scale_color_manual(name ="",
                      values = usaid_palette,
                      labels = c("1st ANC coverage (all trimesters)", "1st ANC Coverage (1st Trimester)", 
