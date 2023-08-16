@@ -348,7 +348,7 @@ ggsave("viz/prematurity/perinatal deaths.png",
 source("scripts/r prep2.r")
 source("scripts/r prep3.r")
 
-perinatal.mort <- read_xlsx("data/prematurity April 2023/perinatal mortality rate q1s.xlsx")
+perinatal.mort <- read_xlsx("data/Aug 2023 MHDR/perinatal mortality rate q2s_2019_2023.xlsx")
 perinatal.mort  <- perinatal.mort  %>%
   mutate(year = str_sub(period,
                         start=nchar(period)-4,
@@ -410,8 +410,8 @@ ggplot(perinatal.mort5, aes(geometry = geometry, fill = rate)) +
   scale_fill_carto_c(name="Proportion of\n Mortality Rate"
                      , palette = "Burg") +
   labs(x="", y="", caption = "Data Source: PDSR & HMIS",
-       title = "Perinatal Mortality Rate - Quarters 1, 2019-2023"
-       , subtitle = "Darker colors represent a higher proportion of mortality rate") + #for faceted and xy labels include x="Longitude", y="Latitude", +faceted
+       title = "Perinatal Mortality Rate - Quarters 2, 2019-2023."
+       , subtitle = "Darker colors represent a higher proportion of mortality rate.") + #for faceted and xy labels include x="Longitude", y="Latitude", +faceted
   theme_void() +
   theme(plot.title.position = "plot",
         plot.title = element_text(size = 16, hjust=0.5, family="Gill Sans Mt", face="bold"),
@@ -432,7 +432,7 @@ ggplot(perinatal.mort5, aes(geometry = geometry, fill = rate)) +
 #   addTiles() %>%
 #   addPolygons(label = zam.boundary2$shapeName)
 
-ggsave("viz/prematurity Apr 2023/q1 perinatal_mortality_rate.png",
+ggsave("viz/Aug 23 FHDR/q2s perinatal_mortality_rate.png",
        device="png",
        type="cairo",
        height = 6.5,
