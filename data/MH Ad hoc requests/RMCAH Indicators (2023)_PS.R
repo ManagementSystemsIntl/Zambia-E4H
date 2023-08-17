@@ -993,7 +993,7 @@ frthPlusANC_prov  <- frthPlusANC_prov  %>%
          monyr = paste(month_code, year, sep="-"),
          mnthyr = my(monyr))
 
-sum(fam_prov$month_chr!=fam_prov$month) # expecting 0 if vars same
+#sum(fam_prov$month_chr!=fam_prov$month) # expecting 0 if vars same
 
 
 names(frthPlusANC_prov)
