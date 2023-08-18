@@ -582,7 +582,7 @@ colnames(fam)
 crvg_plt <- ggplot(fam, aes(x=mnthyr, y=cvrg_fp, colour=usaid_blue)) + 
   geom_point(alpha=.6, size=1.5) + 
   #geom_line(size=1) +
-  geom_smooth(method = loess, size = .8, se=FALSE) +
+  geom_smooth(method = loess, linewidth = .8, se=FALSE) +
   scale_y_continuous(limits = c(0,.8),
                      labels = percent,
                      breaks = c(.1,.2,.3,.4,.5,.6,.7,.8)) +
