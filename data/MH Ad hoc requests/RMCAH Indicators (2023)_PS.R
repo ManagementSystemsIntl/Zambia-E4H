@@ -601,7 +601,7 @@ ggsave("viz/Aug 23 FHDR/Coverage of modern family planning adoption.png",
        width = 11)
 
 
-#'*COVERAGE OF MODERN FAMILY PLANNING ADOPTION BY PROVINCE*
+#'*COVERAGE OF MODERN FAMILY PLANNING ADOPTION BY PROVINCE....reconstruct the code!*
 
 names(fam_prov)
 names(fam_prov)
@@ -610,19 +610,20 @@ fam_prov <- fam_prov %>%
          wmn.mfp=4,
          wmn.vstd=3) %>%
   mutate(cvrg_fp = wmn.mfp/wmn.vstd)
-ggplot(fam_prov, aes(x=mnthyr, y=cvrg_fp)) + 
-  geom_point(size=.5, alpha=.5, colour=usaid_blue) + 
-  stat_smooth(se=F, size=.8, alpha=.6, colour=usaid_blue) +
+ggplot(fam_prov, aes(x=mnthyr, y=cvrg_fp, colour=usaid_blue)) + 
+  geom_point(size=.5, alpha=.5, colour=usaid_blue) +
+  #geom_smooth(method = loess, Se=F, size=.8, alpha=.6, colour=usaid_blue)
+  geom_smooth(method = loess, Se=F, size=.8) +
   scale_y_continuous(limits = c(0,1),
                      labels = percent,
                      breaks = c(.2,.4,.6,.8,1)) +
-  labs(x ="", y="", caption = "Data Source: HMIS") +labs(x ="", y="", caption = "Data Source: HMIS") +
+  labs(x ="", y="", caption = "Data Source: HMIS") + labs(x ="", y="", caption = "Data Source: HMIS") +
   ggtitle("Provincial Coverage of Modern Family Planning utilization, 2019 - 2023") +
   facet_wrap(~prov, ncol=4) +
   faceted +
   scale_color_manual(values=usaid_blue) + basey
 
-ggsave("viz/Aug 23 FHDR/FP Coverage faceted.png",
+wggsave("viz/Aug 23 FHDR/FP Coverage faceted.png",
        device="png",
        type="cairo",
        height = 6.5,
