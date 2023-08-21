@@ -554,7 +554,7 @@ prema.rate2 <- prema.rate2 %>%
 
 prema.rate2
 
-prema.rate3 <- prema.rate2 %>% 
+prema.rate3 <- prema.rate2 %>%
   gather(key = subRt , value = rate, c(prema.rate.prt))
 
 prema.rate3
@@ -567,18 +567,16 @@ ggplot(prema.rate3, aes(x = period, y = rate, group = subRt, colour = subRt)) +
                      labels = percent,
                      breaks = c(.1,.2,.3,.4,.5,.6,.7,.8,.9, 1)) +
   scale_x_date(date_labels="%b %y",date_breaks="4 months") +
-  xlab("") + 
-  ylab("") +
-  ggtitle("Prematurity Rate , Sept 2017 - Mar 2023") +
+  labs(x="", y="", caption="Data Source: PDSR", title="Prematurity Rate , Sept 2017 - Jul 2023.") +
   scale_color_manual(name ="",
                      values = usaid_red) + 
   baseX
 
-ggsave("viz/prematurity Apr 2023/prematurity_rate.png",
+ggsave("viz/prematurity Apr 2023/prematurity_rate Aug 23.png",
        device="png",
        type="cairo",
-       height = 5.5,
-       width = 12)
+       height = 6.0,
+       width = 11)
 
 
 #'*Perinatal deaths, Fresh Still & Macerated Stillbirths*
