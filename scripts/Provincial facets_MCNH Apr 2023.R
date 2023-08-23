@@ -684,10 +684,10 @@ fam_prov <- fam_prov %>%
   rename(prov=2,
          wmn.vstd=3)
 
-chavst_plt <- ggplot(fam_prov, aes(x=mnthyr, y=wmn.vstd, colour=usaid_blue)) + 
+chavst_plt <- ggplot(fam_prov, aes(x=mnthyr, y=wmn.vstd, na.rm = TRUE, colour=usaid_blue)) + 
   #geom_bar(stat="identity") +
   geom_point(alpha=.6, size=.7) +
-  geom_smooth(method = "loess", size = .8, se=FALSE) +
+  geom_smooth(method = loess, size = .8, se=FALSE) +
   scale_y_continuous(labels=comma) +
   labs(x="", y="", caption="Data Source: HMIS", title="Number of Women in reproductive age visited by CHA.") +
   facet_wrap(~prov, ncol=4) +
