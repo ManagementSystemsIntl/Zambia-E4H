@@ -1,7 +1,12 @@
-source("C:/Users/PIMPA.SAWULU/Desktop/R project doc_E4H/E4H-Zambia/scripts/r prep3.r")
 
 
-mtnlAd_prov <- read_xls("C:/Users/PIMPA.SAWULU/Desktop/R project doc_E4H/E4H-Zambia/data/MH Ad hoc requests/Maternal Health data_Provincial level yearly.xls")
+#source("C:/Users/PIMPA.SAWULU/Desktop/R project doc_E4H/E4H-Zambia/scripts/r prep3.r")
+
+source("scripts/r prep3.r")
+
+#mtnlAd_prov <- read_xls("C:/Users/PIMPA.SAWULU/Desktop/R project doc_E4H/E4H-Zambia/data/MH Ad hoc requests/Maternal Health data_Provincial level yearly.xls")
+mtnlAd_prov <- read_xls("data/MH Ad hoc requests/Maternal Health data_Provincial level yearly.xls")
+
 names(mtnlAd_prov)
 mtnlAd_prov1 <- mtnlAd_prov %>%
   select(1,2,6)
@@ -375,7 +380,9 @@ ggsave("C:/Users/PIMPA.SAWULU/Desktop/R project doc_E4H/E4H-Zambia/graphs/Nation
 
 #'*Provincial Maternal Mortality Ratio and Reporting Rates*
 source("scripts/r prep2.r")
-matprv1 <- read_xls("C:/Users/PIMPA.SAWULU/Desktop/R project doc_E4H/E4H-Zambia/data/MH Ad hoc requests/Maternal Mortality Ratio and Reporting rates_ (2019 to 2022).xls")
+
+#matprv1 <- read_xls("C:/Users/PIMPA.SAWULU/Desktop/R project doc_E4H/E4H-Zambia/data/MH Ad hoc requests/Maternal Mortality Ratio and Reporting rates_ (2019 to 2022).xls")
+matprv1 <- read_xls("data/MH Ad hoc requests/Maternal Mortality Ratio and Reporting rates_ (2019 to 2022).xls")
 
 
 matprv  <- matprv1  %>%
@@ -784,7 +791,7 @@ ggsave("viz/Aug 23 FHDR/Medroxyprogesterone injection DMPA-IM.png",
 # names(fam)
 # iud <- fam %>%
 #   select(11:12,56) %>%
-#   na.omit() 
+#   na.omit()
 # 
 # iud
 # colnames(iud)
@@ -818,8 +825,8 @@ ggsave("viz/Aug 23 FHDR/Medroxyprogesterone injection DMPA-IM.png",
 #        type="cairo",
 #        height = 6.5,
 #        width = 11)
-
-
+# 
+# 
 
 #'*_____NATIONAL FP METHODS -TYPE DISAGGS*
 
