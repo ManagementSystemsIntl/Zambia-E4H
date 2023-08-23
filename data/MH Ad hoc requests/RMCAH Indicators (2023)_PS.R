@@ -1,12 +1,7 @@
+source("C:/Users/PIMPA.SAWULU/Desktop/R project doc_E4H/E4H-Zambia/scripts/r prep3.r")
 
 
-#source("C:/Users/PIMPA.SAWULU/Desktop/R project doc_E4H/E4H-Zambia/scripts/r prep3.r")
-
-source("scripts/r prep3.r")
-
-#mtnlAd_prov <- read_xls("C:/Users/PIMPA.SAWULU/Desktop/R project doc_E4H/E4H-Zambia/data/MH Ad hoc requests/Maternal Health data_Provincial level yearly.xls")
-mtnlAd_prov <- read_xls("data/MH Ad hoc requests/Maternal Health data_Provincial level yearly.xls")
-
+mtnlAd_prov <- read_xls("C:/Users/PIMPA.SAWULU/Desktop/R project doc_E4H/E4H-Zambia/data/MH Ad hoc requests/Maternal Health data_Provincial level yearly.xls")
 names(mtnlAd_prov)
 mtnlAd_prov1 <- mtnlAd_prov %>%
   select(1,2,6)
@@ -380,9 +375,7 @@ ggsave("C:/Users/PIMPA.SAWULU/Desktop/R project doc_E4H/E4H-Zambia/graphs/Nation
 
 #'*Provincial Maternal Mortality Ratio and Reporting Rates*
 source("scripts/r prep2.r")
-
-#matprv1 <- read_xls("C:/Users/PIMPA.SAWULU/Desktop/R project doc_E4H/E4H-Zambia/data/MH Ad hoc requests/Maternal Mortality Ratio and Reporting rates_ (2019 to 2022).xls")
-matprv1 <- read_xls("data/MH Ad hoc requests/Maternal Mortality Ratio and Reporting rates_ (2019 to 2022).xls")
+matprv1 <- read_xls("C:/Users/PIMPA.SAWULU/Desktop/R project doc_E4H/E4H-Zambia/data/MH Ad hoc requests/Maternal Mortality Ratio and Reporting rates_ (2019 to 2022).xls")
 
 
 matprv  <- matprv1  %>%
@@ -620,17 +613,17 @@ fam_prov <- fam_prov %>%
 ggplot(fam_prov, aes(x=mnthyr, y=cvrg_fp, colour=usaid_blue)) + 
   geom_point(size=.5, alpha=.5, colour=usaid_blue) +
   #geom_smooth(method = loess, Se=F, size=.8, alpha=.6, colour=usaid_blue)
-  geom_smooth(method = loess, Se=F, size=.8) +
+  geom_smooth(method = loess, Se=F, linewidth=.8) +
   scale_y_continuous(limits = c(0,1),
                      labels = percent,
                      breaks = c(.2,.4,.6,.8,1)) +
-  labs(x ="", y="", caption = "Data Source: HMIS") + labs(x ="", y="", caption = "Data Source: HMIS") +
+  labs(x ="", y="", caption = "Data Source: HMIS") + #labs(x ="", y="", caption = "Data Source: HMIS") +
   ggtitle("Provincial Coverage of Modern Family Planning utilization, 2019 - 2023") +
   facet_wrap(~prov, ncol=4) +
   faceted +
   scale_color_manual(values=usaid_blue) + basey
 
-wggsave("viz/Aug 23 FHDR/FP Coverage faceted.png",
+ggsave("viz/Aug 23 FHDR/FP Coverage faceted.png",
        device="png",
        type="cairo",
        height = 6.5,
@@ -791,7 +784,7 @@ ggsave("viz/Aug 23 FHDR/Medroxyprogesterone injection DMPA-IM.png",
 # names(fam)
 # iud <- fam %>%
 #   select(11:12,56) %>%
-#   na.omit()
+#   na.omit() 
 # 
 # iud
 # colnames(iud)
@@ -825,8 +818,8 @@ ggsave("viz/Aug 23 FHDR/Medroxyprogesterone injection DMPA-IM.png",
 #        type="cairo",
 #        height = 6.5,
 #        width = 11)
-# 
-# 
+
+
 
 #'*_____NATIONAL FP METHODS -TYPE DISAGGS*
 
