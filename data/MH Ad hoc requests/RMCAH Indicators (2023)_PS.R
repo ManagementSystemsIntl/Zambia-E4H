@@ -639,7 +639,7 @@ fam <- fam %>%
 ch_plt <- ggplot(fam, aes(x=mnthyr, y=wmn.vstd, colour=usaid_blue)) + 
   geom_point(alpha=.6, size=1.5) + 
   #geom_line(size=1) +
-  geom_smooth(method = loess, size = .8, se=FALSE) +
+  geom_smooth(method = loess, linewidth = .8, se=FALSE) +
   scale_y_continuous(labels=comma) +
   scale_x_date(date_labels="%b %y",date_breaks="3 months") +
   labs(x="", y="", caption="Data Source: HMIS", title="Number of Women in reproductive age visted by CHA/CBV had slumped begining October 2020, \nbut has an upward trajectory beginning June 2022.") +
