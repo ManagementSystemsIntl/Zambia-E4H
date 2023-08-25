@@ -687,7 +687,7 @@ fam_prov <- fam_prov %>%
 chavst_plt <- ggplot(fam_prov, aes(x=mnthyr, y=wmn.vstd, na.rm = TRUE, colour=usaid_blue)) + 
   #geom_bar(stat="identity") +
   geom_point(alpha=.6, size=.7) +
-  geom_smooth(method = loess, size = .8, se=FALSE) +
+  geom_smooth(method = loess, linewidth = .8, se=FALSE) +
   scale_y_continuous(labels=comma) +
   labs(x="", y="", caption="Data Source: HMIS", title="Number of Women in reproductive age visited by CHA.") +
   facet_wrap(~prov, ncol=4) +
@@ -921,7 +921,7 @@ ggsave("viz/May 2023 data review/Provincial Family planning New Acceptors facets
 
 #'*Provincial Maternal Mortality Ratio and Reporting Rates*
 
-matprv1 <- read_xls("data/May 2023 FHDR/Maternal MR and RR_provincial (2019-2023).xls")
+matprv1 <- read_xls("data/Aug 2023 MHDR/Maternal MR and RR_provincial (2019-2023).xls")
 
 
 matprv  <- matprv1  %>%
@@ -965,13 +965,13 @@ ggplot(matprv3, aes(x=yr, y=mr)) +
   facet_wrap(~prov) +
   faceted +
   scale_y_continuous(sec.axis = sec_axis(trans = ~ .*0.0030,name = "Reporting rate", labels = scales::label_percent())) +
-  labs(x="", y="Mortality Ratio", caption="Data Source: HMIS",title="Maternal Mortality Ratio and Reporting rates - Quarters 1, 2019-2023") +
+  labs(x="", y="Mortality Ratio", caption="Data Source: HMIS",title="Maternal Mortality Ratio and Reporting rates - Quarters 2, 2019 - 2023.") +
   scale_color_manual(name ="",
                      values = usaid_red,
                      labels = c("HIA2 Reporting rate (%)")) + 
   basem + geom_label(aes( x= yr, y = hrr*3.34,label=hrr), fontface = "bold", hjust=0.6, vjust = 0.7)
 
-ggsave("viz/May 2023 data review/MMR and HIA2 RR.png",
+ggsave("viz/Aug 23 FHDR/MMR and HIA2 RR Facets.png",
        device="png",
        type="cairo",
        height = 6.5,

@@ -1752,7 +1752,7 @@ ggsave("viz/Aug 23 FHDR/National High risk pregnancies.png",
 
 #'*________MATERNAL MORTALITY RATIO AND HIA2 REPORTING RATES*
 
-matmr1 <- read_xls("data/May 2023 FHDR/Maternal MR and RR_national (2019-2023).xls")
+matmr1 <- read_xls("data/Aug 2023 MHDR/Maternal MR and RR_national (2019-2023).xls")
 
 
 matmr  <- matmr1  %>%
@@ -1795,13 +1795,13 @@ ggplot(matmr2, aes(x=yr, y=mr)) +
   # facet_wrap(~prov) +
   # faceted +
   scale_y_continuous(sec.axis = sec_axis(trans = ~ .*0.0030,name = "Reporting rate", labels = scales::label_percent())) +
-  labs(x="", y="Mortality Ratio", caption="Data Source: HMIS",title="Maternal Mortality Ratio and Reporting rates - Quarters 1, 2019-2023") +
+  labs(x="", y="Mortality Ratio", caption="Data Source: HMIS",title="Maternal Mortality Ratio and Reporting rates - Quarters 2, 2019 - 2023.") +
   scale_color_manual(name ="",
                      values = usaid_red,
                      labels = c("HIA2 Reporting rate (%)")) + 
   basem + geom_label(aes( x= yr, y = hrr*3.34,label=hrr), fontface = "bold", hjust=0.6, vjust = 0.7)
 
-ggsave("viz/May 2023 data review/National MMR and HIA2 RR.png",
+ggsave("viz/Aug 23 FHDR/National MMR and HIA2 RR.png",
        device="png",
        type="cairo",
        height = 6.5,
