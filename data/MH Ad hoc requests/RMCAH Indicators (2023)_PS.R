@@ -2531,11 +2531,11 @@ ggplot(chldMalt_prov, aes(x = mnthyr, y = rate, group = subpop, colour = subpop)
   scale_y_continuous(limits = c(0,1),
                      labels = percent,
                      breaks = c(.1,.2,.3,.4,.5,.6,.7,.8,.9, 1)) +
-  scale_x_date(date_labels="%b %y",date_breaks="3 months") +
+  #scale_x_date(date_labels="%b %y",date_breaks="3 months") +
   labs(x ="", y="", caption = "Data Source: HMIS") +labs(x ="", y="", caption = "Data Source: HMIS") +
   facet_wrap(~prov, ncol=4) +
   faceted +
-  ggtitle("Provincial Proportion of Child Malnutrition Admission Rates, and Overwieght/obese (%), 2019 - 2023 Q2.") +
+  ggtitle("The proportion of Child Malnutrition admission rates (%) for Severe malnutrition in all the provinces is on an \nupward trajectory, except for Lusaka province! (2021 - 2023 Q2.)") +
   scale_color_manual(name ="",
                      values = usaid_palette,
                      labels = c("Child Acute Malnutrition (Moderate)", "Child Acute Malnutrition (Severe)", 
