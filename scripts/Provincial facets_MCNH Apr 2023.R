@@ -658,7 +658,56 @@ ggsave("viz/Aug 23 FHDR/Provincial ANCs PS.png",
 #'*________________________FAMILY PLANNING INDICATORS*
 
 
+#' fam_prov <- read_xls("data/Aug 2023 MHDR/Family Planning data_Provincial level monthly.xls")
+#' names(fam_prov)
+#' fam_prov
+#' fam_prov  <- fam_prov  %>%
+#'   mutate(month_chr = str_sub(periodname,
+#'                              start=1,
+#'                              end=nchar(periodname)-5),
+#'          month = factor(month_chr,
+#'                         levels=c("January","February","March","April","May","June","July","August","September","October","November","December")),
+#'          month_code = as.numeric(month), 
+#'          year = str_sub(periodname, 
+#'                         start=nchar(periodname)-4,
+#'                         end=nchar(periodname)),
+#'          monyr = paste(month_code, year, sep="-"),
+#'          mnthyr = my(monyr))
+#' 
+#' sum(fam_prov$month_chr!=fam_prov$month) # expecting 0 if vars same
+#' 
+#' 
+#' 
+#' #'*WOMEN OF REPRODUCTIVE AGE VISITED BY CHA's*
+#' names(fam_prov)
+#' fam_prov <- fam_prov %>%
+#'   rename(prov=2,
+#'          wmn.vstd=3)
+
+# chavst_plt <- ggplot(fam_prov, aes(x=mnthyr, y=wmn.vstd, na.rm = TRUE, colour=usaid_blue)) + 
+#   #geom_bar(stat="identity") +
+#   geom_point(alpha=.6, size=.7) +
+#   geom_smooth(method = loess, linewidth = .8, se=FALSE) +
+#   scale_y_continuous(labels=comma) +
+#   labs(x="", y="", caption="Data Source: HMIS", title="Number of Women in reproductive age visited by CHA.") +
+#   facet_wrap(~prov, ncol=4) +
+#   faceted +
+#   scale_color_manual(name ="",
+#                      values = usaid_blue,
+#                      labels ="Women of Reproductive age visited by CHA") +  
+#   base
+# 
+# chavst_plt
+# ggsave("viz/Aug 23 FHDR/Women of reproductive age visited by CHA.png",
+#        device="png",
+#        type="cairo",
+#        height = 6.5,
+#        width = 11)
+
+source("scripts/r prep2.r")
+
 fam_prov <- read_xls("data/Aug 2023 MHDR/Family Planning data_Provincial level monthly.xls")
+
 names(fam_prov)
 fam_prov
 fam_prov  <- fam_prov  %>%
@@ -667,42 +716,34 @@ fam_prov  <- fam_prov  %>%
                              end=nchar(periodname)-5),
          month = factor(month_chr,
                         levels=c("January","February","March","April","May","June","July","August","September","October","November","December")),
-         month_code = as.numeric(month), 
-         year = str_sub(periodname, 
+         month_code = as.numeric(month),
+         year = str_sub(periodname,
                         start=nchar(periodname)-4,
                         end=nchar(periodname)),
          monyr = paste(month_code, year, sep="-"),
          mnthyr = my(monyr))
 
-sum(fam_prov$month_chr!=fam_prov$month) # expecting 0 if vars same
-
-
-
-#'*WOMEN OF REPRODUCTIVE AGE VISITED BY CHA's*
 names(fam_prov)
 fam_prov <- fam_prov %>%
-  rename(prov=2,
-         wmn.vstd=3)
+  rename(prov=1,
+         wmn.mfp=4,
+         wmn.vstd=3) %>%
+  mutate(cvrg_fp = wmn.mfp/wmn.vstd)
 
-chavst_plt <- ggplot(fam_prov, aes(x=mnthyr, y=wmn.vstd, na.rm = TRUE, colour=usaid_blue)) + 
-  #geom_bar(stat="identity") +
-  geom_point(alpha=.6, size=.7) +
-  geom_smooth(method = loess, linewidth = .8, se=FALSE) +
-  scale_y_continuous(labels=comma) +
-  labs(x="", y="", caption="Data Source: HMIS", title="Number of Women in reproductive age visited by CHA.") +
-  facet_wrap(~prov, ncol=4) +
+fam_prov
+
+fp_plt <- ggplot(fam_prov, aes(x = mnthyr, y = cvrg_fp, colour = usaid_blue)) +
+  geom_point(alpha=.9, size=1.3) +
+  stat_smooth(method = "loess", size=.9, se=T) + facet_wrap(~prov) +
   faceted +
+  labs(x ="", y="", caption = "Data Source: HMIS") + labs(x ="", y="", caption = "Data Source: HMIS") +
+  ggtitle("Provincial Coverage of Modern Family Planning utilization, 2019 - 2023") +
   scale_color_manual(name ="",
-                     values = usaid_blue,
-                     labels ="Women of Reproductive age visited by CHA") +  
-  base
+                     values = usaid_palette,
+                     labels = c("Family Planning Utilization")
+  ) + basem
 
-chavst_plt
-ggsave("viz/Aug 23 FHDR/Women of reproductive age visited by CHA.png",
-       device="png",
-       type="cairo",
-       height = 6.5,
-       width = 11)
+fp_plt
 
 
 #'*____________CLIENTS ACCESSING LARC*
