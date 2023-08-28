@@ -2429,6 +2429,127 @@ ggsave("viz/Aug 23 FHDR/National wasting rates.png",
 
 
 
+#'*Nutrition (Severe acute and moderate malnutrition) ---- *
+
+chldMalt <- read_xls("data/Aug 2023 MHDR/Nutrition data national_monthly.xls")
+chldMalt  <- chldMalt  %>%
+  mutate(month_chr = str_sub(periodname,
+                             start=1,
+                             end=nchar(periodname)-5),
+         month = factor(month_chr,
+                        levels=c("January","February","March","April","May","June","July","August","September","October","November","December")),
+         month_code = as.numeric(month), 
+         year = str_sub(periodname, 
+                        start=nchar(periodname)-4,
+                        end=nchar(periodname)),
+         monyr = paste(month_code, year, sep="-"),
+         mnthyr = my(monyr))
+
+chldMalt <- chldMalt %>%
+  rename(chacute = 3,
+         chsevere = 4,
+         chobesse = 5) %>%
+  mutate(chacuteP = chacute/100,
+         chsevereP = chsevere/100,
+         chobesseP = chobesse/100)
+
+#'*set chacuteP to 100 for all values >100*
+chldMalt <- chldMalt %>% 
+  dplyr::mutate(chacute = ifelse(chacute > 100, 100, chacute)) %>% 
+  dplyr::mutate(chacuteP = chacute/100)
+
+#'*To create legend, gather method for including a legend --*
+
+chldMalt <- gather(chldMalt, key = subpop , value = rate, c(chacuteP, chsevereP,chobesseP))
+chldMalt$subpop <- factor(chldMalt$subpop, levels = unique(chldMalt$subpop)) # transform into factor
+levels(chldMalt$subpop)
+
+ggplot(chldMalt, aes(x = mnthyr, y = rate, group = subpop, colour = subpop)) +
+  geom_point(alpha=.6, size=1.5) + 
+  geom_smooth(method = loess, linewidth = .8, se=FALSE) +
+  scale_y_continuous(limits = c(0,1),
+                     labels = percent,
+                     breaks = c(.1,.2,.3,.4,.5,.6,.7,.8,.9, 1)) +
+  scale_x_date(date_labels="%b %y",date_breaks="3 months") +
+  labs(x ="", y="", caption = "Data Source: HMIS") +labs(x ="", y="", caption = "Data Source: HMIS") +
+  ggtitle("Proportion of Child Malnutrition Admission Rates (%), 2019 - 2023 Q2.") +
+  scale_color_manual(name ="",
+                     values = usaid_palette,
+                     labels = c("Child Acute Malnutrition (Moderate)", "Child Acute Malnutrition (Severe)", 
+                                "Child Overweight/Obesse")
+  ) + 
+  base
+
+ggsave("viz/Aug 23 FHDR/National Proportion of child malnutrion admission rates.png",
+       device="png",
+       type="cairo",
+       height = 6.5,
+       width = 12)
+
+
+
+
+#'*REDRAW FOR PROVINCIAL LELVEL..................*
+
+chldMalt_prov <- read_xls("data/Aug 2023 MHDR/Nutrition data provincial_monthly.xls")
+chldMalt_prov  <- chldMalt_prov  %>%
+  mutate(month_chr = str_sub(periodname,
+                             start=1,
+                             end=nchar(periodname)-5),
+         month = factor(month_chr,
+                        levels=c("January","February","March","April","May","June","July","August","September","October","November","December")),
+         month_code = as.numeric(month), 
+         year = str_sub(periodname, 
+                        start=nchar(periodname)-4,
+                        end=nchar(periodname)),
+         monyr = paste(month_code, year, sep="-"),
+         mnthyr = my(monyr))
+
+chldMalt_prov <- chldMalt_prov %>%
+  rename(prov = 1,
+         chacute = 3,
+         chsevere = 4,
+         chobesse = 5) %>%
+  mutate(chacuteP = chacute/100,
+         chsevereP = chsevere/100,
+         chobesseP = chobesse/100)
+
+#'*set chacuteP to 100 for all values >100*
+chldMalt_prov <- chldMalt_prov %>% 
+  dplyr::mutate(chacute = ifelse(chacute > 100, 100, chacute)) %>% 
+  dplyr::mutate(chacuteP = chacute/100)
+
+#'*To create legend, gather method for including a legend --*
+
+chldMalt_prov <- gather(chldMalt_prov, key = subpop , value = rate, c(chacuteP, chsevereP,chobesseP))
+chldMalt_prov$subpop <- factor(chldMalt_prov$subpop, levels = unique(chldMalt_prov$subpop)) # transform into factor
+levels(chldMalt_prov$subpop)
+
+ggplot(chldMalt_prov, aes(x = mnthyr, y = rate, group = subpop, colour = subpop)) +
+  geom_point(alpha=.6, size=1.5) + 
+  geom_smooth(method = loess, linewidth = .8, se=FALSE) +
+  scale_y_continuous(limits = c(0,1),
+                     labels = percent,
+                     breaks = c(.1,.2,.3,.4,.5,.6,.7,.8,.9, 1)) +
+  scale_x_date(date_labels="%b %y",date_breaks="3 months") +
+  labs(x ="", y="", caption = "Data Source: HMIS") +labs(x ="", y="", caption = "Data Source: HMIS") +
+  facet_wrap(~prov, ncol=4) +
+  faceted +
+  ggtitle("Provincial Proportion of Child Malnutrition Admission Rates, and Overwieght/obese (%), 2019 - 2023 Q2.") +
+  scale_color_manual(name ="",
+                     values = usaid_palette,
+                     labels = c("Child Acute Malnutrition (Moderate)", "Child Acute Malnutrition (Severe)", 
+                                "Child Overweight/Obesse")
+  ) + 
+  base
+
+ggsave("viz/Aug 23 FHDR/Child malnutrition admission rates_facets.png",
+       device="png",
+       type="cairo",
+       height = 6.5,
+       width = 12)
+
+
 
 
 
