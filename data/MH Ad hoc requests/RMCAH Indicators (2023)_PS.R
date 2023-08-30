@@ -928,6 +928,184 @@ ggsave("viz/Aug 23 FHDR/New Acceptors Starting FP(with outliers).png",
 
 
 
+#'*_____REUSE CODE FOR MATERNAL DEATHS: Facility.....1(August 2023).....*
+
+Matdeaths <- read_xls("data/Aug 2023 MHDR/Maternal deaths facility_community National monthly(2021_2023).xls")
+Matdeaths  <- Matdeaths  %>%
+  mutate(month_chr = str_sub(periodname,
+                             start=1,
+                             end=nchar(periodname)-5),
+         month = factor(month_chr,
+                        levels=c("January","February","March","April","May","June","July","August","September","October","November","December")),
+         month_code = as.numeric(month), 
+         year = str_sub(periodname, 
+                        start=nchar(periodname)-4,
+                        end=nchar(periodname)),
+         monyr = paste(month_code, year, sep="-"),
+         mnthyr = my(monyr))
+
+sum(Matdeaths$month_chr!=Matdeaths$month) # expecting 0 if vars same
+
+
+names(Matdeaths)
+facilitydeaths <- Matdeaths %>%
+  select(3:6,16) %>%
+  na.omit() 
+
+facilitydeaths
+colnames(facilitydeaths)
+facilitydeaths1 <- facilitydeaths[, c(1,2,3,4,5)]
+colnames(facilitydeaths1)
+facilitydeaths1
+
+facilitydeaths1
+
+facilitydeaths2 <- facilitydeaths1 %>%
+  select(5,1,2,3,4) %>%
+  na.omit()
+names(facilitydeaths2)
+
+
+facilitydeaths3 <- reshape2::melt(facilitydeaths2, id = "mnthyr")
+
+facility_plt <- ggplot(facilitydeaths3,aes(x=mnthyr, y=value, color=variable))+
+  geom_point(alpha=.6, size=1.4) +
+  geom_smooth(method =loess,se=F, size=1.1, alpha=.8) +
+  scale_x_date(date_labels="%b %y",date_breaks="2 months") +
+  scale_y_continuous(labels=comma) +
+  labs(x="",
+       y="",
+       caption="Data Source: HMIS",
+       title="Facility (Static) Maternal deaths disaggregated by Age - (2021 - 2023 Q2.)") +
+  basey + scale_color_manual(name ="",
+                             values =c(light_blue,light_grey,usaid_blue, usaid_red),
+                             labels = c("under 15yrs","15-19yrs","20-24yrs","above 25yrs"))
+facility_plt
+
+
+ggsave("viz/Aug 23 FHDR/National Maternal deaths at facility.png",
+       device="png",
+       type="cairo",
+       height = 6.5,
+       width = 11)
+
+
+
+#'*_____REUSE CODE FOR MATERNAL DEATHS: Community.....1(August 2023).....*
+
+names(Matdeaths)
+comm.deaths <- Matdeaths %>%
+  select(7:10,16) %>%
+  na.omit() 
+
+comm.deaths
+colnames(comm.deaths)
+comm.deaths1 <- comm.deaths[, c(1,2,3,4,5)]
+colnames(comm.deaths1)
+comm.deaths1
+
+comm.deaths1
+
+comm.deaths2 <- comm.deaths1 %>%
+  select(5,1,2,3,4) %>%
+  na.omit()
+names(comm.deaths2)
+
+
+comm.deaths3 <- reshape2::melt(comm.deaths2, id = "mnthyr")
+
+comm_plt <- ggplot(comm.deaths3,aes(x=mnthyr, y=value, color=variable))+
+  geom_point(alpha=.6, size=1.4) +
+  geom_smooth(method =loess,se=F, size=1.1, alpha=.8) +
+  scale_x_date(date_labels="%b %y",date_breaks="1 month") +
+  scale_y_continuous(labels=comma) +
+  labs(x="",
+       y="",
+       caption="Data Source: HMIS",
+       title="Community Maternal deaths disaggregated by Age - (2021 - 2023 Q2.)") +
+  basey + scale_color_manual(name ="",
+                             values =c(light_blue,light_grey,usaid_blue, usaid_red),
+                             labels = c("under 15yrs","15-19yrs","20-24yrs","above 25yrs"))
+comm_plt
+
+
+ggsave("viz/Aug 23 FHDR/National Maternal deaths at community.png",
+       device="png",
+       type="cairo",
+       height = 6.5,
+       width = 11)
+
+
+
+#'*_____Redraw for provincial MATERNAL DEATHS: Facility.....1(August 2023).....*
+#'*Finalize the code below on the faceting area*
+
+prov_Matdeaths <- read_xls("data/Aug 2023 MHDR/Maternal deaths facility_community provincial monthly(2021_2023).xls")
+prov_Matdeaths  <- prov_Matdeaths  %>%
+  mutate(month_chr = str_sub(periodname,
+                             start=1,
+                             end=nchar(periodname)-5),
+         month = factor(month_chr,
+                        levels=c("January","February","March","April","May","June","July","August","September","October","November","December")),
+         month_code = as.numeric(month), 
+         year = str_sub(periodname, 
+                        start=nchar(periodname)-4,
+                        end=nchar(periodname)),
+         monyr = paste(month_code, year, sep="-"),
+         mnthyr = my(monyr))
+
+sum(prov_Matdeaths$month_chr!=prov_Matdeaths$month) # expecting 0 if vars same
+
+
+names(prov_Matdeaths)
+
+facility_prov <- prov_Matdeaths %>%
+  select(1,3:6,16) %>%
+  na.omit()
+
+facility_prov
+
+colnames(facility_prov)
+facility_prov1 <- facility_prov[, c(1,2,3,4,5,6)]
+colnames(facility_prov1)
+facility_prov1
+
+facility_prov1
+
+facility_prov2 <- facility_prov1 %>%
+  select(6,1,2,3,4,5) %>%
+  na.omit()
+names(facility_prov2)
+
+
+facility_prov23 <- reshape2::melt(facility_prov2, id = "mnthyr")
+
+facility_plt_prov <- ggplot(facility_prov23,aes(x=mnthyr, y=value, color=variable))+
+  geom_point(alpha=.6, size=1.4) +
+  geom_smooth(method =loess,se=F, size=1.1, alpha=.8) +
+  facet_wrap(~organisationunitname, ncol=4) +
+  faceted +
+  scale_x_date(date_labels="%b %y",date_breaks="2 months") +
+  scale_y_continuous(labels=comma) +
+  labs(x="",
+       y="",
+       caption="Data Source: HMIS",
+       title="Facility (Static) Maternal deaths disaggregated by Age - (2021 - 2023 Q2.)") +
+  basey + scale_color_manual(name ="",
+                             values =c(light_blue,light_grey,usaid_blue, usaid_red),
+                             labels = c("under 15yrs","15-19yrs","20-24yrs","above 25yrs"))
+facility_plt_prov
+
+
+ggsave("viz/Aug 23 FHDR/Maternal deaths at facility.png",
+       device="png",
+       type="cairo",
+       height = 6.5,
+       width = 11)
+
+
+
+
 
 #'*________1st ANC COVERAGE 1ST TRIMESTER*
 
