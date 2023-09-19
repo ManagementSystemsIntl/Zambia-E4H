@@ -2734,6 +2734,123 @@ ggsave("viz/Aug 23 FHDR/Child malnutrition admission rates_facets.png",
 
 
 
+#'* FULLY IMMUNIZED COMBINED WITH DPT.....Sept request*
+names(chldH)
+
+chldH <- chldH %>%
+  rename(fullyimunized = 7,
+         dpt.undr1 = 13
+  ) %>%
+  
+  mutate(fullyimunizedP = fullyimunized/100,
+         dpt.undr1P = dpt.undr1/100)
+
+#'*set msles1p & msles2p to 100 for all values >100*
+chldH <- chldH %>% 
+  dplyr::mutate(ancc = ifelse(fullyimunized > 100, 100, fullyimunized)) %>% 
+  dplyr::mutate(fullyimunizedP = fullyimunized/100)
+
+#'*To create legend, gather method for including a legend --*
+
+chldH <- gather(chldH, key = subpop , value = rate, c(fullyimunizedP, dpt.undr1P))
+chldH$subpop <- factor(chldH$subpop, levels = unique(chldH$subpop)) # transform into factor
+levels(chldH$subpop)
+
+# view(chldH)
+
+dptfull_plt <- ggplot(chldH, aes(x = mnthyr, y = rate, group = subpop, colour = subpop)) +
+  geom_point(alpha=.5, size=.5) + 
+  #geom_line(size=1) +
+  geom_smooth(method = loess, linewidth = .8, se=FALSE) +
+  scale_y_continuous(limits = c(0,1),
+                     labels = percent,
+                     breaks = c(.1,.2,.3,.4,.5,.6,.7,.8,.9, 1)) +
+  scale_x_date(date_labels="%b %y",date_breaks="3 months") +
+  labs(x="", y="", caption="Data Source: HMIS", title="Coverage of the Fully Immunized and DPT Under 1 (Jan 2019 - Jul 2023.") +
+  scale_color_manual(name ="",
+                     values = usaid_palette,
+                     labels = c("Fully Immunized (%) under 1", "DPT 1st dose Coverage (%) under 1")
+  ) + 
+  basem
+dptfull_plt
+ggsave("viz/Aug 23 FHDR/Proportion of infants fully immunized and DPT given.png",
+       device="png",
+       type="cairo",
+       height = 6.5,
+       width = 12)
+
+
+#'*________FULLY IMMUNIZED COMBINED WITH DPT.....Sept request PROVINCIAL FACETED*
+
+fulldpt_prov <- read_xls("data/Aug 2023 MHDR/Child Heath provincial level_monthly.xls")
+names(fulldpt_prov)
+fulldpt_prov
+fulldpt_prov  <- fulldpt_prov  %>%
+  mutate(month_chr = str_sub(periodname,
+                             start=1,
+                             end=nchar(periodname)-5),
+         month = factor(month_chr,
+                        levels=c("January","February","March","April","May","June","July","August","September","October","November","December")),
+         month_code = as.numeric(month), 
+         year = str_sub(periodname, 
+                        start=nchar(periodname)-4,
+                        end=nchar(periodname)),
+         monyr = paste(month_code, year, sep="-"),
+         mnthyr = my(monyr))
+
+sum(fulldpt_prov$month_chr!=fulldpt_prov$month) # expecting 0 if vars same
+
+
+names(fulldpt_prov)
+names(fulldpt_prov)
+fulldpt_prov <- fulldpt_prov %>%
+  rename(prov=1,
+         fully.imnzd=7,
+         dpt1=13) %>%
+  mutate(fully.imnzdP = fully.imnzd/100,
+         dpt1P = dpt1/100)
+
+#'*set dpt and imnized to 100 for all values >100*
+fulldpt_prov <- fulldpt_prov %>% 
+  dplyr::mutate(fully.imnzd = ifelse(fully.imnzd > 100, 100, fully.imnzd)) %>% 
+  dplyr::mutate(fully.imnzdP = fully.imnzd/100)
+
+#'*To create legend, gather method for including a legend --*
+
+fulldpt_prov <- gather(fulldpt_prov, key = subpop , value = rate, c(fully.imnzdP, dpt1P))
+fulldpt_prov$subpop <- factor(fulldpt_prov$subpop, levels = unique(fulldpt_prov$subpop)) # transform into factor
+levels(fulldpt_prov$subpop)
+
+provdpt.imnzd_plt <- ggplot(fulldpt_prov, aes(x = mnthyr, y = rate, group = subpop, colour = subpop)) +
+  geom_point(size=.5, alpha=.5) + 
+  geom_smooth(method = loess, linewidth = .7, se=FALSE) +
+  scale_y_continuous(limits = c(0,1),
+                     labels = percent,
+                     breaks = c(.2,.4,.6,.8,1)) +
+  labs(x ="", y="", caption = "Data Source: HMIS") +labs(x ="", y="", caption = "Data Source: HMIS") +
+  ggtitle("Coverage of the Fully Immunized (%) and DPT 1st dose Under 1 (%) (Jan 2019 - Jul 2023)") +
+  facet_wrap(~prov, ncol=4) +
+  faceted +
+  scale_color_manual(name ="",
+                     values = usaid_palette,
+                     labels = c("Fully Immunized (%) under 1", "DPT 1st dose Coverage (%) under 1")) + basey
+
+provdpt.imnzd_plt
+
+ggsave("viz/Aug 23 FHDR/Provincial fully immunized and DPT1.png",
+       device="png",
+       type="cairo",
+       height = 6.5,
+       width = 12)
+
+
+
+
+
+
+
+
+
 
 
 
