@@ -593,8 +593,8 @@ pr.mr.st2 <- pr.mr.st %>%
   rename(mth =1,
          peri.deaths=2,
          peri.Rt=3,
-         frsh.stlbrth.Rt=4,
-         mcrtd.brth.Rt=5)
+         mcrtd.brth.Rt=5,
+         frsh.stlbrth.Rt=4)
 
 pr.mr.st2
 
@@ -639,7 +639,7 @@ frsh.stillmacerbirth
 
 
 frsh.stillmacerbirth <- frsh.stillmacerbirth %>% 
-  gather(key = subRt , value = rate, c(frsh.stlbrth.Rt, mcrtd.brth.Rt))
+  gather(key = subRt , value = rate, c(mcrtd.brth.Rt, frsh.stlbrth.Rt))
 
 frsh.stillmacerbirth
 
@@ -679,7 +679,7 @@ ggplot(frsh.stillmacerbirth, aes(x = mth, y = rate, group = subRt, fill = subRt)
   ggtitle("Fresh stillbirth and Macerated stillbirth per 1000 live births (Jan 2019 - Jun 2023.)") +
   scale_x_date(date_labels="%b %y",date_breaks="3 months") +
   scale_fill_manual(name ="",
-                    values = c(usaid_red,usaid_blue),labels = c("Macerated Stillbirth","Fresh Stillbirth")) + base
+                    values = c(usaid_red, usaid_blue),labels = c("Macerated Stillbirth","Fresh Stillbirth")) + base
 
 ggsave("viz/Aug 23 FHDR/stillbirths Aug 23.png",
        device="png",
