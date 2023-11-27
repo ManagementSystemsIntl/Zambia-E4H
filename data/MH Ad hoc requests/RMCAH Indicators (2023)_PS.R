@@ -530,9 +530,17 @@ ggsave("C:/Users/PIMPA.SAWULU/Desktop/R project doc_E4H/E4H-Zambia/graphs/Provin
        width = 12)
 
 
+
+
+
+
+
+
+
+
 #'*COVERAGE OF MODERN FAMILY PLANNING ADOPTION*
 
-fam <- read_xls("data/Aug 2023 MHDR/Family Planning data_National level monthly.xls")
+fam <- read_xls("data/Dec 2023 MHDR/Family Planning data_National level monthly.xls")
 fam  <- fam  %>%
   mutate(month_chr = str_sub(periodname,
                              start=1,
@@ -550,7 +558,7 @@ sum(fam$month_chr!=fam$month) # expecting 0 if vars same
 
 
 
-fam_prov <- read_xls("data/Aug 2023 MHDR/Family Planning data_Provincial level monthly.xls")
+fam_prov <- read_xls("data/Dec 2023 MHDR/Family Planning data_Provincial level monthly.xls")
 names(fam_prov)
 fam_prov
 fam_prov  <- fam_prov  %>%
@@ -823,7 +831,7 @@ ggsave("viz/Dec 23 FHDR/Medroxyprogesterone injection DMPA-IM.png",
 
 #'*_____NATIONAL FP METHODS -TYPE DISAGGS*
 
-fpmethod <- read_xls("data/Aug 2023 MHDR/IUCD_Implant_Injectables_National monthly.xls")
+fpmethod <- read_xls("data/Dec 2023 MHDR/IUCD_Implant_Injectables_National monthly.xls")
 fpmethod  <- fpmethod  %>%
   mutate(month_chr = str_sub(periodname,
                              start=1,
@@ -930,7 +938,7 @@ ggsave("viz/Dec 23 FHDR/New Acceptors Starting FP(with outliers).png",
 
 #'*_____REUSE CODE FOR MATERNAL DEATHS: Facility.....1(August 2023).....*
 
-Matdeaths <- read_xls("data/Aug 2023 MHDR/Maternal deaths facility_community National monthly(2021_2023).xls")
+Matdeaths <- read_xls("data/Dec 2023 MHDR/Maternal deaths facility_community National monthly(2021_2023).xls")
 Matdeaths  <- Matdeaths  %>%
   mutate(month_chr = str_sub(periodname,
                              start=1,
@@ -1156,7 +1164,7 @@ ggsave("viz/Apr-Jun 2022/Family Planning/1st ANC TM1 Coverage faceted PS.png",
 
 #'*________4th+ TO TOTAL ANC ATTENDANCES*
 
-frthPlusANC_prov <- read_xls("data/Aug 2023 MHDR/4th+ to Total ANC Attendance_provincial level.xls")
+frthPlusANC_prov <- read_xls("data/Dec 2023 MHDR/4th+ to Total ANC Attendance_provincial level.xls")
 names(frthPlusANC_prov)
 frthPlusANC_prov
 frthPlusANC_prov  <- frthPlusANC_prov  %>%
@@ -1203,7 +1211,7 @@ ggsave("viz/Dec 23 FHDR/4th+ to Total ANC attendances faceted.png",
 
 #'*_______Redraw for National Level*
 
-frthPlusANC <- read_xls("data/Aug 2023 MHDR/4th+ to Total ANC Attendance_National level.xls")
+frthPlusANC <- read_xls("data/Dec 2023 MHDR/4th+ to Total ANC Attendance_National level.xls")
 names(frthPlusANC)
 frthPlusANC
 frthPlusANC  <- frthPlusANC  %>%
@@ -1243,7 +1251,7 @@ ggsave("viz/Dec 23 FHDR/National 4th+ to Total ANC attendances.png",
 
 #'*ANC COVERAGE AGAINST SYPHILIS SCREENING - NATIONAL LEVEL*
 
-anc.syph <- read_xls("data/Aug 2023 MHDR/ANC and Syphilis Screening Coverage_National_monthly.xls")
+anc.syph <- read_xls("data/Dec 2023 MHDR/ANC and Syphilis Screening Coverage_National_monthly.xls")
 anc.syph  <- anc.syph  %>%
   mutate(month_chr = str_sub(periodname,
                              start=1,
@@ -1306,7 +1314,7 @@ ggsave("viz/Dec 23 FHDR/National Syphilis and ANC Screening.png",
 
 #'*_______Redraw for Provincial Level*
 
-syphanc_prov <- read_xls("data/Aug 2023 MHDR/ANC and Syphilis Screening Coverage_Provincial_monthly.xls")
+syphanc_prov <- read_xls("data/Dec 2023 MHDR/ANC and Syphilis Screening Coverage_Provincial_monthly.xls")
 syphanc_prov  <- syphanc_prov  %>%
   mutate(month_chr = str_sub(periodname,
                              start=1,
@@ -1375,7 +1383,7 @@ ggsave("viz/Dec 23 FHDR/Syphilis and ANC Coverage facets.png",
 
 #'*________MATERNAL POSTNATAL CARE WITHIN 48HRS*
 
-MatPNC_prov <- read_xls("data/Aug 2023 MHDR/Reproductive Maternal Health_Provincial level monthly.xls")
+MatPNC_prov <- read_xls("data/Dec 2023 MHDR/Reproductive Maternal Health_Provincial level monthly.xls")
 names(MatPNC_prov)
 MatPNC_prov
 MatPNC_prov  <- MatPNC_prov  %>%
@@ -1417,7 +1425,7 @@ ggsave("viz/Dec 23 FHDR/Maternal Postnatal 48 faceted.png",
 #'*_______Redraw for National Level*
 
 
-MatPNC <- read_xls("data/Aug 2023 MHDR/Reproductive Maternal Health_National level monthly.xls")
+MatPNC <- read_xls("data/Dec 2023 MHDR/Reproductive Maternal Health_National level monthly.xls")
 names(MatPNC)
 MatPNC
 MatPNC  <- MatPNC  %>%
@@ -1457,7 +1465,7 @@ ggsave("viz/Dec 23 FHDR/National Maternal Postnatal 48hr Care.png",
 
 #'*________INSTITUTIONAL DELIVERY COVERAGE*
 
-InstDel_prov <- read_xls("data/Aug 2023 MHDR/Reproductive Maternal Health_Provincial level monthly.xls")
+InstDel_prov <- read_xls("data/Dec 2023 MHDR/Reproductive Maternal Health_Provincial level monthly.xls")
 names(InstDel_prov)
 InstDel_prov
 InstDel_prov  <- InstDel_prov  %>%
@@ -1502,7 +1510,7 @@ ggsave("viz/Dec 23 FHDR/Provincial Institutional delivery coverage.png",
 
 #'*_______Redraw for National Level*
 
-InstDel <- read_xls("data/Aug 2023 MHDR/Reproductive Maternal Health_National level monthly.xls")
+InstDel <- read_xls("data/Dec 2023 MHDR/Reproductive Maternal Health_National level monthly.xls")
 names(InstDel)
 InstDel
 InstDel  <- InstDel  %>%
@@ -1627,7 +1635,7 @@ ggsave("viz/Dec 23 FHDR/National Institutional delivery coverage.png",
 
 #'*__________FOLIC ACID SUPPLEMENTATION (%) DURING ANC VISITS*
 
-folicsup_prov <- read_xls("data/Aug 2023 MHDR/Reproductive Maternal Health_Provincial level monthly.xls")
+folicsup_prov <- read_xls("data/Dec 2023 MHDR/Reproductive Maternal Health_Provincial level monthly.xls")
 names(folicsup_prov)
 folicsup_prov
 folicsup_prov  <- folicsup_prov  %>%
@@ -1670,7 +1678,7 @@ ggsave("viz/Dec 23 FHDR/Folic Acid Supplementation.png",
 
 #'*_______Redraw for National Level*
 
-folicAcid <- read_xls("data/Aug 2023 MHDR/Reproductive Maternal Health_National level monthly.xls")
+folicAcid <- read_xls("data/Dec 2023 MHDR/Reproductive Maternal Health_National level monthly.xls")
 names(folicAcid)
 folicAcid
 folicAcid  <- folicAcid  %>%
@@ -1712,7 +1720,7 @@ ggsave("viz/Dec 23 FHDR/National Folic Acid Sup.png",
 
 #'* FOLIC ACID AND IRON SUPPLEMENTATION COMPARISON*
 
-mat <- read_xls("data/Aug 2023 MHDR/Reproductive Maternal Health_National level monthly.xls")
+mat <- read_xls("data/Dec 2023 MHDR/Reproductive Maternal Health_National level monthly.xls")
 mat  <- mat  %>%
   mutate(month_chr = str_sub(periodname,
                              start=1,
@@ -1775,7 +1783,7 @@ ggsave("viz/Dec 23 FHDR/National Folic and Iron Supplementation.png",
 
 #'*__________Redraw for Provincial Level*
 
-mat_prov <- read_xls("data/Aug 2023 MHDR/Reproductive Maternal Health_Provincial level monthly.xls")
+mat_prov <- read_xls("data/Dec 2023 MHDR/Reproductive Maternal Health_Provincial level monthly.xls")
 mat_prov  <- mat_prov  %>%
   mutate(month_chr = str_sub(periodname,
                              start=1,
@@ -1845,7 +1853,7 @@ ggsave("viz/Dec 23 FHDR/Folic and Iron Supplementation facets.png",
 
 #'*__________HIGH RISK PREGNANCIES AT 1st ANC (%)*
 
-highRpreg_prov <- read_xls("data/Aug 2023 MHDR/Reproductive Maternal Health_Provincial level monthly.xls")
+highRpreg_prov <- read_xls("data/Dec 2023 MHDR/Reproductive Maternal Health_Provincial level monthly.xls")
 names(highRpreg_prov)
 highRpreg_prov
 highRpreg_prov  <- highRpreg_prov  %>%
@@ -1889,7 +1897,7 @@ ggsave("viz/Dec 23 FHDR/High Risk pregnancies.png",
 
 #'*_______Redraw for National Level*
 
-highRpreg <- read_xls("data/Aug 2023 MHDR/Reproductive Maternal Health_National level monthly.xls")
+highRpreg <- read_xls("data/Dec 2023 MHDR/Reproductive Maternal Health_National level monthly.xls")
 names(highRpreg)
 highRpreg
 highRpreg  <- highRpreg  %>%
@@ -1930,7 +1938,7 @@ ggsave("viz/Dec 23 FHDR/National High risk pregnancies.png",
 
 #'*________MATERNAL MORTALITY RATIO AND HIA2 REPORTING RATES*
 
-matmr1 <- read_xls("data/Aug 2023 MHDR/Maternal MR and RR_national (2019-2023).xls")
+matmr1 <- read_xls("data/Dec 2023 MHDR/Maternal MR and RR_national (2020-2023).xls")
 
 
 matmr  <- matmr1  %>%
@@ -1993,7 +2001,7 @@ ggsave("viz/Dec 23 FHDR/National MMR and HIA2 RR.png",
 #'*April 2023*
 #'*ANC All Trimesters 2019 - 2023*
 
-mat <- read_xls("data/Aug 2023 MHDR/Reproductive Maternal Health_National level monthly.xls")
+mat <- read_xls("data/Dec 2023 MHDR/Reproductive Maternal Health_National level monthly.xls")
 mat  <- mat  %>%
   mutate(month_chr = str_sub(periodname,
                              start=1,
@@ -2016,7 +2024,9 @@ sum(mat$month_chr!=mat$month) # expecting 0 if vars same
 
 # matq <- read_xls("data/Jan- Jun 2022/Reproductive Maternal Data_National Level(Quarterly).xls")
 # matqp <- read_xls("data/Jan-Mar 2022/Reproductive Maternal Data_Provincial Level(Quarterly).xls")
-mat_prov <- read_xls("data/Aug 2023 MHDR/Reproductive Maternal Health_Provincial level monthly.xls")
+
+
+mat_prov <- read_xls("data/Dec 2023 MHDR/Reproductive Maternal Health_Provincial level monthly.xls")
 
 mat_prov
 mat_prov  <- mat_prov  %>%
@@ -2092,7 +2102,7 @@ ggsave("viz/Dec 23 FHDR/National Proportion of expected pregnancies receiving an
 #'*______________________Child Health INDICATORS*
 
 
-chldH <- read_xls("data/Aug 2023 MHDR/Child Heath national level_monthly.xls")
+chldH <- read_xls("data/Dec 2023 MHDR/Child Heath national level_monthly.xls")
 chldH  <- chldH  %>%
   mutate(month_chr = str_sub(periodname,
                              start=1,
@@ -2115,7 +2125,7 @@ chldH  <- chldH  %>%
 
 # chldHq <- read_xls("data/Jan- Jun 2022/Child Health Data_National Level(Quarterly).xls")
 # chldHqp <- read_xls("data/Jan-Mar 2022/Child Health Data_Provincial Level(Quarterly).xls")
-chldH_prov <- read_xls("data/Aug 2023 MHDR/Child Heath provincial level_monthly.xls")
+chldH_prov <- read_xls("data/Dec 2023 MHDR/Child Heath provincial level_monthly.xls")
 names(chldH_prov)
 # chldH_provpimpa <- chldH_prov %>%
 #   select(1,2,21)
@@ -2609,7 +2619,7 @@ ggsave("viz/Dec 23 FHDR/National wasting rates.png",
 
 #'*Nutrition (Severe acute and moderate malnutrition) ---- *
 
-chldMalt <- read_xls("data/Aug 2023 MHDR/Nutrition data national_monthly.xls")
+chldMalt <- read_xls("data/Dec 2023 MHDR/Nutrition data national_monthly.xls")
 chldMalt  <- chldMalt  %>%
   mutate(month_chr = str_sub(periodname,
                              start=1,
@@ -2669,7 +2679,7 @@ ggsave("viz/Dec 23 FHDR/National Proportion of child malnutrion admission rates.
 
 #'*REDRAW FOR PROVINCIAL LELVEL..................*
 
-chldMalt_prov <- read_xls("data/Aug 2023 MHDR/Nutrition data provincial_monthly.xls")
+chldMalt_prov <- read_xls("data/Dec 2023 MHDR/Nutrition data provincial_monthly.xls")
 chldMalt_prov  <- chldMalt_prov  %>%
   mutate(month_chr = str_sub(periodname,
                              start=1,
@@ -2782,7 +2792,7 @@ ggsave("viz/Dec 23 FHDR/Proportion of infants fully immunized and DPT given.png"
 
 #'*________FULLY IMMUNIZED COMBINED WITH DPT.....Sept request PROVINCIAL FACETED*
 
-fulldpt_prov <- read_xls("data/Aug 2023 MHDR/Child Heath provincial level_monthly.xls")
+fulldpt_prov <- read_xls("data/Dec 2023 MHDR/Child Heath provincial level_monthly.xls")
 names(fulldpt_prov)
 fulldpt_prov
 fulldpt_prov  <- fulldpt_prov  %>%
