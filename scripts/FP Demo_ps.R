@@ -143,7 +143,7 @@ ggsave("viz/Aug 23 FHDR/number of distributed FP by province.png",
 idc <- read_xlsx("data/Aug 2023 MHDR/Institutional delivery national level.xlsx")
 
 idc
-idc <- melt(idc[c(1, 2, 3, 4, 5)], id = 'Deliveries')
+idc <- reshape2::melt(idc[c(1, 2, 3, 4, 5)], id = 'Deliveries')
 
 idc
 
