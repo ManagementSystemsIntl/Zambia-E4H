@@ -61,7 +61,7 @@ bfhr_plt <- ggplot(bfhr_prov, aes(x = mnthyr, y = rate, group = subpop, colour =
 
 bfhr_plt
 
-ggsave("viz/Aug 23 FHDR/Breastfed within 1 hour of birth and EBF facets.png",
+ggsave("viz/Dec 23 FHDR/Breastfed within 1 hour of birth and EBF facets.png",
        device="png",
        type="cairo",
        height = 6.5,
@@ -127,7 +127,7 @@ msles_plt <- ggplot(mslsvac_prov, aes(x = mnthyr, y = rate, group = subpop, colo
 
 msles_plt
 
-ggsave("viz/Aug 23 FHDR/Provincial Measles Vaccines.png",
+ggsave("viz/Dec 23 FHDR/Provincial Measles Vaccines.png",
        device="png",
        type="cairo",
        height = 6.5,
@@ -208,7 +208,7 @@ fulmunized_plt
 # 
 # fulmunized_plt
 
-ggsave("viz/Aug 23 FHDR/Fully Imunnized facets PS.png",
+ggsave("viz/Dec 23 FHDR/Fully Imunnized facets PS.png",
        device="png",
        type="cairo",
        height = 6.5,
@@ -268,7 +268,7 @@ bcg_plt <- ggplot(BCG_prov, aes(x = mnthyr, y = bcg.coverageP, colour=usaid_blue
 
 bcg_plt
 
-ggsave("viz/Aug 23 FHDR/BCG Under 1 facets.png",
+ggsave("viz/Dec 23 FHDR/BCG Under 1 facets.png",
        device="png",
        type="cairo",
        height = 6.5,
@@ -328,7 +328,7 @@ prov.dpt_plt <- ggplot(dpt1_prov, aes(x = mnthyr, y = dptu1.coverageP, colour=us
 
 prov.dpt_plt
 
-ggsave("viz/Aug 23 FHDR/DPT 1st dose Under 1 facets.png",
+ggsave("viz/Dec 23 FHDR/DPT 1st dose Under 1 facets.png",
        device="png",
        type="cairo",
        height = 6.5,
@@ -389,7 +389,7 @@ vitA_prov_plt <- ggplot(vitA_prov, aes(x = mnthyr, y = vitA.suppP, colour=usaid_
 
 vitA_prov_plt
 
-ggsave("viz/Aug 23 FHDR/Vitamin A supplementation facets.png",
+ggsave("viz/Dec 23 FHDR/Vitamin A supplementation facets.png",
        device="png",
        type="cairo",
        height = 6.5,
@@ -449,7 +449,7 @@ stunt_prov_plt <- ggplot(stunting_prov, aes(x = mnthyr, y = stunt.rateP, colour=
 
 stunt_prov_plt
 
-ggsave("viz/Aug 23 FHDR/Stunting rates facets.png",
+ggsave("viz/Dec 23 FHDR/Stunting rates facets.png",
        device="png",
        type="cairo",
        height = 6.5,
@@ -512,7 +512,7 @@ waste_prov_plt <- ggplot(wasting_prov, aes(x = mnthyr, y = waste.rateP, colour=u
 
 waste_prov_plt
 
-ggsave("viz/Aug 23 FHDR/wasting rates facets.png",
+ggsave("viz/Dec 23 FHDR/wasting rates facets.png",
        device="png",
        type="cairo",
        height = 6.5,
@@ -575,7 +575,7 @@ dw_prov_plt <- ggplot(deworming_prov, aes(x = mnthyr, y = deworm.rateP, colour=u
 
 dw_prov_plt
 
-ggsave("viz/Aug 23 FHDR/Deworming rates facets.png",
+ggsave("viz/Dec 23 FHDR/Deworming rates facets.png",
        device="png",
        type="cairo",
        height = 6.5,
@@ -646,7 +646,7 @@ ggplot(mat_prov, aes(x = mnthyr, y = rate, group = subpop, colour = subpop)) +
   ) + 
   base
 
-ggsave("viz/Aug 23 FHDR/Provincial ANCs PS.png",
+ggsave("viz/Dec 23 FHDR/Provincial ANCs PS.png",
        device="png",
        type="cairo",
        height = 6.5,
@@ -775,7 +775,7 @@ lrc_plt <- ggplot(larc, aes(x=mnthyr, y=larc.ab)) +
 
 lrc_plt
 
-ggsave("viz/Aug 23 FHDR/Accessing LARCS Facets.png",
+ggsave("viz/Dec 23 FHDR/Accessing LARCS Facets.png",
        device="png",
        type="cairo",
        height = 6.5,
@@ -814,7 +814,7 @@ larc.dis.p_plt <- ggplot(larc, aes(x=mnthyr, y=larc.dis.p)) +
 
 larc.dis.p_plt
 
-ggsave("viz/Aug 23 FHDR/Discontinuing LARCS Facets.png",
+ggsave("viz/Dec 23 FHDR/Discontinuing LARCS Facets.png",
        device="png",
        type="cairo",
        height = 6.5,
@@ -841,7 +841,7 @@ chavst_plt <- ggplot(fam_prov, aes(x=mnthyr, y=wmn.vstd, colour=usaid_blue)) +
   base
 
 chavst_plt
-ggsave("viz/Aug 23 FHDR/Women of reproductive age visited by CHA.png",
+ggsave("viz/Dec 23 FHDR/Women of reproductive age visited by CHA.png",
        device="png",
        type="cairo",
        height = 6.5,
@@ -913,51 +913,51 @@ ggsave("viz/Aug 23 FHDR/Women of reproductive age visited by CHA.png",
 
 #'*____New Acceptors Starting FP*
 
-names(fam_prov)
-nfaccpt <- fam_prov %>%
-  select(2,24:27,56) %>%
-  rename(prov=1) %>%
-  na.omit() 
-
-nfaccpt
-colnames(nfaccpt)
-nfaccpt1 <- nfaccpt[, c(1,2,3,4,5,6)]
-colnames(nfaccpt1)
-nfaccpt1
-
-nfaccpt1
-
-nfaccpt2 <- nfaccpt1 %>%
-  select(6,1,2,3,4,5) %>%
-  na.omit()
-
-names(nfaccpt2)
-
-
-nfaccpt3 <- reshape2::melt(nfaccpt2, id = "mnthyr")
-
-plt <- ggplot(nfaccpt2, aes(x=mnthyr, y=value, color=variable))+
-  geom_point(alpha=.6, size=.6) +
-  geom_smooth(method =loess,se=F, size=.9, alpha=.8) +
-  #scale_x_date(date_labels="%b %y",date_breaks="3 months") +
-  scale_y_continuous(labels=comma) +
-  labs(x="",
-       y="",
-       caption="Data Source: HMIS",
-       title="Family Planning New Acceptors (Starting FP), 2019 - 2023") +
-  facet_wrap(~prov, ncol=4) +
-  faceted +
-  basey + scale_color_manual(name ="",
-                             values =c(light_blue,light_grey,usaid_blue),
-                             labels = c("under 15yrs","15-19yrs","20-24yrs","above 25yrs"))
-plt
-
-
-ggsave("viz/May 2023 data review/Provincial Family planning New Acceptors facets.png",
-       device="png",
-       type="cairo",
-       height = 6.5,
-       width = 11)
+# names(fam_prov)
+# nfaccpt <- fam_prov %>%
+#   select(2,24:27,56) %>%
+#   rename(prov=1) %>%
+#   na.omit() 
+# 
+# nfaccpt
+# colnames(nfaccpt)
+# nfaccpt1 <- nfaccpt[, c(1,2,3,4,5,6)]
+# colnames(nfaccpt1)
+# nfaccpt1
+# 
+# nfaccpt1
+# 
+# nfaccpt2 <- nfaccpt1 %>%
+#   select(6,1,2,3,4,5) %>%
+#   na.omit()
+# 
+# names(nfaccpt2)
+# 
+# 
+# nfaccpt3 <- reshape2::melt(nfaccpt2, id = "mnthyr")
+# 
+# plt <- ggplot(nfaccpt2, aes(x=mnthyr, y=value, color=variable))+
+#   geom_point(alpha=.6, size=.6) +
+#   geom_smooth(method =loess,se=F, size=.9, alpha=.8) +
+#   #scale_x_date(date_labels="%b %y",date_breaks="3 months") +
+#   scale_y_continuous(labels=comma) +
+#   labs(x="",
+#        y="",
+#        caption="Data Source: HMIS",
+#        title="Family Planning New Acceptors (Starting FP), 2019 - 2023") +
+#   facet_wrap(~prov, ncol=4) +
+#   faceted +
+#   basey + scale_color_manual(name ="",
+#                              values =c(light_blue,light_grey,usaid_blue),
+#                              labels = c("under 15yrs","15-19yrs","20-24yrs","above 25yrs"))
+# plt
+# 
+# 
+# ggsave("viz/May 2023 data review/Provincial Family planning New Acceptors facets.png",
+#        device="png",
+#        type="cairo",
+#        height = 6.5,
+#        width = 11)
 
 
 #'*Provincial Maternal Mortality Ratio and Reporting Rates*
@@ -1012,84 +1012,10 @@ ggplot(matprv3, aes(x=yr, y=mr)) +
                      labels = c("HIA2 Reporting rate (%)")) + 
   basem + geom_label(aes( x= yr, y = hrr*3.34,label=hrr), fontface = "bold", hjust=0.6, vjust = 0.7)
 
-ggsave("viz/Aug 23 FHDR/MMR and HIA2 RR Facets.png",
+ggsave("viz/Dec 23 FHDR/MMR and HIA2 RR Facets.png",
        device="png",
        type="cairo",
        height = 6.5,
        width=12.5)
-
-
-
-
-
-#'*_______SYPHILIS AND ANC SCREENING COVERAGE*
-#'*Code under construction!!*
-
-syphanc.nmr_prov <- read_xls("data/May 2023 FHDR/quarterly ANC and Syphilis Screening Coverage_Provincial.xls")
-syphanc.nmr_prov  <- syphanc.nmr_prov  %>%
-  mutate(month_chr = str_sub(periodname,
-                             start=1,
-                             end=nchar(periodname)-5),
-         month = factor(month_chr,
-                        levels=c("January","February","March","April","May","June","July","August","September","October","November","December")),
-         month_code = as.numeric(month), 
-         year = str_sub(periodname, 
-                        start=nchar(periodname)-4,
-                        end=nchar(periodname)),
-         monyr = paste(month_code, year, sep="-"),
-         mnthyr = my(monyr))
-
-sum(syphanc.nmr_prov$month_chr!=syphanc.nmr_prov$month) # expecting 0 if vars same
-
-
-names(syphanc.nmr_prov)
-syphanc.nmr_prov <- syphanc.nmr_prov %>%
-  rename(prov = 1,
-         anccov = 3,
-         syph = 4,
-         nnmr = 5
-  ) %>%
-  
-  mutate(anccovP = anccov/100,
-         syphP = syph/100)
-
-#'*set anccovP & syphP to 100 for all values >100*
-syphanc.nmr_prov <- syphanc.nmr_prov %>% 
-  dplyr::mutate(anccov = ifelse(anccov > 100, 100, anccov)) %>% 
-  dplyr::mutate(anccovP = anccov/100)
-
-#'*To create legend, gather method for including a legend --*
-
-syphanc.nmr_prov <- gather(syphanc.nmr_prov, key = subpop , value = rate, c(anccovP, syphP, nnmr))
-syphanc_prov$subpop <- factor(syphanc.nmr_prov$subpop, levels = unique(syphanc.nmr_prov$subpop)) # transform into factor
-levels(syphanc.nmr_prov$subpop)
-
-syphanc.nnmr_plt <- ggplot(syphanc.nmr_prov, aes(x = mnthyr, y = rate, group = subpop, colour = subpop)) +
-  # #geom_point(alpha=.5, size=.5) + 
-  # #geom_line(size=1) +
-  # geom_smooth(method = loess, size = .8, se=FALSE) +
-  # scale_y_continuous(limits = c(0,1),
-  #                    labels = percent,
-  #                    breaks = c(.1,.2,.3,.4,.5,.6,.7,.8,.9, 1)) +
-  # #scale_x_date(date_labels="%b %y",date_breaks="3 months") +
-  scale_y_continuous(sec.axis = sec_axis(trans = ~ .*0.045,name = "Perinatal Mortality Rate", labels = scales::label_value)) +
-  labs(x="", y="", caption="Data Source: HMIS", title="Coverage of ANC and Syphilis Screening during ANC visits, 2019 - 2023 Q1") +
-  facet_wrap(~prov, ncol=4) +
-  faceted +
-  scale_color_manual(name ="",
-                     values = usaid_palette,
-                     labels = c("1st ANC coverage (all trimesters)", "Syphilis screening rates (%) at 1st ANC", "Perinatal Mortality Rate")
-  ) + 
-  basem
-
-syphanc.nnmr_plt
-
-ggsave("viz/May 2023 data review/Syphilis and ANC Coverage facets.png",
-       device="png",
-       type="cairo",
-       height = 6.5,
-       width = 12)
-
-
 
 

@@ -16,7 +16,7 @@ ggplot(FP_Data_Provincial_3, aes(Year, Value, fill = Method)) +
 
 
 
-#'*Distribution quantities/methodes...........provincial facets*
+#'*Distribution quantities/methods...........provincial facets*
 #This is to try the bars
 source("scripts/r prep2.r")
 source("scripts/r prep3.r")
@@ -49,7 +49,7 @@ fpd1_plt <- ggplot(fpd1, aes(x=yr, y=Value, fill="Method"), alpha=0.6)+
   base
 
 fpd1_plt
-ggsave("viz/Aug 23 FHDR/number of distributed FP by province.png",
+ggsave("viz/Dec 23 FHDR/number of distributed FP by province.png",
        device="png",
        type="cairo",
        height = 6.0,
@@ -118,7 +118,7 @@ ggplot(inst.pnc2, aes(x = yr, y = mpc)) +
                      labels = c("Maternal PNC Coverage (%)")) + 
   basem + geom_label(aes( x= yr, y = mpc*3.44,label=mpc), fontface = "bold", hjust=0.9, vjust = 2.7)
 
-ggsave("viz/Aug 23 FHDR/number of distributed FP by province.png",
+ggsave("viz/Dec 23 FHDR/number of distributed FP by province.png",
        device="png",
        type="cairo",
        height = 6.0,
