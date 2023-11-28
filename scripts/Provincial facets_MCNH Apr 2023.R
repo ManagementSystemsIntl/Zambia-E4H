@@ -52,7 +52,7 @@ bfhr_plt <- ggplot(bfhr_prov, aes(x = mnthyr, y = rate, group = subpop, colour =
                      labels = percent,
                      breaks = c(.2,.4,.6,.8,1)) +
   labs(x ="", y="", caption = "Data Source: HMIS") +labs(x ="", y="", caption = "Data Source: HMIS") +
-  ggtitle("Proportion of Infants Breastfed within 1 hour of birth \nand those on EBF at 6 months, 2019 - 2023 Q2.") +
+  ggtitle("Proportion of Infants breastfed within 1 hour of birth, and \nInfants exclusively breastfed at 6 months (Jan 2020 - Sept 2023).") +
   facet_wrap(~prov, ncol=4) +
   faceted +
   scale_color_manual(name ="",
@@ -439,7 +439,7 @@ stunt_prov_plt <- ggplot(stunting_prov, aes(x = mnthyr, y = stunt.rateP, colour=
                      labels = percent,
                      breaks = c(.01,.02,.03,.04,.05)) +
   
-  labs(x="", y="", caption="Data Source: HMIS", title="Stunting rate (%) in under 5s at facility seems to be increasing in Muchinga, \nand Northern though below 2% (2019 - 2023 Q2).") +
+  labs(x="", y="", caption="Data Source: HMIS", title="Stunting rate (%) in under 5s at facility seems to be increasing in Luapula, \nand Muchinga provinces, though below 2% (Jan 2020 - Sept 2023).") +
   facet_wrap(~prov, ncol=4) +
   faceted +
   scale_color_manual(name ="",
