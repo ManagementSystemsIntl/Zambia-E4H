@@ -961,6 +961,7 @@ ggsave("viz/Dec 23 FHDR/Women of reproductive age visited by CHA.png",
 
 
 #'*Provincial Maternal Mortality Ratio and Reporting Rates*
+#'*FIX SOME LINES BELOW!*
 
 matprv1 <- read_xls("data/Dec 2023 MHDR/Maternal MR and RR_provincial (2020-2023).xls")
 
