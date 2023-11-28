@@ -118,7 +118,7 @@ msles_plt <- ggplot(mslsvac_prov, aes(x = mnthyr, y = rate, group = subpop, colo
                      labels = percent,
                      breaks = c(.2,.4,.6,.8,1)) +
   labs(x ="", y="", caption = "Data Source: HMIS") +labs(x ="", y="", caption = "Data Source: HMIS") +
-  ggtitle("Vaccine Coverage for 1st and 2nd doses of Measles, 2019 - 2023") +
+  ggtitle("Vaccine Coverage for 1st and 2nd doses of Measles, Jan 2020 - Sept 2023.") +
   facet_wrap(~prov, ncol=4) +
   faceted +
   scale_color_manual(name ="",
@@ -181,7 +181,7 @@ fulmunized_plt <- ggplot(fulmunized_prov, aes(x = mnthyr, y = fiu1P, colour=usai
                      labels = percent,
                      breaks = c(.1,.2,.3,.4,.5,.6,.7,.8,.9, 1)) +
   # scale_x_date(date_labels="%b %y",date_breaks="4 months") +
-  labs(x="", y="", caption="Data Source: HMIS", title="Fully Immunized Coverage (%) Under 1 has been on a downward trend \nin Central, Eastern, Muchinga, Northerwestern, and Southern provinces since mid 2021.") +
+  labs(x="", y="", caption="Data Source: HMIS", title="Fully Immunized Coverage (%) Under 1 has been on a downward trend in Central, Eastern (though showing improvements), \nMuchinga, Northerwestern, and Southern provinces since mid 2021.") +
   facet_wrap(~prov, ncol=4) +
   faceted +
   scale_color_manual(name ="",
@@ -212,7 +212,7 @@ ggsave("viz/Dec 23 FHDR/Fully Imunnized facets PS.png",
        device="png",
        type="cairo",
        height = 6.5,
-       width = 12)
+       width = 13)
 
 
 #'*______BCG COVERAGE UNDER 1*
@@ -258,7 +258,7 @@ bcg_plt <- ggplot(BCG_prov, aes(x = mnthyr, y = bcg.coverageP, colour=usaid_blue
                      labels = percent,
                      breaks = c(.2,.4,.6,.8,1)) +
   # scale_x_date(date_labels="%b %y",date_breaks="4 months") +
-  labs(x="", y="", caption="Data Source: HMIS", title="The pattern for BCG Coverage (%) Under 1 is similar across the provinces (2019 - 2023 Q2)") +
+  labs(x="", y="", caption="Data Source: HMIS", title="The pattern for BCG Coverage (%) Under 1 shows a similar picture across the provinces (Jan 2020 - Sept 2023).") +
   facet_wrap(~prov, ncol=4) +
   faceted +
   scale_color_manual(name ="",
