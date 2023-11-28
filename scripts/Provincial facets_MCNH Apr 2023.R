@@ -318,7 +318,7 @@ prov.dpt_plt <- ggplot(dpt1_prov, aes(x = mnthyr, y = dptu1.coverageP, colour=us
                      labels = percent,
                      breaks = c(.2,.4,.6,.8,1)) +
 
-  labs(x="", y="", caption="Data Source: HMIS", title="DPT 1st dose Coverage (%) Under 1, 2019 - 2023") +
+  labs(x="", y="", caption="Data Source: HMIS", title="DPT 1st dose Coverage (%) Under 1, Jan 2020 - Sept 2023.") +
   facet_wrap(~prov, ncol=4) +
   faceted +
   scale_color_manual(name ="",
@@ -379,7 +379,7 @@ vitA_prov_plt <- ggplot(vitA_prov, aes(x = mnthyr, y = vitA.suppP, colour=usaid_
                      labels = percent,
                      breaks = c(.1,.2,.3,.4,.5)) +
   
-  labs(x="", y="", caption="Data Source: HMIS", title="The picture on Vitamin A Supplement at provincial level is no different from the national picture of below 30%.") +
+  labs(x="", y="", caption="Data Source: HMIS", title="The picture on Vitamin A Supplement at provincial level is not different from the national picture of below 30%.") +
   facet_wrap(~prov, ncol=4) +
   faceted +
   scale_color_manual(name ="",
