@@ -1196,7 +1196,7 @@ ggplot(frthPlusANC_prov, aes(x=mnthyr, y=frth.ancP)) +
                      labels = percent,
                      breaks = c(.1,.2,.3,.4,.5)) +
   labs(x ="", y="", caption = "Data Source: HMIS") +labs(x ="", y="", caption = "Data Source: HMIS") +
-  ggtitle("4th+ to Total ANC attendances, 2019 - 2023") +
+  ggtitle("4th+ to Total ANC attendances, Jan 2020 - Sept 2023.") +
   facet_wrap(~prov, ncol=4) +
   faceted +
   scale_color_manual(values=usaid_blue) + basey
@@ -1204,8 +1204,8 @@ ggplot(frthPlusANC_prov, aes(x=mnthyr, y=frth.ancP)) +
 ggsave("viz/Dec 23 FHDR/4th+ to Total ANC attendances faceted.png",
        device="png",
        type="cairo",
-       height = 5.5,
-       width = 9.5)
+       height = 6.5,
+       width = 11.5)
 
 
 
@@ -1247,6 +1247,143 @@ ggsave("viz/Dec 23 FHDR/National 4th+ to Total ANC attendances.png",
        type="cairo",
        height = 6.5,
        width = 12)
+
+
+
+
+
+#'*INSTITUTIONAL DELIVERY AND SKILLED DELIVERY COMBINED - NATIONAL LEVEL*
+
+inst.skilled <- read_xls("data/Dec 2023 MHDR/Reproductive Maternal Health_National level monthly.xls")
+inst.skilled  <- inst.skilled  %>%
+  mutate(month_chr = str_sub(periodname,
+                             start=1,
+                             end=nchar(periodname)-5),
+         month = factor(month_chr,
+                        levels=c("January","February","March","April","May","June","July","August","September","October","November","December")),
+         month_code = as.numeric(month), 
+         year = str_sub(periodname, 
+                        start=nchar(periodname)-4,
+                        end=nchar(periodname)),
+         monyr = paste(month_code, year, sep="-"),
+         mnthyr = my(monyr))
+
+sum(inst.skilled$month_chr!=inst.skilled$month) # expecting 0 if vars same
+
+
+names(inst.skilled)
+inst.skilled <- inst.skilled %>%
+  rename(instdel = 8,
+         skilledel = 10
+  ) %>%
+  
+  mutate(instdelP = instdel/100,
+         skilledelP = skilledel/100)
+
+#'*set instdelP & skilledelP to 100 for all values >100*
+inst.skilled <- inst.skilled %>% 
+  dplyr::mutate(instdel = ifelse(instdel > 100, 100, instdel)) %>% 
+  dplyr::mutate(instdelP = instdel/100)
+
+#'*To create legend, gather method for including a legend --*
+
+inst.skilled <- gather(inst.skilled, key = subpop , value = rate, c(instdelP, skilledelP))
+inst.skilled$subpop <- factor(inst.skilled$subpop, levels = unique(inst.skilled$subpop)) # transform into factor
+levels(inst.skilled$subpop)
+
+combined_plt <- ggplot(inst.skilled, aes(x = mnthyr, y = rate, group = subpop, colour = subpop)) +
+  geom_point(alpha=.5, size=.5) + 
+  #geom_line(size=1) +
+  geom_smooth(method = loess, size = .8, se=FALSE) +
+  scale_y_continuous(limits = c(0,1),
+                     labels = percent,
+                     breaks = c(.1,.2,.3,.4,.5,.6,.7,.8,.9, 1)) +
+  scale_x_date(date_labels="%b %y",date_breaks="3 months") +
+  labs(x="", y="", caption="Data Source: HMIS", title="Institutional Delivery compared with Skilled Personnel as a % of Institutional Delivery, Jan 2020 - Sept 2023.") +
+  scale_color_manual(name ="",
+                     values = usaid_palette,
+                     labels = c("Institutional delivery coverage (%)", "Skilled  Personnel as a % of Institutional DEL")
+  ) + 
+  basem
+
+combined_plt
+
+ggsave("viz/Dec 23 FHDR/National combined inst and skilled deli.png",
+       device="png",
+       type="cairo",
+       height = 6.5,
+       width = 12)
+
+
+
+
+#'*Redrawing for Provincial Levels - Combined inst and skilled*
+
+inst.skilled_prov <- read_xls("data/Dec 2023 MHDR/Reproductive Maternal Health_Provincial level monthly.xls")
+inst.skilled_prov  <- inst.skilled_prov  %>%
+  mutate(month_chr = str_sub(periodname,
+                             start=1,
+                             end=nchar(periodname)-5),
+         month = factor(month_chr,
+                        levels=c("January","February","March","April","May","June","July","August","September","October","November","December")),
+         month_code = as.numeric(month), 
+         year = str_sub(periodname, 
+                        start=nchar(periodname)-4,
+                        end=nchar(periodname)),
+         monyr = paste(month_code, year, sep="-"),
+         mnthyr = my(monyr))
+
+sum(inst.skilled_prov$month_chr!=inst.skilled_prov$month) # expecting 0 if vars same
+
+
+names(inst.skilled_prov)
+inst.skilled_prov <- inst.skilled_prov %>%
+  rename(prov = 1,
+         instdel = 8,
+         skilledel = 10
+  ) %>%
+  
+  mutate(instdelP = instdel/100,
+         skilledelP = skilledel/100)
+
+#'*set anccovP & skilledelP to 100 for all values >100*
+inst.skilled_prov <- inst.skilled_prov %>% 
+  dplyr::mutate(instdel = ifelse(instdel > 100, 100, instdel)) %>% 
+  dplyr::mutate(instdelP = instdel/100)
+
+#'*To create legend, gather method for including a legend --*
+
+inst.skilled_prov <- gather(inst.skilled_prov, key = subpop , value = rate, c(instdelP, skilledelP))
+inst.skilled_prov$subpop <- factor(inst.skilled_prov$subpop, levels = unique(inst.skilled_prov$subpop)) # transform into factor
+levels(inst.skilled_prov$subpop)
+
+provincial_plt <- ggplot(inst.skilled_prov, aes(x = mnthyr, y = rate, group = subpop, colour = subpop)) +
+  geom_point(alpha=.5, size=.5) + 
+  #geom_line(size=1) +
+  geom_smooth(method = loess, size = .8, se=FALSE) +
+  scale_y_continuous(limits = c(0,1),
+                     labels = percent,
+                     breaks = c(.1,.2,.3,.4,.5,.6,.7,.8,.9, 1)) +
+  #scale_x_date(date_labels="%b %y",date_breaks="3 months") +
+  labs(x="", y="", caption="Data Source: HMIS", title="There is seemingly a growing disjoint between Institutional Delivery coverage \nand Skilled personnel in Central, Northwestern, and Western Province.") +
+  facet_wrap(~prov, ncol=4) +
+  faceted +
+  scale_color_manual(name ="",
+                     values = usaid_palette,
+                     labels = c("Institutional delivery coverage (%)", "Skilled  Personnel as a % of Institutional DEL")
+  ) + 
+  basem
+
+provincial_plt
+
+ggsave("viz/Dec 23 FHDR/Combined inst and skilled delivery facets.png",
+       device="png",
+       type="cairo",
+       height = 6.5,
+       width = 12)
+
+
+
 
 
 #'*ANC COVERAGE AGAINST SYPHILIS SCREENING - NATIONAL LEVEL*
@@ -1296,7 +1433,7 @@ syph_plt <- ggplot(anc.syph, aes(x = mnthyr, y = rate, group = subpop, colour = 
                      labels = percent,
                      breaks = c(.1,.2,.3,.4,.5,.6,.7,.8,.9, 1)) +
   scale_x_date(date_labels="%b %y",date_breaks="3 months") +
-  labs(x="", y="", caption="Data Source: HMIS", title="Syphilis Screening rate during 1st ANC visits has been below 50% since October 2019 \nbut seem to improve begining January 2023.") +
+  labs(x="", y="", caption="Data Source: HMIS", title="Syphilis Screening rate during 1st ANC visits has been below 50% \nbut seem to steadily improve begining January 2023.") +
   scale_color_manual(name ="",
                      values = usaid_palette,
                      labels = c("1st ANC coverage (all trimesters)", "Syphilis screening rates (%) at 1st ANC")
@@ -1360,7 +1497,7 @@ syphanc_plt <- ggplot(syphanc_prov, aes(x = mnthyr, y = rate, group = subpop, co
                      labels = percent,
                      breaks = c(.1,.2,.3,.4,.5,.6,.7,.8,.9, 1)) +
   #scale_x_date(date_labels="%b %y",date_breaks="3 months") +
-  labs(x="", y="", caption="Data Source: HMIS", title="Syphilis Screening during ANC visits seems to be doing okay in all other provinces except for \nMuchinga, Northern, Northwestern, and Western provinces begining mid 2021.") +
+  labs(x="", y="", caption="Data Source: HMIS", title="Syphilis Screening during ANC visits seems to steadily improve in all other provinces during FY23 Q4 except for \nLuapula, Lusaka, Muchinga, and Northwestern provinces.") +
   facet_wrap(~prov, ncol=4) +
   faceted +
   scale_color_manual(name ="",
@@ -2065,10 +2202,9 @@ mat <- mat %>%
 #'*To create legend, gather method for including a legend --*
 
 mat <- gather(mat, key = subpop , value = rate, c(anccp, anc1p,anc1u20p))
-mat$subpop <- factor(mat$subpop, levels = unique(mat_prov$subpop)) # transform into factor
+mat$subpop <- factor(mat$subpop, levels = unique(mat$subpop)) # transform into factor
 levels(mat$subpop)
 
-#view(mat)
 
 ggplot(mat, aes(x = mnthyr, y = rate, group = subpop, colour = subpop)) +
   geom_point(alpha=.6, size=1.5) + 
@@ -2081,7 +2217,7 @@ ggplot(mat, aes(x = mnthyr, y = rate, group = subpop, colour = subpop)) +
   labs(x ="", y="", caption = "Data Source: HMIS") +labs(x ="", y="", caption = "Data Source: HMIS") +
   # xlab("", caption = "Data Source: HMIS") + 
   # ylab("") +
-  ggtitle("Proportion of expected pregnancies receiving Antenatal Care (ANC), 2019 - 2023 Q2.") +
+  ggtitle("Proportion of expected pregnancies receiving Antenatal Care (ANC), Jan 2020 - Sept 2023.") +
   scale_color_manual(name ="",
                      values = usaid_palette,
                      labels = c("1st ANC coverage (all trimesters)", "1st ANC Coverage (1st Trimester)", 
@@ -2093,7 +2229,7 @@ ggsave("viz/Dec 23 FHDR/National Proportion of expected pregnancies receiving an
        device="png",
        type="cairo",
        height = 6.5,
-       width = 12)
+       width = 12.5)
 
 
 

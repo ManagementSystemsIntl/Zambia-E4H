@@ -638,7 +638,7 @@ ggplot(mat_prov, aes(x = mnthyr, y = rate, group = subpop, colour = subpop)) +
   labs(x ="", y="", caption = "Data Source: HMIS") +labs(x ="", y="", caption = "Data Source: HMIS") +
   facet_wrap(~prov, ncol=4) +
   faceted +
-  ggtitle("Proportion of expected pregnancies receiving Antenatal Care (ANC), 2019 - 2023") +
+  ggtitle("Proportion of expected pregnancies receiving Antenatal Care (ANC), Jan 2020 - Sept 2023") +
   scale_color_manual(name ="",
                      values = usaid_palette,
                      labels = c("1st ANC coverage (all trimesters)", "1st ANC Coverage (1st Trimester)", 
@@ -650,7 +650,7 @@ ggsave("viz/Dec 23 FHDR/Provincial ANCs PS.png",
        device="png",
        type="cairo",
        height = 6.5,
-       width = 12)
+       width = 11.5)
 
 
 
