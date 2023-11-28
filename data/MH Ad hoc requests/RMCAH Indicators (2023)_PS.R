@@ -2500,7 +2500,7 @@ DPT_plt <- ggplot(DPT_coverage, aes(x = mnthyr, y = Natdptu1p, colour=usaid_blue
                      labels = percent,
                      breaks = c(.1,.2,.3,.4,.5,.6,.7,.8,.9, 1)) +
   scale_x_date(date_labels="%b %y",date_breaks="3 months") +
-  labs(x="", y="", caption="Data Source: HMIS", title="Proportion of infants given DPT 1st Dose Under 1 has been hovering around 88% in the first two quarters of 2023.") +
+  labs(x="", y="", caption="Data Source: HMIS", title="Proportion of infants given DPT 1st Dose Under 1 (Jan 2020 - Sept 2023).") +
   scale_color_manual(name ="",
                      values = usaid_blue,
                      labels = "DPT 1st dose Coverage (%) Under 1") + 
@@ -2542,7 +2542,7 @@ NatVitA_plt <- ggplot(NatVitA, aes(x = mnthyr, y = vitSupP, colour=usaid_blue ))
                      labels = percent,
                      breaks = c(.1,.2,.3,.4,.5,.6,.7,.8,.9, 1)) +
   scale_x_date(date_labels="%b %y",date_breaks="3 months") +
-  labs(x="", y="", caption="Data Source: HMIS", title="The Proportion of infants given Vitamin A supplement (6-11 months semester coverage)\n has been below 30% since 2019.") +
+  labs(x="", y="", caption="Data Source: HMIS", title="The Proportion of infants given Vitamin A supplement (6-11 months semester coverage)\n has been below 30% fron Jan 2020 to Sept 2023 at National Level.") +
   scale_color_manual(name ="",
                      values = usaid_blue,
                      labels = "Vitamin A supplement coverage (%)") + 
@@ -2550,7 +2550,7 @@ NatVitA_plt <- ggplot(NatVitA, aes(x = mnthyr, y = vitSupP, colour=usaid_blue ))
 
 NatVitA_plt
 
-ggsave("viz/ADec 23 FHDR/National Vitamin A supp.png",
+ggsave("viz/Dec 23 FHDR/National Vitamin A supp.png",
        device="png",
        type="cairo",
        height = 6.5,
@@ -2602,7 +2602,7 @@ brstfeeding_plt <- ggplot(breastfeed, aes(x = mnthyr, y = rate, group = subpop, 
                      labels = percent,
                      breaks = c(.1,.2,.3,.4,.5,.6,.7,.8,.9, 1)) +
   scale_x_date(date_labels="%b %y",date_breaks="3 months") +
-  labs(x="", y="", caption="Data Source: HMIS", title="Proportion of infants breastfed within 1 hour of birth \nshows a steady pattern with a minimal deep in Q2 of 2023.") +
+  labs(x="", y="", caption="Data Source: HMIS", title="Proportion of Infants breastfed within 1 hour of birth, \nand Infants exclusively breastfed at 6 months (Jan 2020 - Sept 2023).") +
   scale_color_manual(name ="",
                      values = usaid_palette,
                      labels = c("Initiation on breastmilk within one hour of birth", "Infants on EBF at 6 months")) + basey
