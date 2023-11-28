@@ -2325,7 +2325,7 @@ msles_plt <- ggplot(chldH, aes(x = mnthyr, y = rate, group = subpop, colour = su
                      labels = percent,
                      breaks = c(.1,.2,.3,.4,.5,.6,.7,.8,.9, 1)) +
   scale_x_date(date_labels="%b %y",date_breaks="3 months") +
-  labs(x="", y="", caption="Data Source: HMIS", title="Coverage of the first and second measles vaccine doses had slightly slumped between January 2019 and July 2020, \nbut has since shown a steady increase / improvement.") +
+  labs(x="", y="", caption="Data Source: HMIS", title="Coverage of the first and second measles vaccine doses shows a similar trend from Jan 2020 \nwith a steady increase starting July 2022.") +
   scale_color_manual(name ="",
                      values = usaid_palette,
                      labels = c("Measles under 1", "Measles under 2")
@@ -2374,7 +2374,7 @@ mslesProv_plt <- ggplot(chldH_prov, aes(x = mnthyr, y = rate, group = subpop, co
                      labels = percent,
                      breaks = c(.1,.2,.3,.4,.5,.6,.7,.8,.9, 1)) +
   scale_x_date(date_labels="%b %y",date_breaks="3 months") +
-  labs(x="", y="", caption="Data Source: HMIS", title="Coverage of the first and second measles vaccines, 2019 - 2023") +
+  labs(x="", y="", caption="Data Source: HMIS", title="Coverage of the first and second measles vaccines, Jan 2020 - Sept 2023.") +
   scale_color_manual(name ="",
                      values = usaid_palette,
                      labels = c("Measles under 1", "Measles under 2")
@@ -2459,7 +2459,7 @@ NatBCG_plt <- ggplot(BCG_coverage, aes(x = mnthyr, y = Natbcgp, colour=usaid_blu
                      labels = percent,
                      breaks = c(.1,.2,.3,.4,.5,.6,.7,.8,.9, 1)) +
   scale_x_date(date_labels="%b %y",date_breaks="3 months") +
-  labs(x="", y="", caption="Data Source: HMIS", title="The Proportion of infants given BCG Under 1 has been hovering around 85% since January 2021 \nwith a minimal improvement in Q2 2023.") +
+  labs(x="", y="", caption="Data Source: HMIS", title="The Proportion of infants given BCG Under 1 had been improving since January 2020, \nwith a minimal decrease in July 2021 and has since maintained just slightly above 80%.") +
   scale_color_manual(name ="",
                      values = usaid_blue,
                      labels = "BCG Coverage (%) Under 1") + 
