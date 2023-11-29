@@ -1642,7 +1642,7 @@ ggplot(MatPNC, aes(x=mnthyr, y=MatPNCP)) +
                      labels = percent,
                      breaks = c(.2,.4,.6,.8,1)) +
   labs(x ="", y="", caption = "Data Source: HMIS") +labs(x ="", y="", caption = "Data Source: HMIS") +
-  ggtitle("Maternal Postnatal Care within 48 hours After Delivery has been on an upward \ntrajectory since 2019 and now at a record high of above 63% in 2023!") +
+  ggtitle("Maternal Postnatal Care within 48 hours from Expected Deliveries has been on an upward \ntrajectory since 2020 and now at a record high of above 63% in 2023!") +
   scale_color_manual(values=usaid_blue) + basey
 
 ggsave("viz/Dec 23 FHDR/National Maternal Postnatal 48hr Care.png",
@@ -2283,6 +2283,75 @@ ggsave("viz/Dec 23 FHDR/National Proportion of expected pregnancies receiving an
        type="cairo",
        height = 6.5,
        width = 12.5)
+
+
+
+#'*Comparison of Under 20 yrs to all ANC Coverage*
+
+matAnt20 <- read_xls("data/Dec 2023 MHDR/Antenatal coverage 1st and under 20_national monthly.xls")
+matAnt20  <- matAnt20  %>%
+  mutate(month_chr = str_sub(periodname,
+                             start=1,
+                             end=nchar(periodname)-5),
+         month = factor(month_chr,
+                        levels=c("January","February","March","April","May","June","July","August","September","October","November","December")),
+         month_code = as.numeric(month), 
+         year = str_sub(periodname, 
+                        start=nchar(periodname)-4,
+                        end=nchar(periodname)),
+         monyr = paste(month_code, year, sep="-"),
+         mnthyr = my(monyr))
+
+sum(matAnt20$month_chr!=matAnt20$month)
+
+matAnt20 <- matAnt20 %>%
+  rename(ancall = 3,
+         anc1u20 = 4) %>%
+  mutate(ancallp = ancall/100,
+         anc1u20p = anc1u20/100)
+
+#'*set anccp to 100 for all values >100*
+matAnt20 <- matAnt20 %>% 
+  dplyr::mutate(ancall = ifelse(ancall > 100, 100, ancall)) %>% 
+  dplyr::mutate(ancallp = ancall/100)
+
+#'*To create legend, gather method for including a legend --*
+
+matAnt20 <- gather(matAnt20, key = subpop , value = rate, c(ancallp, anc1u20p))
+matAnt20$subpop <- factor(matAnt20$subpop, levels = unique(matAnt20$subpop)) # transform into factor
+levels(matAnt20$subpop)
+
+
+ggplot(matAnt20, aes(x = mnthyr, y = rate, group = subpop, colour = subpop)) +
+  geom_point(alpha=.6, size=1.5) + 
+  #geom_line(size=1) +
+  geom_smooth(method = loess, size = .8, se=FALSE) +
+  scale_y_continuous(limits = c(0,1),
+                     labels = percent,
+                     breaks = c(.1,.2,.3,.4,.5,.6,.7,.8,.9, 1)) +
+  scale_x_date(date_labels="%b %y",date_breaks="3 months") +
+  labs(x ="", y="", caption = "Data Source: HMIS") +labs(x ="", y="", caption = "Data Source: HMIS") +
+  # xlab("", caption = "Data Source: HMIS") + 
+  # ylab("") +
+  ggtitle("Proportion of ANC under 20 years to expected pregnancies receiving Antenatal Care (ANC), Jan 2020 - Sept 2023.") +
+  scale_color_manual(name ="",
+                     values = usaid_palette,
+                     labels = c("1st ANC coverage (all trimesters)", "1st ANC visits in the 1st trimester: Women <20 yrs")
+  ) + 
+  base
+
+ggsave("viz/Dec 23 FHDR/National 1st visit and under 20 ANC coverage.png",
+       device="png",
+       type="cairo",
+       height = 6.5,
+       width = 12.5)
+
+
+
+
+
+
+
 
 
 
