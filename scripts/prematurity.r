@@ -12,12 +12,12 @@ source("scripts/r prep3.r")
 # # 
 # # install.packages("here")
 devtools::install_github("talgalili/d3heatmap")
-# remotes::install_gitlab("dickoa/rgeoboundaries")
-# # install.packages("remotes")
-# remotes::install_gitlab("dickoa/rgeoboundaries")
-# remotes::install_github("wmgeolab/rgeoboundaries")
-# # install.packages("remotes")
-# remotes::install_github("Nowosad/rcartocolor")
+remotes::install_gitlab("dickoa/rgeoboundaries")
+# install.packages("remotes")
+remotes::install_gitlab("dickoa/rgeoboundaries")
+remotes::install_github("wmgeolab/rgeoboundaries")
+# install.packages("remotes")
+remotes::install_github("Nowosad/rcartocolor")
 
 
 # install.packages("ps")

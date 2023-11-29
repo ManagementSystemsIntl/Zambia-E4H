@@ -312,7 +312,7 @@ ggsave("C:/Users/PIMPA.SAWULU/Desktop/R project doc_E4H/E4H-Zambia/graphs/Provin
 
 
 #'*National Maternal Mortality Ratio*
-mat <- read_xls("data/Aug 2023 MHDR/Reproductive Maternal Health_National level monthly.xls")
+mat <- read_xls("data/Dec 2023 MHDR/Reproductive Maternal Health_National level monthly.xls")
 mat  <- mat  %>%
   mutate(month_chr = str_sub(periodname,
                              start=1,
@@ -358,16 +358,16 @@ mmr_plt <- ggplot(mmr_1, aes(x = mnthyr, y = deaths , colour =   mmtype, linetyp
   baseX
 
 mmr_plt
-ggsave("viz/Aug 23 FHDR/National Maternal Mortality Ratio.png",
+ggsave("viz/Dec 23 FHDR/National Maternal Mortality Ratio.png",
        device="png",
        type="cairo",
-       height = 5.5,
+       height = 6.5,
        width = 12)
 
 
 
 #'*Provincial Maternal Mortality Ratio*
-matprv <- read_xls("data/Aug 2023 MHDR/Reproductive Maternal Health_Provincial level monthly.xls")
+matprv <- read_xls("data/Dec 2023 MHDR/Reproductive Maternal Health_Provincial level monthly.xls")
 mat  <- mat  %>%
   mutate(month_chr = str_sub(periodname,
                              start=1,
@@ -415,7 +415,7 @@ mmr_plt <- ggplot(mmr_1, aes(x = mnthyr, y = deaths , colour =   mmtype, linetyp
   baseX
 
 mmr_plt
-ggsave("viz/Aug 23 FHDR/National Maternal Mortality Ratio.png",
+ggsave("viz/Dec 23 FHDR/Provincial Maternal Mortality Ratio.png",
        device="png",
        type="cairo",
        height = 5.5,
