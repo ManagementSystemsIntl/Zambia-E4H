@@ -770,7 +770,7 @@ lrc_plt <- ggplot(larc, aes(x=mnthyr, y=larc.ab)) +
   labs(x="",
        y="",
        caption="Data Source: HMIS",
-       title="Number of clients accessing LARCs (implants and IUDs) shows a downward trend in Central, \nCopperbelt, Eastern and Muchinga Provinces while other provinces show no significant trends.") + 
+       title="Number of clients accessing LARCs (implants and IUDs) shows an upward trend in all the provinces begining 2023 \nexcept for Northwestern, Southern and Western Provinces with no significant trends.") + 
   baseX
 
 lrc_plt
@@ -809,7 +809,7 @@ larc.dis.p_plt <- ggplot(larc, aes(x=mnthyr, y=larc.dis.p)) +
   labs(x="",
        y="",
        caption="Data Source: HMIS",
-       title="Percentage of clients discontinuing LARC begining mid-2021, show a sharp increase in all \nthe provinces except Luapula, Northwestern, and  Western provinces.") + 
+       title="Percentage of clients discontinuing LARCs (Jan 2020 - Sept 2023).") + 
   baseX
 
 larc.dis.p_plt
