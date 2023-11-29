@@ -595,7 +595,7 @@ crvg_plt <- ggplot(fam, aes(x=mnthyr, y=cvrg_fp, colour=usaid_blue)) +
                      labels = percent,
                      breaks = c(.1,.2,.3,.4,.5,.6,.7,.8)) +
   scale_x_date(date_labels="%b %y",date_breaks="3 months") +
-  labs(x="", y="", caption="Data Source: HMIS", title="Coverage of Modern Family Planning use among women of reproductive age 2019 - 2023 Q2.") +
+  labs(x="", y="", caption="Data Source: HMIS", title="Coverage of Modern Family Planning use among women of reproductive age Jan 2020 - Sept 2023.") +
   scale_color_manual(name ="",
                      values = usaid_blue,
                      labels ="Coverage of modern family planning adoption") + 
@@ -606,7 +606,7 @@ ggsave("viz/Dec 23 FHDR/Coverage of modern family planning adoption.png",
        device="png",
        type="cairo",
        height = 6.5,
-       width = 11)
+       width = 11.5)
 
 
 #'*COVERAGE OF MODERN FAMILY PLANNING ADOPTION BY PROVINCE....reconstruct the code!*
@@ -686,7 +686,7 @@ lrc_plt <- ggplot(larc, aes(x=mnthyr, y=larc.ab)) +
   labs(x="",
        y="",
        caption="Data Source: HMIS",
-       title="Number of clients accessing LARCs (implants and IUDs) had improved since 2019, \nthough showing a downward trend from October 2021.") + 
+       title="Number of clients accessing LARCs (implants and IUDs) shows an improvement from Jan 2020, \nthough there was a decline between Jan 2022 and Jan 2023.") + 
   baseX
 
 lrc_plt
@@ -722,7 +722,7 @@ larc.dis.p_plt <- ggplot(larc, aes(x=mnthyr, y=larc.dis.p)) +
   labs(x="",
        y="",
        caption="Data Source: HMIS",
-       title="Percentage of clients discontinuing LARC decreased from 2019 to mid-2021, \nand has since increased to around 30%.") + 
+       title="Percentage of clients discontinuing LARCs from 2020 is hovering below 30%.") + 
   baseX
 
 larc.dis.p_plt
@@ -872,7 +872,7 @@ method_plt <- ggplot(fpmethod3, aes(x=mnthyr, y=value, color=variable))+
   labs(x="",
        y="",
        caption="Data Source: HMIS",
-       title="Family Planning Methods and their usage/consumption, (2019 - 2023 Q2) \nshows that injectables are the most used.") +
+       title="Family Planning Methods and their usage/consumption, (Jan 2020 - Sept 2023) \nshow that injectables are the most used.") +
   basey + scale_color_manual(name ="",
                              values =c(light_blue,light_grey,usaid_blue),
                              labels = c("IUCDs","Implants","Injectables"))
@@ -918,14 +918,14 @@ Accpt_plt <- ggplot(newAccpt3,aes(x=mnthyr, y=value, color=variable))+
   labs(x="",
        y="",
        caption="Data Source: HMIS",
-       title="Family Planning New Acceptors Starting FP disaggregated by Age.") +
+       title="Family Planning New Acceptors Starting FP disaggregated by Age (Jan 2020 - Sept 2023).") +
   basey + scale_color_manual(name ="",
                              values =c(light_blue,light_grey,usaid_blue, usaid_red),
                              labels = c("under 15yrs","15-19yrs","20-24yrs","above 25yrs"))
 Accpt_plt
 
 
-ggsave("viz/Dec 23 FHDR/New Acceptors Starting FP(with outliers).png",
+ggsave("viz/Dec 23 FHDR/New Acceptors Starting FP disaggs.png",
        device="png",
        type="cairo",
        height = 6.5,
@@ -2796,7 +2796,7 @@ ggplot(chldMalt, aes(x = mnthyr, y = rate, group = subpop, colour = subpop)) +
                      breaks = c(.1,.2,.3,.4,.5,.6,.7,.8,.9, 1)) +
   scale_x_date(date_labels="%b %y",date_breaks="3 months") +
   labs(x ="", y="", caption = "Data Source: HMIS") +labs(x ="", y="", caption = "Data Source: HMIS") +
-  ggtitle("Proportion of Child Malnutrition Admission Rates (%), 2019 - 2023 Q2.") +
+  ggtitle("Proportion of Child Malnutrition Admission Rates (%), Feb 2021 - August 2023.") +
   scale_color_manual(name ="",
                      values = usaid_palette,
                      labels = c("Child Acute Malnutrition (Moderate)", "Child Acute Malnutrition (Severe)", 
@@ -2859,7 +2859,7 @@ ggplot(chldMalt_prov, aes(x = mnthyr, y = rate, group = subpop, colour = subpop)
   labs(x ="", y="", caption = "Data Source: HMIS") +labs(x ="", y="", caption = "Data Source: HMIS") +
   facet_wrap(~prov, ncol=4) +
   faceted +
-  ggtitle("The proportion of Child Malnutrition admission rates (%) for Severe malnutrition in all the provinces is on an \nupward trajectory, except for Lusaka province! (2021 - 2023 Q2.)") +
+  ggtitle("Proportion of Child Malnutrition admission rates (%), (Feb 2021 - Aug 2023.)") +
   scale_color_manual(name ="",
                      values = usaid_palette,
                      labels = c("Child Acute Malnutrition (Moderate)", "Child Acute Malnutrition (Severe)", 
