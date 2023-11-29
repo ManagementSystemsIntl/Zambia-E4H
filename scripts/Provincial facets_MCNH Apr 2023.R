@@ -657,7 +657,7 @@ ggsave("viz/Dec 23 FHDR/Provincial ANCs PS.png",
 
 #'*________________________FAMILY PLANNING INDICATORS*
 
-
+#' 
 #' fam_prov <- read_xls("data/Aug 2023 MHDR/Family Planning data_Provincial level monthly.xls")
 #' names(fam_prov)
 #' fam_prov
@@ -667,8 +667,8 @@ ggsave("viz/Dec 23 FHDR/Provincial ANCs PS.png",
 #'                              end=nchar(periodname)-5),
 #'          month = factor(month_chr,
 #'                         levels=c("January","February","March","April","May","June","July","August","September","October","November","December")),
-#'          month_code = as.numeric(month), 
-#'          year = str_sub(periodname, 
+#'          month_code = as.numeric(month),
+#'          year = str_sub(periodname,
 #'                         start=nchar(periodname)-4,
 #'                         end=nchar(periodname)),
 #'          monyr = paste(month_code, year, sep="-"),
@@ -678,31 +678,37 @@ ggsave("viz/Dec 23 FHDR/Provincial ANCs PS.png",
 #' 
 #' 
 #' 
-#' #'*WOMEN OF REPRODUCTIVE AGE VISITED BY CHA's*
+#' #' #'*WOMEN OF REPRODUCTIVE AGE VISITED BY CHA's*
+#' 
 #' names(fam_prov)
 #' fam_prov <- fam_prov %>%
-#'   rename(prov=2,
-#'          wmn.vstd=3)
-
-# chavst_plt <- ggplot(fam_prov, aes(x=mnthyr, y=wmn.vstd, na.rm = TRUE, colour=usaid_blue)) + 
-#   #geom_bar(stat="identity") +
-#   geom_point(alpha=.6, size=.7) +
-#   geom_smooth(method = loess, linewidth = .8, se=FALSE) +
-#   scale_y_continuous(labels=comma) +
-#   labs(x="", y="", caption="Data Source: HMIS", title="Number of Women in reproductive age visited by CHA.") +
-#   facet_wrap(~prov, ncol=4) +
-#   faceted +
-#   scale_color_manual(name ="",
-#                      values = usaid_blue,
-#                      labels ="Women of Reproductive age visited by CHA") +  
-#   base
-# 
-# chavst_plt
-# ggsave("viz/Aug 23 FHDR/Women of reproductive age visited by CHA.png",
-#        device="png",
-#        type="cairo",
-#        height = 6.5,
-#        width = 11)
+#'    rename(prov=2,
+#'           wmn.vstd=3)
+#' 
+#'  chavst_plt <- ggplot(fam_prov, aes(x=mnthyr, y=wmn.vstd, na.rm = TRUE, colour=usaid_blue)) +
+#'    #geom_bar(stat="identity") +
+#'    geom_point(alpha=.6, size=.7) +
+#'    geom_smooth(method = loess, linewidth = .8, se=FALSE) +
+#'    scale_y_continuous(labels=comma) +
+#'    labs(x="", y="", caption="Data Source: HMIS", title="Number of Women in reproductive age visited by CHA.") +
+#'    facet_wrap(~prov, ncol=4) +
+#'    faceted +
+#'    scale_color_manual(name ="",
+#'                       values = usaid_blue,
+#'                       labels ="Women of Reproductive age visited by CHA") +
+#'    base
+#' 
+#'  chavst_plt
+#'  ggsave("viz/Aug 23 FHDR/Women of reproductive age visited by CHA.png",
+#'         device="png",
+#'         type="cairo",
+#'         height = 6.5,
+#'         width = 11)
+#'  
+#'  
+#'  
+ 
+ 
 
 source("scripts/r prep2.r")
 
