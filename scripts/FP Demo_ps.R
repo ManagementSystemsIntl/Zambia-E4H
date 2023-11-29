@@ -49,6 +49,19 @@ ggsave("viz/Dec 23 FHDR/number of distributed FP by province.png",
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
 library(scales)
 
 inst.pnc <- read_xlsx("data/Aug 2023 MHDR/Institutional delivery national.xlsx")
