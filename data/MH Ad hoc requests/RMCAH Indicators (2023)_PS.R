@@ -896,7 +896,7 @@ newAccpt <- fam %>%
 
 newAccpt
 colnames(newAccpt)
-newAccpt1 <- newAccpt[, c(1,2,3,4,5)]
+newAccpt1 <- newAccpt[, c(4,1,2,3,5)]
 colnames(newAccpt1)
 newAccpt1
 
@@ -908,7 +908,7 @@ newAccpt2 <- newAccpt1 %>%
 names(newAccpt2)
 
 
-newAccpt3 <- melt(newAccpt2, id = "mnthyr")
+newAccpt3 <- reshape2::melt(newAccpt2, id = "mnthyr")
 
 Accpt_plt <- ggplot(newAccpt3,aes(x=mnthyr, y=value, color=variable))+
   geom_point(alpha=.6, size=1.4) +
@@ -930,6 +930,59 @@ ggsave("viz/Dec 23 FHDR/New Acceptors Starting FP disaggs.png",
        type="cairo",
        height = 6.5,
        width = 11)
+
+
+
+#'*FAMILY PLANNING NEW ACCEPTORS............without age disaggs*
+
+
+FPNewaccpt <- read_xls("data/Dec 2023 MHDR/FP New Acceptors_National monthly.xls")
+FPNewaccpt  <- FPNewaccpt  %>%
+  mutate(month_chr = str_sub(periodname,
+                             start=1,
+                             end=nchar(periodname)-5),
+         month = factor(month_chr,
+                        levels=c("January","February","March","April","May","June","July","August","September","October","November","December")),
+         month_code = as.numeric(month), 
+         year = str_sub(periodname, 
+                        start=nchar(periodname)-4,
+                        end=nchar(periodname)),
+         monyr = paste(month_code, year, sep="-"),
+         mnthyr = my(monyr))
+
+names(FPNewaccpt)
+
+naccfp <- FPNewaccpt %>%
+  rename(family.plan = 3,
+         new.accptors = 4
+  ) %>%
+  
+  mutate(naccfp.ab = family.plan + 
+           new.accptors)
+
+naccfp
+
+FPA_plt <- ggplot(naccfp, aes(x=mnthyr, y=naccfp.ab)) + 
+  geom_point(color= usaid_blue, alpha=.6, size=1) + 
+  geom_smooth(method = loess,color= usaid_blue, se=F, size=1.1, alpha=.8) +
+  scale_x_date(date_labels="%b %y",date_breaks="3 months") +
+  scale_y_continuous(labels=comma,
+                     limits=c(0, 70000),
+                     breaks = c(5000, 10000, 15000, 20000, 25000, 30000, 35000, 40000, 45000, 50000, 55000, 60000, 65000, 70000)) +
+  labs(x="",
+       y="",
+       caption="Data Source: HMIS",
+       title="Family Planning New Acceptors Jan 2021 - Sept 2023.") + 
+  baseX
+
+FPA_plt
+
+ggsave("viz/Dec 23 FHDR/National FP new Acceptors.png",
+       device="png",
+       type="cairo",
+       height = 6.5,
+       width = 12)
+
 
 
 
@@ -984,7 +1037,7 @@ facility_plt <- ggplot(facilitydeaths3,aes(x=mnthyr, y=value, color=variable))+
   labs(x="",
        y="",
        caption="Data Source: HMIS",
-       title="Facility (Static) Maternal deaths disaggregated by Age - (2021 - 2023 Q2.)") +
+       title="Facility (Static) Maternal deaths disaggregated by Age - (Feb 2021 - Sept 2023)") +
   basey + scale_color_manual(name ="",
                              values =c(light_blue,light_grey,usaid_blue, usaid_red),
                              labels = c("under 15yrs","15-19yrs","20-24yrs","above 25yrs"))
