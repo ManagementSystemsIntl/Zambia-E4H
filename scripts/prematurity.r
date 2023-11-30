@@ -812,7 +812,7 @@ ggsave("viz/Aug 23 FHDR/perinatal deaths by prov by month.png",
 
 #'*_____________Redraw for National Level*
 
-peri.dth <- read_xlsx("data/Aug 2023 MHDR/perinatal deaths national_monthly.xlsx")
+peri.dth <- read_xlsx("data/Dec 2023 MHDR/perinatal deaths national_monthly.xlsx")
 peri.dth  <- peri.dth  %>%
   mutate(month_chr = str_sub(periodname,
                              start=1,
@@ -850,7 +850,7 @@ nat_pd <- ggplot(peri.dth2, aes(x=mnthyr, y=neonatal.dth, colour=usaid_red)) +
   basey
 
 nat_pd
-ggsave("viz/Aug 23 FHDR/National perinatal deaths 2019-2023.png",
+ggsave("viz/Dec 23 FHDR/National perinatal trends 2019-2023.png",
        device="png",
        type="cairo",
        height = 6.5,
