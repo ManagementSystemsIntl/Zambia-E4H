@@ -810,7 +810,7 @@ ggsave("viz/Aug 23 FHDR/perinatal deaths by prov by month.png",
        width = 12)
 
 
-#'*_____________Redraw for National Level*
+#'*_____________Redraw for National Level....perinatal rates*
 
 peri.dth <- read_xlsx("data/Dec 2023 MHDR/perinatal deaths national_monthly.xlsx")
 peri.dth  <- peri.dth  %>%
