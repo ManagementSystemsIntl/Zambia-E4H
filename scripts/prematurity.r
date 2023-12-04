@@ -812,8 +812,8 @@ ggsave("viz/Aug 23 FHDR/perinatal deaths by prov by month.png",
 
 #'*_____________Redraw for National Level....perinatal rates*
 
-peri.dth <- read_xlsx("data/Dec 2023 MHDR/perinatal deaths national_monthly.xlsx")
-peri.dth  <- peri.dth  %>%
+peri.mr <- read_xlsx("data/Dec 2023 MHDR/perinatal deaths national_monthly.xlsx")
+peri.mr  <- peri.mr  %>%
   mutate(month_chr = str_sub(periodname,
                              start=1,
                              end=nchar(periodname)-5),
@@ -826,31 +826,31 @@ peri.dth  <- peri.dth  %>%
          monyr = paste(month_code, year, sep="-"),
          mnthyr = my(monyr))
 
-peri.dth
+peri.mr
 
-peri.dth1 <- peri.dth %>%
+peri.mr1 <- peri.mr %>%
   select(2,9)
 
-peri.dth1
+peri.mr1
 
-peri.dth2 <- peri.dth1 %>%
+peri.mr2 <- peri.mr1 %>%
   rename(neonatal.dth=1)
 
-peri.dth2
+peri.mr2
 
-nat_pd <- ggplot(peri.dth2, aes(x=mnthyr, y=neonatal.dth, colour=usaid_red)) + 
+nat_pmr <- ggplot(peri.mr2, aes(x=mnthyr, y=neonatal.dth, colour=usaid_red)) + 
   geom_point(alpha=.6, size=.9) + 
   geom_smooth(method = loess, size = .8, se=FALSE) +
   scale_y_continuous(labels=comma) +
   scale_x_date(date_labels="%b %y",date_breaks="3 months") +
-  labs(x="", y="", caption="Data Source: PDSR", title="Number of Perinatal deaths reported, 2019 - 2023 Q2.") +
+  labs(x="", y="", caption="Data Source: PDSR", title="Perinatal Mortality Rate per 1,000 live births, Jan 2020 - Jul 2023.") +
   scale_color_manual(name ="",
                      values = usaid_red,
-                     labels ="Perinatal Deaths") + 
+                     labels ="Perinatal Mortality Rates") + 
   basey
 
-nat_pd
-ggsave("viz/Dec 23 FHDR/National perinatal trends 2019-2023.png",
+nat_pmr
+ggsave("viz/Dec 23 FHDR/National perinatal mortality rates 2020-2023.png",
        device="png",
        type="cairo",
        height = 6.5,
