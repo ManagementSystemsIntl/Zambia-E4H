@@ -30,18 +30,49 @@
 
 # YSL note: For below  version, I simply removed "d3heatmap",  "ggsflabel",  "psych" "sysfonts" "rgeoboundaries" from the above, which were causing me errors
 
+# zam_packages <- c("tidyverse", "here", "gifski", "gt","gtsummary","gghighlight","stringi","DT", "ggthemes","ggridges","viridis",
+#                   "psych","labelled","readxl", "skimr","sjlabelled","sjstats","sjPlot", "sjmisc","readr","ggrepel","openxlsx",
+#                   "sysfonts","scales","magrittr","knitr","lubridate","Hmisc","haven","tidyr","reshape2","DescTools","extrafont",
+#                   "patchwork", "extrafontdb", "ggtext", "geomtextpath","zoo","psych","cowplot","ztable","pheatmap",
+#                   "RColorBrewer", "data.table", "d3heatmap","pheatmap","hablar", "gganimate", "dygraphs", "gapminder", "hrbrthemes",
+#                   "geomtextpath", "patchwork", "gridExtra", "grid", "rmarkdown", "forecast", 
+#                   "backtest", "quantmod", "tseries", "writexl", "ggpubr", "rcartocolor", "remotes", "geodata",
+#                   "shiny", "rgeoboundaries", "nasapower", 
+#                   "leaflet", "ggsflabel", "sf", "RSelenium", "netstat", "GGally", "calendR", "areaplot", "hexbin",
+#                   "webshot", "oceanis", "SPlit", "gsubfn", "proto","fpp", "mapview", "shinydashboard", "packrat","rcartocolor",
+#                   "gt", "bigD","formattable", "reactablefmtr", "scales", "caret","predict3d", "ggpmisc", "cowplot", 
+#                   "googleway", "ggplot2", "ggrepel", "ggspatial", "sf", "rnaturalearth", "rnaturalearthdata", "pacman", "vroom")
+
+
+
+
 zam_packages <- c("tidyverse", "here", "gifski", "gt","gtsummary","gghighlight","stringi","DT", "ggthemes","ggridges","viridis",
+                  
                   "psych","labelled","readxl", "skimr","sjlabelled","sjstats","sjPlot", "sjmisc","readr","ggrepel","openxlsx",
+                  
                   "sysfonts","scales","magrittr","knitr","lubridate","Hmisc","haven","tidyr","reshape2","DescTools","extrafont",
+                  
                   "patchwork", "extrafontdb", "ggtext", "geomtextpath","zoo","psych","cowplot","ztable","pheatmap",
+                  
                   "RColorBrewer", "data.table", "d3heatmap","pheatmap","hablar", "gganimate", "dygraphs", "gapminder", "hrbrthemes",
+                  
                   "geomtextpath", "patchwork", "gridExtra", "grid", "rmarkdown", "forecast", 
+                  
                   "backtest", "quantmod", "tseries", "writexl", "ggpubr", "rcartocolor", "remotes", "geodata",
+                  
                   "shiny", "rgeoboundaries", "nasapower", 
+                  
                   "leaflet", "ggsflabel", "sf", "RSelenium", "netstat", "GGally", "calendR", "areaplot", "hexbin",
-                  "webshot", "oceanis", "SPlit", "gsubfn", "proto","fpp", "mapview", "shinydashboard", "packrat","rcartocolor",
+                  
+                  "webshot", "oceanis", "SPlit", "gsubfn", "proto","fpp", "mapview", "shinydashboard", "packrat",
+                  
                   "gt", "bigD","formattable", "reactablefmtr", "scales", "caret","predict3d", "ggpmisc", "cowplot", 
-                  "googleway", "ggplot2", "ggrepel", "ggspatial", "sf", "rnaturalearth", "rnaturalearthdata", "pacman", "vroom")
+                  
+                  "googleway", "ggplot2", "caTools","ggrepel", "giscoR", "ggspatial", "sp", "glmnet", "rnaturalearth", 
+                  
+                  "rnaturalearthdata", "pacman", "vroom", "rgdal","gridExtra", "GGally","ggraph","igraph","Matrix","network",
+                  
+                  "quanteda", "sna","maps", "RODBC", "elevatr", "sfdep","spdep","igraph", "rnaturalearth", "terra","likert", "transformr", "tidygraph","tm","tibble","quanteda.textplots","spData")
 
 
 #                   "RColorBrewer", "data.table", "d3heatmap","pheatmap","hablar", "gganimate", "dygraphs", "gapminder", "hrbrthemes",

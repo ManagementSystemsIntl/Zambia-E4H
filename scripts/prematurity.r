@@ -346,7 +346,7 @@ ggsave("viz/prematurity/perinatal deaths.png",
 
 #'*THE NEW REQUEST SCRIPT ADJUSTMENTS*
 source("scripts/r prep2.r")
-source("scripts/r prep3.r")
+# source("scripts/r prep3.r")
 
 perinatal.mort <- read_xlsx("data/Aug 2023 MHDR/perinatal mortality rate q2s_2019_2023.xlsx")
 perinatal.mort  <- perinatal.mort  %>%
@@ -372,7 +372,7 @@ perinatal.mort3 <- perinatal.mort2 %>%
 perinatal.mort3
 
 zam.boundary <- geoboundaries(country = "Zambia"
-                              , adm_lvl = 1) %>% 
+                              , adm_lvl = 1) %>%
   select(shapeName)
 
 zam.boundary
@@ -381,7 +381,7 @@ zam.boundary
 
 zam.boundary1 <- zam.boundary %>%
   select(1, 2) %>%
-  na.omit()
+  #na.omit()
 
 zam.boundary1
 
