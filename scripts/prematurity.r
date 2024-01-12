@@ -395,7 +395,7 @@ ggplot(perinatal.mort5, aes(geometry = geometry, fill = rate)) +
         strip.text=element_text(size=14, family="Gill Sans Mt"))
 
 
-ggsave("viz/Aug 23 FHDR/perinatal_mortality_rate.png",
+ggsave("viz/prematurity Apr 2023/perinatal_mortality_rate.png",
        device="png",
        type="cairo",
        height = 6.5,
