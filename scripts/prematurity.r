@@ -1,96 +1,70 @@
 
+#source("scripts/r prep2.r")
+
 source("scripts/r prep2.r")
-source("scripts/r prep3.r")
-
-
-# install.packages("libwgeom")
-
-# install.packages("libwgeom")
-# 
-# install.packages("libwgeom", lib = "C:/R/R-4.2.2/library")
-# 
-# # 
-# # install.packages("here")
-devtools::install_github("talgalili/d3heatmap")
-remotes::install_gitlab("dickoa/rgeoboundaries")
-# install.packages("remotes")
-remotes::install_gitlab("dickoa/rgeoboundaries")
-remotes::install_github("wmgeolab/rgeoboundaries")
-# install.packages("remotes")
-remotes::install_github("Nowosad/rcartocolor")
-
-
-# install.packages("ps")
-# 
-# 
-# library(rgeoboundaries)
-# library(sf)
-# library(rcartocolor)
-
-perinatal.mort <- read_xlsx("data/prematurity/perinatal mortality rate.xlsx")
+install.packages("rgdal")
+install.packages("network")
+install.packages("quanteda")
+install.packages("sna")
+install.packages("maps")
+install.packages("RODBC")
+install.packages("elevatr")
+install.packages("sfdep")
+install.packages("likert")
+install_pakages <- c("transformr", "tidygraph","tm","tibble","quanteda.textplots","spData")
+install.packages(install_pakages)
+install.packages("rgdal", repos="http://R-Forge.R-project.org")
+devtools::install_github('thomasp85/ggraph')
+provinces_zam <- st_read("Data/Updated Shapefiles/Updated_Province.shp")
+perinatal.mort <- read_xlsx("Data/prematurity/perinatal mortality rate.xlsx")
+perinatal.mort
 perinatal.mort  <- perinatal.mort  %>%
   mutate(year = str_sub(period,
                         start=nchar(period)-4,
                         end=nchar(period)))
 perinatal.mort
-
 perinatal.mort1 <- perinatal.mort %>%
   select(1,2,4) %>%
   na.omit()
-
 perinatal.mort2 <- perinatal.mort1 %>%
   rename(prov =1,
          peri.mr=2,
          yr=3)
-
 perinatal.mort2
-
-perinatal.mort3 <- perinatal.mort2 %>% 
+perinatal.mort3 <- perinatal.mort2 %>%
   gather(key = subRt , value = rate, c(peri.mr))
-
 perinatal.mort3
-
-zam.boundary <- geoboundaries(country = "Zambia"
-                              , adm_lvl = 1) %>% 
-  select(shapeName)
-
-zam.boundary
-
+#zam.boundary <- geoboundaries(country = "Zambia"
+#, adm_lvl = 1) %>%
+#select(shapeName)
+#zam.boundary
 #write_xlsx(zam.boundary,"data/prematurity/province.xlsx")
-
-zam.boundary1 <- zam.boundary %>%
+provinces_zam1 <- provinces_zam %>%
   select(1, 2) %>%
   na.omit()
-
-zam.boundary1
-
+provinces_zam1
 
 map_colors <- carto_pal(name = "Burg")
-
 
 perinatal.mort4 <- perinatal.mort3 %>%
   group_by(yr,prov, subRt)
 
-
 perinatal.mort4
-
 perinatal.mort5 <- left_join(perinatal.mort4
-                      , zam.boundary1
-                      , by = c("prov" = "shapeName")) %>%
+                             , provinces_zam1
+                             , by = c("prov" = "PROVINCE")) %>%
   sf::st_as_sf()
-
 perinatal.mort5
-
 
 ggplot(perinatal.mort5, aes(geometry = geometry, fill = rate)) +
   geom_sf()+
   geom_sf_text(aes(label = prov), size = 3) +
   facet_wrap(~yr) +
   scale_fill_carto_c(name="Proportion of\n Mortality Rate"
-                     , palette = "Burg") +
-  labs(x="", y="", caption = "Data Source: PDSR",
-       title = "Perinatal Mortality Rate, 2017-2022"
-       , subtitle = "Darker colors represent a higher proportion of mortality rate") + #for faceted and xy labels include x="Longitude", y="Latitude", +faceted
+                     , palette = "Blue") +
+  labs(x="", y="", caption = "Data Source: Action HIV",
+       title = "HIV Positivity Rate, 2017-2022"
+       , subtitle = "Darker colors represent a higher proportional rate") + #for faceted and xy labels include x="Longitude", y="http://127.0.0.1:28939/graphics/plot_zoom_png?width=923&height=900Latitude", +faceted
   theme_void() +
   theme(plot.title.position = "plot",
         plot.title = element_text(size = 16, hjust=0.5, family="Gill Sans Mt", face="bold"),
@@ -105,17 +79,14 @@ ggplot(perinatal.mort5, aes(geometry = geometry, fill = rate)) +
         legend.position="right",
         strip.text=element_text(size=14, family="Gill Sans Mt"))
 
-##interactive map  
-# zam.boundary2 %>%
-#   leaflet() %>%
-#   addTiles() %>%
-#   addPolygons(label = zam.boundary2$shapeName)
-
 ggsave("viz/prematurity/perinatal_mortality_rate.png",
        device="png",
        type="cairo",
        height = 6.5,
        width = 15)
+
+
+
 
 #'*Prematurity rate*
 prema.rate <- read_xlsx("data/prematurity/prematurity rate.xlsx")
@@ -346,72 +317,69 @@ ggsave("viz/prematurity/perinatal deaths.png",
 
 #'*THE NEW REQUEST SCRIPT ADJUSTMENTS*
 source("scripts/r prep2.r")
-# source("scripts/r prep3.r")
-
-perinatal.mort <- read_xlsx("data/Aug 2023 MHDR/perinatal mortality rate q2s_2019_2023.xlsx")
+# install.packages("rgdal")
+# install.packages("network")
+# install.packages("quanteda")
+# install.packages("sna")
+# install.packages("maps")
+# install.packages("RODBC")
+# install.packages("elevatr")
+# install.packages("sfdep")
+# install.packages("likert")
+# install_pakages <- c("transformr", "tidygraph","tm","tibble","quanteda.textplots","spData")
+# install.packages(install_pakages)
+# install.packages("rgdal", repos="http://R-Forge.R-project.org")
+# devtools::install_github('thomasp85/ggraph')
+provinces_zam <- st_read("Data/Updated Shapefiles/Updated_Province.shp")
+perinatal.mort <- read_xlsx("Data/prematurity/perinatal mortality rate.xlsx")
+perinatal.mort
 perinatal.mort  <- perinatal.mort  %>%
   mutate(year = str_sub(period,
                         start=nchar(period)-4,
                         end=nchar(period)))
 perinatal.mort
-
 perinatal.mort1 <- perinatal.mort %>%
   select(1,2,4) %>%
   na.omit()
-
 perinatal.mort2 <- perinatal.mort1 %>%
   rename(prov =1,
          peri.mr=2,
          yr=3)
-
 perinatal.mort2
-
-perinatal.mort3 <- perinatal.mort2 %>% 
+perinatal.mort3 <- perinatal.mort2 %>%
   gather(key = subRt , value = rate, c(peri.mr))
-
 perinatal.mort3
-
-zam.boundary <- geoboundaries(country = "Zambia"
-                              , adm_lvl = 1) %>%
-  select(shapeName)
-
-zam.boundary
-
+#zam.boundary <- geoboundaries(country = "Zambia"
+#, adm_lvl = 1) %>%
+#select(shapeName)
+#zam.boundary
 #write_xlsx(zam.boundary,"data/prematurity/province.xlsx")
-
-zam.boundary1 <- zam.boundary %>%
+provinces_zam1 <- provinces_zam %>%
   select(1, 2) %>%
-  #na.omit()
-
-zam.boundary1
-
+  na.omit()
+provinces_zam1
 
 map_colors <- carto_pal(name = "Burg")
-
 
 perinatal.mort4 <- perinatal.mort3 %>%
   group_by(yr,prov, subRt)
 
-
 perinatal.mort4
-
 perinatal.mort5 <- left_join(perinatal.mort4
-                             , zam.boundary1
-                             , by = c("prov" = "shapeName")) %>%
+                             , provinces_zam1
+                             , by = c("prov" = "PROVINCE")) %>%
   sf::st_as_sf()
-
 perinatal.mort5
-
 
 ggplot(perinatal.mort5, aes(geometry = geometry, fill = rate)) +
   geom_sf()+
   geom_sf_text(aes(label = prov), size = 3) +
   facet_wrap(~yr) +
   scale_fill_carto_c(name="Proportion of\n Mortality Rate"
-                     , palette = "Burg") +
-  labs(x="", y="", caption = "Data Source: PDSR & HMIS",
-       title = "Perinatal Mortality Rate - Quarters 2, 2019-2023."
-       , subtitle = "Darker colors represent a higher proportion of mortality rate.") + #for faceted and xy labels include x="Longitude", y="Latitude", +faceted
+                     , palette = "Blue") +
+  labs(x="", y="", caption = "Data Source: Action HIV",
+       title = "HIV Positivity Rate, 2017-2022"
+       , subtitle = "Darker colors represent a higher proportional rate") + #for faceted and xy labels include x="Longitude", y="http://127.0.0.1:28939/graphics/plot_zoom_png?width=923&height=900Latitude", +faceted
   theme_void() +
   theme(plot.title.position = "plot",
         plot.title = element_text(size = 16, hjust=0.5, family="Gill Sans Mt", face="bold"),
@@ -426,11 +394,6 @@ ggplot(perinatal.mort5, aes(geometry = geometry, fill = rate)) +
         legend.position="right",
         strip.text=element_text(size=14, family="Gill Sans Mt"))
 
-##interactive map  
-# zam.boundary2 %>%
-#   leaflet() %>%
-#   addTiles() %>%
-#   addPolygons(label = zam.boundary2$shapeName)
 
 ggsave("viz/Aug 23 FHDR/q2s perinatal_mortality_rate.png",
        device="png",
