@@ -694,7 +694,7 @@ cod <- read_xlsx("data/prematurity April 2023/Perinatal Deaths and cause by quar
 # cod$causes <- as.Date(cod$causes)
 
 cod
-cod <- melt(cod[c(1, 2, 3, 4, 5, 6, 7)], id = 'causes')
+cod <- reshape2::melt(cod[c(1, 2, 3, 4, 5, 6, 7)], id = 'causes')
 
 cod
 
