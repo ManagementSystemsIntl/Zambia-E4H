@@ -331,7 +331,7 @@ source("scripts/r prep2.r")
 # install.packages("rgdal", repos="http://R-Forge.R-project.org")
 # devtools::install_github('thomasp85/ggraph')
 provinces_zam <- st_read("Data/Updated Shapefiles/Updated_Province.shp")
-perinatal.mort <- read_xlsx("Data/prematurity/perinatal mortality rate.xlsx")
+perinatal.mort <- read_xlsx("Data/Prematurity Jan 2024/perinatal mortality rate.xlsx")
 perinatal.mort
 perinatal.mort  <- perinatal.mort  %>%
   mutate(year = str_sub(period,
@@ -377,8 +377,8 @@ ggplot(perinatal.mort5, aes(geometry = geometry, fill = rate)) +
   facet_wrap(~yr) +
   scale_fill_carto_c(name="Proportion of\n Mortality Rate"
                      , palette = "Blue") +
-  labs(x="", y="", caption = "Data Source: Action HIV",
-       title = "HIV Positivity Rate, 2017-2022"
+  labs(x="", y="", caption = "Data Source: MPDSR & HMIS",
+       title = "Perinatal Mortality Rate, 2019 - 2023"
        , subtitle = "Darker colors represent a higher proportional rate") + #for faceted and xy labels include x="Longitude", y="http://127.0.0.1:28939/graphics/plot_zoom_png?width=923&height=900Latitude", +faceted
   theme_void() +
   theme(plot.title.position = "plot",
@@ -395,7 +395,7 @@ ggplot(perinatal.mort5, aes(geometry = geometry, fill = rate)) +
         strip.text=element_text(size=14, family="Gill Sans Mt"))
 
 
-ggsave("viz/Aug 23 FHDR/q2s perinatal_mortality_rate.png",
+ggsave("viz/Aug 23 FHDR/perinatal_mortality_rate.png",
        device="png",
        type="cairo",
        height = 6.5,
