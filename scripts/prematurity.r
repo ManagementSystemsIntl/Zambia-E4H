@@ -433,7 +433,7 @@ provinces_zam1 <- provinces_zam %>%
   na.omit()
 provinces_zam1
 
-map_colors <- carto_pal(name = "Burg")
+map_colors <- carto_pal(name = "Teal")
 
 perinatal.mort4 <- perinatal.mort3 %>%
   group_by(yr,prov, subRt)
@@ -809,7 +809,7 @@ ggsave("viz/prematurity Apr 2023/causes.png",
 
 
 #'*Perinatal Deaths by Province by MONTH_August 2023*
-peri.dth.prv <- read_xlsx("data/Aug 2023 MHDR/perinatal deaths by province_monthly.xlsx")
+peri.dth.prv <- read_xlsx("data/Prematurity Jan 2024/perinatal deaths by province_monthly.xlsx")
 peri.dth.prv  <- peri.dth.prv  %>%
   mutate(month_chr = str_sub(periodname,
                              start=1,
@@ -843,13 +843,13 @@ pd <- ggplot(peri.dth.prv2, aes(x=mnth, y=Deaths), alpha=0.5)+
   faceted +
   facet_wrap(~prov) + ##scales="free_y" tom allow for independ y axis variables
   #scale_x_date(date_labels="%b %y",date_breaks="3 months") + 
-  labs(fill="Legend:", title="Perinatal Deaths by Province, 2019 - 2023 Q2.",
+  labs(fill="Legend:", title="Perinatal Deaths by Province, 2019 - 2023 Q4.",
        x="",
        y="Number of Deaths",
        caption = "Data Source: PDSR")
 pd
 
-ggsave("viz/Aug 23 FHDR/perinatal deaths by prov by month.png",
+ggsave("viz/Prematurity viz jan 24/perinatal deaths by prov by month.png",
        device="png",
        type="cairo",
        height = 6.5,
@@ -858,7 +858,7 @@ ggsave("viz/Aug 23 FHDR/perinatal deaths by prov by month.png",
 
 #'*_____________Redraw for National Level....perinatal rates*
 
-peri.mr <- read_xlsx("data/Dec 2023 MHDR/perinatal deaths national_monthly.xlsx")
+peri.mr <- read_xlsx("data/Prematurity Jan 2024/perinatal mortality rates national_monthly.xlsx")
 peri.mr  <- peri.mr  %>%
   mutate(month_chr = str_sub(periodname,
                              start=1,
@@ -889,14 +889,14 @@ nat_pmr <- ggplot(peri.mr2, aes(x=mnthyr, y=perinatal.mortRate, colour=usaid_red
   geom_smooth(method = loess, size = .8, se=FALSE) +
   scale_y_continuous(labels=comma) +
   scale_x_date(date_labels="%b %y",date_breaks="3 months") +
-  labs(x="", y="", caption="Data Source: PDSR", title="Perinatal Mortality Rate per 1,000 live births, Jan 2020 - Jul 2023.") +
+  labs(x="", y="", caption="Data Source: PDSR", title="Perinatal Mortality Rate per 1,000 live births, Jan 2020 - Dec 2023.") +
   scale_color_manual(name ="",
                      values = usaid_red,
                      labels ="Perinatal Mortality Rates") + 
   basey
 
 nat_pmr
-ggsave("viz/Dec 23 FHDR/National perinatal mortality rates 2020-2023.png",
+ggsave("viz/Prematurity viz jan 24/National perinatal mortality rates 2020-2023.png",
        device="png",
        type="cairo",
        height = 6.5,
