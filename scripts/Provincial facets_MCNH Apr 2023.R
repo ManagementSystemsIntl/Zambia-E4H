@@ -422,7 +422,7 @@ stunt_prov_plt <- ggplot(stunting_prov, aes(x = mnthyr, y = stunt.rateP, colour=
                      labels = percent,
                      breaks = c(.01,.02,.03,.04,.05)) +
   
-  labs(x="", y="", caption="Data Source: HMIS", title="Stunting rate (%) in under 5s at facility seems to be increasing in Luapula, \nand Muchinga provinces, though below 2% (Jan 2020 - Sept 2023).") +
+  labs(x="", y="", caption="Data Source: HMIS", title="Stunting rate (%) in under 5s at facility seems to be increasing in Copperbelt, Luapula, \nand Southern provinces, though below 2% (Jan 2020 - Dec 2023).") +
   facet_wrap(~prov, ncol=4) +
   faceted +
   scale_color_manual(name ="",
