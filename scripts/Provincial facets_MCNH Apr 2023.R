@@ -786,7 +786,7 @@ lrc_plt <- ggplot(larc, aes(x=mnthyr, y=larc.ab)) +
   labs(x="",
        y="",
        caption="Data Source: HMIS",
-       title="Number of clients accessing LARCs (implants and IUDs) shows an upward trend in all the provinces begining 2023 \nexcept for Northwestern, Southern and Western Provinces with no significant trends.") + 
+       title="Number of clients accessing LARCs (implants and IUDs) shows an upward trend in all the provinces begining 2023 \nexcept for Muchinga, Northwestern, Southern and Western Provinces with no significant changes.") + 
   baseX
 
 lrc_plt

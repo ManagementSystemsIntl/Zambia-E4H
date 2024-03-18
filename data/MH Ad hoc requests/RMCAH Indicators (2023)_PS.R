@@ -686,7 +686,7 @@ lrc_plt <- ggplot(larc, aes(x=mnthyr, y=larc.ab)) +
   labs(x="",
        y="",
        caption="Data Source: HMIS",
-       title="Number of clients accessing LARCs (implants and IUDs) shows an improvement from Jan 2020, \nthough there was a decline between Jan 2022 and Jan 2023.") + 
+       title="Number of clients accessing LARCs (implants and IUDs) shows an improvement from Jan 2020, \nthough there was a decline between Jan 2022 and Jan 2023 with a steady improvement thereafter.") + 
   baseX
 
 lrc_plt
@@ -695,7 +695,7 @@ ggsave("viz/Dec 23 FHDR/Accessing LARCS.png",
        device="png",
        type="cairo",
        height = 6.5,
-       width = 11)
+       width = 12)
 
 
 
