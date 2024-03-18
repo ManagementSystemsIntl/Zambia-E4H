@@ -2980,7 +2980,7 @@ dptfull_plt <- ggplot(chldH, aes(x = mnthyr, y = rate, group = subpop, colour = 
                      labels = percent,
                      breaks = c(.1,.2,.3,.4,.5,.6,.7,.8,.9, 1)) +
   scale_x_date(date_labels="%b %y",date_breaks="3 months") +
-  labs(x="", y="", caption="Data Source: HMIS", title="Coverage of the Fully Immunized and DPT Under 1 (Jan 2019 - Jul 2023.") +
+  labs(x="", y="", caption="Data Source: HMIS", title="Coverage of the Fully Immunized and DPT Under 1 (Jan 2020 - Dec 2023.") +
   scale_color_manual(name ="",
                      values = usaid_palette,
                      labels = c("Fully Immunized (%) under 1", "DPT 1st dose Coverage (%) under 1")
@@ -3042,7 +3042,7 @@ provdpt.imnzd_plt <- ggplot(fulldpt_prov, aes(x = mnthyr, y = rate, group = subp
                      labels = percent,
                      breaks = c(.2,.4,.6,.8,1)) +
   labs(x ="", y="", caption = "Data Source: HMIS") +labs(x ="", y="", caption = "Data Source: HMIS") +
-  ggtitle("Coverage of the Fully Immunized (%) and DPT 1st dose Under 1 (%) (Jan 2019 - Jul 2023)") +
+  ggtitle("Provincial Coverage of the Fully Immunized (%) and DPT 1st dose Under 1 (%) (Jan 2020 - Dec 2023).") +
   facet_wrap(~prov, ncol=4) +
   faceted +
   scale_color_manual(name ="",
