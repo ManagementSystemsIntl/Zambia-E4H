@@ -740,16 +740,26 @@ fam_prov
 
 fp_plt <- ggplot(fam_prov, aes(x = mnthyr, y = cvrg_fp, colour = usaid_blue)) +
   geom_point(alpha=.9, size=1.3) +
-  stat_smooth(method = loess, size=.9, se=T) + facet_wrap(~prov) +
+  stat_smooth(method = loess, size=.9, se=T) + 
+  scale_y_continuous(limits = c(0,1),
+                     labels = percent,
+                     breaks = c(.2,.4,.6,.8,1)) +
+  facet_wrap(~prov) +
   faceted +
   labs(x ="", y="", caption = "Data Source: HMIS") + labs(x ="", y="", caption = "Data Source: HMIS") +
-  ggtitle("Provincial Coverage of Modern Family Planning utilization, 2019 - 2023") +
+  ggtitle("Provincial Coverage of Modern Family Planning utilization, 2020 - 2023") +
   scale_color_manual(name ="",
                      values = usaid_palette,
                      labels = c("Family Planning Utilization")
   ) + basem
 
 fp_plt
+
+ggsave("viz/Dec 23 FHDR/Modern FP utilization facets.png",
+       device="png",
+       type="cairo",
+       height = 6.5,
+       width = 12)
 
 
 #'*____________CLIENTS ACCESSING LARC*
