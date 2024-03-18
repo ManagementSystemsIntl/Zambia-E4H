@@ -2485,7 +2485,7 @@ full_plt <- ggplot(fullyimz1, aes(x = mnthyr, y = ficp, colour=usaid_blue )) +
                      labels = percent,
                      breaks = c(.1,.2,.3,.4,.5,.6,.7,.8,.9, 1)) +
   scale_x_date(date_labels="%b %y",date_breaks="3 months") +
-  labs(x="", y="", caption="Data Source: HMIS", title="The proportion of infants that are fully immunized has been constant in the \npast years, but we are seeing a downward trend begining January 2022!") +
+  labs(x="", y="", caption="Data Source: HMIS", title="The proportion of infants that are fully immunized had been constant in the past years, \nwith a downward trend begining January 2022, but a steady improvement is noticed begining July 2023!") +
   scale_color_manual(name ="",
                      values = usaid_blue,
                      labels = "Fully Immunized Coverage Under 1") + 

@@ -181,7 +181,7 @@ fulmunized_plt <- ggplot(fulmunized_prov, aes(x = mnthyr, y = fiu1P, colour=usai
                      labels = percent,
                      breaks = c(.1,.2,.3,.4,.5,.6,.7,.8,.9, 1)) +
   # scale_x_date(date_labels="%b %y",date_breaks="4 months") +
-  labs(x="", y="", caption="Data Source: HMIS", title="Fully Immunized Coverage (%) Under 1 has been on a downward trend in Central, Eastern (though showing improvements), \nMuchinga, Northerwestern, and Southern provinces since mid 2021.") +
+  labs(x="", y="", caption="Data Source: HMIS", title="Fully Immunized Coverage (%) Under 1 had been on a downward trend in all the provinces since mid 2021, \nbut has since shown steady increase begining mid 2023.") +
   facet_wrap(~prov, ncol=4) +
   faceted +
   scale_color_manual(name ="",
@@ -190,23 +190,6 @@ fulmunized_plt <- ggplot(fulmunized_prov, aes(x = mnthyr, y = fiu1P, colour=usai
   basem 
 
 fulmunized_plt
-
-# fulmunized_plt <- ggplot(mslsvac_prov, aes(x = mnthyr, y = rate, group = subpop, colour = subpop)) +
-#   geom_point(size=.5, alpha=.5) + 
-#   geom_smooth(method = loess, size = .8, se=FALSE) +
-#   # stat_smooth(se=F, size=.8, alpha=.6, colour=usaid_blue) +
-#   scale_y_continuous(limits = c(0,1),
-#                      labels = percent,
-#                      breaks = c(.2,.4,.6,.8,1)) +
-#   labs(x ="", y="", caption = "Data Source: HMIS") +labs(x ="", y="", caption = "Data Source: HMIS") +
-#   ggtitle("Vaccine Coverage for 1st and 2nd doses of Measles, 2019 - 2023") +
-  # facet_wrap(~prov, ncol=4) +
-  # faceted +
-#   scale_color_manual(name ="",
-#                      values = usaid_palette,
-#                      labels = c("Measles 1 coverage", "Measles 2 coverage")) + basey
-# 
-# fulmunized_plt
 
 ggsave("viz/Dec 23 FHDR/Fully Imunnized facets PS.png",
        device="png",
