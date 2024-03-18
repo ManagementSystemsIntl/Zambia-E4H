@@ -838,6 +838,10 @@ ggsave("viz/Dec 23 FHDR/Discontinuing LARCS Facets.png",
 
 
 
+#'*Number of Women Visited by CHA facets.................*'
+#'adjust to include the provincial variable in the layers by selecting them as you rename........
+
+
 mat_prov <- read_xls("data/Dec 2023 MHDR/Reproductive Maternal Health_Provincial level monthly.xls")
 names(fam_prov)
 fam_prov <- fam_prov %>%
