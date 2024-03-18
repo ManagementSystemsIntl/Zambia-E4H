@@ -2864,7 +2864,7 @@ ggplot(chldMalt, aes(x = mnthyr, y = rate, group = subpop, colour = subpop)) +
                      breaks = c(.1,.2,.3,.4,.5,.6,.7,.8,.9, 1)) +
   scale_x_date(date_labels="%b %y",date_breaks="3 months") +
   labs(x ="", y="", caption = "Data Source: HMIS") +labs(x ="", y="", caption = "Data Source: HMIS") +
-  ggtitle("Proportion of Child Malnutrition Admission Rates (%), Feb 2021 - August 2023.") +
+  ggtitle("Proportion of Child Malnutrition Admission Rates (%), January 2021 - December 2023.") +
   scale_color_manual(name ="",
                      values = usaid_palette,
                      labels = c("Child Acute Malnutrition (Moderate)", "Child Acute Malnutrition (Severe)", 
