@@ -241,7 +241,7 @@ bcg_plt <- ggplot(BCG_prov, aes(x = mnthyr, y = bcg.coverageP, colour=usaid_blue
                      labels = percent,
                      breaks = c(.2,.4,.6,.8,1)) +
   # scale_x_date(date_labels="%b %y",date_breaks="4 months") +
-  labs(x="", y="", caption="Data Source: HMIS", title="The pattern for BCG Coverage (%) Under 1 shows a similar picture across the provinces (Jan 2020 - Sept 2023).") +
+  labs(x="", y="", caption="Data Source: HMIS", title="The pattern for BCG Coverage (%) Under 1 shows a similar picture across the provinces (Jan 2020 - Dec 2023).") +
   facet_wrap(~prov, ncol=4) +
   faceted +
   scale_color_manual(name ="",
