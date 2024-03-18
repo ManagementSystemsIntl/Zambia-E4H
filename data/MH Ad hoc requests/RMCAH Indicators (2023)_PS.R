@@ -2456,56 +2456,7 @@ ggsave("viz/Dec 23 FHDR/Proportion of infants receiving Measles Vaccines 1and2.p
        width = 12)
 
 
-#'* MEASLES 1 & 2 SEPERATED BY PROVINCES* ----
-names(chldH_prov)
 
-chldH_prov <- chldH_prov %>%
-  rename(prov = 1,
-         msles1 = 11,
-         msles2 = 12
-  ) %>%
-  
-  mutate(msles1p = msles1/100,
-         msles2p = msles2/100) %>%
-  
-  #'*set msles1p & msles2p to 100 for all values >100*
-  chldH_prov <- chldH_prov %>% 
-  dplyr::mutate(ancc = ifelse(msles1 > 100, 100, msles1)) %>% 
-  dplyr::mutate(msles1p = msles1/100)
-
-#'*To create legend, gather method for including a legend --*
-
-chldH_prov <- gather(chldH_prov, key = subpop , value = rate, c(msles1p, msles2p))
-chldH_prov$subpop <- factor(chldH_prov$subpop, levels = unique(chldH_prov$subpop)) # transform into factor
-levels(chldH_prov$subpop)
-
-# view(chldH)
-
-mslesProv_plt <- ggplot(chldH_prov, aes(x = mnthyr, y = rate, group = subpop, colour = subpop)) +
-  geom_point(alpha=.6, size=.6) + 
-  #geom_line(size=1) +
-  geom_smooth(method = loess, size = .8, se=FALSE) +
-  facet_wrap(~prov) +
-  faceted +
-  scale_y_continuous(limits = c(0,1),
-                     labels = percent,
-                     breaks = c(.1,.2,.3,.4,.5,.6,.7,.8,.9, 1)) +
-  scale_x_date(date_labels="%b %y",date_breaks="3 months") +
-  labs(x="", y="", caption="Data Source: HMIS", title="Coverage of the first and second measles vaccines, Jan 2020 - Sept 2023.") +
-  scale_color_manual(name ="",
-                     values = usaid_palette,
-                     labels = c("Measles under 1", "Measles under 2")
-  ) + 
-  basem
-mslesProv_plt
-
-ggsave("viz/Dec 23 FHDR/Provincial Measles Vaccines.png",
-       device="png",
-       type="cairo",
-       height = 6.5,
-       width = 12)
-
-#'*Re-look at the above section*
 
 #'*___________FULLY IMMUNIZED Coverage*
 names(chldH)
