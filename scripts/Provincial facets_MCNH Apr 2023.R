@@ -52,7 +52,7 @@ bfhr_plt <- ggplot(bfhr_prov, aes(x = mnthyr, y = rate, group = subpop, colour =
                      labels = percent,
                      breaks = c(.2,.4,.6,.8,1)) +
   labs(x ="", y="", caption = "Data Source: HMIS") +labs(x ="", y="", caption = "Data Source: HMIS") +
-  ggtitle("Proportion of Infants breastfed within 1 hour of birth, and \nInfants exclusively breastfed at 6 months (Jan 2020 - Sept 2023).") +
+  ggtitle("Proportion of Infants breastfed within 1 hour of birth, and \nInfants exclusively breastfed at 6 months (Jan 2020 - Dec 2023).") +
   facet_wrap(~prov, ncol=4) +
   faceted +
   scale_color_manual(name ="",
@@ -65,7 +65,7 @@ ggsave("viz/Dec 23 FHDR/Breastfed within 1 hour of birth and EBF facets.png",
        device="png",
        type="cairo",
        height = 6.5,
-       width = 11)
+       width = 12)
 
 
 
