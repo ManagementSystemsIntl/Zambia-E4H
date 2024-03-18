@@ -2670,7 +2670,7 @@ brstfeeding_plt <- ggplot(breastfeed, aes(x = mnthyr, y = rate, group = subpop, 
                      labels = percent,
                      breaks = c(.1,.2,.3,.4,.5,.6,.7,.8,.9, 1)) +
   scale_x_date(date_labels="%b %y",date_breaks="3 months") +
-  labs(x="", y="", caption="Data Source: HMIS", title="Proportion of Infants breastfed within 1 hour of birth, \nand Infants exclusively breastfed at 6 months (Jan 2020 - Sept 2023).") +
+  labs(x="", y="", caption="Data Source: HMIS", title="Proportion of Infants breastfed within 1 hour of birth, \nand Infants exclusively breastfed at 6 months (Jan 2020 - Dec 2023).") +
   scale_color_manual(name ="",
                      values = usaid_palette,
                      labels = c("Initiation on breastmilk within one hour of birth", "Infants on EBF at 6 months")) + basey
@@ -2689,7 +2689,7 @@ ggsave("viz/Dec 23 FHDR/National EBF and 1hr BF.png",
        device="png",
        type="cairo",
        height = 6.2,
-       width = 11)
+       width = 12)
 
 
 #'*___________CHILD STUNTING LEVELS*
