@@ -972,7 +972,7 @@ FPA_plt <- ggplot(naccfp, aes(x=mnthyr, y=naccfp.ab)) +
   labs(x="",
        y="",
        caption="Data Source: HMIS",
-       title="Family Planning New Acceptors Jan 2021 - Sept 2023.") + 
+       title="Family Planning New Acceptors Jan 2021 - Dec 2023.") + 
   baseX
 
 FPA_plt
