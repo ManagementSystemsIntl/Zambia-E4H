@@ -1550,7 +1550,7 @@ syphanc_plt <- ggplot(syphanc_prov, aes(x = mnthyr, y = rate, group = subpop, co
                      labels = percent,
                      breaks = c(.1,.2,.3,.4,.5,.6,.7,.8,.9, 1)) +
   #scale_x_date(date_labels="%b %y",date_breaks="3 months") +
-  labs(x="", y="", caption="Data Source: HMIS", title="Syphilis Screening during ANC visits seems to steadily improve in all other provinces during FY23 Q4 except for \nLuapula, Lusaka, Muchinga, and Northwestern provinces.") +
+  labs(x="", y="", caption="Data Source: HMIS", title="Syphilis Screening during ANC visits seems to steadily improve in all other provinces begining mid 2023, \nexcept for Lusaka province.") +
   facet_wrap(~prov, ncol=4) +
   faceted +
   scale_color_manual(name ="",
@@ -1601,7 +1601,7 @@ ggplot(MatPNC_prov, aes(x=mnthyr, y=MatPNCP)) +
                      labels = percent,
                      breaks = c(.2,.4,.6,.8,1)) +
   labs(x ="", y="", caption = "Data Source: HMIS") +labs(x ="", y="", caption = "Data Source: HMIS") +
-  ggtitle("Maternal Postnatal Care within 48 hours After Delivery shows improvements across \nthe provinces beginning 2021, except for Western province which shows a decline beggining mid-2021.") +
+  ggtitle("Maternal Postnatal Care within 48 hours After Delivery shows improvements across the provinces beginning 2021, \nexcept for Western and Northern provinces which show a decline beggining mid-2021 and mid 2023 respectively.") +
   facet_wrap(~prov, ncol=4) +
   faceted +
   scale_color_manual(values=usaid_blue) + basey
@@ -1610,7 +1610,7 @@ ggsave("viz/Dec 23 FHDR/Maternal Postnatal 48 faceted.png",
        device="png",
        type="cairo",
        height = 6.5,
-       width = 11.5)
+       width = 12.5)
 
 #'*_______Redraw for National Level*
 
@@ -1642,7 +1642,7 @@ ggplot(MatPNC, aes(x=mnthyr, y=MatPNCP)) +
                      labels = percent,
                      breaks = c(.2,.4,.6,.8,1)) +
   labs(x ="", y="", caption = "Data Source: HMIS") +labs(x ="", y="", caption = "Data Source: HMIS") +
-  ggtitle("Maternal Postnatal Care within 48 hours from Expected Deliveries has been on an upward \ntrajectory since 2020 and now at a record high of above 63% in 2023!") +
+  ggtitle("Maternal Postnatal Care within 48 hours from Expected Deliveries has been on an upward \ntrajectory since 2020, though with a minimal decrease late 2023.") +
   scale_color_manual(values=usaid_blue) + basey
 
 ggsave("viz/Dec 23 FHDR/National Maternal Postnatal 48hr Care.png",
