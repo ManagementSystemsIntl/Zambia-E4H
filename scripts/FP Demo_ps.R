@@ -35,7 +35,7 @@ options(scipen = 999)
 ggplot(fpd1, aes(yr, Value, fill = Method)) +
   geom_bar(stat= "identity") +
   facet_wrap(~prov) +
-  ggtitle("Family Planning Methods and their consumption levels, Jan 2021 - Sept 2023.") +
+  ggtitle("Family Planning Methods and their consumption levels, Jan 2021 - Dec 2023.") +
   scale_y_continuous(labels = scales::label_number_si()) +
   scale_fill_manual(values=c( usaid_palette6)) +
   labs(x = "", y = "Number of distributed contraceptives", fill = "Method/Type", caption = "Data Source: HMIS") +
