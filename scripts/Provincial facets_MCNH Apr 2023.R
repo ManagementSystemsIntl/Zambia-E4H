@@ -964,7 +964,7 @@ ggsave("viz/Dec 23 FHDR/Women of reproductive age visited by CHA.png",
 
 
 #'*Provincial Maternal Mortality Ratio and Reporting Rates*
-#'*FIX SOME LINES BELOW!*
+
 
 matprv1 <- read_xls("data/Dec 2023 MHDR/Maternal MR and RR_provincial (2020-2023).xls")
 
@@ -1010,7 +1010,7 @@ ggplot(matprv3, aes(x=yr, y=mr)) +
   facet_wrap(~prov) +
   faceted +
   scale_y_continuous(sec.axis = sec_axis(trans = ~ .*0.0030,name = "Reporting rate", labels = scales::label_percent())) +
-  labs(x="", y="Mortality Ratio", caption="Data Source: HMIS",title="Maternal Mortality Ratio and Reporting rates - Quarters 4(Jul-Sept), 2020 - 2023.") +
+  labs(x="", y="Mortality Ratio", caption="Data Source: HMIS",title="Maternal Mortality Ratio and Reporting rates - 2020 - 2023.") +
   scale_color_manual(name ="",
                      values = usaid_red,
                      labels = c("HIA2 Reporting rate (%)")) + 
