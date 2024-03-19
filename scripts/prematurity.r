@@ -521,7 +521,7 @@ zam.boundary1 <- zam.boundary %>%
   select(1, 2) %>%
   na.omit()
 
-zam.boundary1
+ ddfzam.boundary1
 
 
 map_colors <- carto_pal(name = "Teal")
