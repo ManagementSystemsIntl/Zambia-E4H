@@ -1037,7 +1037,7 @@ facility_plt <- ggplot(facilitydeaths3,aes(x=mnthyr, y=value, color=variable))+
   labs(x="",
        y="",
        caption="Data Source: HMIS",
-       title="Facility (Static) Maternal deaths disaggregated by Age - (Feb 2021 - Sept 2023)") +
+       title="Facility (Static) Maternal deaths disaggregated by Age - (Feb 2021 - Dec 2023)") +
   basey + scale_color_manual(name ="",
                              values =c(light_blue,light_grey,usaid_blue, usaid_red),
                              labels = c("under 15yrs","15-19yrs","20-24yrs","above 25yrs"))
@@ -1048,7 +1048,7 @@ ggsave("viz/Dec 23 FHDR/National Maternal deaths at facility.png",
        device="png",
        type="cairo",
        height = 6.5,
-       width = 11)
+       width = 12)
 
 
 
@@ -1083,7 +1083,7 @@ comm_plt <- ggplot(comm.deaths3,aes(x=mnthyr, y=value, color=variable))+
   labs(x="",
        y="",
        caption="Data Source: HMIS",
-       title="Community Maternal deaths disaggregated by Age - (2021 - 2023 Q2.)") +
+       title="Community Maternal deaths disaggregated by Age - (2021 - 2023.)") +
   basey + scale_color_manual(name ="",
                              values =c(light_blue,light_grey,usaid_blue, usaid_red),
                              labels = c("under 15yrs","15-19yrs","20-24yrs","above 25yrs"))
@@ -2171,7 +2171,7 @@ ggplot(matmr2, aes(x=yr, y=mr)) +
   # facet_wrap(~prov) +
   # faceted +
   scale_y_continuous(sec.axis = sec_axis(trans = ~ .*0.0030,name = "Reporting rate", labels = scales::label_percent())) +
-  labs(x="", y="Mortality Ratio", caption="Data Source: HMIS",title="Maternal Mortality Ratio and Reporting rates - Quarters 4(Jul-Sept), 2020 - 2023.") +
+  labs(x="", y="Mortality Ratio", caption="Data Source: HMIS",title="Maternal Mortality Ratio and Reporting rates - 2020 - 2023.") +
   scale_color_manual(name ="",
                      values = usaid_red,
                      labels = c("HIA2 Reporting rate (%)")) + 
@@ -2333,7 +2333,7 @@ ggplot(matAnt20, aes(x = mnthyr, y = rate, group = subpop, colour = subpop)) +
   labs(x ="", y="", caption = "Data Source: HMIS") +labs(x ="", y="", caption = "Data Source: HMIS") +
   # xlab("", caption = "Data Source: HMIS") + 
   # ylab("") +
-  ggtitle("Proportion of expected pregnancies receiving Antenatal Care (ANC), Jan 2020 - Sept 2023.") +
+  ggtitle("Proportion of expected pregnancies receiving Antenatal Care (ANC), Jan 2020 - Dec 2023.") +
   scale_color_manual(name ="",
                      values = usaid_palette,
                      labels = c("1st ANC coverage (all trimesters)", "1st ANC visits (all trimesters): Women <20 yrs")
