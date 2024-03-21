@@ -441,8 +441,8 @@ ggsave("viz/Dec 23 FHDR/Discontinuing LARCS Facets_pty facilities.png",
 #'*______________________Child Health INDICATORS......Private facilities*
 
 
-chldH <- read_xls("data/Dec 2023 MHDR/Child Heath national level_monthly_privately.xls")
-chldH  <- chldH  %>%
+chldH_pty <- read_xls("data/Dec 2023 MHDR/Child Heath national level_monthly_privately.xls")
+chldH_pty  <- chldH_pty  %>%
   mutate(month_chr = str_sub(periodname,
                              start=1,
                              end=nchar(periodname)-5),
@@ -456,10 +456,10 @@ chldH  <- chldH  %>%
          mnthyr = my(monyr))
 
 
-chldH_prov <- read_xls("data/Dec 2023 MHDR/Child Heath provincial level_monthly_private.xls")
-names(chldH_prov)
+chldH_prov_pty <- read_xls("data/Dec 2023 MHDR/Child Heath provincial level_monthly_private.xls")
+names(chldH_prov_pty)
 
-chldH_prov  <- chldH_prov  %>%
+chldH_prov_pty  <- chldH_prov_pty  %>%
   mutate(month_chr = str_sub(periodname,
                              start=1,
                              end=nchar(periodname)-5),
@@ -472,76 +472,119 @@ chldH_prov  <- chldH_prov  %>%
          monyr = paste(month_code, year, sep="-"),
          mnthyr = my(monyr))
 
-sum(chldH_prov$month_chr!=chldH_prov$month) # expecting 0 if vars same
+sum(chldH_prov_pty$month_chr!=chldH_prov_pty$month) # expecting 0 if vars same
 
 
 
 
-#'*IMMUNIZATION*
 
-#'* MEASLES 1 & 2*
-names(chldH)
-# view(chldH)
-chldH <- chldH %>%
-  rename(msles1 = 11,
-         msles2 = 12
+#'* FULLY IMMUNIZED COMBINED WITH DPT.....private*
+names(chldH_pty)
+
+chldH_pty <- chldH_pty %>%
+  rename(fullyimunized = 7,
+         dpt.undr1 = 13
   ) %>%
   
-  mutate(msles1p = msles1/100,
-         msles2p = msles2/100)
+  mutate(fullyimunizedP = fullyimunized/100,
+         dpt.undr1P = dpt.undr1/100)
 
 #'*set msles1p & msles2p to 100 for all values >100*
-chldH <- chldH %>% 
-  dplyr::mutate(ancc = ifelse(msles1 > 100, 100, msles1)) %>% 
-  dplyr::mutate(msles1p = msles1/100)
+chldH_pty <- chldH_pty %>% 
+  dplyr::mutate(ancc = ifelse(fullyimunized > 100, 100, fullyimunized)) %>% 
+  dplyr::mutate(fullyimunizedP = fullyimunized/100)
 
 #'*To create legend, gather method for including a legend --*
 
-chldH <- gather(chldH, key = subpop , value = rate, c(msles1p, msles2p))
-chldH$subpop <- factor(chldH$subpop, levels = unique(chldH$subpop)) # transform into factor
-levels(chldH$subpop)
+chldH_pty <- gather(chldH_pty, key = subpop , value = rate, c(fullyimunizedP, dpt.undr1P))
+chldH_pty$subpop <- factor(chldH_pty$subpop, levels = unique(chldH$subpop)) # transform into factor
+levels(chldH_pty$subpop)
 
-# view(chldH)
 
-msles_plt <- ggplot(chldH, aes(x = mnthyr, y = rate, group = subpop, colour = subpop)) +
+dptfull_plt_pty <- ggplot(chldH_pty, aes(x = mnthyr, y = rate, group = subpop, colour = subpop)) +
   geom_point(alpha=.5, size=.5) + 
   #geom_line(size=1) +
-  geom_smooth(method = loess, size = .8, se=FALSE) +
+  geom_smooth(method = loess, linewidth = .8, se=FALSE) +
   scale_y_continuous(limits = c(0,1),
                      labels = percent,
                      breaks = c(.1,.2,.3,.4,.5,.6,.7,.8,.9, 1)) +
   scale_x_date(date_labels="%b %y",date_breaks="3 months") +
-  labs(x="", y="", caption="Data Source: HMIS", title="Coverage of the first and second measles vaccine doses shows a similar trend from Jan 2020 \nwith a steady increase starting July 2022.") +
+  labs(x="", y="", caption="Data Source: HMIS", title="Coverage of the Fully Immunized and DPT Under 1 (Jan 2020 - Dec 2023.") +
   scale_color_manual(name ="",
                      values = usaid_palette,
-                     labels = c("Measles under 1", "Measles under 2")
+                     labels = c("Fully Immunized (%) under 1", "DPT 1st dose Coverage (%) under 1")
   ) + 
   basem
-msles_plt
-ggsave("viz/Dec 23 FHDR/Proportion of infants receiving Measles Vaccines 1and2.png",
+dptfull_plt_pty
+ggsave("viz/Dec 23 FHDR/Proportion of infants fully immunized and DPT given_privateNat.png",
        device="png",
        type="cairo",
        height = 6.5,
        width = 12)
 
 
+#'*________FULLY IMMUNIZED COMBINED WITH DPT.....privately*
+
+fulldpt_prov_pty <- read_xls("data/Dec 2023 MHDR/Child Heath provincial level_monthly_private.xls")
+names(fulldpt_prov_pty)
+fulldpt_prov_pty
+fulldpt_prov_pty  <- fulldpt_prov_pty  %>%
+  mutate(month_chr = str_sub(periodname,
+                             start=1,
+                             end=nchar(periodname)-5),
+         month = factor(month_chr,
+                        levels=c("January","February","March","April","May","June","July","August","September","October","November","December")),
+         month_code = as.numeric(month), 
+         year = str_sub(periodname, 
+                        start=nchar(periodname)-4,
+                        end=nchar(periodname)),
+         monyr = paste(month_code, year, sep="-"),
+         mnthyr = my(monyr))
+
+sum(fulldpt_prov_pty$month_chr!=fulldpt_prov_pty$month) # expecting 0 if vars same
 
 
+names(fulldpt_prov_pty)
+names(fulldpt_prov_pty)
+fulldpt_prov_pty <- fulldpt_prov_pty %>%
+  rename(prov=1,
+         fully.imnzd=7,
+         dpt1=13) %>%
+  mutate(fully.imnzdP = fully.imnzd/100,
+         dpt1P = dpt1/100)
 
+#'*set dpt and imnized to 100 for all values >100*
+fulldpt_prov_pty <- fulldpt_prov_pty %>% 
+  dplyr::mutate(fully.imnzd = ifelse(fully.imnzd > 100, 100, fully.imnzd)) %>% 
+  dplyr::mutate(fully.imnzdP = fully.imnzd/100)
 
+#'*To create legend, gather method for including a legend --*
 
+fulldpt_prov_pty <- gather(fulldpt_prov_pty, key = subpop , value = rate, c(fully.imnzdP, dpt1P))
+fulldpt_prov_pty$subpop <- factor(fulldpt_prov_pty$subpop, levels = unique(fulldpt_prov_pty$subpop)) # transform into factor
+levels(fulldpt_prov_pty$subpop)
 
+provdpt.imnzd_pltPty <- ggplot(fulldpt_prov_pty, aes(x = mnthyr, y = rate, group = subpop, colour = subpop)) +
+  geom_point(size=.5, alpha=.5) + 
+  geom_smooth(method = loess, linewidth = .7, se=FALSE) +
+  scale_y_continuous(limits = c(0,1),
+                     labels = percent,
+                     breaks = c(.2,.4,.6,.8,1)) +
+  labs(x ="", y="", caption = "Data Source: HMIS") +labs(x ="", y="", caption = "Data Source: HMIS") +
+  ggtitle("Provincial Coverage of the Fully Immunized (%) and DPT 1st dose Under 1 (%) (Jan 2020 - Dec 2023).") +
+  facet_wrap(~prov, ncol=4) +
+  faceted +
+  scale_color_manual(name ="",
+                     values = usaid_palette,
+                     labels = c("Fully Immunized (%) under 1", "DPT 1st dose Coverage (%) under 1")) + basey
 
+provdpt.imnzd_pltPty
 
-
-
-
-
-
-
-
-
-
+ggsave("viz/Dec 23 FHDR/Provincial fully immunized and DPT1_privately.png",
+       device="png",
+       type="cairo",
+       height = 6.5,
+       width = 12)
 
 
 
