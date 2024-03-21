@@ -438,6 +438,102 @@ ggsave("viz/Dec 23 FHDR/Discontinuing LARCS Facets_pty facilities.png",
 
 
 
+#'*______________________Child Health INDICATORS......Private facilities*
+
+
+chldH <- read_xls("data/Dec 2023 MHDR/Child Heath national level_monthly_privately.xls")
+chldH  <- chldH  %>%
+  mutate(month_chr = str_sub(periodname,
+                             start=1,
+                             end=nchar(periodname)-5),
+         month = factor(month_chr,
+                        levels=c("January","February","March","April","May","June","July","August","September","October","November","December")),
+         month_code = as.numeric(month), 
+         year = str_sub(periodname, 
+                        start=nchar(periodname)-4,
+                        end=nchar(periodname)),
+         monyr = paste(month_code, year, sep="-"),
+         mnthyr = my(monyr))
+
+
+chldH_prov <- read_xls("data/Dec 2023 MHDR/Child Heath provincial level_monthly_private.xls")
+names(chldH_prov)
+
+chldH_prov  <- chldH_prov  %>%
+  mutate(month_chr = str_sub(periodname,
+                             start=1,
+                             end=nchar(periodname)-5),
+         month = factor(month_chr,
+                        levels=c("January","February","March","April","May","June","July","August","September","October","November","December")),
+         month_code = as.numeric(month), 
+         year = str_sub(periodname, 
+                        start=nchar(periodname)-4,
+                        end=nchar(periodname)),
+         monyr = paste(month_code, year, sep="-"),
+         mnthyr = my(monyr))
+
+sum(chldH_prov$month_chr!=chldH_prov$month) # expecting 0 if vars same
+
+
+
+
+#'*IMMUNIZATION*
+
+#'* MEASLES 1 & 2*
+names(chldH)
+# view(chldH)
+chldH <- chldH %>%
+  rename(msles1 = 11,
+         msles2 = 12
+  ) %>%
+  
+  mutate(msles1p = msles1/100,
+         msles2p = msles2/100)
+
+#'*set msles1p & msles2p to 100 for all values >100*
+chldH <- chldH %>% 
+  dplyr::mutate(ancc = ifelse(msles1 > 100, 100, msles1)) %>% 
+  dplyr::mutate(msles1p = msles1/100)
+
+#'*To create legend, gather method for including a legend --*
+
+chldH <- gather(chldH, key = subpop , value = rate, c(msles1p, msles2p))
+chldH$subpop <- factor(chldH$subpop, levels = unique(chldH$subpop)) # transform into factor
+levels(chldH$subpop)
+
+# view(chldH)
+
+msles_plt <- ggplot(chldH, aes(x = mnthyr, y = rate, group = subpop, colour = subpop)) +
+  geom_point(alpha=.5, size=.5) + 
+  #geom_line(size=1) +
+  geom_smooth(method = loess, size = .8, se=FALSE) +
+  scale_y_continuous(limits = c(0,1),
+                     labels = percent,
+                     breaks = c(.1,.2,.3,.4,.5,.6,.7,.8,.9, 1)) +
+  scale_x_date(date_labels="%b %y",date_breaks="3 months") +
+  labs(x="", y="", caption="Data Source: HMIS", title="Coverage of the first and second measles vaccine doses shows a similar trend from Jan 2020 \nwith a steady increase starting July 2022.") +
+  scale_color_manual(name ="",
+                     values = usaid_palette,
+                     labels = c("Measles under 1", "Measles under 2")
+  ) + 
+  basem
+msles_plt
+ggsave("viz/Dec 23 FHDR/Proportion of infants receiving Measles Vaccines 1and2.png",
+       device="png",
+       type="cairo",
+       height = 6.5,
+       width = 12)
+
+
+
+
+
+
+
+
+
+
+
 
 
 
