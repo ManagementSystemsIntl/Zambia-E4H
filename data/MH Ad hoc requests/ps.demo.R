@@ -225,7 +225,7 @@ crvg_plt <- ggplot(famPrivate, aes(x=mnthyr, y=cvrg_fp, colour=usaid_blue)) +
                      labels = percent,
                      breaks = c(.1,.2,.3,.4,.5,.6,.7,.8)) +
   scale_x_date(date_labels="%b %y",date_breaks="3 months") +
-  labs(x="", y="", caption="Data Source: HMIS", title="Coverage of Modern Family Planning use among women of reproductive age Jan 2020 - Dec 2023.") +
+  labs(x="", y="", caption="Data Source: HMIS", title="Coverage of Modern Family Planning use among women of reproductive age \nin PRIVATELY OWNED FACILITIES (Jan 2020 - Dec 2023).") +
   scale_color_manual(name ="",
                      values = usaid_blue,
                      labels ="Coverage of modern family planning adoption") + 
