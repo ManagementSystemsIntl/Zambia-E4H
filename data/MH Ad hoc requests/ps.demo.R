@@ -283,6 +283,84 @@ ggsave("viz/Dec 23 FHDR/private Modern FP utilization facets.png",
 
 
 
+#'*CLIENTS ACCESSING LARC.........private*
+
+names(famPrivate)
+
+larc <- famPrivate %>%
+  rename(iucd.inserted = 11,
+         implant.inserted = 12
+  ) %>%
+  
+  mutate(larc.ab = iucd.inserted + 
+           implant.inserted)
+
+lrc_plt_pvty <- ggplot(larc, aes(x=mnthyr, y=larc.ab)) + 
+  geom_point(color= usaid_blue, alpha=.6, size=1) + 
+  geom_smooth(method = loess,color= usaid_blue, se=F, size=1.1, alpha=.8) +
+  scale_x_date(date_labels="%b %y",date_breaks="3 months") +
+  scale_y_continuous(labels=comma,
+                     limits=c(0, 3000),
+                     breaks = c(500, 1000, 1500, 2000, 2500, 3000)) +
+  labs(x="",
+       y="",
+       caption="Data Source: HMIS",
+       title="The Number of clients accessing LARCs (implants and IUDs) in Private-owned \nfacilities has been below 1000 until July 2023 when the picture begins to improve.") + 
+  baseX
+
+lrc_plt_pvty
+
+ggsave("viz/Dec 23 FHDR/ private clinics Accessing LARCS.png",
+       device="png",
+       type="cairo",
+       height = 6.5,
+       width = 12)
+
+
+
+
+
+#'*____________CLIENTS ACCESSING LARC........private*
+
+names(famPrivate_prov)
+
+larc <- famPrivate_prov %>%
+  rename(iucd.inserted = 11,
+         implant.inserted = 12
+  ) %>%
+  
+  mutate(larc.ab = iucd.inserted + 
+           implant.inserted)
+
+lrc_prov_pvty <- ggplot(larc, aes(x=mnthyr, y=larc.ab)) + 
+  geom_point(color= usaid_blue, alpha=.6, size=1) + 
+  geom_smooth(method = loess,color= usaid_blue, se=F, size=1.1, alpha=.8) +
+  #scale_x_date(date_labels="%b %y",date_breaks="3 months") +
+  facet_wrap(~prov, ncol=4) +
+  faceted +
+  scale_y_continuous(labels=comma,
+                     limits=c(0, 2000),
+                     breaks = c(500, 1000, 1500, 2000)) +
+  labs(x="",
+       y="",
+       caption="Data Source: HMIS",
+       title="The Number of clients accessing LARCs (implants and IUDs) seems to be improving in Lusaka, \nbut static in the other provinces with PRIVATELY-OWNED facility reports.") + 
+  baseX
+
+lrc_prov_pvty
+
+ggsave("viz/Dec 23 FHDR/Accessing LARCS Facets_private.png",
+       device="png",
+       type="cairo",
+       height = 6.5,
+       width = 12)
+
+
+
+
+
+
+
 
 
 
