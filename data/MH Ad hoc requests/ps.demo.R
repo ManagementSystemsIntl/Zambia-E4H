@@ -209,7 +209,7 @@ famPrivate_prov  <- famPrivate_prov  %>%
 sum(famPrivate_prov$month_chr!=famPrivate_prov$month) # expecting 0 if vars same
 
 
-#'*______COVERAGE OF MODERN FAMILY PLANNING ADOPTION Redone*
+#'*______COVERAGE OF MODERN FAMILY PLANNING ADOPTION private clinics*
 
 famPrivate <- famPrivate %>%
   rename(wmn.mfp=4,
@@ -237,6 +237,46 @@ ggsave("viz/Dec 23 FHDR/Private Coverage of modern family planning adoption.png"
        type="cairo",
        height = 6.5,
        width = 12)
+
+
+
+
+#'*______COVERAGE OF MODERN FAMILY PLANNING ADOPTION private clinics...FACETS*
+
+
+
+names(famPrivate_prov)
+famPrivate_prov <- famPrivate_prov %>%
+  rename(prov=1,
+         wmn.mfp=4,
+         wmn.vstd=3) %>%
+  mutate(cvrg_fp = wmn.mfp/wmn.vstd)
+
+famPrivate_prov
+
+fp_plt_prty <- ggplot(famPrivate_prov, aes(x = mnthyr, y = cvrg_fp, colour = usaid_blue)) +
+  geom_point(alpha=.9, size=1.3) +
+  stat_smooth(method = loess, size=.9, se=T) + 
+  scale_y_continuous(limits = c(0,1),
+                     labels = percent,
+                     breaks = c(.2,.4,.6,.8,1)) +
+  facet_wrap(~prov) +
+  faceted +
+  labs(x ="", y="", caption = "Data Source: HMIS") + labs(x ="", y="", caption = "Data Source: HMIS") +
+  ggtitle("Provincial Coverage of Modern Family Planning utilization in PRIVATELY OWNED FACILITIES (Jan 2020 - Dec 2023).") +
+  scale_color_manual(name ="",
+                     values = usaid_palette,
+                     labels = c("Family Planning Utilization")
+  ) + basem
+
+fp_plt_prty
+
+ggsave("viz/Dec 23 FHDR/private Modern FP utilization facets.png",
+       device="png",
+       type="cairo",
+       height = 6.5,
+       width = 12)
+
 
 
 
