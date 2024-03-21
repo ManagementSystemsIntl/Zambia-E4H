@@ -358,6 +358,44 @@ ggsave("viz/Dec 23 FHDR/Accessing LARCS Facets_private.png",
 
 
 
+#'*PERCENTAGE OF DISCONTINUNING LARC......private*
+names(famPrivate)
+
+larc <- famPrivate %>%
+  rename(iucd.inserted = 11,
+         implant.inserted = 12,
+         iucd.removed = 8,
+         implant.removed = 9
+  ) %>%
+  
+  mutate(larc.dis.p = (iucd.removed + implant.removed) / (iucd.inserted + implant.inserted))
+
+
+larc.dis.p_plt <- ggplot(larc, aes(x=mnthyr, y=larc.dis.p)) + 
+  geom_point(color= usaid_blue, alpha=.6, size=1) + 
+  geom_smooth(method =loess, color= usaid_blue, se=F, size=1.1, alpha=.8) +
+  scale_x_date(date_labels="%b %y",date_breaks="3 months") +
+  scale_y_continuous(limits=c(0,.5),
+                     labels=percent,
+                     breaks = c(.1,.2,.3,.4,.5)) +
+  labs(x="",
+       y="",
+       caption="Data Source: HMIS",
+       title="Percentage of clients discontinuing LARCs from privately-owned facilities \nhas been on a downward trend and now stands at below 20%!.") + 
+  baseX
+
+larc.dis.p_plt
+
+ggsave("viz/Dec 23 FHDR/Discontinuing LARCS_privately..png",
+       device="png",
+       type="cairo",
+       height = 6.5,
+       width = 12)
+
+
+
+
+
 
 
 
