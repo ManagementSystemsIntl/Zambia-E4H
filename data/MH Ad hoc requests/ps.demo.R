@@ -160,3 +160,71 @@ ggsave("viz/Dec 23 FHDR/National FP new Acceptors.png",
 
 
 
+
+
+
+
+
+
+
+
+
+
+#'*COVERAGE OF MODERN FAMILY PLANNING ADOPTION Private Clinics......*
+
+famPrivate <- read_xls("data/Dec 2023 MHDR/FP in private facilities_national monthly.xls")
+famPrivate  <- famPrivate  %>%
+  mutate(month_chr = str_sub(periodname,
+                             start=1,
+                             end=nchar(periodname)-5),
+         month = factor(month_chr,
+                        levels=c("January","February","March","April","May","June","July","August","September","October","November","December")),
+         month_code = as.numeric(month), 
+         year = str_sub(periodname, 
+                        start=nchar(periodname)-4,
+                        end=nchar(periodname)),
+         monyr = paste(month_code, year, sep="-"),
+         mnthyr = my(monyr))
+
+sum(famPrivate$month_chr!=famPrivate$month) # expecting 0 if vars same
+
+
+
+famPrivate_prov <- read_xls("data/Dec 2023 MHDR/FP in private facilities_provincial monthly.xls")
+names(famPrivate_prov)
+famPrivate_prov
+famPrivate_prov  <- famPrivate_prov  %>%
+  mutate(month_chr = str_sub(periodname,
+                             start=1,
+                             end=nchar(periodname)-5),
+         month = factor(month_chr,
+                        levels=c("January","February","March","April","May","June","July","August","September","October","November","December")),
+         month_code = as.numeric(month), 
+         year = str_sub(periodname, 
+                        start=nchar(periodname)-4,
+                        end=nchar(periodname)),
+         monyr = paste(month_code, year, sep="-"),
+         mnthyr = my(monyr))
+
+sum(famPrivate_prov$month_chr!=famPrivate_prov$month) # expecting 0 if vars same
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
