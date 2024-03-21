@@ -717,6 +717,111 @@ ggsave("viz/Dec 23 FHDR/Child malnutrition admission rates_facets_privae sites.p
 
 
 
+#'*______NATIONAL VITAMIN A SUPPLEMENT COVERAGE_Private*
+
+names(chldH_pty)
+NatVitA <- chldH_pty %>%
+  rename(vitSup = 14) %>%
+  
+  mutate(vitSupP = vitSup/100)
+
+#'*setting values of Vitamin A to 100 for all values >100*
+NatVitA <- NatVitA %>% 
+  dplyr::mutate(vitSup = ifelse(vitSup > 100, 100, vitSup)) %>% 
+  dplyr::mutate(vitSupP = vitSup/100)
+
+#'*To create legend, gather method for including a legend --*
+
+NatVitA <- gather(NatVitA, key = subpop , value = rate, c(vitSup))
+NatVitA$subpop <- factor(NatVitA$subpop, levels = unique(NatVitA$subpop)) # transform into factor
+levels(NatVitA$subpop)
+
+NatVitA_plt <- ggplot(NatVitA, aes(x = mnthyr, y = vitSupP, colour=usaid_blue )) +
+  geom_point(alpha=.5, size=.7) + 
+  geom_smooth(method = loess, size = .8, se=FALSE) +
+  scale_y_continuous(limits = c(0,.8),
+                     labels = percent,
+                     breaks = c(.1,.2,.3,.4,.5,.6,.7,.8,.9, 1)) +
+  scale_x_date(date_labels="%b %y",date_breaks="3 months") +
+  labs(x="", y="", caption="Data Source: HMIS", title="The Proportion of infants given Vitamin A supplement (6-11 months semester coverage)\n in Private owned facilities is above 50% begining December 2022!") +
+  scale_color_manual(name ="",
+                     values = usaid_blue,
+                     labels = "Vitamin A supplement coverage (%)") + 
+  basem 
+
+NatVitA_plt
+
+ggsave("viz/Dec 23 FHDR/National Vitamin A supp_private.png",
+       device="png",
+       type="cairo",
+       height = 6.5,
+       width = 12)
+
+
+
+
+#'*______VITAMIN A SUPPLEMENT COVERAGE............private*
+
+vitA_prov <- read_xls("data/Dec 2023 MHDR/Child Heath provincial level_monthly_private.xls")
+names(vitA_prov)
+vitA_prov
+vitA_prov  <- vitA_prov  %>%
+  mutate(month_chr = str_sub(periodname,
+                             start=1,
+                             end=nchar(periodname)-5),
+         month = factor(month_chr,
+                        levels=c("January","February","March","April","May","June","July","August","September","October","November","December")),
+         month_code = as.numeric(month), 
+         year = str_sub(periodname, 
+                        start=nchar(periodname)-4,
+                        end=nchar(periodname)),
+         monyr = paste(month_code, year, sep="-"),
+         mnthyr = my(monyr))
+
+names(vitA_prov)
+vitA_prov <- vitA_prov %>%
+  rename(prov=1,
+         vitA.supp=14) %>%
+  mutate(vitA.suppP = vitA.supp/100)
+
+#'*set Vitamin A supplement to 100 for all values >100*
+vitA_prov <- vitA_prov %>% 
+  dplyr::mutate(vitA.supp = ifelse(vitA.supp > 100, 100, vitA.supp)) %>% 
+  dplyr::mutate(vitA.suppP = vitA.supp/100)
+
+#'*To create legend, gather method for including a legend --*
+
+vitA_prov <- gather(vitA_prov, key = subpop , value = rate, c(vitA.supp))
+vitA_prov$subpop <- factor(vitA_prov$subpop, levels = unique(vitA_prov$subpop)) # transform into factor
+levels(vitA_prov$subpop)
+
+vitA_prov_plt <- ggplot(vitA_prov, aes(x = mnthyr, y = vitA.suppP, colour=usaid_blue )) +
+  geom_point(alpha=.4, size=.7) + 
+  #geom_line(size=1) +
+  geom_smooth(method = loess, size = .8, se=FALSE) +
+  scale_y_continuous(limits = c(0,.5),
+                     labels = percent,
+                     breaks = c(.1,.2,.3,.4,.5)) +
+  
+  labs(x="", y="", caption="Data Source: HMIS", title="Vitamin A Supplement at provincial level in private owned sites.") +
+  facet_wrap(~prov, ncol=4) +
+  faceted +
+  scale_color_manual(name ="",
+                     values = usaid_blue,
+                     labels = "Vitamin A Supplement Coverage") + 
+  basem 
+
+vitA_prov_plt
+
+ggsave("viz/Dec 23 FHDR/Vitamin A supplementation facets_private.png",
+       device="png",
+       type="cairo",
+       height = 6.5,
+       width = 12)
+
+
+
+
 
 
 
