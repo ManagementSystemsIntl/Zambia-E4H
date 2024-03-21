@@ -209,6 +209,36 @@ famPrivate_prov  <- famPrivate_prov  %>%
 sum(famPrivate_prov$month_chr!=famPrivate_prov$month) # expecting 0 if vars same
 
 
+#'*______COVERAGE OF MODERN FAMILY PLANNING ADOPTION Redone*
+
+famPrivate <- famPrivate %>%
+  rename(wmn.mfp=4,
+         wmn.vstd=3) %>%
+  mutate(cvrg_fp = wmn.mfp/wmn.vstd) #%>%
+# relocate(cvrg_fp, .after=wmn.mfp)
+colnames(famPrivate)
+crvg_plt <- ggplot(famPrivate, aes(x=mnthyr, y=cvrg_fp, colour=usaid_blue)) + 
+  geom_point(alpha=.6, size=1.5) + 
+  #geom_line(size=1) +
+  geom_smooth(method = loess, linewidth = .8, se=FALSE) +
+  scale_y_continuous(limits = c(0,.8),
+                     labels = percent,
+                     breaks = c(.1,.2,.3,.4,.5,.6,.7,.8)) +
+  scale_x_date(date_labels="%b %y",date_breaks="3 months") +
+  labs(x="", y="", caption="Data Source: HMIS", title="Coverage of Modern Family Planning use among women of reproductive age Jan 2020 - Dec 2023.") +
+  scale_color_manual(name ="",
+                     values = usaid_blue,
+                     labels ="Coverage of modern family planning adoption") + 
+  baseX
+
+crvg_plt
+ggsave("viz/Dec 23 FHDR/Private Coverage of modern family planning adoption.png",
+       device="png",
+       type="cairo",
+       height = 6.5,
+       width = 12)
+
+
 
 
 
