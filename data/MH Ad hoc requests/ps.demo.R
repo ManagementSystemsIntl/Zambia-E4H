@@ -821,6 +821,54 @@ ggsave("viz/Dec 23 FHDR/Vitamin A supplementation facets_private.png",
 
 
 
+#'*________4th+ TO TOTAL ANC ATTENDANCES.........Private*
+
+frthPlusANC_prov <- read_xls("data/Dec 2023 MHDR/4th+ to Total ANC Attendance_provincial level_private.xls")
+names(frthPlusANC_prov)
+frthPlusANC_prov
+frthPlusANC_prov  <- frthPlusANC_prov  %>%
+  mutate(month_chr = str_sub(periodname,
+                             start=1,
+                             end=nchar(periodname)-5),
+         month = factor(month_chr,
+                        levels=c("January","February","March","April","May","June","July","August","September","October","November","December")),
+         month_code = as.numeric(month), 
+         year = str_sub(periodname, 
+                        start=nchar(periodname)-4,
+                        end=nchar(periodname)),
+         monyr = paste(month_code, year, sep="-"),
+         mnthyr = my(monyr))
+
+#sum(fam_prov$month_chr!=fam_prov$month) # expecting 0 if vars same
+
+
+names(frthPlusANC_prov)
+names(frthPlusANC_prov)
+frthPlusANC_prov <- frthPlusANC_prov %>%
+  rename(prov=1,
+         frth.anc=3) %>%
+  mutate(frth.ancP = frth.anc/100)
+ggplot(frthPlusANC_prov, aes(x=mnthyr, y=frth.ancP)) + 
+  geom_point(size=.5, alpha=.5, colour=usaid_blue) + 
+  stat_smooth(se=F, size=.8, alpha=.6, colour=usaid_blue) +
+  scale_y_continuous(limits = c(0,.5),
+                     labels = percent,
+                     breaks = c(.1,.2,.3,.4,.5)) +
+  labs(x ="", y="", caption = "Data Source: HMIS") +labs(x ="", y="", caption = "Data Source: HMIS") +
+  ggtitle("4th+ to Total ANC attendances shows a similar trend across provinces, (Jan 2020 - Dec 2023).") +
+  facet_wrap(~prov, ncol=4) +
+  faceted +
+  scale_color_manual(values=usaid_blue) + basey
+
+ggsave("viz/Dec 23 FHDR/4th+ to Total ANC attendances faceted.png",
+       device="png",
+       type="cairo",
+       height = 6.5,
+       width = 12)
+
+
+
+
 
 
 
