@@ -839,8 +839,6 @@ frthPlusANC_prov  <- frthPlusANC_prov  %>%
          monyr = paste(month_code, year, sep="-"),
          mnthyr = my(monyr))
 
-#sum(fam_prov$month_chr!=fam_prov$month) # expecting 0 if vars same
-
 
 names(frthPlusANC_prov)
 names(frthPlusANC_prov)
@@ -855,12 +853,12 @@ ggplot(frthPlusANC_prov, aes(x=mnthyr, y=frth.ancP)) +
                      labels = percent,
                      breaks = c(.1,.2,.3,.4,.5)) +
   labs(x ="", y="", caption = "Data Source: HMIS") +labs(x ="", y="", caption = "Data Source: HMIS") +
-  ggtitle("4th+ to Total ANC attendances shows a similar trend across provinces, (Jan 2020 - Dec 2023).") +
+  ggtitle("4th+ to Total ANC attendances in PRIVATELY-OWNED sites shows a similar trend where there is a deep \nbegining 2022, with Central Province having a sharp deep starting mid 2021.") +
   facet_wrap(~prov, ncol=4) +
   faceted +
   scale_color_manual(values=usaid_blue) + basey
 
-ggsave("viz/Dec 23 FHDR/4th+ to Total ANC attendances faceted.png",
+ggsave("viz/Dec 23 FHDR/4th+ to Total ANC attendances faceted_private.png",
        device="png",
        type="cairo",
        height = 6.5,
