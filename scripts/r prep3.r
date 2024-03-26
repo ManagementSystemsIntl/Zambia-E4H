@@ -283,6 +283,29 @@ usaid_palette6 <- c(web_blue
                     , medium_grey)
 scale_colour_discrete <- function(...) scale_colour_manual(..., values = usaid_palette)
 
+
+usaid_palette9 <- c(web_blue
+                    , usaid_red
+                    , light_blue
+                    , dark_red
+                    , usaid_blue
+                    , medium_grey
+                    , rich_black
+                    , medium_blue
+                    , light_grey)
+scale_colour_discrete <- function(...) scale_colour_manual(..., values = usaid_palette)
+
+
+
+
+
+
+
+
+
+
+
+
 # palette(usaid_palette)
 # 
 #  data(mtcars)
