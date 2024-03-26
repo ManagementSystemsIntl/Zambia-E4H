@@ -317,6 +317,7 @@ ggsave("viz/prematurity/perinatal deaths.png",
 
 #'*THE NEW REQUEST SCRIPT ADJUSTMENTS*
 source("scripts/r prep2.r")
+source("scripts/r prep3.r")
 # install.packages("rgdal")
 # install.packages("network")
 # install.packages("quanteda")
@@ -766,13 +767,13 @@ ggsave("viz/Prematurity viz jan 24/ qtr 4 causes 2023.png",
 cod <- read_xlsx("data/Dec 2023 MHDR/Maternal Deaths cause_2023.xlsx")
 
 cod
-cod <- reshape2::melt(cod[c(1, 2, 3, 4, 5, 6, 7)], id = 'causes')
+cod <- reshape2::melt(cod[c(1, 2, 3, 4, 5, 6, 7,8,9,10)], id = 'causes')
 
 cod
 
 cod1 <- ggplot(cod, aes(x=causes, y=value, fill=variable), alpha=0.6)+ 
   geom_bar(alpha=.7,stat="identity", position="dodge") +
-  scale_fill_manual(values=c( usaid_palette6)) +
+  scale_fill_manual(values=c( usaid_palette9)) +
   scale_y_continuous(labels=comma) +
   labs(fill="Legend:",  caption="Data Source: MPDSR", title="Causes of Maternal Deaths, Jan - Dec 2023.",
        x="",
@@ -783,7 +784,7 @@ ggsave("viz/Dec 23 FHDR/causes of MD 2023.png",
        device="png",
        type="cairo",
        height = 6.0,
-       width = 13)
+       width = 14)
 
 
 
