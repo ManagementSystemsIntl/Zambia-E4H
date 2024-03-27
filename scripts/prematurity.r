@@ -775,7 +775,7 @@ cod1 <- ggplot(cod, aes(x=causes, y=value, fill=variable), alpha=0.6)+
   geom_bar(alpha=.7,stat="identity", position="dodge") +
   scale_fill_manual(values=c( usaid_palette9)) +
   scale_y_continuous(labels=comma) +
-  labs(fill="Legend:",  caption="Data Source: MPDSR", title="Causes of Maternal Deaths, Jan - Dec 2023.",
+  labs(fill="Legend:",  caption="Data Source: MPDSR", title="Causes of Maternal Deaths, Jan - Dec 2023 (though these numbers exclude Lusaka Province data).",
        x="",
        y="Number of deaths") + base
 
@@ -783,7 +783,7 @@ cod1
 ggsave("viz/Dec 23 FHDR/causes of MD 2023.png",
        device="png",
        type="cairo",
-       height = 6.0,
+       height = 7.0,
        width = 14)
 
 
