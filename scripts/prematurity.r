@@ -792,6 +792,85 @@ ggsave("viz/Dec 23 FHDR/causes of MD 2023.png",
 
 
 
+#'*Causes of Maternal Deaths by year...........March 2024*
+cody <- read_xlsx("data/Dec 2023 MHDR/Maternal Deaths causes by year_2018-2023.xlsx")
+
+cody
+cody <- reshape2::melt(cody[c(1, 2, 3, 4, 5, 6, 7,8,9,10)], id = 'causes')
+
+cody
+
+cody2 <- ggplot(cody, aes(x=causes, y=value, fill=variable), alpha=0.6)+ 
+  geom_bar(alpha=.7,stat="identity", position="dodge") +
+  scale_fill_manual(values=c( usaid_palette9)) +
+  scale_y_continuous(labels=comma) +
+  labs(fill="Legend:",  caption="Data Source: MPDSR", title="Causes of Maternal Deaths by Year, Jan 2018 - Dec 2023 (excluding Lusaka Province data for 2023).",
+       x="",
+       y="Number of deaths") + base
+
+cody2
+ggsave("viz/Dec 23 FHDR/causes of MD by year.png",
+       device="png",
+       type="cairo",
+       height = 7.0,
+       width = 14)
+
+
+
+
+#' #'*Maternal Deaths by Province..........March 2024*
+#' peri.dth.prv <- read_xlsx("data/Dec 2023 MHDR/Maternal death by province_yearly.xlsx")
+#' peri.dth.prv  <- peri.dth.prv  %>%
+#'   mutate(month_chr = str_sub(periodname,
+#'                              start=1,
+#'                              end=nchar(periodname)-5),
+#'          month = factor(month_chr,
+#'                         levels=c("January","February","March","April","May","June","July","August","September","October","November","December")),
+#'          month_code = as.numeric(month), 
+#'          year = str_sub(periodname, 
+#'                         start=nchar(periodname)-4,
+#'                         end=nchar(periodname)),
+#'          monyr = paste(month_code, year, sep="-"),
+#'          mnthyr = my(monyr))
+#' 
+#' peri.dth.prv
+#' colnames(peri.dth.prv)
+#' 
+#' peri.dth.prv1 <- peri.dth.prv %>%
+#'   select(2,3,4)
+#' 
+#' peri.dth.prv1
+#' 
+#' peri.dth.prv2 <- peri.dth.prv1 %>%
+#'   rename(prov=2,
+#'          mnyr=3)
+#' 
+#' peri.dth.prv2
+#' 
+#' pd <- ggplot(peri.dth.prv2, aes(x=mnyr, y=Deaths), alpha=0.5)+ 
+#'   geom_col(method="loess", color=usaid_palette9, size=0.8,se=F) + 
+#'   #geom_bar(color=usaid_red, size=0.8) + 
+#'   faceted +
+#'   facet_wrap(~prov) + ##scales="free_y" tom allow for independ y axis variables
+#'   #scale_x_date(date_labels="%b %y",date_breaks="3 months") + 
+#'   labs(fill="Legend:", title="Perinatal Deaths by Province, 2019 - 2023 Q4.",
+#'        x="",
+#'        y="Number of Deaths",
+#'        caption = "Data Source: MPDSR")
+#' pd
+#' 
+#' ggsave("viz/Prematurity viz jan 24/perinatal deaths by prov by month.png",
+#'        device="png",
+#'        type="cairo",
+#'        height = 6.5,
+#'        width = 12)
+
+
+
+
+
+
+
 
 
 
