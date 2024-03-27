@@ -866,6 +866,33 @@ ggsave("viz/Dec 23 FHDR/4th+ to Total ANC attendances faceted_private.png",
 
 
 
+#'*Causes Perinatal Deaths*
+cod <- read_xlsx("data/Prematurity Jan 2024/Perinatal Deaths and cause by quarter.xlsx")
+
+# cod$causes <- as.Date(cod$causes)
+
+cod
+cod <- reshape2::melt(cod[c(1, 2, 3, 4, 5, 6, 7)], id = 'causes')
+
+cod
+
+cod1 <- ggplot(cod, aes(x=causes, y=value, fill=variable), alpha=0.6)+ 
+  geom_bar(alpha=.7,stat="identity", position="dodge") +
+  scale_fill_manual(values=c( usaid_palette6)) +
+  scale_y_continuous(labels=comma) +
+  labs(fill="Legend:",  caption="Data Source: PDSR", title="Causes of Perinatal Deaths, quarters 4 (2019 - 2023).",
+       x="",
+       y="Number of cases") + base
+
+cod1
+ggsave("viz/Prematurity viz jan 24/ qtr 4 causes 2023.png",
+       device="png",
+       type="cairo",
+       height = 6.0,
+       width = 13)
+
+
+
 
 
 
