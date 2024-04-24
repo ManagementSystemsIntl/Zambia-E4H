@@ -621,13 +621,13 @@ ggplot(mat_prov, aes(x = mnthyr, y = rate, group = subpop, colour = subpop)) +
   labs(x ="", y="", caption = "Data Source: HMIS") +labs(x ="", y="", caption = "Data Source: HMIS") +
   facet_wrap(~prov, ncol=4) +
   faceted +
-  ggtitle("Proportion of expected pregnancies receiving Antenatal Care (ANC), Jan 2020 - Sept 2023") +
+  ggtitle("Proportion of expected pregnancies receiving Antenatal Care (ANC), Jan 2020 - Dec 2023") +
   scale_color_manual(name ="",
                      values = usaid_palette,
                      labels = c("1st ANC coverage (all trimesters)", "1st ANC Coverage (1st Trimester)", 
                                 "1st ANC visits in the 1st trimester: Women <20 yrs")
   ) + 
-  base
+  basem
 
 ggsave("viz/Dec 23 FHDR/Provincial ANCs PS.png",
        device="png",
@@ -730,7 +730,7 @@ fp_plt <- ggplot(fam_prov, aes(x = mnthyr, y = cvrg_fp, colour = usaid_blue)) +
   facet_wrap(~prov) +
   faceted +
   labs(x ="", y="", caption = "Data Source: HMIS") + labs(x ="", y="", caption = "Data Source: HMIS") +
-  ggtitle("Provincial Coverage of Modern Family Planning utilization, 2020 - 2023") +
+  ggtitle("Provincial Coverage of Modern Family Planning utilization, 2017 - 2023.") +
   scale_color_manual(name ="",
                      values = usaid_palette,
                      labels = c("Family Planning Utilization")
@@ -738,7 +738,7 @@ fp_plt <- ggplot(fam_prov, aes(x = mnthyr, y = cvrg_fp, colour = usaid_blue)) +
 
 fp_plt
 
-ggsave("viz/Dec 23 FHDR/Modern FP utilization facets.png",
+ggsave("viz/Dec 23 FHDR/Modern FP utilization facets_2017-2023.png",
        device="png",
        type="cairo",
        height = 6.5,
