@@ -594,15 +594,15 @@ crvg_plt <- ggplot(fam, aes(x=mnthyr, y=cvrg_fp, colour=usaid_blue)) +
   scale_y_continuous(limits = c(0,.8),
                      labels = percent,
                      breaks = c(.1,.2,.3,.4,.5,.6,.7,.8)) +
-  scale_x_date(date_labels="%b %y",date_breaks="3 months") +
-  labs(x="", y="", caption="Data Source: HMIS", title="Coverage of Modern Family Planning use among women of reproductive age Jan 2020 - Dec 2023.") +
+  scale_x_date(date_labels="%b %y",date_breaks="4 months") +
+  labs(x="", y="", caption="Data Source: HMIS", title="Coverage of Modern Family Planning use among women of reproductive age (Jan 2017 - Dec 2023.)") +
   scale_color_manual(name ="",
                      values = usaid_blue,
                      labels ="Coverage of modern family planning adoption") + 
   baseX
 
 crvg_plt
-ggsave("viz/Dec 23 FHDR/Coverage of modern family planning adoption.png",
+ggsave("viz/Dec 23 FHDR/Coverage of modern family planning adoption_2017-2023.png",
        device="png",
        type="cairo",
        height = 6.5,
@@ -1418,7 +1418,7 @@ provincial_plt <- ggplot(inst.skilled_prov, aes(x = mnthyr, y = rate, group = su
                      labels = percent,
                      breaks = c(.1,.2,.3,.4,.5,.6,.7,.8,.9, 1)) +
   #scale_x_date(date_labels="%b %y",date_breaks="3 months") +
-  labs(x="", y="", caption="Data Source: HMIS", title="There is seemingly a growing disjoint between Institutional Delivery coverage \nand Skilled personnel in Central, Northwestern, and Western Province.") +
+  labs(x="", y="", caption="Data Source: HMIS", title="There is seemingly a growing disjoint between Institutional Delivery coverage \nand Skilled personnel in Central, (Northwestern, and Western Province-Non IP Supported.)") +
   facet_wrap(~prov, ncol=4) +
   faceted +
   scale_color_manual(name ="",
@@ -1429,7 +1429,7 @@ provincial_plt <- ggplot(inst.skilled_prov, aes(x = mnthyr, y = rate, group = su
 
 provincial_plt
 
-ggsave("viz/Dec 23 FHDR/Combined inst and skilled delivery facets.png",
+ggsave("viz/Dec 23 FHDR/Combined inst and skilled delivery facets_IP Supported.png",
        device="png",
        type="cairo",
        height = 6.5,
@@ -1687,16 +1687,16 @@ ggplot(InstDel_prov, aes(x=mnthyr, y=InstDelP)) +
                      labels = percent,
                      breaks = c(.4,.6,.8,1)) +
   labs(x ="", y="", caption = "Data Source: HMIS") +labs(x ="", y="", caption = "Data Source: HMIS") +
-  ggtitle("Institutional Delivery Coverage seems to be doing well in Copperbelt, Eastern\n and Luapula provinces (above 80%), 2019 - 2023") +
+  ggtitle("Institutional Delivery Coverage seems to be doing well in Copperbelt, Eastern, and Luapula provinces (above 80%), \nwhereas two non-USAID supported provinces (Western & Northwestern) are below 60% begining mid-2021.") +
   facet_wrap(~prov, ncol=4) +
   faceted +
   scale_color_manual(values=usaid_blue) + basey
 
-ggsave("viz/Dec 23 FHDR/Provincial Institutional delivery coverage.png",
+ggsave("viz/Dec 23 FHDR/Provincial Institutional delivery coverage_IP Supported.png",
        device="png",
        type="cairo",
        height = 6.5,
-       width = 11)
+       width = 13)
 
 #'*_______Redraw for National Level*
 
