@@ -1011,7 +1011,7 @@ nat_pmr <- ggplot(peri.mr2, aes(x=mnthyr, y=perinatal.mortRate, colour=usaid_red
   geom_smooth(method = loess, size = .8, se=FALSE) +
   scale_y_continuous(labels=comma) +
   scale_x_date(date_labels="%b %y",date_breaks="3 months") +
-  labs(x="", y="", caption="Data Source: PDSR", title="Perinatal Mortality Rate per 1,000 live births, Jan 2020 - Dec 2023.") +
+  labs(x="", y="", caption="Data Source: PDSR & HMIS", title="Perinatal Mortality Rate per 1,000 live births, had been on a downward trend from January 2022, \nbut has begun to rise begining Jan 2023.") +
   scale_color_manual(name ="",
                      values = usaid_red,
                      labels ="Perinatal Mortality Rates") + 
@@ -1023,5 +1023,61 @@ ggsave("viz/Prematurity viz jan 24/National perinatal mortality rates 2020-2023.
        type="cairo",
        height = 6.5,
        width = 12)
+
+
+
+
+
+
+
+#'*_____________Redraw for National Level....perinatal rates_USAID Supported*
+
+peri.mr <- read_xlsx("data/Prematurity Jan 2024/perinatal mortality rates national_monthly_IP supported.xlsx")
+peri.mr  <- peri.mr  %>%
+  mutate(month_chr = str_sub(periodname,
+                             start=1,
+                             end=nchar(periodname)-5),
+         month = factor(month_chr,
+                        levels=c("January","February","March","April","May","June","July","August","September","October","November","December")),
+         month_code = as.numeric(month), 
+         year = str_sub(periodname, 
+                        start=nchar(periodname)-4,
+                        end=nchar(periodname)),
+         monyr = paste(month_code, year, sep="-"),
+         mnthyr = my(monyr))
+
+peri.mr
+
+peri.mr1 <- peri.mr %>%
+  select(2,9)
+
+peri.mr1
+
+peri.mr2 <- peri.mr1 %>%
+  rename(perinatal.mortRate=1)
+
+peri.mr2
+
+nat_pmr <- ggplot(peri.mr2, aes(x=mnthyr, y=perinatal.mortRate, colour=usaid_blue)) + 
+  geom_point(alpha=.6, size=.9) + 
+  geom_smooth(method = loess, size = .8, se=FALSE) +
+  scale_y_continuous(labels=comma) +
+  scale_x_date(date_labels="%b %y",date_breaks="3 months") +
+  labs(x="", y="", caption="Data Source: PDSR", title="Perinatal Mortality Rate per 1,000 live births, had been on a downward trend from Jan 2020 to Jan 2022, \nbut has since maintained at around 14 in all 8 USAID supported provinces.") +
+  scale_color_manual(name ="",
+                     values = usaid_blue,
+                     labels ="Perinatal Mortality Rates") + 
+  basey
+
+nat_pmr
+ggsave("viz/Prematurity viz jan 24/National perinatal mortality rates_IP Supported.png",
+       device="png",
+       type="cairo",
+       height = 6.5,
+       width = 12)
+
+
+
+
 
 
