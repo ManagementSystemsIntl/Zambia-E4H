@@ -2333,18 +2333,93 @@ ggplot(matAnt20, aes(x = mnthyr, y = rate, group = subpop, colour = subpop)) +
   labs(x ="", y="", caption = "Data Source: HMIS") +labs(x ="", y="", caption = "Data Source: HMIS") +
   # xlab("", caption = "Data Source: HMIS") + 
   # ylab("") +
-  ggtitle("Proportion of expected pregnancies receiving Antenatal Care (ANC), Jan 2020 - Dec 2023.") +
+  ggtitle("Proportion of expected pregnancies receiving Antenatal Care (ANC), Jan 2020 - Dec 2023. \nHere we see that the coverage for Teenage pregnancies has been below 30%!") +
   scale_color_manual(name ="",
                      values = usaid_palette,
                      labels = c("1st ANC coverage (all trimesters)", "1st ANC visits (all trimesters): Women <20 yrs")
   ) + 
-  base
+  basem
 
 ggsave("viz/Dec 23 FHDR/National 1st visit and under 20 ANC coverage.png",
        device="png",
        type="cairo",
        height = 6.5,
        width = 12.5)
+
+
+
+
+
+
+
+#'*Comparison of Under 20 yrs to all ANC Coverage including 1st trimester*
+
+matAnt20 <- read_xls("data/Dec 2023 MHDR/Antenatal coverage National_monthly(including teenage).xls")
+matAnt20  <- matAnt20  %>%
+  mutate(month_chr = str_sub(periodname,
+                             start=1,
+                             end=nchar(periodname)-5),
+         month = factor(month_chr,
+                        levels=c("January","February","March","April","May","June","July","August","September","October","November","December")),
+         month_code = as.numeric(month), 
+         year = str_sub(periodname, 
+                        start=nchar(periodname)-4,
+                        end=nchar(periodname)),
+         monyr = paste(month_code, year, sep="-"),
+         mnthyr = my(monyr))
+
+sum(matAnt20$month_chr!=matAnt20$month)
+
+matAnt20 <- matAnt20 %>%
+  rename(ancall = 3,
+         anc1st = 4,
+         anc1u20 = 5) %>%
+  mutate(ancallp = ancall/100,
+         anc1stp = anc1st/100,
+         anc1u20p = anc1u20/100)
+
+#'*set anccp to 100 for all values >100*
+matAnt20 <- matAnt20 %>% 
+  dplyr::mutate(ancall = ifelse(ancall > 100, 100, ancall)) %>% 
+  dplyr::mutate(ancallp = ancall/100)
+
+#'*To create legend, gather method for including a legend --*
+
+matAnt20 <- gather(matAnt20, key = subpop , value = rate, c(ancallp, anc1stp, anc1u20p))
+matAnt20$subpop <- factor(matAnt20$subpop, levels = unique(matAnt20$subpop)) # transform into factor
+levels(matAnt20$subpop)
+
+
+ggplot(matAnt20, aes(x = mnthyr, y = rate, group = subpop, colour = subpop)) +
+  geom_point(alpha=.6, size=1.5) + 
+  #geom_line(size=1) +
+  geom_smooth(method = loess, size = .8, se=FALSE) +
+  scale_y_continuous(limits = c(0,1),
+                     labels = percent,
+                     breaks = c(.1,.2,.3,.4,.5,.6,.7,.8,.9, 1)) +
+  scale_x_date(date_labels="%b %y",date_breaks="3 months") +
+  labs(x ="", y="", caption = "Data Source: HMIS") +labs(x ="", y="", caption = "Data Source: HMIS") +
+  # xlab("", caption = "Data Source: HMIS") + 
+  # ylab("") +
+  ggtitle("Proportion of expected pregnancies receiving Antenatal Care (ANC), Jan 2020 - Dec 2023. \nHere we see that the coverage for Teenage pregnancies has been below 30%!") +
+  scale_color_manual(name ="",
+                     values = usaid_palette,
+                     labels = c("1st ANC coverage (all trimesters)", "1st ANC coverage (1st trimester)", "1st ANC visits (all trimesters): Women <20 yrs")
+  ) + 
+  basem
+
+ggsave("viz/Dec 23 FHDR/National 1st visit and all trims inclding under 20 ANC coverage.png",
+       device="png",
+       type="cairo",
+       height = 6.5,
+       width = 12.5)
+
+
+
+
+
+
+
 
 
 

@@ -965,7 +965,7 @@ pd <- ggplot(peri.dth.prv2, aes(x=mnth, y=Deaths), alpha=0.5)+
   faceted +
   facet_wrap(~prov) + ##scales="free_y" tom allow for independ y axis variables
   #scale_x_date(date_labels="%b %y",date_breaks="3 months") + 
-  labs(fill="Legend:", title="Perinatal Deaths by Province, 2019 - 2023 Q4.",
+  labs(fill="Legend:", title="Trends of Perinatal Deaths by Province, Jan 2019 - Dec 2023. \nNote that Lusaka is split in two: Lusaka and Women & Newborn.",
        x="",
        y="Number of Deaths",
        caption = "Data Source: PDSR")
@@ -1023,8 +1023,6 @@ ggsave("viz/Prematurity viz jan 24/National perinatal mortality rates 2020-2023.
        type="cairo",
        height = 6.5,
        width = 12)
-
-
 
 
 
