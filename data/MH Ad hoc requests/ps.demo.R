@@ -1025,7 +1025,7 @@ ggplot(frthPlusANC_prov, aes(x=mnthyr, y=frth.ancP)) +
                      labels = percent,
                      breaks = c(.1,.2,.3,.4,.5)) +
   labs(x ="", y="", caption = "Data Source: HMIS") +labs(x ="", y="", caption = "Data Source: HMIS") +
-  ggtitle("The 4th+ ANC attendances in Muchinga Province districts has Chienge, Chifunabuli, and Lunga districts\n showing a gradual decline whereas the others have a sharp decline begining mid-2022.") +
+  ggtitle("The 4th+ ANC attendances for Muchinga Province districts show a similar trend across,\n but with a special pattern from Nakonde district!.") +
   facet_wrap(~prov, ncol=4) +
   faceted +
   scale_color_manual(values=usaid_blue) + basey
