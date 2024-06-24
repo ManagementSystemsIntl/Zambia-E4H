@@ -1041,6 +1041,37 @@ ggsave("viz/Ad hoc Jun 2024/4th+ ANC visits_Muchinga districts.png",
 
 
 
+#'*_____________Neonatal mortality rates by district*
+
+neo.mr <- read_xlsx("data/June 2024 Ad Hoc/Neonatal mortality rate_Luapula.xlsx")
+names(neo.mr)
+
+neo.mr1 <- neo.mr %>%
+  rename(dist=1,
+         neonatal.mortRate=2,
+         yr=3)
+
+neo.mr1
+
+nmr_plt <- ggplot(neo.mr1, aes(x=yr, y=neonatal.mortRate, colour=usaid_red)) + 
+  geom_point(alpha=.6, size=.9) + 
+  geom_smooth(method = loess, linewidth = .8, se=FALSE) + facet_wrap(~dist) + faceted +
+  scale_y_continuous(labels=comma) +
+  # scale_x_date(date_labels="") +
+  labs(x="", y="", caption="Data Source: HMIS", title="Neonatal Mortality Rate per 1,000 live births, had been on a downward trend from January 2022, \nbut has begun to rise begining Jan 2023.") +
+  scale_color_manual(name ="",
+                     values = usaid_red,
+                     labels ="Neonatal Mortality Rates") + 
+  basey
+
+nmr_plt
+ggsave("viz/Ad hoc Jun 2024/Neonata mortality rates_lua districts.png",
+       device="png",
+       type="cairo",
+       height = 6.5,
+       width = 12)
+
+
 
 
 
