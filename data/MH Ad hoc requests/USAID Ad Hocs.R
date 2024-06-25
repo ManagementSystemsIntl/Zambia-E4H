@@ -1077,6 +1077,43 @@ ggsave("viz/Ad hoc Jun 2024/Neonata mortality rates_western districts.png",
 
 
 
+#'*_____________Maternal mortality ratios by district (Lua.Much.North.NWP.West..........*
+
+mat.mratio <- read_xlsx("data/June 2024 Ad Hoc/Maternal  mortality ratio_NWP.xlsx")
+names(mat.mratio)
+
+mat.mratio1 <- mat.mratio %>%
+  rename(dist=1,
+         maternal.mortRatio=2,
+         yr=3)
+
+mat.mratio1
+
+Matmratio_plt <- ggplot(mat.mratio1, aes(x=yr, y=maternal.mortRatio, colour=usaid_red)) + 
+  geom_point(alpha=.6, size=.9) + 
+  geom_smooth(method = loess, linewidth = .8, se=FALSE) + facet_wrap(~dist) + faceted +
+  scale_y_continuous(labels=comma) +
+  # scale_x_date(date_labels="") +
+  labs(x="", y="", caption="Data Source: HMIS", title="Maternal Mortality Ratio per 100, 000 live births, North-Western Province Districts (2018 - 2023).") +
+  scale_color_manual(name ="",
+                     values = usaid_red,
+                     labels ="Maternal Mortality Ratio") + 
+  basey
+
+nmr_plt
+ggsave("viz/Ad hoc Jun 2024/Neonata mortality rates_western districts.png",
+       device="png",
+       type="cairo",
+       height = 7.0,
+       width = 12.5)
+
+
+
+
+
+
+
+
 
 
 
