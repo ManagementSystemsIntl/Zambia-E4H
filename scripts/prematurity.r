@@ -1008,10 +1008,10 @@ peri.mr2
 
 nat_pmr <- ggplot(peri.mr2, aes(x=mnthyr, y=perinatal.mortRate, colour=usaid_red)) + 
   geom_point(alpha=.6, size=.9) + 
-  geom_smooth(method = loess, size = .8, se=FALSE) +
+  geom_smooth(method = loess, linewidth = .8, se=FALSE) +
   scale_y_continuous(labels=comma) +
   scale_x_date(date_labels="%b %y",date_breaks="3 months") +
-  labs(x="", y="", caption="Data Source: PDSR & HMIS", title="Perinatal Mortality Rate per 1,000 live births, had been on a downward trend from January 2022, \nbut has begun to rise begining Jan 2023.") +
+  labs(x="", y="", caption="Data Source: PDSR & HMIS", title="Perinatal Mortality Rate per 1,000 live births, had been on a downward trend from January 2022, \nbut has begun to rise begining Jan 2023 and remained almost constant upto 2024.") +
   scale_color_manual(name ="",
                      values = usaid_red,
                      labels ="Perinatal Mortality Rates") + 
