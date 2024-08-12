@@ -1208,7 +1208,7 @@ mmr_plt <- ggplot(mmr_1, aes(x = mnthyr, y = deaths , colour =   mmtype, linetyp
                         values=("solid"))+
   labs(x="", y="", caption="Data Source: HMIS", title="Maternal mortality facility ratio (per 100,000 live births) in USAID Supported Provinces had been on an upward \ntrajectory since Jan 2020, and has since been a constant trend from early 2022 through into 2024!.") +
   scale_color_manual(name ="",
-                     values = usaid_red) + 
+                     values = usaid_blue) + 
   baseX
 
 mmr_plt
