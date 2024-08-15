@@ -1418,7 +1418,7 @@ provincial_plt <- ggplot(inst.skilled_prov, aes(x = mnthyr, y = rate, group = su
                      labels = percent,
                      breaks = c(.1,.2,.3,.4,.5,.6,.7,.8,.9, 1)) +
   #scale_x_date(date_labels="%b %y",date_breaks="3 months") +
-  labs(x="", y="", caption="Data Source: HMIS", title="There are unique patterns between Institutional Delivery coverage and Skilled personnel \nin Central, Eastern, Northern, (Northwestern, and Western Provinces are Non-USAID Supported.)") +
+  labs(x="", y="", caption="Data Source: HMIS", title="There are unique patterns between Institutional Delivery coverage and Skilled personnel in \nCentral, Eastern, Northern, (Northwestern, and Western Provinces are Non-USAID Supported.)") +
   facet_wrap(~prov, ncol=4) +
   faceted +
   scale_color_manual(name ="",
@@ -1486,7 +1486,7 @@ syph_plt <- ggplot(anc.syph, aes(x = mnthyr, y = rate, group = subpop, colour = 
                      labels = percent,
                      breaks = c(.1,.2,.3,.4,.5,.6,.7,.8,.9, 1)) +
   scale_x_date(date_labels="%b %y",date_breaks="3 months") +
-  labs(x="", y="", caption="Data Source: HMIS", title="Syphilis Screening rate during 1st ANC visits has been below 50% \nbut seem to steadily improve begining January 2023.") +
+  labs(x="", y="", caption="Data Source: HMIS", title="Syphilis Screening rate during 1st ANC visits had been below 50% from January 2020, but seem \nto steadily improve begining January 2023 with a record high of 71% in June 2024!") +
   scale_color_manual(name ="",
                      values = usaid_palette,
                      labels = c("1st ANC coverage (all trimesters)", "Syphilis screening rates (%) at 1st ANC")
@@ -1550,7 +1550,7 @@ syphanc_plt <- ggplot(syphanc_prov, aes(x = mnthyr, y = rate, group = subpop, co
                      labels = percent,
                      breaks = c(.1,.2,.3,.4,.5,.6,.7,.8,.9, 1)) +
   #scale_x_date(date_labels="%b %y",date_breaks="3 months") +
-  labs(x="", y="", caption="Data Source: HMIS", title="Syphilis Screening during ANC visits seems to steadily improve in all other provinces begining mid 2023, \nexcept for Lusaka province.") +
+  labs(x="", y="", caption="Data Source: HMIS", title="Syphilis Screening during ANC visits seems to steadily improve in all other provinces begining mid 2023, \nexcept for Lusaka province which has a flat trend from 2023 to 2024.") +
   facet_wrap(~prov, ncol=4) +
   faceted +
   scale_color_manual(name ="",
@@ -1601,7 +1601,7 @@ ggplot(MatPNC_prov, aes(x=mnthyr, y=MatPNCP)) +
                      labels = percent,
                      breaks = c(.2,.4,.6,.8,1)) +
   labs(x ="", y="", caption = "Data Source: HMIS") +labs(x ="", y="", caption = "Data Source: HMIS") +
-  ggtitle("Maternal Postnatal Care within 48 hours After Delivery shows improvements across the provinces beginning 2021, \nexcept for Western and Northern provinces which show a decline beggining mid-2021 and mid 2023 respectively.") +
+  ggtitle("Maternal Postnatal Care within 48 hours After Delivery shows similar trends with unique patterns from Lusaka, \nNorthern, and Northwestern (where NWP is below 40%!).") +
   facet_wrap(~prov, ncol=4) +
   faceted +
   scale_color_manual(values=usaid_blue) + basey
@@ -1642,7 +1642,7 @@ ggplot(MatPNC, aes(x=mnthyr, y=MatPNCP)) +
                      labels = percent,
                      breaks = c(.2,.4,.6,.8,1)) +
   labs(x ="", y="", caption = "Data Source: HMIS") +labs(x ="", y="", caption = "Data Source: HMIS") +
-  ggtitle("Maternal Postnatal Care within 48 hours from Expected Deliveries has been on an upward \ntrajectory since 2020, though with a minimal decrease late 2023.") +
+  ggtitle("Maternal Postnatal Care within 48 hours from Expected Deliveries has been on an upward \ntrajectory since 2020, though with a minimal decrease late 2023 and early 2024.") +
   scale_color_manual(values=usaid_blue) + basey
 
 ggsave("viz/Aug 2024 FHDR/National Maternal Postnatal 48hr Care.png",
@@ -1955,7 +1955,7 @@ supps_plt <- ggplot(mat, aes(x = mnthyr, y = rate, group = subpop, colour = subp
                      labels = percent,
                      breaks = c(.1,.2,.3,.4,.5,.6,.7,.8,.9, 1)) +
   scale_x_date(date_labels="%b %y",date_breaks="3 months") +
-  labs(x="", y="", caption="Data Source: HMIS", title="Coverage of Folic Acid and Iron Supplementation during ANC visits, Jan 2020 - Dec 2023.") +
+  labs(x="", y="", caption="Data Source: HMIS", title="Coverage of Folic Acid and Iron Supplementation during ANC visits, Jan 2020 - Jun 2024.") +
   scale_color_manual(name ="",
                      values = usaid_palette,
                      labels = c("Folic Acid Supplementation", "Iron Supplementation")
@@ -2019,7 +2019,7 @@ foli_plt <- ggplot(mat_prov, aes(x = mnthyr, y = rate, group = subpop, colour = 
                      labels = percent,
                      breaks = c(.2,.4,.6,.8,1)) +
   #scale_x_date(date_labels="%b %y",date_breaks="3 months") +
-  labs(x="", y="", caption="Data Source: HMIS", title="Coverage of Folic Acid and Iron Supplementation during ANC visits (Jan 2020 - Dec 2023) \nshows a similar picture across the provinces.") +
+  labs(x="", y="", caption="Data Source: HMIS", title="Coverage of Folic Acid and Iron Supplementation during ANC visits (Jan 2020 - Jun 2024) \nshows a similar picture across the provinces.") +
   facet_wrap(~prov, ncol=4) +
   faceted +
   scale_color_manual(name ="",
