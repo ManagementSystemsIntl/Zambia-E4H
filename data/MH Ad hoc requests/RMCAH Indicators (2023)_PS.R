@@ -1217,7 +1217,7 @@ ggsave("viz/Apr-Jun 2022/Family Planning/1st ANC TM1 Coverage faceted PS.png",
 
 #'*________4th+ TO TOTAL ANC ATTENDANCES*
 
-frthPlusANC_prov <- read_xls("data/Dec 2023 MHDR/4th+ to Total ANC Attendance_provincial level.xls")
+frthPlusANC_prov <- read_xls("data/Aug 2024 MHDR/4th+ to Total ANC Attendance_provincial level.xls")
 names(frthPlusANC_prov)
 frthPlusANC_prov
 frthPlusANC_prov  <- frthPlusANC_prov  %>%
@@ -1249,12 +1249,12 @@ ggplot(frthPlusANC_prov, aes(x=mnthyr, y=frth.ancP)) +
                      labels = percent,
                      breaks = c(.1,.2,.3,.4,.5)) +
   labs(x ="", y="", caption = "Data Source: HMIS") +labs(x ="", y="", caption = "Data Source: HMIS") +
-  ggtitle("4th+ to Total ANC attendances shows a similar trend across provinces, (Jan 2020 - Dec 2023).") +
+  ggtitle("4th+ to Total ANC attendances shows a similar downward trend across provinces \n(begining January 2022), and all below 30% - Jan 2020 to Jun 2024.") +
   facet_wrap(~prov, ncol=4) +
   faceted +
   scale_color_manual(values=usaid_blue) + basey
 
-ggsave("viz/Dec 23 FHDR/4th+ to Total ANC attendances faceted.png",
+ggsave("viz/Aug 2024 FHDR/4th+ to Total ANC attendances faceted.png",
        device="png",
        type="cairo",
        height = 6.5,
@@ -1264,7 +1264,7 @@ ggsave("viz/Dec 23 FHDR/4th+ to Total ANC attendances faceted.png",
 
 #'*_______Redraw for National Level*
 
-frthPlusANC <- read_xls("data/Dec 2023 MHDR/4th+ to Total ANC Attendance_National level.xls")
+frthPlusANC <- read_xls("data/Aug 2024 MHDR/4th+ to Total ANC Attendance_National level.xls")
 names(frthPlusANC)
 frthPlusANC
 frthPlusANC  <- frthPlusANC  %>%
@@ -1292,10 +1292,10 @@ ggplot(frthPlusANC, aes(x=mnthyr, y=frth.ancP)) +
                      labels = percent,
                      breaks = c(.1,.2,.3,.4,.5,.6)) +
   labs(x ="", y="", caption = "Data Source: HMIS") +labs(x ="", y="", caption = "Data Source: HMIS") +
-  ggtitle("The Trends for the 4th+ to Total ANC attendances has been below 30% but above 20%\n at National Level except for 2023 where it is on a downward trend!") +
+  ggtitle("The Trends for the 4th+ to Total ANC attendances has been below 30% but above 20%\n at National Level except begining of 2022 where it has been on a downward trend!") +
   scale_color_manual(values=usaid_blue) + basey
 
-ggsave("viz/Dec 23 FHDR/National 4th+ to Total ANC attendances.png",
+ggsave("viz/Aug 2024 FHDR/National 4th+ to Total ANC attendances.png",
        device="png",
        type="cairo",
        height = 6.5,
@@ -1307,7 +1307,7 @@ ggsave("viz/Dec 23 FHDR/National 4th+ to Total ANC attendances.png",
 
 #'*INSTITUTIONAL DELIVERY AND SKILLED DELIVERY COMBINED - NATIONAL LEVEL*
 
-inst.skilled <- read_xls("data/Dec 2023 MHDR/Reproductive Maternal Health_National level monthly.xls")
+inst.skilled <- read_xls("data/Aug 2024 MHDR/Reproductive Maternal Health_National level monthly.xls")
 inst.skilled  <- inst.skilled  %>%
   mutate(month_chr = str_sub(periodname,
                              start=1,
@@ -1361,7 +1361,7 @@ combined_plt <- ggplot(inst.skilled, aes(x = mnthyr, y = rate, group = subpop, c
 
 combined_plt
 
-ggsave("viz/Dec 23 FHDR/National combined inst and skilled deli.png",
+ggsave("viz/Aug 2024 FHDR/National combined inst and skilled deli.png",
        device="png",
        type="cairo",
        height = 6.5,
@@ -1372,7 +1372,7 @@ ggsave("viz/Dec 23 FHDR/National combined inst and skilled deli.png",
 
 #'*Redrawing for Provincial Levels - Combined inst and skilled*
 
-inst.skilled_prov <- read_xls("data/Dec 2023 MHDR/Reproductive Maternal Health_Provincial level monthly.xls")
+inst.skilled_prov <- read_xls("data/Aug 2024 MHDR/Reproductive Maternal Health_Provincial level monthly.xls")
 inst.skilled_prov  <- inst.skilled_prov  %>%
   mutate(month_chr = str_sub(periodname,
                              start=1,
@@ -1429,7 +1429,7 @@ provincial_plt <- ggplot(inst.skilled_prov, aes(x = mnthyr, y = rate, group = su
 
 provincial_plt
 
-ggsave("viz/Dec 23 FHDR/Combined inst and skilled delivery facets_IP Supported.png",
+ggsave("viz/Aug 2024 FHDR/Combined inst and skilled delivery facets_IP Supported.png",
        device="png",
        type="cairo",
        height = 6.5,
@@ -1441,7 +1441,7 @@ ggsave("viz/Dec 23 FHDR/Combined inst and skilled delivery facets_IP Supported.p
 
 #'*ANC COVERAGE AGAINST SYPHILIS SCREENING - NATIONAL LEVEL*
 
-anc.syph <- read_xls("data/Dec 2023 MHDR/ANC and Syphilis Screening Coverage_National_monthly.xls")
+anc.syph <- read_xls("data/Aug 2024 MHDR/ANC and Syphilis Screening Coverage_National_monthly.xls")
 anc.syph  <- anc.syph  %>%
   mutate(month_chr = str_sub(periodname,
                              start=1,
@@ -1495,7 +1495,7 @@ syph_plt <- ggplot(anc.syph, aes(x = mnthyr, y = rate, group = subpop, colour = 
 
 syph_plt
 
-ggsave("viz/Dec 23 FHDR/National Syphilis and ANC Screening.png",
+ggsave("viz/Aug 2024 FHDR/National Syphilis and ANC Screening.png",
        device="png",
        type="cairo",
        height = 6.5,
@@ -1504,7 +1504,7 @@ ggsave("viz/Dec 23 FHDR/National Syphilis and ANC Screening.png",
 
 #'*_______Redraw for Provincial Level*
 
-syphanc_prov <- read_xls("data/Dec 2023 MHDR/ANC and Syphilis Screening Coverage_Provincial_monthly.xls")
+syphanc_prov <- read_xls("data/Aug 2024 MHDR/ANC and Syphilis Screening Coverage_Provincial_monthly.xls")
 syphanc_prov  <- syphanc_prov  %>%
   mutate(month_chr = str_sub(periodname,
                              start=1,
@@ -1561,7 +1561,7 @@ syphanc_plt <- ggplot(syphanc_prov, aes(x = mnthyr, y = rate, group = subpop, co
 
 syphanc_plt
 
-ggsave("viz/Dec 23 FHDR/Syphilis and ANC Coverage facets.png",
+ggsave("viz/Aug 2024 FHDR/Syphilis and ANC Coverage facets.png",
        device="png",
        type="cairo",
        height = 6.5,
@@ -1573,7 +1573,7 @@ ggsave("viz/Dec 23 FHDR/Syphilis and ANC Coverage facets.png",
 
 #'*________MATERNAL POSTNATAL CARE WITHIN 48HRS*
 
-MatPNC_prov <- read_xls("data/Dec 2023 MHDR/Reproductive Maternal Health_Provincial level monthly.xls")
+MatPNC_prov <- read_xls("data/Aug 2024 MHDR/Reproductive Maternal Health_Provincial level monthly.xls")
 names(MatPNC_prov)
 MatPNC_prov
 MatPNC_prov  <- MatPNC_prov  %>%
@@ -1606,7 +1606,7 @@ ggplot(MatPNC_prov, aes(x=mnthyr, y=MatPNCP)) +
   faceted +
   scale_color_manual(values=usaid_blue) + basey
 
-ggsave("viz/Dec 23 FHDR/Maternal Postnatal 48 faceted.png",
+ggsave("viz/Aug 2024 FHDR/Maternal Postnatal 48 faceted.png",
        device="png",
        type="cairo",
        height = 6.5,
@@ -1615,7 +1615,7 @@ ggsave("viz/Dec 23 FHDR/Maternal Postnatal 48 faceted.png",
 #'*_______Redraw for National Level*
 
 
-MatPNC <- read_xls("data/Dec 2023 MHDR/Reproductive Maternal Health_National level monthly.xls")
+MatPNC <- read_xls("data/Aug 2024 MHDR/Reproductive Maternal Health_National level monthly.xls")
 names(MatPNC)
 MatPNC
 MatPNC  <- MatPNC  %>%
@@ -1645,7 +1645,7 @@ ggplot(MatPNC, aes(x=mnthyr, y=MatPNCP)) +
   ggtitle("Maternal Postnatal Care within 48 hours from Expected Deliveries has been on an upward \ntrajectory since 2020, though with a minimal decrease late 2023.") +
   scale_color_manual(values=usaid_blue) + basey
 
-ggsave("viz/Dec 23 FHDR/National Maternal Postnatal 48hr Care.png",
+ggsave("viz/Aug 2024 FHDR/National Maternal Postnatal 48hr Care.png",
        device="png",
        type="cairo",
        height = 6.5,
@@ -1653,89 +1653,89 @@ ggsave("viz/Dec 23 FHDR/National Maternal Postnatal 48hr Care.png",
 
 
 
-#'*________INSTITUTIONAL DELIVERY COVERAGE*
-
-InstDel_prov <- read_xls("data/Dec 2023 MHDR/Reproductive Maternal Health_Provincial level monthly.xls")
-names(InstDel_prov)
-InstDel_prov
-InstDel_prov  <- InstDel_prov  %>%
-  mutate(month_chr = str_sub(periodname,
-                             start=1,
-                             end=nchar(periodname)-5),
-         month = factor(month_chr,
-                        levels=c("January","February","March","April","May","June","July","August","September","October","November","December")),
-         month_code = as.numeric(month), 
-         year = str_sub(periodname, 
-                        start=nchar(periodname)-4,
-                        end=nchar(periodname)),
-         monyr = paste(month_code, year, sep="-"),
-         mnthyr = my(monyr))
-
-# sum(fam_prov$month_chr!=fam_prov$month) # expecting 0 if vars same
-
-
-names(InstDel_prov)
-names(InstDel_prov)
-InstDel_prov <- InstDel_prov %>%
-  rename(prov=1,
-         InstDel=8) %>%
-  mutate(InstDelP = InstDel/100)
-ggplot(InstDel_prov, aes(x=mnthyr, y=InstDelP)) + 
-  geom_point(size=.5, alpha=.5, colour=usaid_blue) + 
-  stat_smooth(se=F, size=.8, alpha=.6, colour=usaid_blue) +
-  scale_y_continuous(limits = c(0,1),
-                     labels = percent,
-                     breaks = c(.4,.6,.8,1)) +
-  labs(x ="", y="", caption = "Data Source: HMIS") +labs(x ="", y="", caption = "Data Source: HMIS") +
-  ggtitle("Institutional Delivery Coverage seems to be doing well in Copperbelt, Eastern, and Luapula provinces (above 80%), \nwhereas two non-USAID supported provinces (Western & Northwestern) are below 60% begining mid-2021.") +
-  facet_wrap(~prov, ncol=4) +
-  faceted +
-  scale_color_manual(values=usaid_blue) + basey
-
-ggsave("viz/Dec 23 FHDR/Provincial Institutional delivery coverage_IP Supported.png",
-       device="png",
-       type="cairo",
-       height = 6.5,
-       width = 13)
-
-#'*_______Redraw for National Level*
-
-InstDel <- read_xls("data/Dec 2023 MHDR/Reproductive Maternal Health_National level monthly.xls")
-names(InstDel)
-InstDel
-InstDel  <- InstDel  %>%
-  mutate(month_chr = str_sub(periodname,
-                             start=1,
-                             end=nchar(periodname)-5),
-         month = factor(month_chr,
-                        levels=c("January","February","March","April","May","June","July","August","September","October","November","December")),
-         month_code = as.numeric(month), 
-         year = str_sub(periodname, 
-                        start=nchar(periodname)-4,
-                        end=nchar(periodname)),
-         monyr = paste(month_code, year, sep="-"),
-         mnthyr = my(monyr))
-
-
-names(InstDel)
-InstDel <- InstDel %>%
-  rename(InstDel=8) %>%
-  mutate(InstDelP = InstDel/100)
-ggplot(InstDel, aes(x=mnthyr, y=InstDelP)) + 
-  geom_point(size=.5, alpha=.5, colour=usaid_blue) + 
-  stat_smooth(se=F, size=.8, alpha=.6, colour=usaid_blue) +
-  scale_y_continuous(limits = c(0,1),
-                     labels = percent,
-                     breaks = c(.1,.2,.3,.4,.5,.6,.7,.8,.9,1)) +
-  labs(x ="", y="", caption = "Data Source: HMIS") +labs(x ="", y="", caption = "Data Source: HMIS") +
-  ggtitle("Institutional Delivery Coverage has been below 80% since mid 2019 at National level.") +
-  scale_color_manual(values=usaid_blue) + basey
-
-ggsave("viz/Dec 23 FHDR/National Institutional delivery coverage.png",
-       device="png",
-       type="cairo",
-       height = 6.5,
-       width = 11)
+#' #'*________INSTITUTIONAL DELIVERY COVERAGE*
+#' 
+#' InstDel_prov <- read_xls("data/Dec 2023 MHDR/Reproductive Maternal Health_Provincial level monthly.xls")
+#' names(InstDel_prov)
+#' InstDel_prov
+#' InstDel_prov  <- InstDel_prov  %>%
+#'   mutate(month_chr = str_sub(periodname,
+#'                              start=1,
+#'                              end=nchar(periodname)-5),
+#'          month = factor(month_chr,
+#'                         levels=c("January","February","March","April","May","June","July","August","September","October","November","December")),
+#'          month_code = as.numeric(month), 
+#'          year = str_sub(periodname, 
+#'                         start=nchar(periodname)-4,
+#'                         end=nchar(periodname)),
+#'          monyr = paste(month_code, year, sep="-"),
+#'          mnthyr = my(monyr))
+#' 
+#' # sum(fam_prov$month_chr!=fam_prov$month) # expecting 0 if vars same
+#' 
+#' 
+#' names(InstDel_prov)
+#' names(InstDel_prov)
+#' InstDel_prov <- InstDel_prov %>%
+#'   rename(prov=1,
+#'          InstDel=8) %>%
+#'   mutate(InstDelP = InstDel/100)
+#' ggplot(InstDel_prov, aes(x=mnthyr, y=InstDelP)) + 
+#'   geom_point(size=.5, alpha=.5, colour=usaid_blue) + 
+#'   stat_smooth(se=F, size=.8, alpha=.6, colour=usaid_blue) +
+#'   scale_y_continuous(limits = c(0,1),
+#'                      labels = percent,
+#'                      breaks = c(.4,.6,.8,1)) +
+#'   labs(x ="", y="", caption = "Data Source: HMIS") +labs(x ="", y="", caption = "Data Source: HMIS") +
+#'   ggtitle("Institutional Delivery Coverage seems to be doing well in Copperbelt, Eastern, and Luapula provinces (above 80%), \nwhereas two non-USAID supported provinces (Western & Northwestern) are below 60% begining mid-2021.") +
+#'   facet_wrap(~prov, ncol=4) +
+#'   faceted +
+#'   scale_color_manual(values=usaid_blue) + basey
+#' 
+#' ggsave("viz/Dec 23 FHDR/Provincial Institutional delivery coverage_IP Supported.png",
+#'        device="png",
+#'        type="cairo",
+#'        height = 6.5,
+#'        width = 13)
+#' 
+#' #'*_______Redraw for National Level*
+#' 
+#' InstDel <- read_xls("data/Dec 2023 MHDR/Reproductive Maternal Health_National level monthly.xls")
+#' names(InstDel)
+#' InstDel
+#' InstDel  <- InstDel  %>%
+#'   mutate(month_chr = str_sub(periodname,
+#'                              start=1,
+#'                              end=nchar(periodname)-5),
+#'          month = factor(month_chr,
+#'                         levels=c("January","February","March","April","May","June","July","August","September","October","November","December")),
+#'          month_code = as.numeric(month), 
+#'          year = str_sub(periodname, 
+#'                         start=nchar(periodname)-4,
+#'                         end=nchar(periodname)),
+#'          monyr = paste(month_code, year, sep="-"),
+#'          mnthyr = my(monyr))
+#' 
+#' 
+#' names(InstDel)
+#' InstDel <- InstDel %>%
+#'   rename(InstDel=8) %>%
+#'   mutate(InstDelP = InstDel/100)
+#' ggplot(InstDel, aes(x=mnthyr, y=InstDelP)) + 
+#'   geom_point(size=.5, alpha=.5, colour=usaid_blue) + 
+#'   stat_smooth(se=F, size=.8, alpha=.6, colour=usaid_blue) +
+#'   scale_y_continuous(limits = c(0,1),
+#'                      labels = percent,
+#'                      breaks = c(.1,.2,.3,.4,.5,.6,.7,.8,.9,1)) +
+#'   labs(x ="", y="", caption = "Data Source: HMIS") +labs(x ="", y="", caption = "Data Source: HMIS") +
+#'   ggtitle("Institutional Delivery Coverage has been below 80% since mid 2019 at National level.") +
+#'   scale_color_manual(values=usaid_blue) + basey
+#' 
+#' ggsave("viz/Dec 23 FHDR/National Institutional delivery coverage.png",
+#'        device="png",
+#'        type="cairo",
+#'        height = 6.5,
+#'        width = 11)
 
 ### Do not visual the below indicator for now.
 ###'*__________CAESAREAN SECTION RATE*
@@ -1825,7 +1825,7 @@ ggsave("viz/Dec 23 FHDR/National Institutional delivery coverage.png",
 
 #'*__________FOLIC ACID SUPPLEMENTATION (%) DURING ANC VISITS*
 
-folicsup_prov <- read_xls("data/Dec 2023 MHDR/Reproductive Maternal Health_Provincial level monthly.xls")
+folicsup_prov <- read_xls("data/Aug 2024 MHDR/Reproductive Maternal Health_Provincial level monthly.xls")
 names(folicsup_prov)
 folicsup_prov
 folicsup_prov  <- folicsup_prov  %>%
@@ -1859,7 +1859,7 @@ ggplot(folicsup_prov, aes(x=mnthyr, y=folicP)) +
   faceted +
   scale_color_manual(values=usaid_blue) + basey
 
-ggsave("viz/Dec 23 FHDR/Folic Acid Supplementation.png",
+ggsave("viz/Aug 2024 FHDR/Folic Acid Supplementation.png",
        device="png",
        type="cairo",
        height = 7,
@@ -1868,7 +1868,7 @@ ggsave("viz/Dec 23 FHDR/Folic Acid Supplementation.png",
 
 #'*_______Redraw for National Level*
 
-folicAcid <- read_xls("data/Dec 2023 MHDR/Reproductive Maternal Health_National level monthly.xls")
+folicAcid <- read_xls("data/Aug 2024 MHDR/Reproductive Maternal Health_National level monthly.xls")
 names(folicAcid)
 folicAcid
 folicAcid  <- folicAcid  %>%
@@ -1899,7 +1899,7 @@ ggplot(folicAcid, aes(x=mnthyr, y=folicSuppP)) +
   ggtitle("Folic Acid Supplementation (%) during ANC Visits, 2019 - 2023.") +
   scale_color_manual(values=usaid_blue) + basey
 
-ggsave("viz/Dec 23 FHDR/National Folic Acid Sup.png",
+ggsave("viz/Aug 2024 FHDR/National Folic Acid Sup.png",
        device="png",
        type="cairo",
        height = 6.5,
@@ -1910,7 +1910,7 @@ ggsave("viz/Dec 23 FHDR/National Folic Acid Sup.png",
 
 #'* FOLIC ACID AND IRON SUPPLEMENTATION COMPARISON*
 
-mat <- read_xls("data/Dec 2023 MHDR/Reproductive Maternal Health_National level monthly.xls")
+mat <- read_xls("data/Aug 2024 MHDR/Reproductive Maternal Health_National level monthly.xls")
 mat  <- mat  %>%
   mutate(month_chr = str_sub(periodname,
                              start=1,
@@ -1964,7 +1964,7 @@ supps_plt <- ggplot(mat, aes(x = mnthyr, y = rate, group = subpop, colour = subp
 
 supps_plt
 
-ggsave("viz/Dec 23 FHDR/National Folic and Iron Supplementation.png",
+ggsave("viz/Aug 2024 FHDR/National Folic and Iron Supplementation.png",
        device="png",
        type="cairo",
        height = 6.5,
@@ -1973,7 +1973,7 @@ ggsave("viz/Dec 23 FHDR/National Folic and Iron Supplementation.png",
 
 #'*__________Redraw for Provincial Level*
 
-mat_prov <- read_xls("data/Dec 2023 MHDR/Reproductive Maternal Health_Provincial level monthly.xls")
+mat_prov <- read_xls("data/Aug 2024 MHDR/Reproductive Maternal Health_Provincial level monthly.xls")
 mat_prov  <- mat_prov  %>%
   mutate(month_chr = str_sub(periodname,
                              start=1,
@@ -2030,7 +2030,7 @@ foli_plt <- ggplot(mat_prov, aes(x = mnthyr, y = rate, group = subpop, colour = 
 
 foli_plt
 
-ggsave("viz/Dec 23 FHDR/Folic and Iron Supplementation facets.png",
+ggsave("viz/Aug 2024 FHDR/Folic and Iron Supplementation facets.png",
        device="png",
        type="cairo",
        height = 6.5,
@@ -2043,7 +2043,7 @@ ggsave("viz/Dec 23 FHDR/Folic and Iron Supplementation facets.png",
 
 #'*__________HIGH RISK PREGNANCIES AT 1st ANC (%)*
 
-highRpreg_prov <- read_xls("data/Dec 2023 MHDR/Reproductive Maternal Health_Provincial level monthly.xls")
+highRpreg_prov <- read_xls("data/Aug 2024 MHDR/Reproductive Maternal Health_Provincial level monthly.xls")
 names(highRpreg_prov)
 highRpreg_prov
 highRpreg_prov  <- highRpreg_prov  %>%
@@ -2077,7 +2077,7 @@ ggplot(highRpreg_prov, aes(x=mnthyr, y=risk.pregP)) +
   faceted +
   scale_color_manual(values=usaid_red) + basey
 
-ggsave("viz/Dec 23 FHDR/High Risk pregnancies.png",
+ggsave("viz/Aug 2024 FHDR/High Risk pregnancies.png",
        device="png",
        type="cairo",
        height = 7,
@@ -2087,7 +2087,7 @@ ggsave("viz/Dec 23 FHDR/High Risk pregnancies.png",
 
 #'*_______Redraw for National Level*
 
-highRpreg <- read_xls("data/Dec 2023 MHDR/Reproductive Maternal Health_National level monthly.xls")
+highRpreg <- read_xls("data/Aug 2024 MHDR/Reproductive Maternal Health_National level monthly.xls")
 names(highRpreg)
 highRpreg
 highRpreg  <- highRpreg  %>%
@@ -2118,7 +2118,7 @@ ggplot(highRpreg, aes(x=mnthyr, y=hr.pregP)) +
   ggtitle("Number of High-Risk pregancies reported at 1st ANC visit\n have been increasing each year and now stand at 15% in 2023.") +
   scale_color_manual(values=usaid_red) + basey
 
-ggsave("viz/Dec 23 FHDR/National High risk pregnancies.png",
+ggsave("viz/Aug 2024 FHDR/National High risk pregnancies.png",
        device="png",
        type="cairo",
        height = 6.5,
