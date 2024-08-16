@@ -2517,7 +2517,7 @@ msles_plt <- ggplot(chldH, aes(x = mnthyr, y = rate, group = subpop, colour = su
                      labels = percent,
                      breaks = c(.1,.2,.3,.4,.5,.6,.7,.8,.9, 1)) +
   scale_x_date(date_labels="%b %y",date_breaks="3 months") +
-  labs(x="", y="", caption="Data Source: HMIS", title="Coverage of the first and second measles vaccine doses shows a similar trend from Jan 2020 \nwith a steady increase starting July 2022.") +
+  labs(x="", y="", caption="Data Source: HMIS", title="Coverage of the first and second measles vaccine doses shows a similar trend from Jan 2020, \nwith a steady increase starting July 2022. Dose 1 is above 80% and Dose 2 above 60% since October 2023.") +
   scale_color_manual(name ="",
                      values = usaid_palette,
                      labels = c("Measles under 1", "Measles under 2")

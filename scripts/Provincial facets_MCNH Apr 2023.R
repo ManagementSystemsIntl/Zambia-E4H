@@ -5,7 +5,7 @@ source("scripts/r prep3.r")
 
 #'*________PROPORTION BREASTFED WITHIN AN HOUR PROVINCIAL FACETED*
 
-bfhr_prov <- read_xls("data/Dec 2023 MHDR/Child Heath provincial level_monthly.xls")
+bfhr_prov <- read_xls("data/Aug 2024 MHDR/Child Heath provincial level_monthly.xls")
 names(bfhr_prov)
 bfhr_prov
 bfhr_prov  <- bfhr_prov  %>%
@@ -61,7 +61,7 @@ bfhr_plt <- ggplot(bfhr_prov, aes(x = mnthyr, y = rate, group = subpop, colour =
 
 bfhr_plt
 
-ggsave("viz/Dec 23 FHDR/Breastfed within 1 hour of birth and EBF facets.png",
+ggsave("viz/Aug 2024 FHDR/Breastfed within 1 hour of birth and EBF facets.png",
        device="png",
        type="cairo",
        height = 6.5,
@@ -71,7 +71,7 @@ ggsave("viz/Dec 23 FHDR/Breastfed within 1 hour of birth and EBF facets.png",
 
 #'*________1st and 2nd MEASLES VACCINE COVERAGE PROVINCIAL FACETED*
 
-mslsvac_prov <- read_xls("data/Dec 2023 MHDR/Child Heath provincial level_monthly.xls")
+mslsvac_prov <- read_xls("data/Aug 2024 MHDR/Child Heath provincial level_monthly.xls")
 names(mslsvac_prov)
 mslsvac_prov
 mslsvac_prov  <- mslsvac_prov  %>%
@@ -127,7 +127,7 @@ msles_plt <- ggplot(mslsvac_prov, aes(x = mnthyr, y = rate, group = subpop, colo
 
 msles_plt
 
-ggsave("viz/Dec 23 FHDR/Provincial Measles Vaccines.png",
+ggsave("viz/Aug 2024 FHDR/Provincial Measles Vaccines.png",
        device="png",
        type="cairo",
        height = 6.5,
@@ -136,7 +136,7 @@ ggsave("viz/Dec 23 FHDR/Provincial Measles Vaccines.png",
 
 #'*________FULLY IMMUNIZED PROVINCIAL FACETED*
 
-fulmunized_prov <- read_xls("data/Dec 2023 MHDR/Child Heath provincial level_monthly.xls")
+fulmunized_prov <- read_xls("data/Aug 2024 MHDR/Child Heath provincial level_monthly.xls")
 names(fulmunized_prov)
 fulmunized_prov
 fulmunized_prov  <- fulmunized_prov  %>%
@@ -191,7 +191,7 @@ fulmunized_plt <- ggplot(fulmunized_prov, aes(x = mnthyr, y = fiu1P, colour=usai
 
 fulmunized_plt
 
-ggsave("viz/Dec 23 FHDR/Fully Imunnized facets PS.png",
+ggsave("viz/Aug 2024 FHDR/Fully Imunnized facets PS.png",
        device="png",
        type="cairo",
        height = 6.5,
@@ -200,7 +200,7 @@ ggsave("viz/Dec 23 FHDR/Fully Imunnized facets PS.png",
 
 #'*______BCG COVERAGE UNDER 1*
 
-BCG_prov <- read_xls("data/Dec 2023 MHDR/Child Heath provincial level_monthly.xls")
+BCG_prov <- read_xls("data/Aug 2024 MHDR/Child Heath provincial level_monthly.xls")
 names(BCG_prov)
 BCG_prov
 BCG_prov  <- BCG_prov  %>%
@@ -251,7 +251,7 @@ bcg_plt <- ggplot(BCG_prov, aes(x = mnthyr, y = bcg.coverageP, colour=usaid_blue
 
 bcg_plt
 
-ggsave("viz/Dec 23 FHDR/BCG Under 1 facets.png",
+ggsave("viz/Aug 2024 FHDR/BCG Under 1 facets.png",
        device="png",
        type="cairo",
        height = 6.5,
@@ -260,7 +260,7 @@ ggsave("viz/Dec 23 FHDR/BCG Under 1 facets.png",
 
 #'*______DPT 1st DOSE COVERAGE UNDER 1*
 
-dpt1_prov <- read_xls("data/Dec 2023 MHDR/Child Heath provincial level_monthly.xls")
+dpt1_prov <- read_xls("data/Aug 2024 MHDR/Child Heath provincial level_monthly.xls")
 names(dpt1_prov)
 dpt1_prov
 dpt1_prov  <- dpt1_prov  %>%
@@ -311,7 +311,7 @@ prov.dpt_plt <- ggplot(dpt1_prov, aes(x = mnthyr, y = dptu1.coverageP, colour=us
 
 prov.dpt_plt
 
-ggsave("viz/Dec 23 FHDR/DPT 1st dose Under 1 facets.png",
+ggsave("viz/Aug 2024 FHDR/DPT 1st dose Under 1 facets.png",
        device="png",
        type="cairo",
        height = 6.5,
@@ -321,7 +321,7 @@ ggsave("viz/Dec 23 FHDR/DPT 1st dose Under 1 facets.png",
 
 #'*______VITAMIN A SUPPLEMENT COVERAGE*
 
-vitA_prov <- read_xls("data/Dec 2023 MHDR/Child Heath provincial level_monthly.xls")
+vitA_prov <- read_xls("data/Aug 2024 MHDR/Child Heath provincial level_monthly.xls")
 names(vitA_prov)
 vitA_prov
 vitA_prov  <- vitA_prov  %>%
@@ -372,7 +372,7 @@ vitA_prov_plt <- ggplot(vitA_prov, aes(x = mnthyr, y = vitA.suppP, colour=usaid_
 
 vitA_prov_plt
 
-ggsave("viz/Dec 23 FHDR/Vitamin A supplementation facets.png",
+ggsave("viz/Aug 2024 FHDR/Vitamin A supplementation facets.png",
        device="png",
        type="cairo",
        height = 6.5,
@@ -381,7 +381,7 @@ ggsave("viz/Dec 23 FHDR/Vitamin A supplementation facets.png",
 
 #'*______PROVINCIAL STUNTING RATES in Under 5s*
 
-stunting_prov <- read_xls("data/Dec 2023 MHDR/Child Heath provincial level_monthly.xls")
+stunting_prov <- read_xls("data/Aug 2024 MHDR/Child Heath provincial level_monthly.xls")
 names(stunting_prov)
 stunting_prov
 stunting_prov  <- stunting_prov  %>%
@@ -432,7 +432,7 @@ stunt_prov_plt <- ggplot(stunting_prov, aes(x = mnthyr, y = stunt.rateP, colour=
 
 stunt_prov_plt
 
-ggsave("viz/Dec 23 FHDR/Stunting rates facets.png",
+ggsave("viz/Aug 2024 FHDR/Stunting rates facets.png",
        device="png",
        type="cairo",
        height = 6.5,
@@ -444,7 +444,7 @@ ggsave("viz/Dec 23 FHDR/Stunting rates facets.png",
 
 #'*______PROVINCIAL WASTING RATES in Under 5s*
 
-wasting_prov <- read_xls("data/Dec 2023 MHDR/Child Heath provincial level_monthly.xls")
+wasting_prov <- read_xls("data/Aug 2024 MHDR/Child Heath provincial level_monthly.xls")
 names(wasting_prov)
 wasting_prov
 wasting_prov  <- wasting_prov  %>%
@@ -495,7 +495,7 @@ waste_prov_plt <- ggplot(wasting_prov, aes(x = mnthyr, y = waste.rateP, colour=u
 
 waste_prov_plt
 
-ggsave("viz/Dec 23 FHDR/wasting rates facets.png",
+ggsave("viz/Aug 2024 FHDR/wasting rates facets.png",
        device="png",
        type="cairo",
        height = 6.5,
@@ -507,7 +507,7 @@ ggsave("viz/Dec 23 FHDR/wasting rates facets.png",
 
 #'*______PROVINCIAL CHILD DEWORMING RATES*
 
-deworming_prov <- read_xls("data/Dec 2023 MHDR/Child Heath provincial level_monthly.xls")
+deworming_prov <- read_xls("data/Aug 2024 MHDR/Child Heath provincial level_monthly.xls")
 names(deworming_prov)
 deworming_prov
 deworming_prov  <- deworming_prov  %>%
@@ -558,7 +558,7 @@ dw_prov_plt <- ggplot(deworming_prov, aes(x = mnthyr, y = deworm.rateP, colour=u
 
 dw_prov_plt
 
-ggsave("viz/Dec 23 FHDR/Deworming rates facets.png",
+ggsave("viz/Aug 2024 FHDR/Deworming rates facets.png",
        device="png",
        type="cairo",
        height = 6.5,
@@ -568,7 +568,7 @@ ggsave("viz/Dec 23 FHDR/Deworming rates facets.png",
 
 #'*_________ANC VISITS - PROVINCIAL*
 
-mat_prov <- read_xls("data/Dec 2023 MHDR/Reproductive Maternal Health_Provincial level monthly.xls")
+mat_prov <- read_xls("data/Aug 2024 MHDR/Reproductive Maternal Health_Provincial level monthly.xls")
 
 mat_prov
 mat_prov  <- mat_prov  %>%
@@ -629,7 +629,7 @@ ggplot(mat_prov, aes(x = mnthyr, y = rate, group = subpop, colour = subpop)) +
   ) + 
   basem
 
-ggsave("viz/Dec 23 FHDR/Provincial ANCs PS_IP funded.png",
+ggsave("viz/Aug 2024 FHDR/Provincial ANCs PS_IP funded.png",
        device="png",
        type="cairo",
        height = 6.5,
@@ -695,7 +695,7 @@ ggsave("viz/Dec 23 FHDR/Provincial ANCs PS_IP funded.png",
 
 source("scripts/r prep2.r")
 
-fam_prov <- read_xls("data/Dec 2023 MHDR/Family Planning data_Provincial level monthly.xls")
+fam_prov <- read_xls("data/Aug 2024 MHDR/Family Planning data_Provincial level monthly.xls")
 
 names(fam_prov)
 fam_prov
@@ -738,7 +738,7 @@ fp_plt <- ggplot(fam_prov, aes(x = mnthyr, y = cvrg_fp, colour = usaid_blue)) +
 
 fp_plt
 
-ggsave("viz/Dec 23 FHDR/Modern FP utilization facets_2017-2023.png",
+ggsave("viz/Aug 2024 FHDR/Modern FP utilization facets_2017-2023.png",
        device="png",
        type="cairo",
        height = 6.5,
@@ -774,7 +774,7 @@ lrc_plt <- ggplot(larc, aes(x=mnthyr, y=larc.ab)) +
 
 lrc_plt
 
-ggsave("viz/Dec 23 FHDR/Accessing LARCS Facets.png",
+ggsave("viz/Aug 2024 FHDR/Accessing LARCS Facets.png",
        device="png",
        type="cairo",
        height = 6.5,
@@ -813,7 +813,7 @@ larc.dis.p_plt <- ggplot(larc, aes(x=mnthyr, y=larc.dis.p)) +
 
 larc.dis.p_plt
 
-ggsave("viz/Dec 23 FHDR/Discontinuing LARCS Facets.png",
+ggsave("viz/Aug 2024 FHDR/Discontinuing LARCS Facets.png",
        device="png",
        type="cairo",
        height = 6.5,
@@ -825,7 +825,7 @@ ggsave("viz/Dec 23 FHDR/Discontinuing LARCS Facets.png",
 #'adjust to include the provincial variable in the layers by selecting them as you rename........
 
 
-mat_prov <- read_xls("data/Dec 2023 MHDR/Reproductive Maternal Health_Provincial level monthly.xls")
+mat_prov <- read_xls("data/Aug 2024 MHDR/Reproductive Maternal Health_Provincial level monthly.xls")
 names(fam_prov)
 fam_prov <- fam_prov %>%
   rename(wmn.vstd=3)
@@ -844,7 +844,7 @@ chavst_plt <- ggplot(fam_prov, aes(x=mnthyr, y=wmn.vstd, colour=usaid_blue)) +
   base
 
 chavst_plt
-ggsave("viz/Dec 23 FHDR/Women of reproductive age visited by CHA.png",
+ggsave("viz/Aug 2024 FHDR/Women of reproductive age visited by CHA.png",
        device="png",
        type="cairo",
        height = 6.5,
@@ -966,7 +966,7 @@ ggsave("viz/Dec 23 FHDR/Women of reproductive age visited by CHA.png",
 #'*Provincial Maternal Mortality Ratio and Reporting Rates*
 
 
-matprv1 <- read_xls("data/Dec 2023 MHDR/Maternal MR and RR_provincial (2020-2023).xls")
+matprv1 <- read_xls("data/Aug 2024 MHDR/Maternal MR and RR_provincial (2020-2023).xls")
 
 
 matprv  <- matprv1  %>%
@@ -1016,7 +1016,7 @@ ggplot(matprv3, aes(x=yr, y=mr)) +
                      labels = c("HIA2 Reporting rate (%)")) + 
   basem + geom_label(aes( x= yr, y = hrr*3.34,label=hrr), fontface = "bold", hjust=0.6, vjust = 0.7)
 
-ggsave("viz/Dec 23 FHDR/MMR and HIA2 RR Facets.png",
+ggsave("viz/Aug 2024 FHDR/MMR and HIA2 RR Facets.png",
        device="png",
        type="cairo",
        height = 6.5,
