@@ -2128,7 +2128,7 @@ ggsave("viz/Aug 2024 FHDR/National High risk pregnancies.png",
 
 #'*________MATERNAL MORTALITY RATIO AND HIA2 REPORTING RATES*
 
-matmr1 <- read_xls("data/Dec 2023 MHDR/Maternal MR and RR_national (2020-2023).xls")
+matmr1 <- read_xls("data/Aug 2024 MHDR/Maternal MR and RR_national (2020-2023).xls")
 
 
 matmr  <- matmr1  %>%
@@ -2177,7 +2177,7 @@ ggplot(matmr2, aes(x=yr, y=mr)) +
                      labels = c("HIA2 Reporting rate (%)")) + 
   basem + geom_label(aes( x= yr, y = hrr*3.34,label=hrr), fontface = "bold", hjust=0.6, vjust = 0.7)
 
-ggsave("viz/Dec 23 FHDR/National MMR and HIA2 RR.png",
+ggsave("viz/Aug 2024 FHDR/National MMR and HIA2 RR.png",
        device="png",
        type="cairo",
        height = 6.5,
@@ -2191,7 +2191,7 @@ ggsave("viz/Dec 23 FHDR/National MMR and HIA2 RR.png",
 #'*April 2023*
 #'*ANC All Trimesters 2019 - 2023*
 
-mat <- read_xls("data/Dec 2023 MHDR/Reproductive Maternal Health_National level monthly.xls")
+mat <- read_xls("data/Aug 2024 MHDR/Reproductive Maternal Health_National level monthly.xls")
 mat  <- mat  %>%
   mutate(month_chr = str_sub(periodname,
                              start=1,
@@ -2216,7 +2216,7 @@ sum(mat$month_chr!=mat$month) # expecting 0 if vars same
 # matqp <- read_xls("data/Jan-Mar 2022/Reproductive Maternal Data_Provincial Level(Quarterly).xls")
 
 
-mat_prov <- read_xls("data/Dec 2023 MHDR/Reproductive Maternal Health_Provincial level monthly.xls")
+mat_prov <- read_xls("data/Aug 2024 MHDR/Reproductive Maternal Health_Provincial level monthly.xls")
 
 mat_prov
 mat_prov  <- mat_prov  %>%
@@ -2278,7 +2278,7 @@ ggplot(mat, aes(x = mnthyr, y = rate, group = subpop, colour = subpop)) +
   ) + 
   base
 
-ggsave("viz/Dec 23 FHDR/National Proportion of expected pregnancies receiving antenatal care.png",
+ggsave("viz/Aug 2024 FHDR/National Proportion of expected pregnancies receiving antenatal care.png",
        device="png",
        type="cairo",
        height = 6.5,
@@ -2288,7 +2288,7 @@ ggsave("viz/Dec 23 FHDR/National Proportion of expected pregnancies receiving an
 
 #'*Comparison of Under 20 yrs to all ANC Coverage*
 
-matAnt20 <- read_xls("data/Dec 2023 MHDR/Antenatal coverage 1st and under 20_national monthly.xls")
+matAnt20 <- read_xls("data/Aug 2024 MHDR/Antenatal coverage 1st and under 20_national monthly.xls")
 matAnt20  <- matAnt20  %>%
   mutate(month_chr = str_sub(periodname,
                              start=1,
@@ -2340,7 +2340,7 @@ ggplot(matAnt20, aes(x = mnthyr, y = rate, group = subpop, colour = subpop)) +
   ) + 
   basem
 
-ggsave("viz/Dec 23 FHDR/National 1st visit and under 20 ANC coverage.png",
+ggsave("viz/Aug 2024 FHDR/National 1st visit and under 20 ANC coverage.png",
        device="png",
        type="cairo",
        height = 6.5,
@@ -2354,7 +2354,7 @@ ggsave("viz/Dec 23 FHDR/National 1st visit and under 20 ANC coverage.png",
 
 #'*Comparison of Under 20 yrs to all ANC Coverage including 1st trimester*
 
-matAnt20 <- read_xls("data/Dec 2023 MHDR/Antenatal coverage National_monthly(including teenage).xls")
+matAnt20 <- read_xls("data/Aug 2024 MHDR/Antenatal coverage National_monthly(including teenage).xls")
 matAnt20  <- matAnt20  %>%
   mutate(month_chr = str_sub(periodname,
                              start=1,
@@ -2408,7 +2408,7 @@ ggplot(matAnt20, aes(x = mnthyr, y = rate, group = subpop, colour = subpop)) +
   ) + 
   basem
 
-ggsave("viz/Dec 23 FHDR/National 1st visit and all trims inclding under 20 ANC coverage.png",
+ggsave("viz/Aug 2024 FHDR/National 1st visit and all trims inclding under 20 ANC coverage.png",
        device="png",
        type="cairo",
        height = 6.5,
@@ -2430,7 +2430,7 @@ ggsave("viz/Dec 23 FHDR/National 1st visit and all trims inclding under 20 ANC c
 #'*______________________Child Health INDICATORS*
 
 
-chldH <- read_xls("data/Dec 2023 MHDR/Child Heath national level_monthly.xls")
+chldH <- read_xls("data/Aug 2024 MHDR/Child Heath national level_monthly.xls")
 chldH  <- chldH  %>%
   mutate(month_chr = str_sub(periodname,
                              start=1,
@@ -2453,7 +2453,7 @@ chldH  <- chldH  %>%
 
 # chldHq <- read_xls("data/Jan- Jun 2022/Child Health Data_National Level(Quarterly).xls")
 # chldHqp <- read_xls("data/Jan-Mar 2022/Child Health Data_Provincial Level(Quarterly).xls")
-chldH_prov <- read_xls("data/Dec 2023 MHDR/Child Heath provincial level_monthly.xls")
+chldH_prov <- read_xls("data/Aug 2024 MHDR/Child Heath provincial level_monthly.xls")
 names(chldH_prov)
 # chldH_provpimpa <- chldH_prov %>%
 #   select(1,2,21)
@@ -2524,7 +2524,7 @@ msles_plt <- ggplot(chldH, aes(x = mnthyr, y = rate, group = subpop, colour = su
   ) + 
   basem
 msles_plt
-ggsave("viz/Dec 23 FHDR/Proportion of infants receiving Measles Vaccines 1and2.png",
+ggsave("viz/Aug 2024 FHDR/Proportion of infants receiving Measles Vaccines 1and2.png",
        device="png",
        type="cairo",
        height = 6.5,
@@ -2568,7 +2568,7 @@ full_plt <- ggplot(fullyimz1, aes(x = mnthyr, y = ficp, colour=usaid_blue )) +
   
 full_plt
 
-ggsave("viz/Dec 23 FHDR/Fully immunised coverage under 1.png",
+ggsave("viz/Aug 2024 FHDR/Fully immunised coverage under 1.png",
        device="png",
        type="cairo",
        height = 6.5,
@@ -2610,7 +2610,7 @@ NatBCG_plt <- ggplot(BCG_coverage, aes(x = mnthyr, y = Natbcgp, colour=usaid_blu
 
 NatBCG_plt
 
-ggsave("viz/Dec 23 FHDR/BCG coverage under 1.png",
+ggsave("viz/Aug 2024 FHDR/BCG coverage under 1.png",
        device="png",
        type="cairo",
        height = 6.5,
@@ -2651,7 +2651,7 @@ DPT_plt <- ggplot(DPT_coverage, aes(x = mnthyr, y = Natdptu1p, colour=usaid_blue
 
 DPT_plt
 
-ggsave("viz/Dec 23 FHDR/DPT 1st dose coverage under 1.png",
+ggsave("viz/Aug 2024 FHDR/DPT 1st dose coverage under 1.png",
        device="png",
        type="cairo",
        height = 6.5,
@@ -2693,7 +2693,7 @@ NatVitA_plt <- ggplot(NatVitA, aes(x = mnthyr, y = vitSupP, colour=usaid_blue ))
 
 NatVitA_plt
 
-ggsave("viz/Dec 23 FHDR/National Vitamin A supp.png",
+ggsave("viz/Aug 2024 FHDR/National Vitamin A supp.png",
        device="png",
        type="cairo",
        height = 6.5,
@@ -2760,7 +2760,7 @@ brstfeeding_plt <- ggplot(breastfeed, aes(x = mnthyr, y = rate, group = subpop, 
 
 brstfeeding_plt
 
-ggsave("viz/Dec 23 FHDR/National EBF and 1hr BF.png",
+ggsave("viz/Aug 2024 FHDR/National EBF and 1hr BF.png",
        device="png",
        type="cairo",
        height = 6.2,
@@ -2801,7 +2801,7 @@ stunt_plt <- ggplot(chldstunt1, aes(x = mnthyr, y = cslp, colour=usaid_blue )) +
   basem 
 stunt_plt
 
-ggsave("viz/Dec 23 FHDR/National Stunting Levels.png",
+ggsave("viz/Aug 2024 FHDR/National Stunting Levels.png",
        device="png",
        type="cairo",
        height = 6.5,
@@ -2844,7 +2844,7 @@ cd_plt <- ggplot(chldDeworming, aes(x = mnthyr, y = chdewormP, colour=usaid_blue
   basem 
 cd_plt
 
-ggsave("viz/Dec 23 FHDR/National Child deworming.png",
+ggsave("viz/Aug 2024 FHDR/National Child deworming.png",
        device="png",
        type="cairo",
        height = 6.5,
@@ -2887,7 +2887,7 @@ waste_plt <- ggplot(chldwaste1, aes(x = mnthyr, y = cwrp, colour=usaid_blue )) +
   basem 
 waste_plt
 
-ggsave("viz/Dec 23 FHDR/National wasting rates.png",
+ggsave("viz/Aug 2024 FHDR/National wasting rates.png",
        device="png",
        type="cairo",
        height = 6.5,
@@ -2898,7 +2898,7 @@ ggsave("viz/Dec 23 FHDR/National wasting rates.png",
 
 #'*Nutrition (Severe acute and moderate malnutrition) ---- *
 
-chldMalt <- read_xls("data/Dec 2023 MHDR/Nutrition data national_monthly.xls")
+chldMalt <- read_xls("data/Aug 2024 MHDR/Nutrition data national_monthly.xls")
 chldMalt  <- chldMalt  %>%
   mutate(month_chr = str_sub(periodname,
                              start=1,
@@ -2947,7 +2947,7 @@ ggplot(chldMalt, aes(x = mnthyr, y = rate, group = subpop, colour = subpop)) +
   ) + 
   base
 
-ggsave("viz/Dec 23 FHDR/National Proportion of child malnutrion admission rates.png",
+ggsave("viz/Aug 2024 FHDR/National Proportion of child malnutrion admission rates.png",
        device="png",
        type="cairo",
        height = 6.5,
@@ -2958,7 +2958,7 @@ ggsave("viz/Dec 23 FHDR/National Proportion of child malnutrion admission rates.
 
 #'*REDRAW FOR PROVINCIAL LELVEL..................*
 
-chldMalt_prov <- read_xls("data/Dec 2023 MHDR/Nutrition data provincial_monthly.xls")
+chldMalt_prov <- read_xls("data/Aug 2024 MHDR/Nutrition data provincial_monthly.xls")
 chldMalt_prov  <- chldMalt_prov  %>%
   mutate(month_chr = str_sub(periodname,
                              start=1,
@@ -3010,7 +3010,7 @@ ggplot(chldMalt_prov, aes(x = mnthyr, y = rate, group = subpop, colour = subpop)
   ) + 
   base
 
-ggsave("viz/Dec 23 FHDR/Child malnutrition admission rates_facets.png",
+ggsave("viz/Aug 2024 FHDR/Child malnutrition admission rates_facets.png",
        device="png",
        type="cairo",
        height = 6.5,
@@ -3062,7 +3062,7 @@ dptfull_plt <- ggplot(chldH, aes(x = mnthyr, y = rate, group = subpop, colour = 
   ) + 
   basem
 dptfull_plt
-ggsave("viz/Dec 23 FHDR/Proportion of infants fully immunized and DPT given.png",
+ggsave("viz/Aug 2024 FHDR/Proportion of infants fully immunized and DPT given.png",
        device="png",
        type="cairo",
        height = 6.5,
@@ -3126,7 +3126,7 @@ provdpt.imnzd_plt <- ggplot(fulldpt_prov, aes(x = mnthyr, y = rate, group = subp
 
 provdpt.imnzd_plt
 
-ggsave("viz/Dec 23 FHDR/Provincial fully immunized and DPT1.png",
+ggsave("viz/Aug 2024 FHDR/Provincial fully immunized and DPT1.png",
        device="png",
        type="cairo",
        height = 6.5,
