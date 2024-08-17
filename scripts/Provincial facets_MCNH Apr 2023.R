@@ -52,7 +52,7 @@ bfhr_plt <- ggplot(bfhr_prov, aes(x = mnthyr, y = rate, group = subpop, colour =
                      labels = percent,
                      breaks = c(.2,.4,.6,.8,1)) +
   labs(x ="", y="", caption = "Data Source: HMIS") +labs(x ="", y="", caption = "Data Source: HMIS") +
-  ggtitle("Proportion of Infants breastfed within 1 hour of birth, and \nInfants exclusively breastfed at 6 months (Jan 2020 - Dec 2023).") +
+  ggtitle("Provincial picture for proportion of Infants breastfed within 1 hour of birth, and \nInfants exclusively breastfed at 6 months (Jan 2020 - Jun 2024).") +
   facet_wrap(~prov, ncol=4) +
   faceted +
   scale_color_manual(name ="",
@@ -118,7 +118,7 @@ msles_plt <- ggplot(mslsvac_prov, aes(x = mnthyr, y = rate, group = subpop, colo
                      labels = percent,
                      breaks = c(.2,.4,.6,.8,1)) +
   labs(x ="", y="", caption = "Data Source: HMIS") +labs(x ="", y="", caption = "Data Source: HMIS") +
-  ggtitle("Provincial Vaccine Coverage for 1st and 2nd doses of Measles, Jan 2020 - Dec 2023.") +
+  ggtitle("The Provincial Vaccine Coverage for 1st and 2nd doses of Measles do not deviate much from the \nnational picture. Though Western and Northwestern provinces have the least coverages.") +
   facet_wrap(~prov, ncol=4) +
   faceted +
   scale_color_manual(name ="",
@@ -181,7 +181,7 @@ fulmunized_plt <- ggplot(fulmunized_prov, aes(x = mnthyr, y = fiu1P, colour=usai
                      labels = percent,
                      breaks = c(.1,.2,.3,.4,.5,.6,.7,.8,.9, 1)) +
   # scale_x_date(date_labels="%b %y",date_breaks="4 months") +
-  labs(x="", y="", caption="Data Source: HMIS", title="Fully Immunized Coverage (%) Under 1 had been on a downward trend in all the provinces since mid 2021, \nbut has since shown steady increase begining mid 2023.") +
+  labs(x="", y="", caption="Data Source: HMIS", title="Fully Immunized Coverage (%) Under 1 had been on a downward trend in all the provinces around mid 2021, \nbut has since shown steady improvement begining mid 2023 through to 2024!.") +
   facet_wrap(~prov, ncol=4) +
   faceted +
   scale_color_manual(name ="",
@@ -195,7 +195,7 @@ ggsave("viz/Aug 2024 FHDR/Fully Imunnized facets PS.png",
        device="png",
        type="cairo",
        height = 6.5,
-       width = 13)
+       width = 12)
 
 
 #'*______BCG COVERAGE UNDER 1*
@@ -362,7 +362,7 @@ vitA_prov_plt <- ggplot(vitA_prov, aes(x = mnthyr, y = vitA.suppP, colour=usaid_
                      labels = percent,
                      breaks = c(.1,.2,.3,.4,.5)) +
   
-  labs(x="", y="", caption="Data Source: HMIS", title="The picture on Vitamin A Supplement at provincial level is not different from the national picture of below 30%.") +
+  labs(x="", y="", caption="Data Source: HMIS", title="The picture on Vitamin A Supplement at provincial level is not different from the national picture of below 30%. \nOf note is the below 10% coverage in Central, Eastern, Northern, Northwestern and Western provinces.") +
   facet_wrap(~prov, ncol=4) +
   faceted +
   scale_color_manual(name ="",
