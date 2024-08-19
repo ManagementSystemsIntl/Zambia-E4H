@@ -808,7 +808,7 @@ larc.dis.p_plt <- ggplot(larc, aes(x=mnthyr, y=larc.dis.p)) +
   labs(x="",
        y="",
        caption="Data Source: HMIS",
-       title="Percentage of clients discontinuing LARCs (Jan 2020 - Dec 2023).") + 
+       title="Percentage of clients discontinuing LARCs is declining in most provinces as the opposite is true (Jan 2020 - Jun 2024).") + 
   baseX
 
 larc.dis.p_plt
@@ -817,7 +817,7 @@ ggsave("viz/Aug 2024 FHDR/Discontinuing LARCS Facets.png",
        device="png",
        type="cairo",
        height = 6.5,
-       width = 12)
+       width = 12.5)
 
 
 
