@@ -3156,13 +3156,13 @@ frstfrth_dst_plt <- ggplot(frstfrth_dst, aes(x = mnthyr, y = rate, group = subpo
                      breaks = c(.2,.4,.6,.8,1)) +
   labs(x ="", y="", caption = "Data Source: HMIS") +labs(x ="", y="", caption = "Data Source: HMIS") +
   ggtitle("The picture on Provincial Coverage of the Fully Immunized (%) and DPT 1st dose Under 1 (%) shows \na simillar pattern across provinces which is not different from the National picture (Jan 2020 - Jun 2024).") +
-  facet_wrap(~prov, ncol=4) +
+  facet_wrap(~dstrtct, ncol=4) +
   faceted +
   scale_color_manual(name ="",
                      values = usaid_palette,
                      labels = c("Antenatal 1st visit coverage all trimesters  (%)", "Antenatal 4th+ visit to total visit ratio (%)")) + basey
 
-provdpt.imnzd_plt
+frstfrth_dst_plt
 
 ggsave("viz/Aug 2024 FHDR/1st ANC nad 4th+ ANC_Central districts.png",
        device="png",
