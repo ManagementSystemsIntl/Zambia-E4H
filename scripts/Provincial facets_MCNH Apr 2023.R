@@ -968,7 +968,7 @@ ggsave("viz/Aug 2024 FHDR/Women of reproductive age visited by CHA facets.png",
 #'*Provincial Maternal Mortality Ratio and Reporting Rates*
 
 
-matprv1 <- read_xls("data/Aug 2024 MHDR/Maternal MR and RR_provincial (2020-2023).xls")
+matprv1 <- read_xls("data/Aug 2024 MHDR/Maternal MR and RR_provincial (2020-2024).xls")
 
 
 matprv  <- matprv1  %>%
@@ -1012,7 +1012,7 @@ ggplot(matprv3, aes(x=yr, y=mr)) +
   facet_wrap(~prov) +
   faceted +
   scale_y_continuous(sec.axis = sec_axis(trans = ~ .*0.0030,name = "Reporting rate", labels = scales::label_percent())) +
-  labs(x="", y="Mortality Ratio", caption="Data Source: HMIS",title="Maternal Mortality Ratio and Reporting rates - 2020 - 2023.") +
+  labs(x="", y="Mortality Ratio", caption="Data Source: HMIS",title="Maternal Mortality Ratio and Reporting rates - Jan 2020 to Jun 2024.") +
   scale_color_manual(name ="",
                      values = usaid_red,
                      labels = c("HIA2 Reporting rate (%)")) + 
