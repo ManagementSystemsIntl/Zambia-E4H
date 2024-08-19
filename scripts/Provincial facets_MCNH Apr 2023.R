@@ -362,7 +362,7 @@ vitA_prov_plt <- ggplot(vitA_prov, aes(x = mnthyr, y = vitA.suppP, colour=usaid_
                      labels = percent,
                      breaks = c(.1,.2,.3,.4,.5)) +
   
-  labs(x="", y="", caption="Data Source: HMIS", title="The picture on Vitamin A Supplement at provincial level is not different from the national picture of below 30%. \nOf note is the below 10% coverage in Central, Eastern, Northern, Northwestern and Western provinces.") +
+  labs(x="", y="", caption="Data Source: HMIS", title="The picture on Vitamin A Supplement at provincial level is not different from the national picture of below 30%. \nOf note is the Copperbelt, Luapula, and Lusaka provinces.") +
   facet_wrap(~prov, ncol=4) +
   faceted +
   scale_color_manual(name ="",
@@ -422,7 +422,7 @@ stunt_prov_plt <- ggplot(stunting_prov, aes(x = mnthyr, y = stunt.rateP, colour=
                      labels = percent,
                      breaks = c(.01,.02,.03,.04,.05)) +
   
-  labs(x="", y="", caption="Data Source: HMIS", title="Stunting rate (%) in under 5s at facility seems to be increasing in Copperbelt, Luapula, \nand Southern provinces, though below 2% (Jan 2020 - Dec 2023).") +
+  labs(x="", y="", caption="Data Source: HMIS", title="Provincial picture of stunting rates (%) in under 5s at facility (Jan 2020 - Jun 2024).") +
   facet_wrap(~prov, ncol=4) +
   faceted +
   scale_color_manual(name ="",
