@@ -3173,6 +3173,73 @@ ggsave("viz/Aug 2024 FHDR/1st ANC nad 4th+ ANC_Eastern districts.png",
 
 
 
+#'*________Institutional Delivery and PNC by District...Aug 2024 request*
+
+instPNC_dst <- read_xls("data/Aug 2024 MHDR/Instituitional Delivery and PNC_Northern districts.xls")
+names(instPNC_dst)
+instPNC_dst
+instPNC_dst  <- instPNC_dst  %>%
+  mutate(month_chr = str_sub(periodname,
+                             start=1,
+                             end=nchar(periodname)-5),
+         month = factor(month_chr,
+                        levels=c("January","February","March","April","May","June","July","August","September","October","November","December")),
+         month_code = as.numeric(month), 
+         year = str_sub(periodname, 
+                        start=nchar(periodname)-4,
+                        end=nchar(periodname)),
+         monyr = paste(month_code, year, sep="-"),
+         mnthyr = my(monyr))
+
+sum(instPNC_dst$month_chr!=instPNC_dst$month) # expecting 0 if vars same
+
+
+names(instPNC_dst)
+names(instPNC_dst)
+instPNC_dst <- instPNC_dst %>%
+  rename(dstrtct=1,
+         instdeli=3,
+         pnc=4) %>%
+  mutate(instdeliP = instdeli/100,
+         pncP = pnc/100)
+
+#'*set frstANC and frthANC to 100 for all values >100*
+instPNC_dst <- instPNC_dst %>% 
+  dplyr::mutate(instdeli = ifelse(instdeli > 100, 100, instdeli)) %>% 
+  dplyr::mutate(instdeliP = instdeli/100)
+
+#'*To create legend, gather method for including a legend --*
+
+instPNC_dst <- gather(instPNC_dst, key = subpop , value = rate, c(instdeliP, pncP))
+instPNC_dst$subpop <- factor(instPNC_dst$subpop, levels = unique(instPNC_dst$subpop)) # transform into factor
+levels(instPNC_dst$subpop)
+
+instPNC_dst_plt <- ggplot(instPNC_dst, aes(x = mnthyr, y = rate, group = subpop, colour = subpop)) +
+  geom_point(size=.5, alpha=.5) + 
+  geom_smooth(method = loess, linewidth = .7, se=FALSE) +
+  scale_y_continuous(limits = c(0,1),
+                     labels = percent,
+                     breaks = c(.2,.4,.6,.8,1)) +
+  labs(x ="", y="", caption = "Data Source: HMIS") +labs(x ="", y="", caption = "Data Source: HMIS") +
+  ggtitle("Northern province is showing an amazingly similar picture among its districts when comparing institutional \ndelivery coverage (%) and PNC within 48hrs after delivery (%) - (Jan 2020 to Jun 2024).") +
+  facet_wrap(~dstrtct, ncol=4) +
+  faceted +
+  scale_color_manual(name ="",
+                     values = usaid_palette,
+                     labels = c("Institutional Delivery coverage (%)", "Postnatal care within 48 hours after delivery (%)")) + basey
+
+instPNC_dst_plt
+
+ggsave("viz/Aug 2024 FHDR/Inst deli and PNC_Northern districts.png",
+       device="png",
+       type="cairo",
+       height = 6.5,
+       width = 12.5)
+
+
+
+
+
 
 
 
