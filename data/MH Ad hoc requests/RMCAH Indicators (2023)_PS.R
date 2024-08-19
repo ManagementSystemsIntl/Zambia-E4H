@@ -622,14 +622,14 @@ ch_plt <- ggplot(fam, aes(x=mnthyr, y=wmn.vstd, colour=usaid_blue)) +
   geom_smooth(method = loess, linewidth = .8, se=FALSE) +
   scale_y_continuous(labels=comma) +
   scale_x_date(date_labels="%b %y",date_breaks="3 months") +
-  labs(x="", y="", caption="Data Source: HMIS", title="Number of Women in reproductive age visted by CHA/CBV had slumped begining October 2020, \nbut has had an upward trajectory beginning April 2022.") +
+  labs(x="", y="", caption="Data Source: HMIS", title="Number of Women in reproductive age visted by CHA/CBV had slumped begining October 2020, \nbut has had an upward trajectory begining April 2022 and has maintained around 23K for 2024.") +
   scale_color_manual(name ="",
                      values = usaid_blue,
                      labels ="Women of Reproductive age visted by CHA") + 
   basey
 
 ch_plt
-ggsave("viz/Aug 2024 FHDR/Women of reproductive age visted by CHA.png",
+ggsave("viz/Aug 2024 FHDR/National Women of reproductive age visted by CHA.png",
        device="png",
        type="cairo",
        height = 6.5,
@@ -658,7 +658,7 @@ lrc_plt <- ggplot(larc, aes(x=mnthyr, y=larc.ab)) +
   labs(x="",
        y="",
        caption="Data Source: HMIS",
-       title="Number of clients accessing LARCs (implants and IUDs) shows an improvement from Jan 2020, \nthough there was a decline between Jan 2022 and Jan 2023 with a steady improvement thereafter.") + 
+       title="A number of clients accessing LARCs (implants and IUDs) shows an improvement from Jan 2020, though there was a \ndecline between Oct 2021 and Jan 2023, a steady upward trajectory is witnessed with a record high of above 35K!.") + 
   baseX
 
 lrc_plt

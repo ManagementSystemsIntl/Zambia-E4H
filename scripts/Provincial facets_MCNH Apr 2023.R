@@ -769,7 +769,7 @@ lrc_plt <- ggplot(larc, aes(x=mnthyr, y=larc.ab)) +
   labs(x="",
        y="",
        caption="Data Source: HMIS",
-       title="Number of clients accessing LARCs (implants and IUDs) shows an upward trend in all the provinces begining 2023 \nexcept for Muchinga, Northwestern, Southern and Western Provinces with no significant changes.") + 
+       title="Number of clients accessing LARCs (implants and IUDs) shows an upward trend in all the provinces begining 2023 \nthrough to 2024, except for Northwestern, and Western provinces that are static.") + 
   baseX
 
 lrc_plt
@@ -834,8 +834,10 @@ chavst_plt <- ggplot(fam_prov, aes(x=mnthyr, y=wmn.vstd, colour=usaid_blue)) +
   #geom_bar(stat="identity") +
   geom_point(alpha=.6, size=.7) +
   geom_smooth(method = loess, size = .8, se=FALSE) +
-  scale_y_continuous(labels=comma) +
-  labs(x="", y="", caption="Data Source: HMIS", title="Number of Women in reproductive age visited by CHA.") +
+  scale_y_continuous(labels=comma,
+                     limits=c(0, 7000),
+                     breaks = c(1000, 2000, 3000, 4000, 5000, 6000, 7000)) +
+  labs(x="", y="", caption="Data Source: HMIS", title="Number of Women in Reproductive age visited by CHA (Jan 2020 - Jun 2024).") +
   facet_wrap(~prov, ncol=4) +
   faceted +
   scale_color_manual(name ="",
@@ -844,11 +846,11 @@ chavst_plt <- ggplot(fam_prov, aes(x=mnthyr, y=wmn.vstd, colour=usaid_blue)) +
   base
 
 chavst_plt
-ggsave("viz/Aug 2024 FHDR/Women of reproductive age visited by CHA.png",
+ggsave("viz/Aug 2024 FHDR/Women of reproductive age visited by CHA facets.png",
        device="png",
        type="cairo",
        height = 6.5,
-       width = 11)
+       width = 12)
 
 
 
