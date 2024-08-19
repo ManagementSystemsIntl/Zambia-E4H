@@ -730,7 +730,7 @@ fp_plt <- ggplot(fam_prov, aes(x = mnthyr, y = cvrg_fp, colour = usaid_blue)) +
   facet_wrap(~prov) +
   faceted +
   labs(x ="", y="", caption = "Data Source: HMIS") + labs(x ="", y="", caption = "Data Source: HMIS") +
-  ggtitle("Provincial Coverage of Modern Family Planning utilization, 2017 - 2023.") +
+  ggtitle("Provincial Coverage of Modern Family Planning utilization is averaging around 60% (Jan 2020 - Jun 2024).") +
   scale_color_manual(name ="",
                      values = usaid_palette,
                      labels = c("Family Planning Utilization")
@@ -738,7 +738,7 @@ fp_plt <- ggplot(fam_prov, aes(x = mnthyr, y = cvrg_fp, colour = usaid_blue)) +
 
 fp_plt
 
-ggsave("viz/Aug 2024 FHDR/Modern FP utilization facets_2017-2023.png",
+ggsave("viz/Aug 2024 FHDR/Modern FP utilization facets_2020-2024.png",
        device="png",
        type="cairo",
        height = 6.5,

@@ -540,7 +540,7 @@ ggsave("C:/Users/PIMPA.SAWULU/Desktop/R project doc_E4H/E4H-Zambia/graphs/Provin
 
 #'*COVERAGE OF MODERN FAMILY PLANNING ADOPTION*
 
-fam <- read_xls("data/Dec 2023 MHDR/Family Planning data_National level monthly.xls")
+fam <- read_xls("data/Aug 2024 MHDR/Family Planning data_National level monthly.xls")
 fam  <- fam  %>%
   mutate(month_chr = str_sub(periodname,
                              start=1,
@@ -558,7 +558,7 @@ sum(fam$month_chr!=fam$month) # expecting 0 if vars same
 
 
 
-fam_prov <- read_xls("data/Dec 2023 MHDR/Family Planning data_Provincial level monthly.xls")
+fam_prov <- read_xls("data/Aug 2024 MHDR/Family Planning data_Provincial level monthly.xls")
 names(fam_prov)
 fam_prov
 fam_prov  <- fam_prov  %>%
@@ -595,47 +595,19 @@ crvg_plt <- ggplot(fam, aes(x=mnthyr, y=cvrg_fp, colour=usaid_blue)) +
                      labels = percent,
                      breaks = c(.1,.2,.3,.4,.5,.6,.7,.8)) +
   scale_x_date(date_labels="%b %y",date_breaks="4 months") +
-  labs(x="", y="", caption="Data Source: HMIS", title="Coverage of Modern Family Planning use among women of reproductive age (Jan 2017 - Dec 2023.)") +
+  labs(x="", y="", caption="Data Source: HMIS", title="Coverage of Modern Family Planning use among women of reproductive age \nhas constantly been around 58% from Feb 2023 to Jun 2024.") +
   scale_color_manual(name ="",
                      values = usaid_blue,
                      labels ="Coverage of modern family planning adoption") + 
   baseX
 
 crvg_plt
-ggsave("viz/Dec 23 FHDR/Coverage of modern family planning adoption_2017-2023.png",
+ggsave("viz/Aug 2024 FHDR/National Coverage of modern family planning adoption.png",
        device="png",
        type="cairo",
        height = 6.5,
        width = 11.5)
 
-
-#'*COVERAGE OF MODERN FAMILY PLANNING ADOPTION BY PROVINCE....reconstruct the code!*
-
-names(fam_prov)
-names(fam_prov)
-fam_prov <- fam_prov %>%
-  rename(prov=2,
-         wmn.mfp=4,
-         wmn.vstd=3) %>%
-  mutate(cvrg_fp = wmn.mfp/wmn.vstd)
-ggplot(fam_prov, aes(x=mnthyr, y=cvrg_fp, colour=usaid_blue)) + 
-  geom_point(size=.5, alpha=.5, colour=usaid_blue) +
-  #geom_smooth(method = loess, Se=F, size=.8, alpha=.6, colour=usaid_blue)
-  geom_smooth(method = loess, Se=F, linewidth=.8) +
-  scale_y_continuous(limits = c(0,1),
-                     labels = percent,
-                     breaks = c(.2,.4,.6,.8,1)) +
-  labs(x ="", y="", caption = "Data Source: HMIS") + #labs(x ="", y="", caption = "Data Source: HMIS") +
-  ggtitle("Provincial Coverage of Modern Family Planning utilization, 2019 - 2023") +
-  facet_wrap(~prov, ncol=4) +
-  faceted +
-  scale_color_manual(values=usaid_blue) + basey
-
-ggsave("viz/Dec 23 FHDR/FP Coverage faceted.png",
-       device="png",
-       type="cairo",
-       height = 6.5,
-       width = 11)
 
 
 
@@ -657,7 +629,7 @@ ch_plt <- ggplot(fam, aes(x=mnthyr, y=wmn.vstd, colour=usaid_blue)) +
   basey
 
 ch_plt
-ggsave("viz/Dec 23 FHDR/Women of reproductive age visted by CHA.png",
+ggsave("viz/Aug 2024 FHDR/Women of reproductive age visted by CHA.png",
        device="png",
        type="cairo",
        height = 6.5,
@@ -691,7 +663,7 @@ lrc_plt <- ggplot(larc, aes(x=mnthyr, y=larc.ab)) +
 
 lrc_plt
 
-ggsave("viz/Dec 23 FHDR/Accessing LARCS.png",
+ggsave("viz/Aug 2024 FHDR/Accessing LARCS.png",
        device="png",
        type="cairo",
        height = 6.5,
@@ -727,7 +699,7 @@ larc.dis.p_plt <- ggplot(larc, aes(x=mnthyr, y=larc.dis.p)) +
 
 larc.dis.p_plt
 
-ggsave("viz/Dec 23 FHDR/Discontinuing LARCS.png",
+ggsave("viz/Aug 2024 FHDR/Discontinuing LARCS.png",
        device="png",
        type="cairo",
        height = 6.5,
@@ -776,7 +748,7 @@ medim <- ggplot(iud3,aes(x=mnthyr, y=value, color=variable))+
 medim
 
 
-ggsave("viz/Dec 23 FHDR/Medroxyprogesterone injection DMPA-IM.png",
+ggsave("viz/Aug 2024 FHDR/Medroxyprogesterone injection DMPA-IM.png",
        device="png",
        type="cairo",
        height = 6.5,
@@ -831,7 +803,7 @@ ggsave("viz/Dec 23 FHDR/Medroxyprogesterone injection DMPA-IM.png",
 
 #'*_____NATIONAL FP METHODS -TYPE DISAGGS*
 
-fpmethod <- read_xls("data/Dec 2023 MHDR/IUCD_Implant_Injectables_National monthly.xls")
+fpmethod <- read_xls("data/Aug 2024 MHDR/IUCD_Implant_Injectables_National monthly.xls")
 fpmethod  <- fpmethod  %>%
   mutate(month_chr = str_sub(periodname,
                              start=1,
@@ -879,7 +851,7 @@ method_plt <- ggplot(fpmethod3, aes(x=mnthyr, y=value, color=variable))+
 method_plt
 
 
-ggsave("viz/Dec 23 FHDR/Family planning methods.png",
+ggsave("viz/Aug 2024 FHDR/Family planning methods.png",
        device="png",
        type="cairo",
        height = 6.5,
@@ -925,7 +897,7 @@ Accpt_plt <- ggplot(newAccpt3,aes(x=mnthyr, y=value, color=variable))+
 Accpt_plt
 
 
-ggsave("viz/Dec 23 FHDR/New Acceptors Starting FP disaggs.png",
+ggsave("viz/Aug 2024 FHDR/New Acceptors Starting FP disaggs.png",
        device="png",
        type="cairo",
        height = 6.5,
@@ -936,7 +908,7 @@ ggsave("viz/Dec 23 FHDR/New Acceptors Starting FP disaggs.png",
 #'*FAMILY PLANNING NEW ACCEPTORS............without age disaggs*
 
 
-FPNewaccpt <- read_xls("data/Dec 2023 MHDR/FP New Acceptors_National monthly.xls")
+FPNewaccpt <- read_xls("data/Aug 2024 MHDR/FP New Acceptors_National monthly.xls")
 FPNewaccpt  <- FPNewaccpt  %>%
   mutate(month_chr = str_sub(periodname,
                              start=1,
@@ -977,7 +949,7 @@ FPA_plt <- ggplot(naccfp, aes(x=mnthyr, y=naccfp.ab)) +
 
 FPA_plt
 
-ggsave("viz/Dec 23 FHDR/National FP new Acceptors.png",
+ggsave("viz/Aug 2024 FHDR/National FP new Acceptors.png",
        device="png",
        type="cairo",
        height = 6.5,
@@ -991,7 +963,7 @@ ggsave("viz/Dec 23 FHDR/National FP new Acceptors.png",
 
 #'*_____REUSE CODE FOR MATERNAL DEATHS: Facility.....1(August 2023).....*
 
-Matdeaths <- read_xls("data/Dec 2023 MHDR/Maternal deaths facility_community National monthly(2021_2023).xls")
+Matdeaths <- read_xls("data/Aug 2024 MHDR/Maternal deaths facility_community National monthly(2021_2023).xls")
 Matdeaths  <- Matdeaths  %>%
   mutate(month_chr = str_sub(periodname,
                              start=1,
@@ -1044,7 +1016,7 @@ facility_plt <- ggplot(facilitydeaths3,aes(x=mnthyr, y=value, color=variable))+
 facility_plt
 
 
-ggsave("viz/Dec 23 FHDR/National Maternal deaths at facility.png",
+ggsave("vizAug 2024 FHDR/National Maternal deaths at facility.png",
        device="png",
        type="cairo",
        height = 6.5,
@@ -1090,7 +1062,7 @@ comm_plt <- ggplot(comm.deaths3,aes(x=mnthyr, y=value, color=variable))+
 comm_plt
 
 
-ggsave("viz/Dec 23 FHDR/National Maternal deaths at community.png",
+ggsave("viz/Aug 2024 FHDR/National Maternal deaths at community.png",
        device="png",
        type="cairo",
        height = 6.5,
