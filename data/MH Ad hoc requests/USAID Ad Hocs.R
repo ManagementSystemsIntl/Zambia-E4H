@@ -1226,6 +1226,73 @@ ggsave("viz/Dec 23 FHDR/National Maternal Mortality Ratio_USAID supported.png",
 
 
 
+#'*________1st ANC, and 4th+ ANC BY DISTRICT*
+
+frthPlusANC_prov <- read_xls("data/Aug 2024 MHDR/ANC PNC_Central province districts.xls")
+names(frthPlusANC_prov)
+frthPlusANC_prov
+frthPlusANC_prov  <- frthPlusANC_prov  %>%
+  mutate(month_chr = str_sub(periodname,
+                             start=1,
+                             end=nchar(periodname)-5),
+         month = factor(month_chr,
+                        levels=c("January","February","March","April","May","June","July","August","September","October","November","December")),
+         month_code = as.numeric(month), 
+         year = str_sub(periodname, 
+                        start=nchar(periodname)-4,
+                        end=nchar(periodname)),
+         monyr = paste(month_code, year, sep="-"),
+         mnthyr = my(monyr))
+
+
+names(frthPlusANC_prov)
+frthPlusANC_prov <- frthPlusANC_prov %>%
+  rename(dstrct=1,
+         frst.anc=3,
+         frth.anc=4,
+         pnc=5) %>%
+  mutate(frst.ancP = frst.anc/100,
+         frth.ancP = frth.anc/100,
+         pncP = pnc/100
+         )
+
+#'*set frst.ancP & frth.ancP to 100 for all values >100*
+frthPlusANC_prov <- frthPlusANC_prov %>% 
+  dplyr::mutate(frst.anc = ifelse(frst.anc > 100, 100, frst.anc)) %>% 
+  dplyr::mutate(frst.ancP = frst.anc/100)
+
+#'*To create legend, gather method for including a legend --*
+
+frthPlusANC_prov <- gather(frthPlusANC_prov, key = subpop , value = rate, c(frst.ancP, frth.ancP))
+frthPlusANC_prov$subpop <- factor(frthPlusANC_prov$subpop, levels = unique(frthPlusANC_prov$subpop)) # transform into factor
+levels(frthPlusANC_prov$subpop)
+
+ggplot(frthPlusANC_prov, aes(x = mnthyr, y = rate, group = subpop, colour = subpop )) + 
+  geom_point(size=.5, alpha=.5, colour=c(light_blue,light_grey, usaid_red)) + 
+  stat_smooth(se=F, linewidth=.8, alpha=.6, colour=c(light_blue,light_grey, usaid_red)) +
+  scale_y_continuous(limits = c(0,1),
+                     labels = percent,
+                     breaks = c(.2,.4,.6,.8,1)) +
+  labs(x ="", y="", caption = "Data Source: HMIS") +labs(x ="", y="", caption = "Data Source: HMIS") +
+  ggtitle("The 4th+ ANC attendances for Muchinga Province districts show a similar trend across,\n but with a special pattern from Nakonde district!.") +
+  facet_wrap(~dstrct, ncol=4) +
+  faceted +
+  scale_color_manual(name ="",
+                     values =c(light_blue,light_grey, usaid_red),
+                     labels = c("under 15yrs","15-19yrs","20-24yrs","above 25yrs")) + basey
+
+ggsave("viz/Aug 2024 FHDR/4th+ ANC visits_Muchinga districts.png",
+       device="png",
+       type="cairo",
+       height = 6.5,
+       width = 12.5)
+
+
+
+
+
+
+
 
 
 

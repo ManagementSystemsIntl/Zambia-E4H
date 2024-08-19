@@ -3107,6 +3107,73 @@ ggsave("viz/Aug 2024 FHDR/Provincial fully immunized and DPT1.png",
 
 
 
+#'*________1st ANC and 4th+ ANC by District...Aug 2024 request*
+
+frstfrth_dst <- read_xls("data/Aug 2024 MHDR/ANC PNC_Central province districts.xls")
+names(frstfrth_dst)
+frstfrth_dst
+frstfrth_dst  <- frstfrth_dst  %>%
+  mutate(month_chr = str_sub(periodname,
+                             start=1,
+                             end=nchar(periodname)-5),
+         month = factor(month_chr,
+                        levels=c("January","February","March","April","May","June","July","August","September","October","November","December")),
+         month_code = as.numeric(month), 
+         year = str_sub(periodname, 
+                        start=nchar(periodname)-4,
+                        end=nchar(periodname)),
+         monyr = paste(month_code, year, sep="-"),
+         mnthyr = my(monyr))
+
+sum(frstfrth_dst$month_chr!=frstfrth_dst$month) # expecting 0 if vars same
+
+
+names(frstfrth_dst)
+names(frstfrth_dst)
+frstfrth_dst <- frstfrth_dst %>%
+  rename(dstrtct=1,
+         frst.anc=3,
+         frth.anc=4) %>%
+  mutate(frst.ancP = frst.anc/100,
+         frth.ancP = frth.anc/100)
+
+#'*set frstANC and frthANC to 100 for all values >100*
+frstfrth_dst <- frstfrth_dst %>% 
+  dplyr::mutate(frst.anc = ifelse(frst.anc > 100, 100, frst.anc)) %>% 
+  dplyr::mutate(frst.ancP = frst.anc/100)
+
+#'*To create legend, gather method for including a legend --*
+
+frstfrth_dst <- gather(frstfrth_dst, key = subpop , value = rate, c(frst.ancP, frth.ancP))
+frstfrth_dst$subpop <- factor(frstfrth_dst$subpop, levels = unique(frstfrth_dst$subpop)) # transform into factor
+levels(frstfrth_dst$subpop)
+
+frstfrth_dst_plt <- ggplot(frstfrth_dst, aes(x = mnthyr, y = rate, group = subpop, colour = subpop)) +
+  geom_point(size=.5, alpha=.5) + 
+  geom_smooth(method = loess, linewidth = .7, se=FALSE) +
+  scale_y_continuous(limits = c(0,1),
+                     labels = percent,
+                     breaks = c(.2,.4,.6,.8,1)) +
+  labs(x ="", y="", caption = "Data Source: HMIS") +labs(x ="", y="", caption = "Data Source: HMIS") +
+  ggtitle("The picture on Provincial Coverage of the Fully Immunized (%) and DPT 1st dose Under 1 (%) shows \na simillar pattern across provinces which is not different from the National picture (Jan 2020 - Jun 2024).") +
+  facet_wrap(~prov, ncol=4) +
+  faceted +
+  scale_color_manual(name ="",
+                     values = usaid_palette,
+                     labels = c("Antenatal 1st visit coverage all trimesters  (%)", "Antenatal 4th+ visit to total visit ratio (%)")) + basey
+
+provdpt.imnzd_plt
+
+ggsave("viz/Aug 2024 FHDR/1st ANC nad 4th+ ANC_Central districts.png",
+       device="png",
+       type="cairo",
+       height = 6.5,
+       width = 12.5)
+
+
+
+
+
 
 
 
