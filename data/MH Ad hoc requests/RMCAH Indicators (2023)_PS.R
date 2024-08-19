@@ -844,7 +844,7 @@ method_plt <- ggplot(fpmethod3, aes(x=mnthyr, y=value, color=variable))+
   labs(x="",
        y="",
        caption="Data Source: HMIS",
-       title="Family Planning Methods and their usage/consumption, (Jan 2020 - Dec 2023) \nshow that injectables are the most used.") +
+       title="Family Planning Methods and their usage/consumption, (Jan 2020 - Jun 2024), \nshow that injectables are the most used.") +
   basey + scale_color_manual(name ="",
                              values =c(light_blue,light_grey,usaid_blue),
                              labels = c("IUCDs","Implants","Injectables"))
@@ -890,7 +890,7 @@ Accpt_plt <- ggplot(newAccpt3,aes(x=mnthyr, y=value, color=variable))+
   labs(x="",
        y="",
        caption="Data Source: HMIS",
-       title="Family Planning New Acceptors Starting FP disaggregated by Age (Jan 2020 - Dec 2023).") +
+       title="Family Planning New Acceptors Starting FP disaggregated by Age (Jan 2020 - Jun 2024).") +
   basey + scale_color_manual(name ="",
                              values =c(light_blue,light_grey,usaid_blue, usaid_red),
                              labels = c("under 15yrs","15-19yrs","20-24yrs","above 25yrs"))
@@ -944,7 +944,7 @@ FPA_plt <- ggplot(naccfp, aes(x=mnthyr, y=naccfp.ab)) +
   labs(x="",
        y="",
        caption="Data Source: HMIS",
-       title="Family Planning New Acceptors Jan 2021 - Dec 2023.") + 
+       title="Family Planning New Acceptors Jan 2021 - June 2024.") + 
   baseX
 
 FPA_plt
