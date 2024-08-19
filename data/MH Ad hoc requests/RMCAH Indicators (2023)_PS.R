@@ -3109,7 +3109,7 @@ ggsave("viz/Aug 2024 FHDR/Provincial fully immunized and DPT1.png",
 
 #'*________1st ANC and 4th+ ANC by District...Aug 2024 request*
 
-frstfrth_dst <- read_xls("data/Aug 2024 MHDR/ANC PNC_Central province districts.xls")
+frstfrth_dst <- read_xls("data/Aug 2024 MHDR/ANC PNC_Eastern province districts.xls")
 names(frstfrth_dst)
 frstfrth_dst
 frstfrth_dst  <- frstfrth_dst  %>%
@@ -3155,7 +3155,7 @@ frstfrth_dst_plt <- ggplot(frstfrth_dst, aes(x = mnthyr, y = rate, group = subpo
                      labels = percent,
                      breaks = c(.2,.4,.6,.8,1)) +
   labs(x ="", y="", caption = "Data Source: HMIS") +labs(x ="", y="", caption = "Data Source: HMIS") +
-  ggtitle("The picture on Provincial Coverage of the Fully Immunized (%) and DPT 1st dose Under 1 (%) shows \na simillar pattern across provinces which is not different from the National picture (Jan 2020 - Jun 2024).") +
+  ggtitle("Eastern province districts' performance on 1st ANC visit and 4th+ ANC to total visits (%) (Jan 2020 - Jun 2024). \nIt would be good to pick lessons from Chipangali, Lusangazi, and Nyimba on 1st ANC visits coverage.") +
   facet_wrap(~dstrtct, ncol=4) +
   faceted +
   scale_color_manual(name ="",
@@ -3164,7 +3164,7 @@ frstfrth_dst_plt <- ggplot(frstfrth_dst, aes(x = mnthyr, y = rate, group = subpo
 
 frstfrth_dst_plt
 
-ggsave("viz/Aug 2024 FHDR/1st ANC nad 4th+ ANC_Central districts.png",
+ggsave("viz/Aug 2024 FHDR/1st ANC nad 4th+ ANC_Eastern districts.png",
        device="png",
        type="cairo",
        height = 6.5,
