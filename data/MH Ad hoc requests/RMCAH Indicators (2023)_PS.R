@@ -2939,7 +2939,7 @@ ggplot(chldMalt, aes(x = mnthyr, y = rate, group = subpop, colour = subpop)) +
                      breaks = c(.1,.2,.3,.4,.5,.6,.7,.8,.9, 1)) +
   scale_x_date(date_labels="%b %y",date_breaks="3 months") +
   labs(x ="", y="", caption = "Data Source: HMIS") +labs(x ="", y="", caption = "Data Source: HMIS") +
-  ggtitle("Proportion of Child Malnutrition Admission Rates (%), January 2021 - December 2023.") +
+  ggtitle("The Proportions of Child Malnutrition Admission Rates (%), show that Severe cases begun to rise in January 2022, \nwhereas Moderate cases started rising in October 2022.") +
   scale_color_manual(name ="",
                      values = usaid_palette,
                      labels = c("Child Acute Malnutrition (Moderate)", "Child Acute Malnutrition (Severe)", 
@@ -3002,7 +3002,7 @@ ggplot(chldMalt_prov, aes(x = mnthyr, y = rate, group = subpop, colour = subpop)
   labs(x ="", y="", caption = "Data Source: HMIS") +labs(x ="", y="", caption = "Data Source: HMIS") +
   facet_wrap(~prov, ncol=4) +
   faceted +
-  ggtitle("Proportion of Child Malnutrition admission rates (%), (Jan 2021 - Dec 2023.)") +
+  ggtitle("Provincial picture on the proportions of Child Malnutrition admission rates (%), (Jan 2021 - Jun 2024.)") +
   scale_color_manual(name ="",
                      values = usaid_palette,
                      labels = c("Child Acute Malnutrition (Moderate)", "Child Acute Malnutrition (Severe)", 
