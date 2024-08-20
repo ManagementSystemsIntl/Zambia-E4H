@@ -22,7 +22,7 @@ source("scripts/r prep2.r")
 source("scripts/r prep3.r")
 library(scales)
 
-fpd <- read_xls("data/Dec 2023 MHDR/FP Type disaggregations_provincial.xls")
+fpd <- read_xls("data/Aug 2024 MHDR/FP Type disaggregations_provincial.xls")
 
 fpd
 fpd1 <- fpd %>% 
@@ -35,17 +35,17 @@ options(scipen = 999)
 ggplot(fpd1, aes(yr, Value, fill = Method)) +
   geom_bar(stat= "identity") +
   facet_wrap(~prov) +
-  ggtitle("Family Planning Methods and their consumption levels, Jan 2021 - Dec 2023.") +
+  ggtitle("Family Planning Methods and their consumption levels, Jan 2021 - Jun 2024.") +
   scale_y_continuous(labels = scales::label_number_si()) +
   scale_fill_manual(values=c( usaid_palette6)) +
   labs(x = "", y = "Number of distributed contraceptives", fill = "Method/Type", caption = "Data Source: HMIS") +
   theme(legend.position = "bottom")
 
-ggsave("viz/Dec 23 FHDR/number of distributed FP by province.png",
+ggsave("viz/Aug 2024 FHDR/number of distributed FP by province.png",
        device="png",
        type="cairo",
-       height = 6.0,
-       width = 12)
+       height = 6.5,
+       width = 12.5)
 
 
 
