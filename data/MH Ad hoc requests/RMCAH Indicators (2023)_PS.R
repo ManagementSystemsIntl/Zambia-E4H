@@ -2373,7 +2373,7 @@ ggplot(matAnt20, aes(x = mnthyr, y = rate, group = subpop, colour = subpop)) +
   labs(x ="", y="", caption = "Data Source: HMIS") +labs(x ="", y="", caption = "Data Source: HMIS") +
   # xlab("", caption = "Data Source: HMIS") + 
   # ylab("") +
-  ggtitle("Proportion of expected pregnancies receiving Antenatal Care (ANC), Jan 2020 - Dec 2023. \nHere we see that the coverage for Teenage pregnancies has been below 30%!") +
+  ggtitle("Proportion of expected pregnancies receiving Antenatal Care (ANC), Jan 2020 - Jun 2024.") +
   scale_color_manual(name ="",
                      values = usaid_palette,
                      labels = c("1st ANC coverage (all trimesters)", "1st ANC coverage (1st trimester)", "1st ANC visits (all trimesters): Women <20 yrs")
