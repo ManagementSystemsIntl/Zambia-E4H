@@ -5,7 +5,7 @@ source("scripts/r prep3.r")
 
 #'*________PROPORTION BREASTFED WITHIN AN HOUR PROVINCIAL FACETED*
 
-bfhr_prov <- read_xls("data/Aug 2024 MHDR/Child Heath provincial level_monthly.xls")
+bfhr_prov <- read_xls("data/Nov 2024 MHDR/Child Heath provincial level_monthly.xls")
 names(bfhr_prov)
 bfhr_prov
 bfhr_prov  <- bfhr_prov  %>%
@@ -71,7 +71,7 @@ ggsave("viz/Aug 2024 FHDR/Breastfed within 1 hour of birth and EBF facets.png",
 
 #'*________1st and 2nd MEASLES VACCINE COVERAGE PROVINCIAL FACETED*
 
-mslsvac_prov <- read_xls("data/Aug 2024 MHDR/Child Heath provincial level_monthly.xls")
+mslsvac_prov <- read_xls("data/Nov 2024 MHDR/Child Heath provincial level_monthly.xls")
 names(mslsvac_prov)
 mslsvac_prov
 mslsvac_prov  <- mslsvac_prov  %>%
@@ -136,7 +136,7 @@ ggsave("viz/Aug 2024 FHDR/Provincial Measles Vaccines.png",
 
 #'*________FULLY IMMUNIZED PROVINCIAL FACETED*
 
-fulmunized_prov <- read_xls("data/Aug 2024 MHDR/Child Heath provincial level_monthly.xls")
+fulmunized_prov <- read_xls("data/Nov 2024 MHDR/Child Heath provincial level_monthly.xls")
 names(fulmunized_prov)
 fulmunized_prov
 fulmunized_prov  <- fulmunized_prov  %>%
@@ -200,7 +200,7 @@ ggsave("viz/Aug 2024 FHDR/Fully Imunnized facets PS.png",
 
 #'*______BCG COVERAGE UNDER 1*
 
-BCG_prov <- read_xls("data/Aug 2024 MHDR/Child Heath provincial level_monthly.xls")
+BCG_prov <- read_xls("data/Nov 2024 MHDR/Child Heath provincial level_monthly.xls")
 names(BCG_prov)
 BCG_prov
 BCG_prov  <- BCG_prov  %>%
@@ -260,7 +260,7 @@ ggsave("viz/Aug 2024 FHDR/BCG Under 1 facets.png",
 
 #'*______DPT 1st DOSE COVERAGE UNDER 1*
 
-dpt1_prov <- read_xls("data/Aug 2024 MHDR/Child Heath provincial level_monthly.xls")
+dpt1_prov <- read_xls("data/Nov 2024 MHDR/Child Heath provincial level_monthly.xls")
 names(dpt1_prov)
 dpt1_prov
 dpt1_prov  <- dpt1_prov  %>%
@@ -321,7 +321,7 @@ ggsave("viz/Aug 2024 FHDR/DPT 1st dose Under 1 facets.png",
 
 #'*______VITAMIN A SUPPLEMENT COVERAGE*
 
-vitA_prov <- read_xls("data/Aug 2024 MHDR/Child Heath provincial level_monthly.xls")
+vitA_prov <- read_xls("data/Nov 2024 MHDR/Child Heath provincial level_monthly.xls")
 names(vitA_prov)
 vitA_prov
 vitA_prov  <- vitA_prov  %>%
@@ -381,7 +381,7 @@ ggsave("viz/Aug 2024 FHDR/Vitamin A supplementation facets.png",
 
 #'*______PROVINCIAL STUNTING RATES in Under 5s*
 
-stunting_prov <- read_xls("data/Aug 2024 MHDR/Child Heath provincial level_monthly.xls")
+stunting_prov <- read_xls("data/Nov 2024 MHDR/Child Heath provincial level_monthly.xls")
 names(stunting_prov)
 stunting_prov
 stunting_prov  <- stunting_prov  %>%
@@ -444,7 +444,7 @@ ggsave("viz/Aug 2024 FHDR/Stunting rates facets.png",
 
 #'*______PROVINCIAL WASTING RATES in Under 5s*
 
-wasting_prov <- read_xls("data/Aug 2024 MHDR/Child Heath provincial level_monthly.xls")
+wasting_prov <- read_xls("data/Nov 2024 MHDR/Child Heath provincial level_monthly.xls")
 names(wasting_prov)
 wasting_prov
 wasting_prov  <- wasting_prov  %>%
@@ -507,7 +507,7 @@ ggsave("viz/Aug 2024 FHDR/wasting rates facets.png",
 
 #'*______PROVINCIAL CHILD DEWORMING RATES*
 
-deworming_prov <- read_xls("data/Aug 2024 MHDR/Child Heath provincial level_monthly.xls")
+deworming_prov <- read_xls("data/Nov 2024 MHDR/Child Heath provincial level_monthly.xls")
 names(deworming_prov)
 deworming_prov
 deworming_prov  <- deworming_prov  %>%
@@ -568,7 +568,7 @@ ggsave("viz/Aug 2024 FHDR/Deworming rates facets.png",
 
 #'*_________ANC VISITS - PROVINCIAL*
 
-mat_prov <- read_xls("data/Aug 2024 MHDR/Reproductive Maternal Health_Provincial level monthly.xls")
+mat_prov <- read_xls("data/Nov 2024 MHDR/Reproductive Maternal Health_Provincial level monthly.xls")
 
 mat_prov
 mat_prov  <- mat_prov  %>%
@@ -695,7 +695,7 @@ ggsave("viz/Aug 2024 FHDR/Provincial ANCs PS_IP funded.png",
 
 source("scripts/r prep2.r")
 
-fam_prov <- read_xls("data/Aug 2024 MHDR/Family Planning data_Provincial level monthly.xls")
+fam_prov <- read_xls("data/Nov 2024 MHDR/Family Planning data_Provincial level monthly.xls")
 
 names(fam_prov)
 fam_prov
@@ -825,7 +825,7 @@ ggsave("viz/Aug 2024 FHDR/Discontinuing LARCS Facets.png",
 #'adjust to include the provincial variable in the layers by selecting them as you rename........
 
 
-mat_prov <- read_xls("data/Aug 2024 MHDR/Reproductive Maternal Health_Provincial level monthly.xls")
+mat_prov <- read_xls("data/Nov 2024 MHDR/Reproductive Maternal Health_Provincial level monthly.xls")
 names(fam_prov)
 fam_prov <- fam_prov %>%
   rename(wmn.vstd=3)
@@ -968,7 +968,7 @@ ggsave("viz/Aug 2024 FHDR/Women of reproductive age visited by CHA facets.png",
 #'*Provincial Maternal Mortality Ratio and Reporting Rates*
 
 
-matprv1 <- read_xls("data/Aug 2024 MHDR/Maternal MR and RR_provincial (2020-2024).xls")
+matprv1 <- read_xls("data/Nov 2024 MHDR/Maternal MR and RR_provincial (2020-2024).xls")
 
 
 matprv  <- matprv1  %>%
