@@ -61,7 +61,7 @@ bfhr_plt <- ggplot(bfhr_prov, aes(x = mnthyr, y = rate, group = subpop, colour =
 
 bfhr_plt
 
-ggsave("viz/Aug 2024 FHDR/Breastfed within 1 hour of birth and EBF facets.png",
+ggsave("viz/Nov 2024 FHDR/Breastfed within 1 hour of birth and EBF facets.png",
        device="png",
        type="cairo",
        height = 6.5,
@@ -127,7 +127,7 @@ msles_plt <- ggplot(mslsvac_prov, aes(x = mnthyr, y = rate, group = subpop, colo
 
 msles_plt
 
-ggsave("viz/Aug 2024 FHDR/Provincial Measles Vaccines.png",
+ggsave("viz/Nov 2024 FHDR/Provincial Measles Vaccines.png",
        device="png",
        type="cairo",
        height = 6.5,
@@ -191,7 +191,7 @@ fulmunized_plt <- ggplot(fulmunized_prov, aes(x = mnthyr, y = fiu1P, colour=usai
 
 fulmunized_plt
 
-ggsave("viz/Aug 2024 FHDR/Fully Imunnized facets PS.png",
+ggsave("viz/Nov 2024 FHDR/Fully Imunnized facets PS.png",
        device="png",
        type="cairo",
        height = 6.5,
@@ -251,7 +251,7 @@ bcg_plt <- ggplot(BCG_prov, aes(x = mnthyr, y = bcg.coverageP, colour=usaid_blue
 
 bcg_plt
 
-ggsave("viz/Aug 2024 FHDR/BCG Under 1 facets.png",
+ggsave("viz/Nov 2024 FHDR/BCG Under 1 facets.png",
        device="png",
        type="cairo",
        height = 6.5,
@@ -311,7 +311,7 @@ prov.dpt_plt <- ggplot(dpt1_prov, aes(x = mnthyr, y = dptu1.coverageP, colour=us
 
 prov.dpt_plt
 
-ggsave("viz/Aug 2024 FHDR/DPT 1st dose Under 1 facets.png",
+ggsave("viz/Nov 2024 FHDR/DPT 1st dose Under 1 facets.png",
        device="png",
        type="cairo",
        height = 6.5,
@@ -372,7 +372,7 @@ vitA_prov_plt <- ggplot(vitA_prov, aes(x = mnthyr, y = vitA.suppP, colour=usaid_
 
 vitA_prov_plt
 
-ggsave("viz/Aug 2024 FHDR/Vitamin A supplementation facets.png",
+ggsave("viz/Nov 2024 FHDR/Vitamin A supplementation facets.png",
        device="png",
        type="cairo",
        height = 6.5,
@@ -432,7 +432,7 @@ stunt_prov_plt <- ggplot(stunting_prov, aes(x = mnthyr, y = stunt.rateP, colour=
 
 stunt_prov_plt
 
-ggsave("viz/Aug 2024 FHDR/Stunting rates facets.png",
+ggsave("viz/Nov 2024 FHDR/Stunting rates facets.png",
        device="png",
        type="cairo",
        height = 6.5,
@@ -495,7 +495,7 @@ waste_prov_plt <- ggplot(wasting_prov, aes(x = mnthyr, y = waste.rateP, colour=u
 
 waste_prov_plt
 
-ggsave("viz/Aug 2024 FHDR/wasting rates facets.png",
+ggsave("viz/Nov 2024 FHDR/wasting rates facets.png",
        device="png",
        type="cairo",
        height = 6.5,
@@ -558,7 +558,7 @@ dw_prov_plt <- ggplot(deworming_prov, aes(x = mnthyr, y = deworm.rateP, colour=u
 
 dw_prov_plt
 
-ggsave("viz/Aug 2024 FHDR/Deworming rates facets.png",
+ggsave("viz/Nov 2024 FHDR/Deworming rates facets.png",
        device="png",
        type="cairo",
        height = 6.5,
@@ -629,7 +629,7 @@ ggplot(mat_prov, aes(x = mnthyr, y = rate, group = subpop, colour = subpop)) +
   ) + 
   basem
 
-ggsave("viz/Aug 2024 FHDR/Provincial ANCs PS_IP funded.png",
+ggsave("viz/Nov 2024 FHDR/Provincial ANCs PS_IP funded.png",
        device="png",
        type="cairo",
        height = 6.5,
@@ -738,7 +738,7 @@ fp_plt <- ggplot(fam_prov, aes(x = mnthyr, y = cvrg_fp, colour = usaid_blue)) +
 
 fp_plt
 
-ggsave("viz/Aug 2024 FHDR/Modern FP utilization facets_2020-2024.png",
+ggsave("viz/Nov 2024 FHDR/Modern FP utilization facets_2020-2024.png",
        device="png",
        type="cairo",
        height = 6.5,
@@ -774,7 +774,7 @@ lrc_plt <- ggplot(larc, aes(x=mnthyr, y=larc.ab)) +
 
 lrc_plt
 
-ggsave("viz/Aug 2024 FHDR/Accessing LARCS Facets.png",
+ggsave("viz/Nov 2024 FHDR/Accessing LARCS Facets.png",
        device="png",
        type="cairo",
        height = 6.5,
@@ -813,7 +813,7 @@ larc.dis.p_plt <- ggplot(larc, aes(x=mnthyr, y=larc.dis.p)) +
 
 larc.dis.p_plt
 
-ggsave("viz/Aug 2024 FHDR/Discontinuing LARCS Facets.png",
+ggsave("viz/Nov 2024 FHDR/Discontinuing LARCS Facets.png",
        device="png",
        type="cairo",
        height = 6.5,
@@ -846,7 +846,7 @@ chavst_plt <- ggplot(fam_prov, aes(x=mnthyr, y=wmn.vstd, colour=usaid_blue)) +
   base
 
 chavst_plt
-ggsave("viz/Aug 2024 FHDR/Women of reproductive age visited by CHA facets.png",
+ggsave("viz/Nov 2024 FHDR/Women of reproductive age visited by CHA facets.png",
        device="png",
        type="cairo",
        height = 6.5,
@@ -1018,7 +1018,7 @@ ggplot(matprv3, aes(x=yr, y=mr)) +
                      labels = c("HIA2 Reporting rate (%)")) + 
   basem + geom_label(aes( x= yr, y = hrr*3.34,label=hrr), fontface = "bold", hjust=0.6, vjust = 0.7)
 
-ggsave("viz/Aug 2024 FHDR/MMR and HIA2 RR Facets.png",
+ggsave("viz/Nov 2024 FHDR/MMR and HIA2 RR Facets.png",
        device="png",
        type="cairo",
        height = 6.5,

@@ -540,7 +540,7 @@ ggsave("C:/Users/PIMPA.SAWULU/Desktop/R project doc_E4H/E4H-Zambia/graphs/Provin
 
 #'*COVERAGE OF MODERN FAMILY PLANNING ADOPTION*
 
-fam <- read_xls("data/Aug 2024 MHDR/Family Planning data_National level monthly.xls")
+fam <- read_xls("data/Nov 2024 MHDR/Family Planning data_National level monthly.xls")
 fam  <- fam  %>%
   mutate(month_chr = str_sub(periodname,
                              start=1,
@@ -558,7 +558,7 @@ sum(fam$month_chr!=fam$month) # expecting 0 if vars same
 
 
 
-fam_prov <- read_xls("data/Aug 2024 MHDR/Family Planning data_Provincial level monthly.xls")
+fam_prov <- read_xls("data/Nov 2024 MHDR/Family Planning data_Provincial level monthly.xls")
 names(fam_prov)
 fam_prov
 fam_prov  <- fam_prov  %>%
@@ -602,7 +602,7 @@ crvg_plt <- ggplot(fam, aes(x=mnthyr, y=cvrg_fp, colour=usaid_blue)) +
   baseX
 
 crvg_plt
-ggsave("viz/Aug 2024 FHDR/National Coverage of modern family planning adoption.png",
+ggsave("viz/Nov 2024 FHDR/National Coverage of modern family planning adoption.png",
        device="png",
        type="cairo",
        height = 6.5,
@@ -629,7 +629,7 @@ ch_plt <- ggplot(fam, aes(x=mnthyr, y=wmn.vstd, colour=usaid_blue)) +
   basey
 
 ch_plt
-ggsave("viz/Aug 2024 FHDR/National Women of reproductive age visted by CHA.png",
+ggsave("viz/Nov 2024 FHDR/National Women of reproductive age visted by CHA.png",
        device="png",
        type="cairo",
        height = 6.5,
@@ -663,7 +663,7 @@ lrc_plt <- ggplot(larc, aes(x=mnthyr, y=larc.ab)) +
 
 lrc_plt
 
-ggsave("viz/Aug 2024 FHDR/Accessing LARCS.png",
+ggsave("viz/Nov 2024 FHDR/Accessing LARCS.png",
        device="png",
        type="cairo",
        height = 6.5,
@@ -699,7 +699,7 @@ larc.dis.p_plt <- ggplot(larc, aes(x=mnthyr, y=larc.dis.p)) +
 
 larc.dis.p_plt
 
-ggsave("viz/Aug 2024 FHDR/Discontinuing LARCS_National.png",
+ggsave("viz/Nov 2024 FHDR/Discontinuing LARCS_National.png",
        device="png",
        type="cairo",
        height = 6.5,
@@ -748,7 +748,7 @@ medim <- ggplot(iud3,aes(x=mnthyr, y=value, color=variable))+
 medim
 
 
-ggsave("viz/Aug 2024 FHDR/Medroxyprogesterone injection DMPA-IM.png",
+ggsave("viz/Nov 2024 FHDR/Medroxyprogesterone injection DMPA-IM.png",
        device="png",
        type="cairo",
        height = 6.5,
@@ -803,7 +803,7 @@ ggsave("viz/Aug 2024 FHDR/Medroxyprogesterone injection DMPA-IM.png",
 
 #'*_____NATIONAL FP METHODS -TYPE DISAGGS*
 
-fpmethod <- read_xls("data/Aug 2024 MHDR/IUCD_Implant_Injectables_National monthly.xls")
+fpmethod <- read_xls("data/Nov 2024 MHDR/IUCD_Implant_Injectables_National monthly.xls")
 fpmethod  <- fpmethod  %>%
   mutate(month_chr = str_sub(periodname,
                              start=1,
@@ -851,7 +851,7 @@ method_plt <- ggplot(fpmethod3, aes(x=mnthyr, y=value, color=variable))+
 method_plt
 
 
-ggsave("viz/Aug 2024 FHDR/Family planning methods.png",
+ggsave("viz/Nov 2024 FHDR/Family planning methods.png",
        device="png",
        type="cairo",
        height = 6.5,
@@ -897,7 +897,7 @@ Accpt_plt <- ggplot(newAccpt3,aes(x=mnthyr, y=value, color=variable))+
 Accpt_plt
 
 
-ggsave("viz/Aug 2024 FHDR/New Acceptors Starting FP disaggs.png",
+ggsave("viz/Nov 2024 FHDR/New Acceptors Starting FP disaggs.png",
        device="png",
        type="cairo",
        height = 6.5,
@@ -949,7 +949,7 @@ FPA_plt <- ggplot(naccfp, aes(x=mnthyr, y=naccfp.ab)) +
 
 FPA_plt
 
-ggsave("viz/Aug 2024 FHDR/National FP new Acceptors.png",
+ggsave("viz/Nov 2024 FHDR/National FP new Acceptors.png",
        device="png",
        type="cairo",
        height = 6.5,
@@ -963,7 +963,7 @@ ggsave("viz/Aug 2024 FHDR/National FP new Acceptors.png",
 
 #'*_____REUSE CODE FOR MATERNAL DEATHS: Facility.....1(August 2023).....*
 
-Matdeaths <- read_xls("data/Aug 2024 MHDR/Maternal deaths facility_community National monthly(2021_2023).xls")
+Matdeaths <- read_xls("data/Nov 2024 MHDR/Maternal deaths facility_community National monthly(2021_2023).xls")
 Matdeaths  <- Matdeaths  %>%
   mutate(month_chr = str_sub(periodname,
                              start=1,
@@ -1016,7 +1016,7 @@ facility_plt <- ggplot(facilitydeaths3,aes(x=mnthyr, y=value, color=variable))+
 facility_plt
 
 
-ggsave("vizAug 2024 FHDR/National Maternal deaths at facility.png",
+ggsave("viz/Nov 2024 FHDR/National Maternal deaths at facility.png",
        device="png",
        type="cairo",
        height = 6.5,
@@ -1062,7 +1062,7 @@ comm_plt <- ggplot(comm.deaths3,aes(x=mnthyr, y=value, color=variable))+
 comm_plt
 
 
-ggsave("viz/Aug 2024 FHDR/National Maternal deaths at community.png",
+ggsave("viz/Nov 2024 FHDR/National Maternal deaths at community.png",
        device="png",
        type="cairo",
        height = 6.5,
@@ -1130,7 +1130,7 @@ facility_plt_prov <- ggplot(facility_prov23,aes(x=mnthyr, y=value, color=variabl
 facility_plt_prov
 
 
-ggsave("viz/Dec 23 FHDR/Maternal deaths at facility.png",
+ggsave("viz/Nov 2024 FHDR/Maternal deaths at facility.png",
        device="png",
        type="cairo",
        height = 6.5,
@@ -1226,7 +1226,7 @@ ggplot(frthPlusANC_prov, aes(x=mnthyr, y=frth.ancP)) +
   faceted +
   scale_color_manual(values=usaid_blue) + basey
 
-ggsave("viz/Aug 2024 FHDR/4th+ to Total ANC attendances faceted.png",
+ggsave("viz/Nov 2024 FHDR/4th+ to Total ANC attendances faceted.png",
        device="png",
        type="cairo",
        height = 6.5,
@@ -1267,7 +1267,7 @@ ggplot(frthPlusANC, aes(x=mnthyr, y=frth.ancP)) +
   ggtitle("The Trends for the 4th+ to Total ANC attendances has been below 30% but above 20%\n at National Level except begining of 2022 where it has been on a downward trend!") +
   scale_color_manual(values=usaid_blue) + basey
 
-ggsave("viz/Aug 2024 FHDR/National 4th+ to Total ANC attendances.png",
+ggsave("viz/Nov 2024 FHDR/National 4th+ to Total ANC attendances.png",
        device="png",
        type="cairo",
        height = 6.5,
@@ -1333,7 +1333,7 @@ combined_plt <- ggplot(inst.skilled, aes(x = mnthyr, y = rate, group = subpop, c
 
 combined_plt
 
-ggsave("viz/Aug 2024 FHDR/National combined inst and skilled deli.png",
+ggsave("viz/Nov 2024 FHDR/National combined inst and skilled deli.png",
        device="png",
        type="cairo",
        height = 6.5,
@@ -1401,7 +1401,7 @@ provincial_plt <- ggplot(inst.skilled_prov, aes(x = mnthyr, y = rate, group = su
 
 provincial_plt
 
-ggsave("viz/Aug 2024 FHDR/Combined inst and skilled delivery facets_IP Supported.png",
+ggsave("viz/Nov 2024 FHDR/Combined inst and skilled delivery facets_IP Supported.png",
        device="png",
        type="cairo",
        height = 6.5,
@@ -1467,7 +1467,7 @@ syph_plt <- ggplot(anc.syph, aes(x = mnthyr, y = rate, group = subpop, colour = 
 
 syph_plt
 
-ggsave("viz/Aug 2024 FHDR/National Syphilis and ANC Screening.png",
+ggsave("viz/Nov 2024 FHDR/National Syphilis and ANC Screening.png",
        device="png",
        type="cairo",
        height = 6.5,
@@ -1533,7 +1533,7 @@ syphanc_plt <- ggplot(syphanc_prov, aes(x = mnthyr, y = rate, group = subpop, co
 
 syphanc_plt
 
-ggsave("viz/Aug 2024 FHDR/Syphilis and ANC Coverage facets.png",
+ggsave("viz/Nov 2024 FHDR/Syphilis and ANC Coverage facets.png",
        device="png",
        type="cairo",
        height = 6.5,
@@ -1578,7 +1578,7 @@ ggplot(MatPNC_prov, aes(x=mnthyr, y=MatPNCP)) +
   faceted +
   scale_color_manual(values=usaid_blue) + basey
 
-ggsave("viz/Aug 2024 FHDR/Maternal Postnatal 48 faceted.png",
+ggsave("viz/Nov 2024 FHDR/Maternal Postnatal 48 faceted.png",
        device="png",
        type="cairo",
        height = 6.5,
@@ -1617,7 +1617,7 @@ ggplot(MatPNC, aes(x=mnthyr, y=MatPNCP)) +
   ggtitle("Maternal Postnatal Care within 48 hours from Expected Deliveries has been on an upward \ntrajectory since 2020, though with a minimal decrease late 2023 and early 2024.") +
   scale_color_manual(values=usaid_blue) + basey
 
-ggsave("viz/Aug 2024 FHDR/National Maternal Postnatal 48hr Care.png",
+ggsave("viz/Nov 2024 FHDR/National Maternal Postnatal 48hr Care.png",
        device="png",
        type="cairo",
        height = 6.5,
@@ -1831,7 +1831,7 @@ ggplot(folicsup_prov, aes(x=mnthyr, y=folicP)) +
   faceted +
   scale_color_manual(values=usaid_blue) + basey
 
-ggsave("viz/Aug 2024 FHDR/Folic Acid Supplementation.png",
+ggsave("viz/Nov 2024 FHDR/Folic Acid Supplementation.png",
        device="png",
        type="cairo",
        height = 7,
@@ -1871,7 +1871,7 @@ ggplot(folicAcid, aes(x=mnthyr, y=folicSuppP)) +
   ggtitle("Folic Acid Supplementation (%) during ANC Visits, 2019 - 2023.") +
   scale_color_manual(values=usaid_blue) + basey
 
-ggsave("viz/Aug 2024 FHDR/National Folic Acid Sup.png",
+ggsave("viz/Nov 2024 FHDR/National Folic Acid Sup.png",
        device="png",
        type="cairo",
        height = 6.5,
@@ -1936,7 +1936,7 @@ supps_plt <- ggplot(mat, aes(x = mnthyr, y = rate, group = subpop, colour = subp
 
 supps_plt
 
-ggsave("viz/Aug 2024 FHDR/National Folic and Iron Supplementation.png",
+ggsave("viz/Nov 2024 FHDR/National Folic and Iron Supplementation.png",
        device="png",
        type="cairo",
        height = 6.5,
@@ -2002,7 +2002,7 @@ foli_plt <- ggplot(mat_prov, aes(x = mnthyr, y = rate, group = subpop, colour = 
 
 foli_plt
 
-ggsave("viz/Aug 2024 FHDR/Folic and Iron Supplementation facets.png",
+ggsave("viz/Nov 2024 FHDR/Folic and Iron Supplementation facets.png",
        device="png",
        type="cairo",
        height = 6.5,
@@ -2049,7 +2049,7 @@ ggplot(highRpreg_prov, aes(x=mnthyr, y=risk.pregP)) +
   faceted +
   scale_color_manual(values=usaid_red) + basey
 
-ggsave("viz/Aug 2024 FHDR/High Risk pregnancies.png",
+ggsave("viz/Nov 2024 FHDR/High Risk pregnancies.png",
        device="png",
        type="cairo",
        height = 7,
@@ -2090,7 +2090,7 @@ ggplot(highRpreg, aes(x=mnthyr, y=hr.pregP)) +
   ggtitle("Number of High-Risk pregancies reported at 1st ANC visit\n have been increasing each year and now stand at 15% in 2023.") +
   scale_color_manual(values=usaid_red) + basey
 
-ggsave("viz/Aug 2024 FHDR/National High risk pregnancies.png",
+ggsave("viz/Nov 2024 FHDR/National High risk pregnancies.png",
        device="png",
        type="cairo",
        height = 6.5,
@@ -2149,7 +2149,7 @@ ggplot(matmr2, aes(x=yr, y=mr)) +
                      labels = c("HIA2 Reporting rate (%)")) + 
   basem + geom_label(aes( x= yr, y = hrr*3.34,label=hrr), fontface = "bold", hjust=0.6, vjust = 0.7)
 
-ggsave("viz/Aug 2024 FHDR/National MMR and HIA2 RR.png",
+ggsave("viz/Nov 2024 FHDR/National MMR and HIA2 RR.png",
        device="png",
        type="cairo",
        height = 6.5,
@@ -2250,7 +2250,7 @@ ggplot(mat, aes(x = mnthyr, y = rate, group = subpop, colour = subpop)) +
   ) + 
   base
 
-ggsave("viz/Aug 2024 FHDR/National Proportion of expected pregnancies receiving antenatal care.png",
+ggsave("viz/Nov 2024 FHDR/National Proportion of expected pregnancies receiving antenatal care.png",
        device="png",
        type="cairo",
        height = 6.5,
@@ -2312,7 +2312,7 @@ ggplot(matAnt20, aes(x = mnthyr, y = rate, group = subpop, colour = subpop)) +
   ) + 
   basem
 
-ggsave("viz/Aug 2024 FHDR/National 1st visit and under 20 ANC coverage.png",
+ggsave("viz/Nov 2024 FHDR/National 1st visit and under 20 ANC coverage.png",
        device="png",
        type="cairo",
        height = 6.5,
@@ -2380,7 +2380,7 @@ ggplot(matAnt20, aes(x = mnthyr, y = rate, group = subpop, colour = subpop)) +
   ) + 
   basem
 
-ggsave("viz/Aug 2024 FHDR/National 1st visit and all trims inclding under 20 ANC coverage.png",
+ggsave("viz/Nov 2024 FHDR/National 1st visit and all trims inclding under 20 ANC coverage.png",
        device="png",
        type="cairo",
        height = 6.5,
@@ -2496,7 +2496,7 @@ msles_plt <- ggplot(chldH, aes(x = mnthyr, y = rate, group = subpop, colour = su
   ) + 
   basem
 msles_plt
-ggsave("viz/Aug 2024 FHDR/Proportion of infants receiving Measles Vaccines 1and2.png",
+ggsave("viz/Nov 2024 FHDR/Proportion of infants receiving Measles Vaccines 1and2.png",
        device="png",
        type="cairo",
        height = 6.5,
@@ -2540,7 +2540,7 @@ full_plt <- ggplot(fullyimz1, aes(x = mnthyr, y = ficp, colour=usaid_blue )) +
   
 full_plt
 
-ggsave("viz/Aug 2024 FHDR/Fully immunised coverage under 1.png",
+ggsave("viz/Nov 2024 FHDR/Fully immunised coverage under 1.png",
        device="png",
        type="cairo",
        height = 6.5,
@@ -2582,7 +2582,7 @@ NatBCG_plt <- ggplot(BCG_coverage, aes(x = mnthyr, y = Natbcgp, colour=usaid_blu
 
 NatBCG_plt
 
-ggsave("viz/Aug 2024 FHDR/BCG coverage under 1.png",
+ggsave("viz/Nov 2024 FHDR/BCG coverage under 1.png",
        device="png",
        type="cairo",
        height = 6.5,
@@ -2623,7 +2623,7 @@ DPT_plt <- ggplot(DPT_coverage, aes(x = mnthyr, y = Natdptu1p, colour=usaid_blue
 
 DPT_plt
 
-ggsave("viz/Aug 2024 FHDR/DPT 1st dose coverage under 1.png",
+ggsave("viz/Nov 2024 FHDR/DPT 1st dose coverage under 1.png",
        device="png",
        type="cairo",
        height = 6.5,
@@ -2665,7 +2665,7 @@ NatVitA_plt <- ggplot(NatVitA, aes(x = mnthyr, y = vitSupP, colour=usaid_blue ))
 
 NatVitA_plt
 
-ggsave("viz/Aug 2024 FHDR/National Vitamin A supp.png",
+ggsave("viz/Nov 2024 FHDR/National Vitamin A supp.png",
        device="png",
        type="cairo",
        height = 6.5,
@@ -2732,7 +2732,7 @@ brstfeeding_plt <- ggplot(breastfeed, aes(x = mnthyr, y = rate, group = subpop, 
 
 brstfeeding_plt
 
-ggsave("viz/Aug 2024 FHDR/National EBF and 1hr BF.png",
+ggsave("viz/Nov 2024 FHDR/National EBF and 1hr BF.png",
        device="png",
        type="cairo",
        height = 6.2,
@@ -2773,7 +2773,7 @@ stunt_plt <- ggplot(chldstunt1, aes(x = mnthyr, y = cslp, colour=usaid_blue )) +
   basem 
 stunt_plt
 
-ggsave("viz/Aug 2024 FHDR/National Stunting Levels.png",
+ggsave("viz/Nov 2024 FHDR/National Stunting Levels.png",
        device="png",
        type="cairo",
        height = 6.5,
@@ -2816,7 +2816,7 @@ cd_plt <- ggplot(chldDeworming, aes(x = mnthyr, y = chdewormP, colour=usaid_blue
   basem 
 cd_plt
 
-ggsave("viz/Aug 2024 FHDR/National Child deworming.png",
+ggsave("viz/Nov 2024 FHDR/National Child deworming.png",
        device="png",
        type="cairo",
        height = 6.5,
@@ -2859,7 +2859,7 @@ waste_plt <- ggplot(chldwaste1, aes(x = mnthyr, y = cwrp, colour=usaid_blue )) +
   basem 
 waste_plt
 
-ggsave("viz/Aug 2024 FHDR/National wasting rates.png",
+ggsave("viz/Nov 2024 FHDR/National wasting rates.png",
        device="png",
        type="cairo",
        height = 6.5,
@@ -2919,7 +2919,7 @@ ggplot(chldMalt, aes(x = mnthyr, y = rate, group = subpop, colour = subpop)) +
   ) + 
   base
 
-ggsave("viz/Aug 2024 FHDR/National Proportion of child malnutrion admission rates.png",
+ggsave("viz/Nov 2024 FHDR/National Proportion of child malnutrion admission rates.png",
        device="png",
        type="cairo",
        height = 6.5,
@@ -2982,7 +2982,7 @@ ggplot(chldMalt_prov, aes(x = mnthyr, y = rate, group = subpop, colour = subpop)
   ) + 
   base
 
-ggsave("viz/Aug 2024 FHDR/Child malnutrition admission rates_facets.png",
+ggsave("viz/Nov 2024 FHDR/Child malnutrition admission rates_facets.png",
        device="png",
        type="cairo",
        height = 6.5,
@@ -3034,7 +3034,7 @@ dptfull_plt <- ggplot(chldH, aes(x = mnthyr, y = rate, group = subpop, colour = 
   ) + 
   basem
 dptfull_plt
-ggsave("viz/Aug 2024 FHDR/Proportion of infants fully immunized and DPT given.png",
+ggsave("viz/Nov 2024 FHDR/Proportion of infants fully immunized and DPT given.png",
        device="png",
        type="cairo",
        height = 6.5,
@@ -3098,7 +3098,7 @@ provdpt.imnzd_plt <- ggplot(fulldpt_prov, aes(x = mnthyr, y = rate, group = subp
 
 provdpt.imnzd_plt
 
-ggsave("viz/Aug 2024 FHDR/Provincial fully immunized and DPT1.png",
+ggsave("viz/Nov 2024 FHDR/Provincial fully immunized and DPT1.png",
        device="png",
        type="cairo",
        height = 6.5,
@@ -3164,7 +3164,7 @@ frstfrth_dst_plt <- ggplot(frstfrth_dst, aes(x = mnthyr, y = rate, group = subpo
 
 frstfrth_dst_plt
 
-ggsave("viz/Aug 2024 FHDR/1st ANC nad 4th+ ANC_Eastern districts.png",
+ggsave("viz/Nov 2024 FHDR/1st ANC nad 4th+ ANC_Eastern districts.png",
        device="png",
        type="cairo",
        height = 6.5,
@@ -3230,7 +3230,7 @@ instPNC_dst_plt <- ggplot(instPNC_dst, aes(x = mnthyr, y = rate, group = subpop,
 
 instPNC_dst_plt
 
-ggsave("viz/Aug 2024 FHDR/Inst deli and PNC_Northern districts.png",
+ggsave("viz/Nov 2024 FHDR/Inst deli and PNC_Northern districts.png",
        device="png",
        type="cairo",
        height = 6.5,
