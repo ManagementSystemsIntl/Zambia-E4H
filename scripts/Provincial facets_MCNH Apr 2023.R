@@ -621,7 +621,7 @@ ggplot(mat_prov, aes(x = mnthyr, y = rate, group = subpop, colour = subpop)) +
   labs(x ="", y="", caption = "Data Source: HMIS") +labs(x ="", y="", caption = "Data Source: HMIS") +
   facet_wrap(~prov, ncol=4) +
   faceted +
-  ggtitle("Proportion of expected pregnancies receiving Antenatal Care (ANC), Jan 2020 - Jun 2024. \nWestern and Northwestern are the only Non-USAID supported provinces \nbut the performance looks similar across the country.") +
+  ggtitle("Proportion of expected pregnancies receiving Antenatal Care (ANC), Jan 2020 - Sept 2024. \nWestern and Northwestern are the only Non-USAID supported provinces \nbut the performance looks similar across the country.") +
   scale_color_manual(name ="",
                      values = usaid_palette,
                      labels = c("1st ANC coverage (all trimesters)", "1st ANC Coverage (1st Trimester)", 

@@ -1573,7 +1573,7 @@ ggplot(MatPNC_prov, aes(x=mnthyr, y=MatPNCP)) +
                      labels = percent,
                      breaks = c(.2,.4,.6,.8,1)) +
   labs(x ="", y="", caption = "Data Source: HMIS") +labs(x ="", y="", caption = "Data Source: HMIS") +
-  ggtitle("Maternal Postnatal Care within 48 hours After Delivery shows similar trends with unique patterns from Lusaka, \nNorthern, and Northwestern (where NWP is below 40%!).") +
+  ggtitle("Maternal Postnatal Care within 48 hours After Delivery shows similar trends with unique patterns from Lusaka (upward trend),\n Northern, and Northwestern (where NWP is below 40%!).") +
   facet_wrap(~prov, ncol=4) +
   faceted +
   scale_color_manual(values=usaid_blue) + basey
@@ -1614,7 +1614,7 @@ ggplot(MatPNC, aes(x=mnthyr, y=MatPNCP)) +
                      labels = percent,
                      breaks = c(.2,.4,.6,.8,1)) +
   labs(x ="", y="", caption = "Data Source: HMIS") +labs(x ="", y="", caption = "Data Source: HMIS") +
-  ggtitle("Maternal Postnatal Care within 48 hours from Expected Deliveries has been on an upward \ntrajectory since 2020, though with a minimal decrease late 2023 and early 2024.") +
+  ggtitle("Maternal Postnatal Care within 48 hours from Expected Deliveries has been on an upward \ntrajectory since 2020, though with a minimal decrease in 2024.") +
   scale_color_manual(values=usaid_blue) + basey
 
 ggsave("viz/Nov 2024 FHDR/National Maternal Postnatal 48hr Care.png",
@@ -2305,7 +2305,7 @@ ggplot(matAnt20, aes(x = mnthyr, y = rate, group = subpop, colour = subpop)) +
   labs(x ="", y="", caption = "Data Source: HMIS") +labs(x ="", y="", caption = "Data Source: HMIS") +
   # xlab("", caption = "Data Source: HMIS") + 
   # ylab("") +
-  ggtitle("Proportion of expected pregnancies receiving Antenatal Care (ANC), Jan 2020 - Jun 2024. \nHere we see that the coverage for Teenage pregnancies has been below 30%!") +
+  ggtitle("Proportion of expected pregnancies receiving Antenatal Care (ANC), Jan 2020 - Sept 2024. \nHere we see that the coverage for Teenage pregnancies has been below 30%!") +
   scale_color_manual(name ="",
                      values = usaid_palette,
                      labels = c("1st ANC coverage (all trimesters)", "1st ANC visits (all trimesters): Women <20 yrs")
@@ -2373,7 +2373,7 @@ ggplot(matAnt20, aes(x = mnthyr, y = rate, group = subpop, colour = subpop)) +
   labs(x ="", y="", caption = "Data Source: HMIS") +labs(x ="", y="", caption = "Data Source: HMIS") +
   # xlab("", caption = "Data Source: HMIS") + 
   # ylab("") +
-  ggtitle("Proportion of expected pregnancies receiving Antenatal Care (ANC), Jan 2020 - Jun 2024.") +
+  ggtitle("Proportion of expected pregnancies receiving Antenatal Care (ANC), Jan 2020 - Sept 2024.") +
   scale_color_manual(name ="",
                      values = usaid_palette,
                      labels = c("1st ANC coverage (all trimesters)", "1st ANC coverage (1st trimester)", "1st ANC visits (all trimesters): Women <20 yrs")
