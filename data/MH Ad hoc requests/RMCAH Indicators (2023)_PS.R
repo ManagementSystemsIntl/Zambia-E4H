@@ -1458,7 +1458,7 @@ syph_plt <- ggplot(anc.syph, aes(x = mnthyr, y = rate, group = subpop, colour = 
                      labels = percent,
                      breaks = c(.1,.2,.3,.4,.5,.6,.7,.8,.9, 1)) +
   scale_x_date(date_labels="%b %y",date_breaks="3 months") +
-  labs(x="", y="", caption="Data Source: HMIS", title="Syphilis Screening rate during 1st ANC visits had been below 50% from January 2020, but seem \nto steadily improve begining January 2023 with a record high of 71% in June 2024!") +
+  labs(x="", y="", caption="Data Source: HMIS", title="Syphilis Screening rate during 1st ANC visits had been below 50% from January 2020, but seem \nto steadily improve begining January 2023 with a record high of 78% in Sept 2024!") +
   scale_color_manual(name ="",
                      values = usaid_palette,
                      labels = c("1st ANC coverage (all trimesters)", "Syphilis screening rates (%) at 1st ANC")
@@ -1522,7 +1522,7 @@ syphanc_plt <- ggplot(syphanc_prov, aes(x = mnthyr, y = rate, group = subpop, co
                      labels = percent,
                      breaks = c(.1,.2,.3,.4,.5,.6,.7,.8,.9, 1)) +
   #scale_x_date(date_labels="%b %y",date_breaks="3 months") +
-  labs(x="", y="", caption="Data Source: HMIS", title="Syphilis Screening during ANC visits seems to steadily improve in all other provinces begining mid 2023, \nexcept for Lusaka province which has a flat trend from 2023 to 2024.") +
+  labs(x="", y="", caption="Data Source: HMIS", title="Syphilis Screening during ANC visits seems to steadily improve in all the provinces begining mid 2023, \nand it is a similar picture to the national level one.") +
   facet_wrap(~prov, ncol=4) +
   faceted +
   scale_color_manual(name ="",
