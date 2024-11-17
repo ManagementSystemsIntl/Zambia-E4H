@@ -1319,12 +1319,12 @@ levels(inst.skilled$subpop)
 combined_plt <- ggplot(inst.skilled, aes(x = mnthyr, y = rate, group = subpop, colour = subpop)) +
   geom_point(alpha=.5, size=.5) + 
   #geom_line(size=1) +
-  geom_smooth(method = loess, size = .8, se=FALSE) +
+  geom_smooth(method = loess, linewidth = .8, se=FALSE) +
   scale_y_continuous(limits = c(0,1),
                      labels = percent,
                      breaks = c(.1,.2,.3,.4,.5,.6,.7,.8,.9, 1)) +
   scale_x_date(date_labels="%b %y",date_breaks="3 months") +
-  labs(x="", y="", caption="Data Source: HMIS", title="Institutional Delivery Coverage has been above 70% from Jan 2020, but begining July 2022, there is a slight decrease.\n whereas the Skilled Personnel as a % of Institutional Delivery is improving each year! (Jan 2020 - Jun 2024).") +
+  labs(x="", y="", caption="Data Source: HMIS", title="Institutional Delivery Coverage has been above 70% from Jan 2020, but begining July 2022, there is a slight decrease.\n whereas the Skilled Personnel as a % of Institutional Delivery is improving each year! (Jan 2020 - Sept 2024).") +
   scale_color_manual(name ="",
                      values = usaid_palette,
                      labels = c("Institutional delivery coverage (%)", "Skilled  Personnel as a % of Institutional DEL")
@@ -1385,7 +1385,7 @@ levels(inst.skilled_prov$subpop)
 provincial_plt <- ggplot(inst.skilled_prov, aes(x = mnthyr, y = rate, group = subpop, colour = subpop)) +
   geom_point(alpha=.5, size=.5) + 
   #geom_line(size=1) +
-  geom_smooth(method = loess, size = .8, se=FALSE) +
+  geom_smooth(method = loess, linewidth = .8, se=FALSE) +
   scale_y_continuous(limits = c(0,1),
                      labels = percent,
                      breaks = c(.1,.2,.3,.4,.5,.6,.7,.8,.9, 1)) +
