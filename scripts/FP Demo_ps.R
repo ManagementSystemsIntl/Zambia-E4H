@@ -41,7 +41,7 @@ ggplot(fpd1, aes(yr, Value, fill = Method)) +
   labs(x = "", y = "Number of distributed contraceptives", fill = "Method/Type", caption = "Data Source: HMIS") +
   theme(legend.position = "bottom")
 
-ggsave("viz/Aug 2024 FHDR/number of distributed FP by province.png",
+ggsave("viz/Nov 2024 FHDR/number of distributed FP by province.png",
        device="png",
        type="cairo",
        height = 6.5,
