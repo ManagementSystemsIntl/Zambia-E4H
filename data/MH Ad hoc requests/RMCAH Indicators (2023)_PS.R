@@ -2657,7 +2657,7 @@ NatVitA_plt <- ggplot(NatVitA, aes(x = mnthyr, y = vitSupP, colour=usaid_blue ))
                      labels = percent,
                      breaks = c(.1,.2,.3,.4,.5,.6,.7,.8,.9, 1)) +
   scale_x_date(date_labels="%b %y",date_breaks="3 months") +
-  labs(x="", y="", caption="Data Source: HMIS", title="The Proportion of infants given Vitamin A supplement (6-11 months semester coverage)\n has been below 30% from Jan 2020 to Jun 2024 at National Level.") +
+  labs(x="", y="", caption="Data Source: HMIS", title="The Proportion of infants given Vitamin A supplement (6-11 months semester coverage)\n has been below 30% from Jan 2020 to Sept 2024 at National Level.") +
   scale_color_manual(name ="",
                      values = usaid_blue,
                      labels = "Vitamin A supplement coverage (%)") + 
@@ -2717,7 +2717,7 @@ brstfeeding_plt <- ggplot(breastfeed, aes(x = mnthyr, y = rate, group = subpop, 
                      labels = percent,
                      breaks = c(.1,.2,.3,.4,.5,.6,.7,.8,.9, 1)) +
   scale_x_date(date_labels="%b %y",date_breaks="3 months") +
-  labs(x="", y="", caption="Data Source: HMIS", title="Proportion of Infants breastfed within 1 hour of birth, \nand Infants exclusively breastfed at 6 months (Jan 2020 - Jun 2024).") +
+  labs(x="", y="", caption="Data Source: HMIS", title="Proportion of Infants breastfed within 1 hour of birth, \nand Infants exclusively breastfed at 6 months (Jan 2020 - Sept 2024).") +
   scale_color_manual(name ="",
                      values = usaid_palette,
                      labels = c("Initiation on breastmilk within one hour of birth", "Infants on EBF at 6 months")) + basey

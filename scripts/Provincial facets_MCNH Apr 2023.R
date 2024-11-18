@@ -52,7 +52,7 @@ bfhr_plt <- ggplot(bfhr_prov, aes(x = mnthyr, y = rate, group = subpop, colour =
                      labels = percent,
                      breaks = c(.2,.4,.6,.8,1)) +
   labs(x ="", y="", caption = "Data Source: HMIS") +labs(x ="", y="", caption = "Data Source: HMIS") +
-  ggtitle("Provincial picture for proportion of Infants breastfed within 1 hour of birth, and \nInfants exclusively breastfed at 6 months (Jan 2020 - Jun 2024).") +
+  ggtitle("Provincial picture for proportion of Infants breastfed within 1 hour of birth, and \nInfants exclusively breastfed at 6 months (Jan 2020 - Sept 2024).") +
   facet_wrap(~prov, ncol=4) +
   faceted +
   scale_color_manual(name ="",
@@ -362,7 +362,7 @@ vitA_prov_plt <- ggplot(vitA_prov, aes(x = mnthyr, y = vitA.suppP, colour=usaid_
                      labels = percent,
                      breaks = c(.1,.2,.3,.4,.5)) +
   
-  labs(x="", y="", caption="Data Source: HMIS", title="The picture on Vitamin A Supplement at provincial level is not different from the national picture of below 30%. \nOf note is the Copperbelt, Luapula, and Lusaka provinces.") +
+  labs(x="", y="", caption="Data Source: HMIS", title="The picture on Vitamin A Supplement at provincial level is not different from the national picture of below 30%. \nOf note is Copperbelt, and Luapula provinces that have an upward trend when all other provinces show otherwise.") +
   facet_wrap(~prov, ncol=4) +
   faceted +
   scale_color_manual(name ="",
@@ -422,7 +422,7 @@ stunt_prov_plt <- ggplot(stunting_prov, aes(x = mnthyr, y = stunt.rateP, colour=
                      labels = percent,
                      breaks = c(.01,.02,.03,.04,.05)) +
   
-  labs(x="", y="", caption="Data Source: HMIS", title="Provincial picture of stunting rates (%) in under 5s at facility (Jan 2020 - Jun 2024).") +
+  labs(x="", y="", caption="Data Source: HMIS", title="Provincial picture of stunting rates (%) in under 5s at facility (Jan 2020 - Sept 2024).") +
   facet_wrap(~prov, ncol=4) +
   faceted +
   scale_color_manual(name ="",
