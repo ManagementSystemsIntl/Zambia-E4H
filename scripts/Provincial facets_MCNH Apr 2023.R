@@ -723,14 +723,14 @@ fam_prov
 
 fp_plt <- ggplot(fam_prov, aes(x = mnthyr, y = cvrg_fp, colour = usaid_blue)) +
   geom_point(alpha=.9, size=1.3) +
-  stat_smooth(method = loess, size=.9, se=T) + 
+  stat_smooth(method = loess, linewidth=.9, se=T) + 
   scale_y_continuous(limits = c(0,1),
                      labels = percent,
                      breaks = c(.2,.4,.6,.8,1)) +
   facet_wrap(~prov) +
   faceted +
   labs(x ="", y="", caption = "Data Source: HMIS") + labs(x ="", y="", caption = "Data Source: HMIS") +
-  ggtitle("Provincial Coverage of Modern Family Planning utilization is averaging around 58%, \nwhich is the national picture on this indicator (Jan 2020 - Jun 2024).") +
+  ggtitle("Provincial Coverage of Modern Family Planning utilization is averaging around 58%, \nwhich is the national picture on this indicator (Jan 2020 - Sept 2024).") +
   scale_color_manual(name ="",
                      values = usaid_palette,
                      labels = c("Family Planning Utilization")
@@ -769,7 +769,7 @@ lrc_plt <- ggplot(larc, aes(x=mnthyr, y=larc.ab)) +
   labs(x="",
        y="",
        caption="Data Source: HMIS",
-       title="Number of clients accessing LARCs (implants and IUDs) shows an upward trend in all the provinces begining 2023 \nthrough to 2024, except for Northwestern, and Western provinces that are static.") + 
+       title="Number of clients accessing LARCs (implants and IUDs) shows an upward trend in all the provinces begining 2023 \nthrough to 2024, except for Northwestern, Southern, and Western provinces that are static (Jan 2020 - Sept 2024).") + 
   baseX
 
 lrc_plt

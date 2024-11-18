@@ -595,7 +595,7 @@ crvg_plt <- ggplot(fam, aes(x=mnthyr, y=cvrg_fp, colour=usaid_blue)) +
                      labels = percent,
                      breaks = c(.1,.2,.3,.4,.5,.6,.7,.8)) +
   scale_x_date(date_labels="%b %y",date_breaks="4 months") +
-  labs(x="", y="", caption="Data Source: HMIS", title="Coverage of Modern Family Planning use among women of reproductive age \nhas constantly been around 58% from Feb 2023 to Jun 2024.") +
+  labs(x="", y="", caption="Data Source: HMIS", title="Coverage of Modern Family Planning use among women of reproductive age \nhas constantly been around 58% from Feb 2023 to Sept 2024.") +
   scale_color_manual(name ="",
                      values = usaid_blue,
                      labels ="Coverage of modern family planning adoption") + 
@@ -658,7 +658,7 @@ lrc_plt <- ggplot(larc, aes(x=mnthyr, y=larc.ab)) +
   labs(x="",
        y="",
        caption="Data Source: HMIS",
-       title="A number of clients accessing LARCs (implants and IUDs) shows an improvement from Jan 2020, though there was a \ndecline between Oct 2021 and Jan 2023, a steady upward trajectory is witnessed with a record high of above 35K!.") + 
+       title="A number of clients accessing LARCs (implants and IUDs) shows an improvement from Jan 2020, though there was a \ndecline between Oct 2021 and Jan 2023, a steady upward trajectory is witnessed with a record high of above 38K!.") + 
   baseX
 
 lrc_plt
