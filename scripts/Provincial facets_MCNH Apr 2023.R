@@ -118,7 +118,7 @@ msles_plt <- ggplot(mslsvac_prov, aes(x = mnthyr, y = rate, group = subpop, colo
                      labels = percent,
                      breaks = c(.2,.4,.6,.8,1)) +
   labs(x ="", y="", caption = "Data Source: HMIS") +labs(x ="", y="", caption = "Data Source: HMIS") +
-  ggtitle("The Provincial Vaccine Coverage for 1st and 2nd doses of Measles do not deviate much from the \nnational picture. Though Western and Northwestern provinces have the least coverages.") +
+  ggtitle("The Provincial Vaccine Coverage for 1st and 2nd doses of Measles do not deviate much from the \nnational picture. Though Western and Northwestern provinces have the least coverages\n with a notable improvement begining mid 2023.") +
   facet_wrap(~prov, ncol=4) +
   faceted +
   scale_color_manual(name ="",
