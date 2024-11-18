@@ -1221,7 +1221,7 @@ ggplot(frthPlusANC_prov, aes(x=mnthyr, y=frth.ancP)) +
                      labels = percent,
                      breaks = c(.1,.2,.3,.4,.5)) +
   labs(x ="", y="", caption = "Data Source: HMIS") +labs(x ="", y="", caption = "Data Source: HMIS") +
-  ggtitle("4th+ to Total ANC attendances shows a similar downward trend across provinces \n(begining January 2022), and all below 30% - Jan 2020 to Jun 2024.") +
+  ggtitle("4th+ to Total ANC attendances shows a similar downward trend across provinces \n(begining January 2022), and all below 30% - Jan 2020 to Sept 2024.") +
   facet_wrap(~prov, ncol=4) +
   faceted +
   scale_color_manual(values=usaid_blue) + basey
@@ -1264,7 +1264,7 @@ ggplot(frthPlusANC, aes(x=mnthyr, y=frth.ancP)) +
                      labels = percent,
                      breaks = c(.1,.2,.3,.4,.5,.6)) +
   labs(x ="", y="", caption = "Data Source: HMIS") +labs(x ="", y="", caption = "Data Source: HMIS") +
-  ggtitle("The Trends for the 4th+ to Total ANC attendances has been below 30% but above 20%\n at National Level except begining of 2022 where it has been on a downward trend!") +
+  ggtitle("The Trends for the 4th+ to Total ANC attendances had been below 30% but above 20%\n at National Level except begining of 2022 where it has been on a downward trend.\nWith a record low of 15% in 2024!") +
   scale_color_manual(values=usaid_blue) + basey
 
 ggsave("viz/Nov 2024 FHDR/National 4th+ to Total ANC attendances.png",
