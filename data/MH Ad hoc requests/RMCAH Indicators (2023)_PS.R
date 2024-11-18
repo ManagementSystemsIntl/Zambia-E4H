@@ -844,7 +844,7 @@ method_plt <- ggplot(fpmethod3, aes(x=mnthyr, y=value, color=variable))+
   labs(x="",
        y="",
        caption="Data Source: HMIS",
-       title="Family Planning Methods and their usage/consumption, (Jan 2020 - Jun 2024), \nshow that injectables are the most used.") +
+       title="Family Planning Methods and their usage/consumption, (Jan 2020 - Sept 2024), show that injectables are the\n most used and the consumption for injectables is on an upward trajectory while the others seem static.") +
   basey + scale_color_manual(name ="",
                              values =c(light_blue,light_grey,usaid_blue),
                              labels = c("IUCDs","Implants","Injectables"))
@@ -855,7 +855,7 @@ ggsave("viz/Nov 2024 FHDR/Family planning methods.png",
        device="png",
        type="cairo",
        height = 6.5,
-       width = 12)
+       width = 12.5)
 
 
 
