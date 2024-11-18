@@ -1927,7 +1927,7 @@ supps_plt <- ggplot(mat, aes(x = mnthyr, y = rate, group = subpop, colour = subp
                      labels = percent,
                      breaks = c(.1,.2,.3,.4,.5,.6,.7,.8,.9, 1)) +
   scale_x_date(date_labels="%b %y",date_breaks="3 months") +
-  labs(x="", y="", caption="Data Source: HMIS", title="Coverage of Folic Acid and Iron Supplementation during ANC visits, Jan 2020 - Jun 2024.") +
+  labs(x="", y="", caption="Data Source: HMIS", title="Coverage of Folic Acid and Iron Supplementation during ANC visits, Jan 2020 - Sept 2024.") +
   scale_color_manual(name ="",
                      values = usaid_palette,
                      labels = c("Folic Acid Supplementation", "Iron Supplementation")
@@ -1991,7 +1991,7 @@ foli_plt <- ggplot(mat_prov, aes(x = mnthyr, y = rate, group = subpop, colour = 
                      labels = percent,
                      breaks = c(.2,.4,.6,.8,1)) +
   #scale_x_date(date_labels="%b %y",date_breaks="3 months") +
-  labs(x="", y="", caption="Data Source: HMIS", title="Coverage of Folic Acid and Iron Supplementation during ANC visits (Jan 2020 - Jun 2024) \nshows a similar picture across the provinces.") +
+  labs(x="", y="", caption="Data Source: HMIS", title="Coverage of Folic Acid and Iron Supplementation during ANC visits (Jan 2020 - Sept 2024) \nshows a similar picture across the provinces.") +
   facet_wrap(~prov, ncol=4) +
   faceted +
   scale_color_manual(name ="",
