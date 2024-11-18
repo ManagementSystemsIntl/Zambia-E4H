@@ -944,7 +944,7 @@ FPA_plt <- ggplot(naccfp, aes(x=mnthyr, y=naccfp.ab)) +
   labs(x="",
        y="",
        caption="Data Source: HMIS",
-       title="Family Planning New Acceptors Jan 2021 - June 2024.") + 
+       title="Family Planning New Acceptors has been above 50K begining July 2021 (Jan 2021 - Sept 2024).") + 
   baseX
 
 FPA_plt
