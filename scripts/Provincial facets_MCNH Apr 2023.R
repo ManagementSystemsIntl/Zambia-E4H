@@ -808,7 +808,7 @@ larc.dis.p_plt <- ggplot(larc, aes(x=mnthyr, y=larc.dis.p)) +
   labs(x="",
        y="",
        caption="Data Source: HMIS",
-       title="Percentage of clients discontinuing LARCs is declining in most provinces as the opposite is true (Jan 2020 - Jun 2024).") + 
+       title="Percentage of clients discontinuing LARCs is declining in most provinces as the opposite is true,\neven though there are unique patterns in Northwestern and Western provinces (Jan 2020 - Sept 2024).") + 
   baseX
 
 larc.dis.p_plt
@@ -837,7 +837,7 @@ chavst_plt <- ggplot(fam_prov, aes(x=mnthyr, y=wmn.vstd, colour=usaid_blue)) +
   scale_y_continuous(labels=comma,
                      limits=c(0, 7000),
                      breaks = c(1000, 2000, 3000, 4000, 5000, 6000, 7000)) +
-  labs(x="", y="", caption="Data Source: HMIS", title="Number of Women in Reproductive age visited by CHA (Jan 2020 - Jun 2024).") +
+  labs(x="", y="", caption="Data Source: HMIS", title="Number of Women in Reproductive age visited by CHA by province (Jan 2020 - Sept 2024).") +
   facet_wrap(~prov, ncol=4) +
   faceted +
   scale_color_manual(name ="",
