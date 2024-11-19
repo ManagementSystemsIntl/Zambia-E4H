@@ -549,7 +549,7 @@ ggplot(maternal.mort5, aes(geometry = geometry, fill = rate)) +
   scale_fill_carto_c(name="Proportion of\n Mortality Rate"
                      , palette = "#") +
   labs(x="", y="", caption = "Data Source: HMIS",
-       title = "Maternal Mortality Ratio per 100, 000 Deliveries, 2019 - 2023"
+       title = "Maternal Mortality Ratio per 100, 000 Deliveries, 2019 - 2024"
        , subtitle = "Darker colors represent a higher proportion of mortality rate") + #for faceted and xy labels include x="Longitude", y="Latitude", +faceted
   theme_void() +
   theme(plot.title.position = "plot",
@@ -571,7 +571,7 @@ ggplot(maternal.mort5, aes(geometry = geometry, fill = rate)) +
 #   addTiles() %>%
 #   addPolygons(label = zam.boundary2$shapeName)
 
-ggsave("viz/prematurity Apr 2023/Maternal_mortality_rate_map Aug 23.png",
+ggsave("viz/Nov 2024 FHDR/Maternal_mortality_rate_map Aug 23.png",
        device="png",
        type="cairo",
        height = 6.5,
