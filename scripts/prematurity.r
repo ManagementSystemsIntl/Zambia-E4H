@@ -644,8 +644,8 @@ pr.mr.st2 <- pr.mr.st %>%
   rename(mth =1,
          peri.deaths=2,
          peri.Rt=3,
-         mcrtd.brth.Rt=5,
-         frsh.stlbrth.Rt=4)
+         mcrtd.brth.Rt=4,
+         frsh.stlbrth.Rt=5)
 
 pr.mr.st2
 
@@ -727,12 +727,12 @@ ggplot(frsh.stillmacerbirth, aes(x = mth, y = rate, group = subRt, fill = subRt)
                      breaks = c(0,2,4,6,8)) +
   xlab("") + 
   ylab("Rate") +
-  ggtitle("Fresh stillbirth and Macerated stillbirth per 1000 live births (Jan 2019 - Dec 2023.)") +
+  ggtitle("Fresh stillbirth and Macerated stillbirth per 1000 live births (Jan 2020 - Sept 2024.)") +
   scale_x_date(date_labels="%b %y",date_breaks="3 months") +
   scale_fill_manual(name ="",
                     values = c(usaid_red, usaid_blue),labels = c("Macerated Stillbirth","Fresh Stillbirth")) + base
 
-ggsave("viz/Prematurity viz jan 24/stillbirths & Macerated Jan 24.png",
+ggsave("viz/Prematurity viz jan 24/stillbirths & Macerated Nov 24.png",
        device="png",
        type="cairo",
        height = 6.5,
