@@ -2,7 +2,11 @@
 #source("scripts/r prep2.r")
 
 source("scripts/r prep2.r")
-install.packages("rgdal")
+##the below is for installing rgdal package for later versions of R...
+
+url <- "https://download.r-forge.r-project.org/bin/windows/contrib/4.4/rgdal_1.6-7.zip"
+install.packages(url, type="source", repos=NULL)
+#install.packages("rgdal")
 install.packages("network")
 install.packages("quanteda")
 install.packages("sna")
@@ -627,7 +631,7 @@ ggsave("viz/Prematurity viz jan 24/prematurity_rate Jan.png",
 
 
 #'*Perinatal deaths, Fresh Still & Macerated Stillbirths*
-pr.mr.st <- read_xlsx("data/Prematurity Jan 2024/perinatal & stillbirths 2019_2023_monthly.xlsx")
+pr.mr.st <- read_xlsx("data/Prematurity Jan 2024/perinatal & stillbirths Jan 2020_Sept 2024_monthly.xlsx")
 
 pr.mr.st
 
