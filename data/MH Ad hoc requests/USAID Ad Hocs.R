@@ -1365,7 +1365,7 @@ neo.perctge$period <- as.Date(neo.perctge$period)
 neo.perctge
 
 neo.perctge2 <- neo.perctge %>%
-  rename( neo.perctge = 3) %>%
+  rename( neo.perctge = 2) %>%
   mutate(neo.perctge.prt = neo.perctge/100)
 
 
