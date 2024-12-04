@@ -1384,11 +1384,11 @@ ggplot(neo.perctge3, aes(x = period, y = rate, group = subRt, colour = subRt)) +
   geom_point(alpha=.6, size=1.9) + 
   #geom_line(size=1) +
   geom_smooth(method = loess, linewidth = .8, se=FALSE) +
-  scale_y_continuous(limits = c(0,.5),
+  scale_y_continuous(limits = c(0,.1),
                      labels = percent,
-                     breaks = c(.01,.02,.03,.04,.05,.06,.07,.08,.09,.1,.2,.3,.4,.5)) +
+                     breaks = c(.01,.02,.03,.04,.05,.06,.07,.08,.09,.1)) +
   scale_x_date(date_labels="%b %y",date_breaks="3 months") +
-  labs(x="", y="", caption="Data Source: PDSR", title="Neonatal Deaths Percentage , January 2020 - September 2024.") +
+  labs(x="", y="", caption="Data Source: PDSR", title="Neonatal Deaths as a Percentage have been below 1%, (January 2020 - September 2024).") +
   scale_color_manual(name ="",
                      values = usaid_red) + 
   baseX
