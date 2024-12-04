@@ -1295,7 +1295,7 @@ ggsave("viz/Aug 2024 FHDR/4th+ ANC visits_Muchinga districts.png",
 
 
 
-#'*........National Neonatal death Count absolute numbers*
+#'*........National Neonatal deaths Count absolute numbers*
 #'
 #'
 neonat <- read_xls("data/Nov 2024 MHDR/National Neonatal death count Jan 2020_Sept 2024.xls")
