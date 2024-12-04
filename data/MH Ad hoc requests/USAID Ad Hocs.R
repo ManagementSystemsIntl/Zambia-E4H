@@ -1365,7 +1365,7 @@ neo.perctge$period <- as.Date(neo.perctge$period)
 neo.perctge
 
 neo.perctge2 <- neo.perctge %>%
-  rename( neo.perctge = 2) %>%
+  rename( neo.perctge = 3) %>%
   mutate(neo.perctge.prt = neo.perctge/100)
 
 
@@ -1387,13 +1387,13 @@ ggplot(neo.perctge3, aes(x = period, y = rate, group = subRt, colour = subRt)) +
   scale_y_continuous(limits = c(0,1),
                      labels = percent,
                      breaks = c(.1,.2,.3,.4,.5,.6,.7,.8,.9, 1)) +
-  scale_x_date(date_labels="%b %y",date_breaks="4 months") +
+  scale_x_date(date_labels="%b %y",date_breaks="3 months") +
   labs(x="", y="", caption="Data Source: PDSR", title="Neonatal Deaths Percentage , January 2020 - September 2024.") +
   scale_color_manual(name ="",
                      values = usaid_red) + 
   baseX
 
-ggsave("viz/Prematurity viz jan 24/prematurity_rate Jan.png",
+ggsave("viz/Nov 2024 FHDR/national neonatal deaths percentage Jan.png",
        device="png",
        type="cairo",
        height = 6.0,
