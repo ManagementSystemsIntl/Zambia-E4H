@@ -1318,7 +1318,7 @@ ndc <- neonat %>%
 colnames(neonat)
 
 ndc_1 <- gather(ndc, key = mmtype , value = deaths, nnc)
-mmr_1
+ndc_1
 colnames(ndc_1)
 
 ndc_1$mmtypef <- factor(ndc_1$mmtype, levels = unique(ndc_1$mmtype))
@@ -1342,7 +1342,7 @@ ndc_plt <- ggplot(ndc_1, aes(x = mnthyr, y = deaths , colour =   mmtype, linetyp
                      values = usaid_red) + 
   baseX
 
-mmr_plt
+ndc_plt
 ggsave("viz/Nov 2024 FHDR/National neaonatal death count.png",
        device="png",
        type="cairo",
