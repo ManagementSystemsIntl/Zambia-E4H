@@ -1396,8 +1396,8 @@ ggplot(neo.perctge3, aes(x = period, y = rate, group = subRt, colour = subRt)) +
 ggsave("viz/Nov 2024 FHDR/national neonatal deaths percentage Jan.png",
        device="png",
        type="cairo",
-       height = 6.0,
-       width = 11)
+       height = 6.5,
+       width = 12)
 
 
 
