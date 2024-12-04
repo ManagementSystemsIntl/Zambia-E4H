@@ -1295,6 +1295,68 @@ ggsave("viz/Aug 2024 FHDR/4th+ ANC visits_Muchinga districts.png",
 
 
 
+#'*........National Neonatal death Count absolute numbers*
+#'
+#'
+neonat <- read_xls("data/Nov 2024 MHDR/National Neonatal death count Jan 2020_Sept 2024.xls")
+neonat  <- neonat  %>%
+  mutate(month_chr = str_sub(periodname,
+                             start=1,
+                             end=nchar(periodname)-5),
+         month = factor(month_chr,
+                        levels=c("January","February","March","April","May","June","July","August","September","October","November","December")),
+         month_code = as.numeric(month), 
+         year = str_sub(periodname, 
+                        start=nchar(periodname)-4,
+                        end=nchar(periodname)),
+         monyr = paste(month_code, year, sep="-"),
+         mnthyr = my(monyr))
+
+ndc <- neonat %>%
+  rename(nnc = 3
+  )
+colnames(neonat)
+
+ndc_1 <- gather(ndc, key = mmtype , value = deaths, nnc)
+mmr_1
+colnames(ndc_1)
+
+ndc_1$mmtypef <- factor(ndc_1$mmtype, levels = unique(ndc_1$mmtype))
+levels(ndc_1$mmtypef)
+
+names(ndc_1)
+colnames(ndc_1)
+
+ndc_plt <- ggplot(ndc_1, aes(x = mnthyr, y = deaths , colour =   mmtype, linetype=mmtype)) + 
+  geom_point(alpha=.5, size=.7) + 
+  geom_smooth(method = loess, linewidth=.9, se=F) +
+  scale_y_continuous(limits = c(0,600),
+                     breaks = c(50,100,150,200,250,300,350,400,450,500,550,600),
+                     labels = c("50","100","150","200","250","300","350","400","450","500","550","600")) +
+  scale_x_date(date_breaks = "1 year", date_labels = "%Y")+
+  scale_linetype_manual(name="",
+                        labels= ("Neonatal Deaths Count (absolute numbers"), 
+                        values=("solid"))+
+  labs(x="", y="", caption="Data Source: HMIS", title="Neonatal deaths Count had been increasing since mid 2020, \nand has since shown a somewhat constant trend beginning 2022 through Jan 2023 \nwhere it is on a downward trend into 2024!.") +
+  scale_color_manual(name ="",
+                     values = usaid_red) + 
+  baseX
+
+mmr_plt
+ggsave("viz/Nov 2024 FHDR/National neaonatal death count.png",
+       device="png",
+       type="cairo",
+       height = 6.5,
+       width = 12)
+
+
+
+
+
+
+
+
+
 
 
 
