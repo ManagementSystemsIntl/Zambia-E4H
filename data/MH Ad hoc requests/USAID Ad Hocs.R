@@ -1427,25 +1427,27 @@ under15.mort <- under1.5 %>%
 
 under15.mort
 
-peri.mr2 <- peri.mr1 %>%
-  rename(perinatal.mortRate=1)
+# peri.mr2 <- peri.mr1 %>%
+#   rename(perinatal.mortRate=1)
 
-peri.mr2
+under15.mort
 
-nat_pmr <- ggplot(peri.mr2, aes(x=mnthyr, y=perinatal.mortRate, colour=usaid_red)) + 
+under15.mort2 <- melt(under15.mort, id = "monyr")
+
+nat_u1andu5 <- ggplot(under15.mort2, aes(x=monyr, y=value, colour=variable)) + 
   geom_point(alpha=.6, size=.9) + 
   geom_smooth(method = loess, linewidth = .8, se=FALSE) +
   scale_y_continuous(labels=comma,
                      limits=c(9,21)) +
   scale_x_date(date_labels="%b %y",date_breaks="3 months") +
-  labs(x="", y="", caption="Data Source: PDSR & HMIS", title="Perinatal Mortality Rate per 1,000 live births, had been on a downward trend from January 2020, \nbut has begun to rise begining Jan 2023.") +
+  labs(x="", y="", caption="Data Source: HMIS", title="Perinatal Mortality Rate per 1,000 live births, had been on a downward trend from January 2020, \nbut has begun to rise begining Jan 2023.") +
   scale_color_manual(name ="",
-                     values = usaid_red,
-                     labels ="Perinatal Mortality Rates") + 
+                     values = c(usaid_red,usaid_blue),
+                     labels = c("Facility mortality under 1 year rate","Facility mortality under 5 years rate")) + 
   basey
 
-nat_pmr
-ggsave("viz/Prematurity viz jan 24/National perinatal mortality rates Jan 2020-2023.png",
+nat_u1andu5
+ggsave("viz/Nov 2024 FHDR/National facility mortality U1 & U5 Jan 2020-Sept 2024.png",
        device="png",
        type="cairo",
        height = 6.5,
