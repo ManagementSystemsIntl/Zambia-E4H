@@ -1404,6 +1404,58 @@ ggsave("viz/Nov 2024 FHDR/national neonatal deaths percentage Jan.png",
 
 
 
+#'*______National Level Under 1 and Under 5 Mortality rates*
+
+peri.mr <- read_xls("data/Nov 2024 MHDR/Under 1 and under 5 mortality rate_national monthly.xls")
+peri.mr  <- peri.mr  %>%
+  mutate(month_chr = str_sub(periodname,
+                             start=1,
+                             end=nchar(periodname)-5),
+         month = factor(month_chr,
+                        levels=c("January","February","March","April","May","June","July","August","September","October","November","December")),
+         month_code = as.numeric(month), 
+         year = str_sub(periodname, 
+                        start=nchar(periodname)-4,
+                        end=nchar(periodname)),
+         monyr = paste(month_code, year, sep="-"),
+         mnthyr = my(monyr))
+
+peri.mr
+
+peri.mr1 <- peri.mr %>%
+  select(2,9)
+
+peri.mr1
+
+peri.mr2 <- peri.mr1 %>%
+  rename(perinatal.mortRate=1)
+
+peri.mr2
+
+nat_pmr <- ggplot(peri.mr2, aes(x=mnthyr, y=perinatal.mortRate, colour=usaid_red)) + 
+  geom_point(alpha=.6, size=.9) + 
+  geom_smooth(method = loess, linewidth = .8, se=FALSE) +
+  scale_y_continuous(labels=comma,
+                     limits=c(9,21)) +
+  scale_x_date(date_labels="%b %y",date_breaks="3 months") +
+  labs(x="", y="", caption="Data Source: PDSR & HMIS", title="Perinatal Mortality Rate per 1,000 live births, had been on a downward trend from January 2020, \nbut has begun to rise begining Jan 2023.") +
+  scale_color_manual(name ="",
+                     values = usaid_red,
+                     labels ="Perinatal Mortality Rates") + 
+  basey
+
+nat_pmr
+ggsave("viz/Prematurity viz jan 24/National perinatal mortality rates Jan 2020-2023.png",
+       device="png",
+       type="cairo",
+       height = 6.5,
+       width = 12)
+
+
+
+
+
+
 
 
 
