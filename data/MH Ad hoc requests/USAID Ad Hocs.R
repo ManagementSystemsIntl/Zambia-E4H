@@ -1406,8 +1406,8 @@ ggsave("viz/Nov 2024 FHDR/national neonatal deaths percentage Jan.png",
 
 #'*______National Level Under 1 and Under 5 Mortality rates*
 
-peri.mr <- read_xls("data/Nov 2024 MHDR/Under 1 and under 5 mortality rate_national monthly.xls")
-peri.mr  <- peri.mr  %>%
+under1.5 <- read_xls("data/Nov 2024 MHDR/Under 1 and under 5 mortality rate_national monthly.xls")
+under1.5  <- under1.5  %>%
   mutate(month_chr = str_sub(periodname,
                              start=1,
                              end=nchar(periodname)-5),
@@ -1420,12 +1420,12 @@ peri.mr  <- peri.mr  %>%
          monyr = paste(month_code, year, sep="-"),
          mnthyr = my(monyr))
 
-peri.mr
+under1.5
 
-peri.mr1 <- peri.mr %>%
-  select(2,9)
+under15.mort <- under1.5 %>%
+  select(3,4,9)
 
-peri.mr1
+under15.mort
 
 peri.mr2 <- peri.mr1 %>%
   rename(perinatal.mortRate=1)
