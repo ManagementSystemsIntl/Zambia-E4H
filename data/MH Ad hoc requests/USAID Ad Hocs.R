@@ -1112,7 +1112,7 @@ ggsave("viz/Ad hoc Jun 2024/Mat mortality ratio_Western districts.png",
 #'*........National Maternal Mortality Ratio*
 #'
 #'
-mat <- read_xls("data/Dec 2023 MHDR/Reproductive Maternal Health_National level monthly.xls")
+mat <- read_xls("data/Nov 2024 MHDR/Reproductive Maternal Health_National level monthly.xls")
 mat  <- mat  %>%
   mutate(month_chr = str_sub(periodname,
                              start=1,
@@ -1157,7 +1157,7 @@ mmr_plt <- ggplot(mmr_1, aes(x = mnthyr, y = deaths , colour =   mmtype, linetyp
   baseX
 
 mmr_plt
-ggsave("viz/Dec 23 FHDR/National Maternal Mortality Ratio.png",
+ggsave("viz/Nov 2024 FHDR/National Maternal Mortality Ratio.png",
        device="png",
        type="cairo",
        height = 6.5,
