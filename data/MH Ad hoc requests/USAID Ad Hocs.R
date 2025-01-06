@@ -1451,9 +1451,9 @@ Prov_ndc_plt <- ggplot(ndc_1, aes(x = mnthyr, y = deaths , colour =   mmtype, li
   geom_smooth(method = loess, linewidth=.9, se=F) +
   facet_wrap(~dist) +
   faceted +
-  scale_y_continuous(limits = c(0,600),
-                     breaks = c(50,100,150,200,250,300,350,400,450,500,550,600),
-                     labels = c("50","100","150","200","250","300","350","400","450","500","550","600")) +
+  scale_y_continuous(limits = c(0,150),
+                     breaks = c(15,30,45,60,75,90,105,120,135,150),
+                     labels = c("15","30","45","60","75","90","105","120","135","150")) +
   scale_x_date(date_breaks = "1 year", date_labels = "%Y")+
   scale_linetype_manual(name="",
                         labels= ("Neonatal Deaths Count (absolute numbers"), 
