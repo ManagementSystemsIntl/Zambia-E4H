@@ -1432,7 +1432,7 @@ under15.mort
 
 under15.mort
 
-under15.mort2 <- melt(under15.mort, id = "monyr")
+under15.mort2 <- reshape2::melt(under15.mort, id = "monyr")
 
 nat_u1andu5 <- ggplot(under15.mort2, aes(x=monyr, y=value, colour=variable)) + 
   geom_point(alpha=.6, size=.9) + 
@@ -1447,6 +1447,7 @@ nat_u1andu5 <- ggplot(under15.mort2, aes(x=monyr, y=value, colour=variable)) +
   basey
 
 nat_u1andu5
+
 ggsave("viz/Nov 2024 FHDR/National facility mortality U1 & U5 Jan 2020-Sept 2024.png",
        device="png",
        type="cairo",
