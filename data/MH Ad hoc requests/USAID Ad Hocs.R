@@ -1416,8 +1416,8 @@ ggsave("viz/Nov 2024 FHDR/National neaonatal death count.png",
 #'*........Provincial Neonatal deaths Count absolute numbers......*
 #'
 #'
-neonat <- read_xls("data/Nov 2024 MHDR/Provincial Neonatal death count Jan 2020_Sept 2024.xls")
-neonat  <- neonat  %>%
+prov_neonat <- read_xls("data/Nov 2024 MHDR/Provincial Neonatal death count Jan 2020_Sept 2024.xls")
+prov_neonat  <- prov_neonat  %>%
   mutate(month_chr = str_sub(periodname,
                              start=1,
                              end=nchar(periodname)-5),
@@ -1430,10 +1430,11 @@ neonat  <- neonat  %>%
          monyr = paste(month_code, year, sep="-"),
          mnthyr = my(monyr))
 
-ndc <- neonat %>%
-  rename(nnc = 3
+ndc <- prov_neonat %>%
+  rename(dist =  1,
+         nnc = 3
   )
-colnames(neonat)
+colnames(prov_neonat)
 
 ndc_1 <- gather(ndc, key = mmtype , value = deaths, nnc)
 ndc_1
@@ -1445,9 +1446,11 @@ levels(ndc_1$mmtypef)
 names(ndc_1)
 colnames(ndc_1)
 
-ndc_plt <- ggplot(ndc_1, aes(x = mnthyr, y = deaths , colour =   mmtype, linetype=mmtype)) + 
+Prov_ndc_plt <- ggplot(ndc_1, aes(x = mnthyr, y = deaths , colour =   mmtype, linetype=mmtype)) + 
   geom_point(alpha=.5, size=.7) + 
   geom_smooth(method = loess, linewidth=.9, se=F) +
+  facet_wrap(~dist) +
+  faceted +
   scale_y_continuous(limits = c(0,600),
                      breaks = c(50,100,150,200,250,300,350,400,450,500,550,600),
                      labels = c("50","100","150","200","250","300","350","400","450","500","550","600")) +
@@ -1460,8 +1463,8 @@ ndc_plt <- ggplot(ndc_1, aes(x = mnthyr, y = deaths , colour =   mmtype, linetyp
                      values = usaid_red) + 
   baseX
 
-ndc_plt
-ggsave("viz/Nov 2024 FHDR/National neaonatal death count.png",
+Prov_ndc_plt
+ggsave("viz/Nov 2024 FHDR/Provincial neaonatal death count(faceted).png",
        device="png",
        type="cairo",
        height = 6.5,
