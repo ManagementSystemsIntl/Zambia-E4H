@@ -1051,7 +1051,8 @@ Provmat  <- Provmat  %>%
          mnthyr = my(monyr))
 
 mmr <- Provmat %>%
-  rename(mmfr = 16
+  rename(prov = 1,
+         mmfr = 16
   )
 colnames(Provmat)
 
