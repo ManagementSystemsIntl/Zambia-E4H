@@ -1025,3 +1025,69 @@ ggsave("viz/Nov 2024 FHDR/MMR and HIA2 RR Facets.png",
        width=12.5)
 
 
+
+
+
+
+
+
+
+
+#'*........Maternal Mortality Ratio Faceted*
+#'
+#'
+Provmat <- read_xls("data/Nov 2024 MHDR/Reproductive Maternal Health_Provincial level monthly.xls")
+Provmat  <- Provmat  %>%
+  mutate(month_chr = str_sub(periodname,
+                             start=1,
+                             end=nchar(periodname)-5),
+         month = factor(month_chr,
+                        levels=c("January","February","March","April","May","June","July","August","September","October","November","December")),
+         month_code = as.numeric(month), 
+         year = str_sub(periodname, 
+                        start=nchar(periodname)-4,
+                        end=nchar(periodname)),
+         monyr = paste(month_code, year, sep="-"),
+         mnthyr = my(monyr))
+
+mmr <- Provmat %>%
+  rename(mmfr = 16
+  )
+colnames(Provmat)
+
+mmr_1 <- gather(mmr, key = mmtype , value = deaths, mmfr)
+mmr_1
+colnames(mmr_1)
+
+mmr_1$mmtypef <- factor(mmr_1$mmtype, levels = unique(mmr_1$mmtype))
+levels(mmr_1$mmtypef)
+
+names(mmr_1)
+colnames(mmr_1)
+
+prov_mmr_plt <- ggplot(mmr_1, aes(x = mnthyr, y = deaths , colour =   mmtype, linetype=mmtype)) + 
+  geom_point(alpha=.5, size=.7) + 
+  geom_smooth(method = loess, linewidth=.9, se=F) +
+  facet_wrap(~prov) +
+  faceted +
+  scale_y_continuous(limits = c(0,170),
+                     breaks = c(20,60,100,140,170),
+                     labels = c("20","60","100","140","170")) +
+  scale_x_date(date_breaks = "1 year", date_labels = "%Y")+
+  scale_linetype_manual(name="",
+                        labels= ("Maternal mortality facility ratio (per 100,000 live births)"), 
+                        values=("solid"))+
+  labs(x="", y="", caption="Data Source: HMIS", title="Maternal mortality facility ratio (per 100,000 live births) had been increasing since mid 2020, \nand has since shown a somewhat constant trend beginning 2022 through Jan 2023 \nwhere it is on a downward trend into 2024! (Jan 2020 - Sept 2024).") +
+  scale_color_manual(name ="",
+                     values = usaid_red) + 
+  baseX
+
+prov_mmr_plt
+ggsave("viz/Nov 2024 FHDR/Maternal Mortality Ratio Faceted.png",
+       device="png",
+       type="cairo",
+       height = 6.5,
+       width = 12)
+
+
+
