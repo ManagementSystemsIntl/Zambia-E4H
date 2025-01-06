@@ -1033,7 +1033,7 @@ ggsave("viz/Nov 2024 FHDR/MMR and HIA2 RR Facets.png",
 
 
 
-#'*........Maternal Mortality Ratio Faceted*
+#'*........ Provincial Maternal Mortality Ratio Faceted*
 #'
 #'
 Provmat <- read_xls("data/Nov 2024 MHDR/Reproductive Maternal Health_Provincial level monthly.xls")
