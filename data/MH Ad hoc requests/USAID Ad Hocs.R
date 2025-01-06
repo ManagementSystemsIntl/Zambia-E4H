@@ -1151,7 +1151,7 @@ mmr_plt <- ggplot(mmr_1, aes(x = mnthyr, y = deaths , colour =   mmtype, linetyp
   scale_linetype_manual(name="",
                         labels= ("Maternal mortality facility ratio (per 100,000 live births)"), 
                         values=("solid"))+
-  labs(x="", y="", caption="Data Source: HMIS", title="Maternal mortality facility ratio (per 100,000 live births) had been increasing since mid 2020, \nand has since shown a somewhat constant trend beginning 2022 through Jan 2023 \nwhere it is on a downward trend into 2024!.") +
+  labs(x="", y="", caption="Data Source: HMIS", title="Maternal mortality facility ratio (per 100,000 live births) had been increasing since mid 2020, \nand has since shown a somewhat constant trend beginning 2022 through Jan 2023 \nwhere it is on a downward trend into 2024! (Jan 2020 - Sept 2024).") +
   scale_color_manual(name ="",
                      values = usaid_red) + 
   baseX
