@@ -1675,9 +1675,9 @@ Prov_InstMort2 <- Prov_InstMort1 %>%
 names(Prov_InstMort2)
 
 
-# Prov_InstMort3 <- reshape2::melt(Prov_InstMort2, id = "mnthyr")
+Prov_InstMort3 <- reshape2::melt(Prov_InstMort2, id = "mnthyr")
 
-prov_IPMort_plt <- ggplot(Prov_InstMort2,aes(x=mnthyr, y=value, color=variable))+
+prov_IPMort_plt <- ggplot(Prov_InstMort3,aes(x=mnthyr, y=value, color=variable))+
   geom_point(alpha=.6, size=1.4) +
   geom_smooth(method =loess,se=F, linewidth=1.1, alpha=.8) +
   scale_x_date(date_labels="%b %y",date_breaks="3 months") +
