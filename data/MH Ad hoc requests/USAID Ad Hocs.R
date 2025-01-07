@@ -1477,11 +1477,6 @@ ggsave("viz/Nov 2024 FHDR/Provincial neaonatal death count(faceted).png",
 
 
 
-
-
-
-
-
 #'*........Neonatal deaths percentage Trends Jan 2020 to Sept 2024*
 #'
 #'
@@ -1576,6 +1571,65 @@ nat_u1andu5 <- ggplot(under15.mort2, aes(x=monyr, y=value, colour=variable)) +
 nat_u1andu5
 
 ggsave("viz/Nov 2024 FHDR/National facility mortality U1 & U5 Jan 2020-Sept 2024.png",
+       device="png",
+       type="cairo",
+       height = 6.5,
+       width = 12)
+
+
+
+
+
+
+
+#'*Inpatient Deaths by Age......National Level*
+
+IPdeaths<- read_xls("data/Nov 2024 MHDR/Inpatient deaths by age_National level monthly.xls")
+IPdeaths  <- IPdeaths  %>%
+  mutate(month_chr = str_sub(periodname,
+                             start=1,
+                             end=nchar(periodname)-5),
+         month = factor(month_chr,
+                        levels=c("January","February","March","April","May","June","July","August","September","October","November","December")),
+         month_code = as.numeric(month), 
+         year = str_sub(periodname, 
+                        start=nchar(periodname)-4,
+                        end=nchar(periodname)),
+         monyr = paste(month_code, year, sep="-"),
+         mnthyr = my(monyr))
+
+names(IPdeaths)
+InstMort <- IPdeaths %>%
+  select(3:6,12) %>%
+  na.omit()
+
+InstMort
+colnames(InstMort)
+
+InstMort1 <- InstMort %>%
+  select(5,1,2,3,4) %>%
+  na.omit()
+names(InstMort1)
+
+
+InstMort2 <- reshape2::melt(InstMort1, id = "mnthyr")
+
+IPMort_plt <- ggplot(InstMort2,aes(x=mnthyr, y=value, color=variable))+
+  geom_point(alpha=.6, size=1.4) +
+  geom_smooth(method =loess,se=F, linewidth=1.1, alpha=.8) +
+  scale_x_date(date_labels="%b %y",date_breaks="3 months") +
+  scale_y_continuous(labels=comma) +
+  labs(x="",
+       y="",
+       caption="Data Source: HMIS",
+       title="Institutional Mortality (Inpatient Deaths) disaggregated by Age (Jan 2020 - Sept 2024).") +
+  basey + scale_color_manual(name ="",
+                             values =c(light_blue,light_grey,usaid_blue, usaid_red),
+                             labels = c("IP Deaths <1 Yr","IP Deaths (1-4)Yrs","IP Deaths (5-14)Yrs","IP Deaths  (>=15)Yrs"))
+IPMort_plt
+
+
+ggsave("viz/Nov 2024 FHDR/National Institutional mortality disaggregated by age.png",
        device="png",
        type="cairo",
        height = 6.5,
