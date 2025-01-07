@@ -1641,6 +1641,72 @@ ggsave("viz/Nov 2024 FHDR/National Institutional mortality disaggregated by age.
 
 
 
+#'*Inpatient Deaths by Age......Provincial Level Facets*
+
+Prov_IPdeaths<- read_xls("data/Nov 2024 MHDR/Inpatient deaths by age_Provincial level monthly.xls")
+Prov_IPdeaths  <- Prov_IPdeaths  %>%
+  mutate(month_chr = str_sub(periodname,
+                             start=1,
+                             end=nchar(periodname)-5),
+         month = factor(month_chr,
+                        levels=c("January","February","March","April","May","June","July","August","September","October","November","December")),
+         month_code = as.numeric(month), 
+         year = str_sub(periodname, 
+                        start=nchar(periodname)-4,
+                        end=nchar(periodname)),
+         monyr = paste(month_code, year, sep="-"),
+         mnthyr = my(monyr))
+
+names(Prov_IPdeaths)
+Prov_InstMort <- Prov_IPdeaths %>%
+  select(3:6,12,1) %>%
+  na.omit()
+
+Prov_InstMort
+colnames(Prov_InstMort)
+
+Prov_InstMort1 <- Prov_InstMort %>%
+  rename(prov = 6
+  )
+
+Prov_InstMort2 <- Prov_InstMort1 %>%
+  select(5,6,1,2,3,4) %>%
+  na.omit()
+names(Prov_InstMort2)
+
+
+# Prov_InstMort3 <- reshape2::melt(Prov_InstMort2, id = "mnthyr")
+
+prov_IPMort_plt <- ggplot(Prov_InstMort2,aes(x=mnthyr, y=value, color=variable))+
+  geom_point(alpha=.6, size=1.4) +
+  geom_smooth(method =loess,se=F, linewidth=1.1, alpha=.8) +
+  scale_x_date(date_labels="%b %y",date_breaks="3 months") +
+  scale_y_continuous(labels=comma) +
+  labs(x="",
+       y="",
+       caption="Data Source: HMIS",
+       title="Institutional Mortality (Inpatient Deaths) disaggregated by Age (Jan 2020 - Sept 2024).") +
+  facet_wrap(~prov, ncol=4) +
+  faceted +
+  basey + scale_color_manual(name ="",
+                             values =c(light_blue,light_grey,usaid_blue, usaid_red),
+                             labels = c("IP Deaths <1 Yr","IP Deaths (1-4)Yrs","IP Deaths (5-14)Yrs","IP Deaths  (>=15)Yrs"))
+prov_IPMort_plt
+
+
+ggsave("viz/Nov 2024 FHDR/Provincial Institutional mortality disaggregated by age.png",
+       device="png",
+       type="cairo",
+       height = 6.5,
+       width = 12)
+
+
+
+
+
+
+
+
 
 
 
