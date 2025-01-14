@@ -1328,8 +1328,8 @@ frthPlusANC_prov$subpop <- factor(frthPlusANC_prov$subpop, levels = unique(frthP
 levels(frthPlusANC_prov$subpop)
 
 ggplot(frthPlusANC_prov, aes(x = mnthyr, y = rate, group = subpop, colour = subpop )) + 
-  geom_point(size=.5, alpha=.5, colour=c(light_blue,light_grey, usaid_red)) + 
-  stat_smooth(se=F, linewidth=.8, alpha=.6, colour=c(light_blue,light_grey, usaid_red)) +
+  geom_point(size=.5, alpha=.5, colour=c(light_blue,light_grey, usaid_red, usaid_blue)) + 
+  stat_smooth(se=F, linewidth=.8, alpha=.6, colour=c(light_blue,light_grey, usaid_red, usaid_blue)) +
   scale_y_continuous(limits = c(0,1),
                      labels = percent,
                      breaks = c(.2,.4,.6,.8,1)) +
@@ -1338,7 +1338,7 @@ ggplot(frthPlusANC_prov, aes(x = mnthyr, y = rate, group = subpop, colour = subp
   facet_wrap(~dstrct, ncol=4) +
   faceted +
   scale_color_manual(name ="",
-                     values =c(light_blue,light_grey, usaid_red),
+                     values =c(light_blue,light_grey, usaid_red, usaid_blue),
                      labels = c("under 15yrs","15-19yrs","20-24yrs","above 25yrs")) + basey
 
 ggsave("viz/Aug 2024 FHDR/4th+ ANC visits_Muchinga districts.png",
