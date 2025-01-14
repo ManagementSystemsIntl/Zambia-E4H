@@ -1025,7 +1025,7 @@ ggplot(frthPlusANC_prov, aes(x=mnthyr, y=frth.ancP)) +
                      labels = percent,
                      breaks = c(.1,.2,.3,.4,.5)) +
   labs(x ="", y="", caption = "Data Source: HMIS") +labs(x ="", y="", caption = "Data Source: HMIS") +
-  ggtitle("The 4th+ ANC attendances for Muchinga Province districts show a similar trend across,\n but with a special pattern from Nakonde district!.") +
+  ggtitle("The 4th+ ANC attendances for Muchinga Province districts show a similar trend across,\n with a sharp decline in Kabwe district begining 2022!.") +
   facet_wrap(~prov, ncol=4) +
   faceted +
   scale_color_manual(values=usaid_blue) + basey
