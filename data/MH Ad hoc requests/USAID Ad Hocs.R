@@ -993,7 +993,7 @@ ggsave("viz/Ad hoc Jun 2024/National 4th+ to Total ANC attendances.png",
 
 #'*________4th+ TO TOTAL ANC ATTENDANCES BY DISTRICT*
 
-frthPlusANC_prov <- read_xls("data/June 2024 Ad Hoc/4th+ ANC Central districts.xls")
+frthPlusANC_prov <- read_xls("data/June 2024 Ad Hoc/4th+ ANC Copperbelt districts.xls")
 names(frthPlusANC_prov)
 frthPlusANC_prov
 frthPlusANC_prov  <- frthPlusANC_prov  %>%
@@ -1025,12 +1025,12 @@ ggplot(frthPlusANC_prov, aes(x=mnthyr, y=frth.ancP)) +
                      labels = percent,
                      breaks = c(.1,.2,.3,.4,.5)) +
   labs(x ="", y="", caption = "Data Source: HMIS") +labs(x ="", y="", caption = "Data Source: HMIS") +
-  ggtitle("The 4th+ ANC attendances for Central Province districts show a gradual decline in Lufwanyama, Masaiti,\n and Mpongwe districts, whereas the other districts show a sharp decline begining mid 2022! (Jan 2020 - Sept 2024).") +
+  ggtitle("The 4th+ ANC attendances for Copperbelt Province districts show a gradual decline in Lufwanyama, Masaiti, and\n Mpongwe districts, whereas the other districts show a sharp decline (Oct 2019 - Sept 2024).") +
   facet_wrap(~prov, ncol=4) +
   faceted +
   scale_color_manual(values=usaid_blue) + basey
 
-ggsave("viz/Ad hoc Jun 2024/4th+ ANC visits_Central districts.png",
+ggsave("viz/Ad hoc Jun 2024/4th+ ANC visits_Copperbelt districts.png",
        device="png",
        type="cairo",
        height = 6.5,
