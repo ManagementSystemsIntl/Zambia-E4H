@@ -993,7 +993,7 @@ ggsave("viz/Ad hoc Jun 2024/National 4th+ to Total ANC attendances.png",
 
 #'*________4th+ TO TOTAL ANC ATTENDANCES BY DISTRICT*
 
-frthPlusANC_prov <- read_xls("data/June 2024 Ad Hoc/4th+ ANC Muchinga districts.xls")
+frthPlusANC_prov <- read_xls("data/June 2024 Ad Hoc/4th+ ANC NWP districts.xls")
 names(frthPlusANC_prov)
 frthPlusANC_prov
 frthPlusANC_prov  <- frthPlusANC_prov  %>%
@@ -1025,12 +1025,12 @@ ggplot(frthPlusANC_prov, aes(x=mnthyr, y=frth.ancP)) +
                      labels = percent,
                      breaks = c(.1,.2,.3,.4,.5)) +
   labs(x ="", y="", caption = "Data Source: HMIS") +labs(x ="", y="", caption = "Data Source: HMIS") +
-  ggtitle("The 4th+ ANC attendances for Muchinga Province districts have unique trends in Kafue, and Luangwa. \nWhereas the other district give a similar gradual decline in performance (Oct 2019 - Sept 2024).") +
+  ggtitle("The 4th+ ANC attendances for North-Western Province districts have uniquely a similar trend,\n except for Mporokoso district (Oct 2019 - Sept 2024).") +
   facet_wrap(~prov, ncol=4) +
   faceted +
   scale_color_manual(values=usaid_blue) + basey
 
-ggsave("viz/Ad hoc Jun 2024/4th+ ANC visits_Muchinga districts.png",
+ggsave("viz/Ad hoc Jun 2024/4th+ ANC visits_NWP districts.png",
        device="png",
        type="cairo",
        height = 6.5,
