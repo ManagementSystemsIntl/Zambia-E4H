@@ -1025,7 +1025,7 @@ ggplot(frthPlusANC_prov, aes(x=mnthyr, y=frth.ancP)) +
                      labels = percent,
                      breaks = c(.1,.2,.3,.4,.5)) +
   labs(x ="", y="", caption = "Data Source: HMIS") +labs(x ="", y="", caption = "Data Source: HMIS") +
-  ggtitle("The 4th+ ANC attendances for North-Western Province districts have uniquely a similar trend,\n except for Mporokoso district (Oct 2019 - Sept 2024).") +
+  ggtitle("The 4th+ ANC attendances for North-Western Province districts have a similar trend in performnace,\n except for Mushindano district  (Oct 2019 - Sept 2024).") +
   facet_wrap(~prov, ncol=4) +
   faceted +
   scale_color_manual(values=usaid_blue) + basey
