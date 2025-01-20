@@ -70,9 +70,11 @@ zam_packages <- c("tidyverse", "here", "gifski", "gt","gtsummary","gghighlight",
                   
                   "googleway", "ggplot2", "caTools","ggrepel", "giscoR", "ggspatial", "sp", "glmnet", "rnaturalearth", 
                   
-                  "rnaturalearthdata", "pacman", "vroom", "rgdal","gridExtra", "GGally","ggraph","igraph","Matrix","network",
+                  "rnaturalearthdata", "pacman", "vroom", "gridExtra", "GGally","ggraph","igraph","Matrix","network",
                   
                   "quanteda", "sna","maps", "RODBC", "elevatr", "sfdep","spdep","igraph", "rnaturalearth", "terra","likert", "transformr", "tidygraph","tm","tibble","quanteda.textplots","spData")
+
+install.packages(zam_packages)
 
 
 #                   "RColorBrewer", "data.table", "d3heatmap","pheatmap","hablar", "gganimate", "dygraphs", "gapminder", "hrbrthemes",
@@ -118,7 +120,7 @@ base <- theme_bw() + theme(panel.grid.minor.x=element_blank(),
                            axis.text.y = element_text(size = 10, family="Gill Sans Mt", face="bold"),
                            legend.text=element_text(size=10, family="Gill Sans Mt"),
                            #legend.position = "bottom",
-                           legend.position = c(.80,.99),
+                           legend.position.inside = c(.80,.99),
                            legend.justification = c("left", "top"),
                            legend.box.just = "left",
                            strip.text=element_text(size=10, family="Gill Sans Mt"),
@@ -137,7 +139,7 @@ baseX <- theme(plot.title = element_text(size = 15),
   axis.text.y = element_text(size = 10, family="Gill Sans Mt", face="bold"),
   legend.text=element_text(size=13, family="Gill Sans Mt"),
   legend.title=element_blank(),
-  legend.position="none",
+  legend.position.inside="none",
   strip.text=element_text(size=13, family="Gill Sans Mt"))
 
 
@@ -150,7 +152,7 @@ baseC <- theme(plot.title = element_text(size = 15),
                axis.text.y = element_text(size = 12, family="Gill Sans Mt", face="bold"),
                legend.text = element_text(size = 11),
                legend.title=element_blank(),
-               legend.position="none",
+               legend.position.inside="none",
                strip.text=element_text(size=13, family="Gill Sans Mt"))
 
 basey <- theme(plot.title = element_text(size = 16),
@@ -161,7 +163,7 @@ basey <- theme(plot.title = element_text(size = 16),
   axis.text.y = element_text(size = 10),
   legend.text = element_text(size = 12),
   legend.title=element_blank(),
-  legend.position="none",
+  legend.position.inside="none",
   strip.text=element_text(size=14, family="Gill Sans Mt"),
   legend.background = element_rect(fill = "white", color = "black"))
 
@@ -178,7 +180,7 @@ non_base <- theme_bw() + theme(panel.grid.minor.x=element_blank(),
                            axis.text.x = element_text(size = 11, family="Gill Sans Mt", face="bold"),
                            axis.text.y = element_text(size = 12, family="Gill Sans Mt", face="bold"),
                            legend.text=element_text(size=11, family="Gill Sans Mt"),
-                           legend.position = "none",
+                           legend.position.inside = "none",
                            # legend.position = c(.73,.99),
                            # legend.justification = c("left", "top"),
                            # legend.box.just = "left",
@@ -197,7 +199,7 @@ basem <- theme(plot.title = element_text(size = 15),
   axis.text.y = element_text(size = 9),
   legend.text = element_text(size = 9),
   legend.title=element_blank(),
-  legend.position="bottom",
+  legend.position.inside="bottom",
   strip.text=element_text(size=10, family="Gill Sans Mt"),
   legend.background = element_rect(fill = "white", color = "black"))
 
@@ -238,7 +240,7 @@ faceted <- theme_bw() +
         axis.text=element_text(face="bold", size=10, family="Gill Sans Mt"),
         legend.text=element_text(size=14, family="Gill Sans Mt"),
         #legend.position = "left",
-        legend.position = c(.55,.99),
+        legend.position.inside = c(.55,.99),
         legend.justification = c("left", "top"),
         legend.box.just = "left",
         strip.text=element_text(size=12, family="Gill Sans Mt"))
