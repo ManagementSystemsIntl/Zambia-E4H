@@ -993,7 +993,7 @@ ggsave("viz/Ad hoc Jun 2024/National 4th+ to Total ANC attendances.png",
 
 #'*________4th+ TO TOTAL ANC ATTENDANCES BY DISTRICT*
 
-frthPlusANC_prov <- read_xls("data/June 2024 Ad Hoc/4th+ ANC NWP districts.xls")
+frthPlusANC_prov <- read_xls("data/June 2024 Ad Hoc/4th+ ANC Western districts.xls")
 names(frthPlusANC_prov)
 frthPlusANC_prov
 frthPlusANC_prov  <- frthPlusANC_prov  %>%
@@ -1025,12 +1025,12 @@ ggplot(frthPlusANC_prov, aes(x=mnthyr, y=frth.ancP)) +
                      labels = percent,
                      breaks = c(.1,.2,.3,.4,.5)) +
   labs(x ="", y="", caption = "Data Source: HMIS") +labs(x ="", y="", caption = "Data Source: HMIS") +
-  ggtitle("The 4th+ ANC attendances for North-Western Province districts have a similar trend in performnace,\n except for Mushindano district  (Oct 2019 - Sept 2024).") +
+  ggtitle("The 4th+ ANC attendances for Western Province districts have a similar trend in performnace,\n except Nkeyema, Shang'ombo, and Sikongo districts (Oct 2019 - Sept 2024).") +
   facet_wrap(~prov, ncol=4) +
   faceted +
   scale_color_manual(values=usaid_blue) + basey
 
-ggsave("viz/Ad hoc Jun 2024/4th+ ANC visits_NWP districts.png",
+ggsave("viz/Ad hoc Jun 2024/4th+ ANC visits_Western districts.png",
        device="png",
        type="cairo",
        height = 6.5,
