@@ -1090,8 +1090,8 @@ mat.mratio1 <- mat.mratio %>%
 mat.mratio1
 
 Matmratio_plt <- ggplot(mat.mratio1, aes(x=yr, y=maternal.mortRatio, colour=usaid_red)) + 
-  geom_point(alpha=.6, size=.9) + 
-  geom_smooth(method = loess, linewidth = .8, se=FALSE) + facet_wrap(~dist) + faceted +
+  geom_point(alpha=.6, size=.8) + 
+  geom_smooth(method = loess, linewidth = .9, se=FALSE) + facet_wrap(~dist) + faceted +
   scale_y_continuous(labels=comma) +
   # scale_x_date(date_labels="") +
   labs(x="", y="", caption="Data Source: HMIS", title="Maternal Mortality Ratio per 100, 000 live births, Western Province Districts (Oct 2019 - Sept 2024).") +
