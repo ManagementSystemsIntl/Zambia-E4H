@@ -1134,37 +1134,25 @@ distMMR  <- distMMR  %>%
 
 names(distMMR)
 distMMR <- distMMR %>%
-  rename(prov=1,
-         frth.anc=3) %>%
-  mutate(frth.ancP = frth.anc/100)
-ggplot(frthPlusANC_prov, aes(x=mnthyr, y=frth.ancP)) + 
-  geom_point(size=.5, alpha=.5, colour=usaid_blue) + 
-  stat_smooth(se=F, size=.8, alpha=.6, colour=usaid_blue) +
-  scale_y_continuous(limits = c(0,.5),
-                     labels = percent,
-                     breaks = c(.1,.2,.3,.4,.5)) +
+  rename(dist=1,
+         matmortratio=3)
+
+ggplot(distMMR, aes(x=mnthyr, y=matmortratio)) + 
+  geom_point(size=.5, alpha=.5, colour=usaid_red) + 
+  stat_smooth(se=F, linewidth=.8, alpha=.6, colour=usaid_red) +
+  scale_y_continuous(labels = comma) +
   labs(x ="", y="", caption = "Data Source: HMIS") +labs(x ="", y="", caption = "Data Source: HMIS") +
   ggtitle("The 4th+ ANC attendances for Western Province districts have a similar trend in performnace,\n except for Nkeyema, Shang'ombo, and Sikongo districts (Oct 2019 - Sept 2024).") +
-  facet_wrap(~prov, ncol=4) +
+  facet_wrap(~dist, ncol=4) +
   faceted +
-  scale_color_manual(values=usaid_blue) + basey
+  scale_color_manual(values=usaid_red,
+                     labels ="Maternal Mortality Ratio Per 100, 000 Deliveries.") + basey
 
 ggsave("viz/Ad hoc Jun 2024/4th+ ANC visits_Western districts.png",
        device="png",
        type="cairo",
        height = 6.5,
        width = 12.5)
-
-
-
-
-
-
-
-
-
-
-
 
 
 
