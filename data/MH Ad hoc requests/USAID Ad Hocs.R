@@ -1142,13 +1142,13 @@ ggplot(distMMR, aes(x=mnthyr, y=matmortratio)) +
   stat_smooth(se=F, linewidth=.8, alpha=.6, colour=usaid_red) +
   scale_y_continuous(labels = comma) +
   labs(x ="", y="", caption = "Data Source: HMIS") +labs(x ="", y="", caption = "Data Source: HMIS") +
-  ggtitle("The 4th+ ANC attendances for Western Province districts have a similar trend in performnace,\n except for Nkeyema, Shang'ombo, and Sikongo districts (Oct 2019 - Sept 2024).") +
+  ggtitle("Maternal Mortality Ratio per 100, 000 live births, Western Province Districts (Oct 2019 - Sept 2024).") +
   facet_wrap(~dist, ncol=4) +
   faceted +
   scale_color_manual(values=usaid_red,
                      labels ="Maternal Mortality Ratio Per 100, 000 Deliveries.") + basey
 
-ggsave("viz/Ad hoc Jun 2024/4th+ ANC visits_Western districts.png",
+ggsave("viz/Ad hoc Jun 2024/MMRatios_Western districts.png",
        device="png",
        type="cairo",
        height = 6.5,
