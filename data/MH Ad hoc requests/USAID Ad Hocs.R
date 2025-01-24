@@ -1079,7 +1079,7 @@ ggsave("viz/Ad hoc Jun 2024/Neonata mortality rates_western districts.png",
 
 #'*_____________Maternal mortality ratios by district Jan 25..........*
 
-mat.mratio <- read_xlsx("data/June 2024 Ad Hoc/Maternal  mortality ratio_western districts.xlsx")
+mat.mratio <- read_xlsx("data/June 2024 Ad Hoc/Maternal mortality ratio_Luapula.xlsx")
 names(mat.mratio)
 
 mat.mratio1 <- mat.mratio %>%
@@ -1094,7 +1094,7 @@ Matmratio_plt <- ggplot(mat.mratio1, aes(x=yr, y=maternal.mortRatio, colour=usai
   geom_smooth(method = loess, linewidth = .8, se=FALSE) + facet_wrap(~dist) + faceted +
   scale_y_continuous(labels=comma) +
   # scale_x_date(date_labels="") +
-  labs(x="", y="", caption="Data Source: HMIS", title="Maternal Mortality Ratio per 100, 000 live births, Western Province Districts (2018 - 2023).") +
+  labs(x="", y="", caption="Data Source: HMIS", title="Maternal Mortality Ratio per 100, 000 live births, Western Province Districts (Oct 2019 - Sept 2024).") +
   scale_color_manual(name ="",
                      values = usaid_red,
                      labels ="Maternal Mortality Ratio Per 100, 000 Deliveries.") + 
