@@ -1109,6 +1109,70 @@ ggsave("viz/Ad hoc Jun 2024/Mat mortality ratio_Western districts.png",
 
 
 
+
+
+
+
+#'*________Maternal Mortality Ratio BY DISTRICT.............2025 construction*
+
+distMMR <- read_xls("data/June 2024 Ad Hoc/Maternal MR_Western districts.xls")
+names(distMMR)
+distMMR
+distMMR  <- distMMR  %>%
+  mutate(month_chr = str_sub(periodname,
+                             start=1,
+                             end=nchar(periodname)-5),
+         month = factor(month_chr,
+                        levels=c("January","February","March","April","May","June","July","August","September","October","November","December")),
+         month_code = as.numeric(month), 
+         year = str_sub(periodname, 
+                        start=nchar(periodname)-4,
+                        end=nchar(periodname)),
+         monyr = paste(month_code, year, sep="-"),
+         mnthyr = my(monyr))
+
+
+names(distMMR)
+distMMR <- distMMR %>%
+  rename(prov=1,
+         frth.anc=3) %>%
+  mutate(frth.ancP = frth.anc/100)
+ggplot(frthPlusANC_prov, aes(x=mnthyr, y=frth.ancP)) + 
+  geom_point(size=.5, alpha=.5, colour=usaid_blue) + 
+  stat_smooth(se=F, size=.8, alpha=.6, colour=usaid_blue) +
+  scale_y_continuous(limits = c(0,.5),
+                     labels = percent,
+                     breaks = c(.1,.2,.3,.4,.5)) +
+  labs(x ="", y="", caption = "Data Source: HMIS") +labs(x ="", y="", caption = "Data Source: HMIS") +
+  ggtitle("The 4th+ ANC attendances for Western Province districts have a similar trend in performnace,\n except for Nkeyema, Shang'ombo, and Sikongo districts (Oct 2019 - Sept 2024).") +
+  facet_wrap(~prov, ncol=4) +
+  faceted +
+  scale_color_manual(values=usaid_blue) + basey
+
+ggsave("viz/Ad hoc Jun 2024/4th+ ANC visits_Western districts.png",
+       device="png",
+       type="cairo",
+       height = 6.5,
+       width = 12.5)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 #'*........National Maternal Mortality Ratio*
 #'
 #'
