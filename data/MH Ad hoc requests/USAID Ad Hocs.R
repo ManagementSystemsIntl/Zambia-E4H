@@ -1077,9 +1077,9 @@ ggsave("viz/Ad hoc Jun 2024/Neonata mortality rates_western districts.png",
 
 
 
-#'*_____________Maternal mortality ratios by district (Lua.Much.North.NWP.West..........*
+#'*_____________Maternal mortality ratios by district Jan 25..........*
 
-mat.mratio <- read_xlsx("data/June 2024 Ad Hoc/Maternal mortality ratio_Western.xlsx")
+mat.mratio <- read_xlsx("data/June 2024 Ad Hoc/Maternal  mortality ratio_western districts.xlsx")
 names(mat.mratio)
 
 mat.mratio1 <- mat.mratio %>%
