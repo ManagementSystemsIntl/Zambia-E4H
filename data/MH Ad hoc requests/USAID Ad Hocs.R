@@ -1449,7 +1449,7 @@ ndc_plt <- ggplot(ndc_1, aes(x = mnthyr, y = deaths , colour =   mmtype, linetyp
   scale_linetype_manual(name="",
                         labels= ("Neonatal Deaths Count (absolute numbers"), 
                         values=("solid"))+
-  labs(x="", y="", caption="Data Source: HMIS", title="The Neonatal deaths were on a downward trend since January 2020 up until late 2021 where it\nstarted going up and has since maintained a perormance of between 300 and 320 per month (Jan 2020 - Sept 2024).") +
+  labs(x="", y="", caption="Data Source: HMIS", title="The Neonatal deaths were on a downward trend since January 2020 up until late 2021 where it\nstarted going up and has since maintained a perormance of between 300 and 320 per month (Oct 2019 - Sept 2024).") +
   scale_color_manual(name ="",
                      values = usaid_red) + 
   baseX
