@@ -1115,7 +1115,7 @@ ggsave("viz/Ad hoc Jun 2024/Mat mortality ratio_Western districts.png",
 
 #'*________Maternal Mortality Ratio BY DISTRICT.............2025 construction*
 
-distMMR <- read_xls("data/June 2024 Ad Hoc/Maternal MR_Northern districts.xls")
+distMMR <- read_xls("data/June 2024 Ad Hoc/Maternal MR_NWP districts.xls")
 names(distMMR)
 distMMR
 distMMR  <- distMMR  %>%
@@ -1142,13 +1142,13 @@ ggplot(distMMR, aes(x=mnthyr, y=matmortratio)) +
   stat_smooth(se=F, linewidth=.8, alpha=.6, colour=usaid_red) +
   scale_y_continuous(labels = comma) +
   labs(x ="", y="", caption = "Data Source: HMIS") +labs(x ="", y="", caption = "Data Source: HMIS") +
-  ggtitle("Maternal Mortality Ratio per 100, 000 live births, Northern Province Districts (Oct 2019 - Sept 2024).") +
+  ggtitle("Maternal Mortality Ratio per 100, 000 live births, North-Western Province Districts (Oct 2019 - Sept 2024).") +
   facet_wrap(~dist, ncol=4) +
   faceted +
   scale_color_manual(values=usaid_red,
                      labels ="Maternal Mortality Ratio Per 100, 000 Deliveries.") + basey
 
-ggsave("viz/Ad hoc Jun 2024/MMRatios_Northern districts.png",
+ggsave("viz/Ad hoc Jun 2024/MMRatios_NWP districts.png",
        device="png",
        type="cairo",
        height = 6.5,
