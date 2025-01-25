@@ -1468,7 +1468,7 @@ ggsave("viz/Nov 2024 FHDR/National neaonatal death count.png",
 #'*........Provincial Neonatal deaths Count absolute numbers......*
 #'
 #'
-prov_neonat <- read_xls("data/Nov 2024 MHDR/Provincial Neonatal death count Jan 2020_Sept 2024.xls")
+prov_neonat <- read_xls("data/Nov 2024 MHDR/Provincial Neonatal death count Oct 2019_Sept 2024.xls")
 prov_neonat  <- prov_neonat  %>%
   mutate(month_chr = str_sub(periodname,
                              start=1,
@@ -1510,7 +1510,7 @@ Prov_ndc_plt <- ggplot(ndc_1, aes(x = mnthyr, y = deaths , colour =   mmtype, li
   scale_linetype_manual(name="",
                         labels= ("Neonatal Deaths Count (absolute numbers"), 
                         values=("solid"))+
-  labs(x="", y="", caption="Data Source: HMIS", title="The Provincial Neonatal deaths Count (absolute numbers) have a unique pattern in Copperbelt, Eastern, and Southern\n provinces, whereas the numbers in Lusaka seem to increase begining mid 2023 (Jan 2020 - Sept 2024).") +
+  labs(x="", y="", caption="Data Source: HMIS", title="The Provincial Neonatal deaths Count (absolute numbers) have a unique pattern in Copperbelt, Eastern, and Southern\n provinces, whereas the numbers in Lusaka seem to increase begining mid 2023 (Oct 2019 - Sept 2024).") +
   scale_color_manual(name ="",
                      values = usaid_red) + 
   baseX
