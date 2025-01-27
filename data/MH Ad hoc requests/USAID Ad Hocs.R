@@ -1786,16 +1786,16 @@ Prov_InstMort1 <- Prov_InstMort %>%
   )
 
 Prov_InstMort2 <- Prov_InstMort1 %>%
-  select(5,6,1,2,3,4) %>%
+  select(1,2,3,4,5,6) %>%
   na.omit()
 names(Prov_InstMort2)
 
 
 Prov_InstMort3 <- reshape2::melt(Prov_InstMort2, id = "mnthyr")
 
-prov_IPMort_plt <- ggplot(Prov_InstMort3,aes(x=mnthyr, y=value, color=variable))+
+prov_IPMort_plt <- ggplot(Prov_InstMort3, aes(x=mnthyr, y=value, color=variable))+
   geom_point(alpha=.6, size=1.4) +
-  geom_smooth(method =loess,se=F, linewidth=1.1, alpha=.8) +
+  geom_smooth(method =loess, se=F, linewidth=1.1, alpha=.8) +
   scale_x_date(date_labels="%b %y",date_breaks="3 months") +
   scale_y_continuous(labels=comma) +
   labs(x="",
