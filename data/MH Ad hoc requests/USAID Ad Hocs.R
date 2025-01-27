@@ -1531,7 +1531,7 @@ ggsave("viz/Nov 2024 FHDR/Provincial neaonatal death count(faceted).png",
 #'*........District Neonatal deaths Count absolute numbers 2025......*
 #'
 #'
-district_neonat <- read_xls("data/Nov 2024 MHDR/Neonatal death counts_Northern districts.xls")
+district_neonat <- read_xls("data/Nov 2024 MHDR/Neonatal death counts_Western districts.xls")
 district_neonat  <- district_neonat  %>%
   mutate(month_chr = str_sub(periodname,
                              start=1,
@@ -1573,13 +1573,13 @@ Dist_ndc_plt <- ggplot(ndcount_1, aes(x = mnthyr, y = deaths , colour =   mmtype
   scale_linetype_manual(name="",
                         labels= ("Neonatal Deaths Count (absolute numbers"), 
                         values=("solid"))+
-  labs(x="", y="", caption="Data Source: HMIS", title="The Neonatal deaths Count (absolute numbers) for Northern province districts (Oct 2019 - Sept 2024).") +
+  labs(x="", y="", caption="Data Source: HMIS", title="The Neonatal deaths Count (absolute numbers) for Western province districts (Oct 2019 - Sept 2024).") +
   scale_color_manual(name ="",
                      values = usaid_red) + 
   baseX
 
 Dist_ndc_plt
-ggsave("viz/Nov 2024 FHDR/Neonatal death count_Northern districts.png",
+ggsave("viz/Nov 2024 FHDR/Neonatal death count_Western districts.png",
        device="png",
        type="cairo",
        height = 6.5,
