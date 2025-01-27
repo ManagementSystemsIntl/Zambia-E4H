@@ -1483,7 +1483,7 @@ prov_neonat  <- prov_neonat  %>%
          mnthyr = my(monyr))
 
 ndc <- prov_neonat %>%
-  rename(dist =  1,
+  rename(prov =  1,
          nnc = 3
   )
 colnames(prov_neonat)
@@ -1501,7 +1501,7 @@ colnames(ndc_1)
 Prov_ndc_plt <- ggplot(ndc_1, aes(x = mnthyr, y = deaths , colour =   mmtype, linetype=mmtype)) + 
   geom_point(alpha=.5, size=.7) + 
   geom_smooth(method = loess, linewidth=.9, se=F) +
-  facet_wrap(~dist) +
+  facet_wrap(~prov) +
   faceted +
   scale_y_continuous(limits = c(0,150),
                      breaks = c(15,30,45,60,75,90,105,120,135,150),
@@ -1566,14 +1566,14 @@ Dist_ndc_plt <- ggplot(ndcount_1, aes(x = mnthyr, y = deaths , colour =   mmtype
   geom_smooth(method = loess, linewidth=.9, se=F) +
   facet_wrap(~dist) +
   faceted +
-  scale_y_continuous(limits = c(0,150),
-                     breaks = c(15,30,45,60,75,90,105,120,135,150),
-                     labels = c("15","30","45","60","75","90","105","120","135","150")) +
+  scale_y_continuous(limits = c(0,60),
+                     breaks = c(5,10,15,20,25,30,35,40,45,50,55,60),
+                     labels = c("5","10","15","20","25","30","35","40","45","50","55","60")) +
   scale_x_date(date_breaks = "1 year", date_labels = "%Y")+
   scale_linetype_manual(name="",
                         labels= ("Neonatal Deaths Count (absolute numbers"), 
                         values=("solid"))+
-  labs(x="", y="", caption="Data Source: HMIS", title="The Provincial Neonatal deaths Count (absolute numbers) have a unique pattern in Copperbelt, Eastern, and Southern\n provinces, whereas the numbers in Lusaka seem to increase begining mid 2023 (Oct 2019 - Sept 2024).") +
+  labs(x="", y="", caption="Data Source: HMIS", title="The Neonatal deaths Count (absolute numbers) for Central province districts (Oct 2019 - Sept 2024).") +
   scale_color_manual(name ="",
                      values = usaid_red) + 
   baseX
@@ -1584,11 +1584,6 @@ ggsave("viz/Nov 2024 FHDR/Neonatal death count_Central districts.png",
        type="cairo",
        height = 6.5,
        width = 12)
-
-
-
-
-
 
 
 
