@@ -1528,6 +1528,75 @@ ggsave("viz/Nov 2024 FHDR/Provincial neaonatal death count(faceted).png",
 
 
 
+#'*........District Neonatal deaths Count absolute numbers 2025......*
+#'
+#'
+district_neonat <- read_xls("data/Nov 2024 MHDR/Neonatal death counts_Central districts.xls")
+district_neonat  <- district_neonat  %>%
+  mutate(month_chr = str_sub(periodname,
+                             start=1,
+                             end=nchar(periodname)-5),
+         month = factor(month_chr,
+                        levels=c("January","February","March","April","May","June","July","August","September","October","November","December")),
+         month_code = as.numeric(month), 
+         year = str_sub(periodname, 
+                        start=nchar(periodname)-4,
+                        end=nchar(periodname)),
+         monyr = paste(month_code, year, sep="-"),
+         mnthyr = my(monyr))
+
+ndcount <- district_neonat %>%
+  rename(dist =  1,
+         nnc = 3
+  )
+colnames(district_neonat)
+
+ndcount_1 <- gather(ndcount, key = mmtype , value = deaths, nnc)
+ndcount_1
+colnames(ndcount_1)
+
+ndcount_1$mmtypef <- factor(ndcount_1$mmtype, levels = unique(ndcount_1$mmtype))
+levels(ndcount_1$mmtypef)
+
+names(ndcount_1)
+colnames(ndcount_1)
+
+Dist_ndc_plt <- ggplot(ndcount_1, aes(x = mnthyr, y = deaths , colour =   mmtype, linetype=mmtype)) + 
+  geom_point(alpha=.5, size=.7) + 
+  geom_smooth(method = loess, linewidth=.9, se=F) +
+  facet_wrap(~dist) +
+  faceted +
+  scale_y_continuous(limits = c(0,150),
+                     breaks = c(15,30,45,60,75,90,105,120,135,150),
+                     labels = c("15","30","45","60","75","90","105","120","135","150")) +
+  scale_x_date(date_breaks = "1 year", date_labels = "%Y")+
+  scale_linetype_manual(name="",
+                        labels= ("Neonatal Deaths Count (absolute numbers"), 
+                        values=("solid"))+
+  labs(x="", y="", caption="Data Source: HMIS", title="The Provincial Neonatal deaths Count (absolute numbers) have a unique pattern in Copperbelt, Eastern, and Southern\n provinces, whereas the numbers in Lusaka seem to increase begining mid 2023 (Oct 2019 - Sept 2024).") +
+  scale_color_manual(name ="",
+                     values = usaid_red) + 
+  baseX
+
+Dist_ndc_plt
+ggsave("viz/Nov 2024 FHDR/Neonatal death count_Central districts.png",
+       device="png",
+       type="cairo",
+       height = 6.5,
+       width = 12)
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 #'*........Neonatal deaths percentage Trends Jan 2020 to Sept 2024*
 #'
