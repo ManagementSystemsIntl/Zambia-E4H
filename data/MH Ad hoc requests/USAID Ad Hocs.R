@@ -1738,7 +1738,7 @@ IPMort_plt <- ggplot(InstMort2,aes(x=mnthyr, y=value, color=variable))+
   labs(x="",
        y="",
        caption="Data Source: HMIS",
-       title="Institutional Mortality (Inpatient Deaths) disaggregated by Age (Jan 2020 - Sept 2024).") +
+       title="Institutional Mortality (Inpatient Deaths) disaggregated by Age (Oct 2019 - Sept 2024).") +
   basey + scale_color_manual(name ="",
                              values =c(light_blue,light_grey,usaid_blue, usaid_red),
                              labels = c("IP Deaths <1 Yr","IP Deaths (1-4)Yrs","IP Deaths (5-14)Yrs","IP Deaths  (>=15)Yrs"))
@@ -1775,14 +1775,14 @@ Prov_IPdeaths  <- Prov_IPdeaths  %>%
 
 names(Prov_IPdeaths)
 Prov_InstMort <- Prov_IPdeaths %>%
-  select(3:6,12,1) %>%
+  select(1,3:6,12) %>%
   na.omit()
 
 Prov_InstMort
 colnames(Prov_InstMort)
 
 Prov_InstMort1 <- Prov_InstMort %>%
-  rename(prov = 6
+  rename(prov = 1
   )
 
 Prov_InstMort2 <- Prov_InstMort1 %>%
